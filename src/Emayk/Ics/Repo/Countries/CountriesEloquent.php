@@ -1,0 +1,217 @@
+<?php
+/**
+* Copyright (C) 2013  Emay Komarudin
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+* @author Emay Komarudin
+*
+* Bussiness Logic Countries
+*
+**/
+
+namespace Emayk\Ics\Repo\Countries;
+use Aws\CloudFront\Exception\Exception;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use \Response;
+use \Input;
+
+class CountriesEloquent implements CountriesInterface{
+    protected $countries;
+    function __construct(Countries $countries)
+    {
+        $this->countries = $countries;
+    }
+
+    /**
+    *
+    * Mendapatkan Record Countries berdasarkan ID yang diberikan
+    * @param  int $id ID Record
+    * @return Model Record Countries
+    **/
+
+    public function find($id){
+        return $this->countries->find($id);
+    }
+
+    /**
+     * Mendapatkan Semua Countries
+     * @return mixed
+     */
+    public function all()
+    {
+        $page = \Input::get('page');
+			 $limit = \Input::get('limit',1);
+			 $start = \Input::get('start',1);
+        $countries = $this->countries
+            ->orderBy('id','DESC')
+            ->skip($start)
+            ->take($limit);
+        if (Input::has('level')){
+            $countries = $this->level(Input::get('level'));
+            $total = count($countries);
+        }else{
+            $countries = $countries->get()->toArray();
+            $total = $this->countries->count();
+        }
+
+        $countriess = array(
+            'success' => true,
+            'results' => $countries,
+            'total' => $total
+        );
+
+        return Response::json($countriess)
+            ->setCallback(\Input::get('callback'));
+
+    }
+
+    /**
+     * Mendapatkan Lokasi berdasarkan Level Yang diberikan
+     * @param int $level
+     * @return array
+     */
+    protected function level($level =1 ){
+        $columns =  ( (Input::has('cb')) and (Input::get('cb') == 'true') )
+            ? array('id','name') : array('*');
+        return $this->countries->where('level',$level)->get($columns)->toArray();
+    }
+
+    /**
+     *
+     * Proses Simpan Countries
+     *
+     * @return mixed
+     */
+    public function store()
+    {
+        if (!$this->hasAccess()) {
+            return Response::json(
+                      array(
+                        'success' => false,
+                        'reason'  => 'Action Need Login First',
+                        'results' => null
+                        ))->setCallback();
+        }
+        /*==========  Sesuaikan dengan Field di table  ==========*/
+        // $this->countries->name = Input::get('name');
+        // $this->countries->info = Input::get('info');
+        // $this->countries->uuid = uniqid('New_');
+        // $this->countries->createby_id = \Auth::user()->id;
+        // $this->countries->lastupdateby_id = \Auth::user()->id;
+        // $this->countries->created_at = new Carbon();
+        // $this->countries->updated_at = new Carbon();
+        $saved = $this->countries->save() ? true : false ;
+        return Response::json(array(
+            'success' => $saved,
+            'results' => $this->countries->toArray()
+        ))->setCallback();
+    }
+
+    /**
+     * Menghapus Countries
+     *
+     * @param $id
+     * @return mixed
+     *
+     */
+    public function delete($id)
+    {
+
+        if ($this->hasAccess())
+        {
+            $deleted = $this->countries
+                ->find($id)
+                ->delete();
+
+            return \Icsoutput::toJson(array(
+                'results' => $deleted
+            ),$deleted);
+
+        }else{
+            return \Icsoutput::toJson(array(
+                'results' => false,
+                'reason' => 'Dont Have Access to Delete '
+            ),false);
+        }
+    }
+
+    /**
+     * Update Informasi [[cName]]
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function update($id)
+    {
+        $db = $this->countries->find($id);
+        /*==========  Sesuaikan  ==========*/
+        // $db->name = Input::get('name');
+        // $db->info = Input::get('info');
+        $db->uuid = uniqid('Update_');
+        return $db->save();
+    }
+
+    /**
+    *
+    * Apakah Sudah Login
+    *
+    * @return boolean
+    *
+    **/
+    protected function  hasAccess()
+    {
+        return (!Auth::guest());
+    }
+
+    /**
+    *
+    * Menampilkan Page Create data Countries
+    *
+    **/
+
+   public function create()
+    {
+        // TODO: Implement create() method.
+    }
+
+    /**
+     * Menampilkan Resource
+     *
+     * @param  int  $id
+     * @return Response
+     */
+   public function show($id)
+    {
+        $c = $this->countries->where('id',$id)
+					->with('currencies')
+					->get();
+			 $c['total'] = count($c);
+			 $c['cnt'] = count($c[0]['currencies']);
+			 \ChromePhp::info($c);
+			 return $c;
+    }
+    /**
+     * Menampilkan Data Untuk di edit
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        // TODO: Implement edit() method.
+    }
+
+
+
+}

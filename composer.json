@@ -1,0 +1,26 @@
+{
+    "name": "emayk/ics",
+    "description": "Application Centralization System",
+    "authors": [
+        {
+            "name": "Emay",
+            "email": "emay_k@yahoo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+
+
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+            "src/controllers"
+        ],
+        "psr-0": {
+            "Emayk\\Ics\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

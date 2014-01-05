@@ -1,0 +1,7 @@
+
+/*==========  Register Interface {{cName}}  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\{{cName}}\{{cName}}Interface',function(){
+	return new Repo\{{cName}}\{{cName}}Eloquent(new Repo\{{cName}}\{{cName}}() );
+});
+

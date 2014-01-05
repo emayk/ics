@@ -1,0 +1,1 @@
+test ...hi {{ time() }} with data is {{ date('d-m-Y h:i:s') }} {{ $test }}{{ $name }}
