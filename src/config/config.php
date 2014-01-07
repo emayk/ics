@@ -14,5 +14,8 @@ return Array(
 	**/
 
 	'messageType' => 'pusher',
+	'path' => array(
+		'logger' => storage_path().'/logs'
+	)
 
 );
