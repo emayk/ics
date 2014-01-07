@@ -239,7 +239,8 @@ class ProductsEloquent implements ProductsInterface{
      */
    public function show($id)
     {
-        return $this->products->where('id',$id)->get()->toArray();
+//        return $this->products->where('id',$id)->get()->toArray();
+			return $this->products->findOrFail($id);
     }
     /**
      * Menampilkan Data Untuk di edit

@@ -20,3 +20,37 @@
 //$app->error(function(\Emayk\Ics\Exception\IcsException $e) use ($app) {
 //    $app['ics.exception']->handler($e);
 //});
+
+
+Log::listen(function ($level, $message, $context) {
+
+	if ($level == '404') {
+		$context = $message;
+		\DB::table('sys_log')->insert(
+			array(
+				'message'     => "[{$level}] {$message}",
+				'description' => "{$context}"
+			)
+		);
+	}
+//
+//	if ($message == 'user.activity') {
+//
+//		\DB::table('sys_user_history')->insert(
+//			array(
+//				'message'     => "[{$level}] {$message}",
+//				'parent_id'   => 1,
+//				'parent_type' => '\Emayk\Ics\Repo\Users\Users',
+//				'info'        => $message,
+//				'uuid'        => uniqid('user_'),
+//				'created_at'  => \Carbon\Carbon::create(),
+//				'updated_at'  => \Carbon\Carbon::create()
+//			)
+//		);
+//	}
+
+});
+
+
+
+

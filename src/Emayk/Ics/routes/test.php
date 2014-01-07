@@ -1,107 +1,107 @@
 <?php
-	 /**
-		*
-		* Tempat Url untuk testing - testing
-		* url format prefix_url/test
-		*
-		**/
-	 Route::group (array ('prefix' => 'test'), function () use ($nsController) {
+/**
+ *
+ * Tempat Url untuk testing - testing
+ * url format prefix_url/test
+ *
+ **/
+Route::group(array('prefix' => 'test'), function () use ($nsController) {
 
-			Route::get ('/', function () {
-				 return 'page testing Only';
-			});
-			/*Testing PushOver*/
-			Route::get ('pushover', function () {
-				 curl_setopt_array ($ch = curl_init (), array (CURLOPT_URL => "https://api.pushover.net/1/messages.json", CURLOPT_POSTFIELDS => array ("token" => "aBRx682ejZNwMKGdiGqJ9BViYZSeHG", "user" => "ufJPbrQHgkUA8w4fwzZuG2c6Ji7v1U", "message" => "hello world",)));
-				 curl_exec ($ch);
-				 curl_close ($ch);
+	Route::get('/', function () {
+		return 'page testing Only';
+	});
+	/*Testing PushOver*/
+	Route::get('pushover', function () {
+		curl_setopt_array($ch = curl_init(), array(CURLOPT_URL => "https://api.pushover.net/1/messages.json", CURLOPT_POSTFIELDS => array("token" => "aBRx682ejZNwMKGdiGqJ9BViYZSeHG", "user" => "ufJPbrQHgkUA8w4fwzZuG2c6Ji7v1U", "message" => "hello world",)));
+		curl_exec($ch);
+		curl_close($ch);
 
-				 return 'Done';
-			});
+		return 'Done';
+	});
 
-			Route::get ('pdf', function () {
-				 // return Icspdf::loadView('ics::test')->download('test.pdf');
-				 $test = array ('test' => date ('d-m-Y h:i:s'));
-				 $view = View::make ('ics::test', $test)->withName ('done'); //->with( $test);
-				 return Icspdf::loadHTML ($view)->stream ('download-invoice.pdf');
+	Route::get('pdf', function () {
+		// return Icspdf::loadView('ics::test')->download('test.pdf');
+		$test = array('test' => date('d-m-Y h:i:s'));
+		$view = View::make('ics::test', $test)->withName('done'); //->with( $test);
+		return Icspdf::loadHTML($view)->stream('download-invoice.pdf');
 
-				 return Icspdf::loadView ('ics::test')->stream ('download.pdf');
+		return Icspdf::loadView('ics::test')->stream('download.pdf');
 
-				 return Icspdf::loadFile (public_path () . '/docsx/index.html')->save (public_path () . '/my_stored_file.pdf')->stream ('download.pdf');
+		return Icspdf::loadFile(public_path() . '/docsx/index.html')->save(public_path() . '/my_stored_file.pdf')->stream('download.pdf');
 
-				 return Icspdf::loadHTML ('<h1>Test ' . date ('d M Y') . '</h1>')->stream ();
-				 $pdf = App::make ('dompdf');
-				 $pdf->loadHTML ('<h1>Test</h1>');
+		return Icspdf::loadHTML('<h1>Test ' . date('d M Y') . '</h1>')->stream();
+		$pdf = App::make('dompdf');
+		$pdf->loadHTML('<h1>Test</h1>');
 
-				 return $pdf->stream ();
+		return $pdf->stream();
 
-				 // $pdf = Icspdf::loadView('ics::test',array(),array());//, $data);
-				 $pdf = Icspdf::loadHTML ('<h1>dsadsa</h1>');
+		// $pdf = Icspdf::loadView('ics::test',array(),array());//, $data);
+		$pdf = Icspdf::loadHTML('<h1>dsadsa</h1>');
 
-				 // return $pdf->download('invoice.pdf');
-				 return s ($pdf);
+		// return $pdf->download('invoice.pdf');
+		return s($pdf);
 
-				 return s (Icspdf::loadHTML ('<h1>dsadsa</h1>'));
+		return s(Icspdf::loadHTML('<h1>dsadsa</h1>'));
 
-			});
-			Route::get ('facade', function () {
-				 return Icsmarkdown::render ();
-				 $file = File::get (base_path () . '/vendor/phpdocumentor/reflection-docblock/README.md');
+	});
+	Route::get('facade', function () {
+		return Icsmarkdown::render();
+		$file = File::get(base_path() . '/vendor/phpdocumentor/reflection-docblock/README.md');
 
-				 return Icsmarkdown::extra ($file);
+		return Icsmarkdown::extra($file);
 //				return Icsmarkdown::load();
 
-				 $obj       = new StdClass();
-				 $obj->id   = time ();
-				 $obj->name = 'Name ' . time ();
-				 ChromePhp::log ($obj);
-				 Icslogchrome::log ($obj); //->info($obj);
-				 Icslogchrome::log ($obj, 'table'); //->info($obj);
-				 // $obj = serialize($obj);
-				 // Icslogchrome::log()->info($obj);
-				 // ChromePhp::log('Hello console!'.time());
-				 // return Icslogchrome::info('hi....');
-				 return time ();
-				 $arr = array ('mantap');
-				 s (Icsmessage::getConfig ());
-				 $channel = Icsmessage::getConfig ()['channel'];
-				 s ($channel);
-				 s (Icsoutput::json (array ('mantap')));
-				 $json = Icsoutput::json ($arr);
+		$obj       = new StdClass();
+		$obj->id   = time();
+		$obj->name = 'Name ' . time();
+		ChromePhp::log($obj);
+		Icslogchrome::log($obj); //->info($obj);
+		Icslogchrome::log($obj, 'table'); //->info($obj);
+		// $obj = serialize($obj);
+		// Icslogchrome::log()->info($obj);
+		// ChromePhp::log('Hello console!'.time());
+		// return Icslogchrome::info('hi....');
+		return time();
+		$arr = array('mantap');
+		s(Icsmessage::getConfig());
+		$channel = Icsmessage::getConfig()[ 'channel' ];
+		s($channel);
+		s(Icsoutput::json(array('mantap')));
+		$json = Icsoutput::json($arr);
 
 
-				 if (is_array ($json)) {
-						Icsmessage::send ($json);
-				 } else {
-						s ('tidak kirim karena bukan array');
-				 }
+		if (is_array($json)) {
+			Icsmessage::send($json);
+		} else {
+			s('tidak kirim karena bukan array');
+		}
 
-				 // s(Icsmessage::about());
-				 return Icsview::make ('test');
+		// s(Icsmessage::about());
+		return Icsview::make('test');
 
-			});
-			Route::get ('config', function () {
-				 // return View::make('ics::home.index');
+	});
+	Route::get('config', function () {
+		// return View::make('ics::home.index');
 
-			});
+	});
 
-			Route::get ('excel', function () {
-				 // return View::make('ics::home.index');
-				 // IcsExcel::load();
+	Route::get('excel', function () {
+		// return View::make('ics::home.index');
+		// IcsExcel::load();
 
-				 $obj       = new StdClass();
-				 $obj->id   = time ();
-				 $obj->name = 'Name ' . time ();
+		$obj       = new StdClass();
+		$obj->id   = time();
+		$obj->name = 'Name ' . time();
 
-				 ChromePhp::log ($obj);
-			});
+		ChromePhp::log($obj);
+	});
 
-			Route::get ('monitor', function () {
+	Route::get('monitor', function () {
 
-				 return \View::make ('ics::pusher.monitor');
-			});
-			/*==========  Test Format Json  ==========*/
-			Route::get ('log', function () {
+		return \View::make('ics::pusher.monitor');
+	});
+	/*==========  Test Format Json  ==========*/
+	Route::get('log', function () {
 //            return Icslogchrome::get_caller_info();
 
 //            $caller = array_shift($bt);
@@ -109,70 +109,70 @@
 //            echo $caller['line'];
 //            ChromePhp::log($caller);
 //            return s($bt);
-			});
+	});
 
-			Route::get ('q', function () {
-				 return DB::table ('master_locations')->where ('level', 1)->lists ('id'); //->get(array('id'));
-			});
-
-
-			/*==========  End /Routing   ==========*/
-			Route::get ('enc', function () {
-				 function encrypt_decrypt ($action, $string)
-				 {
-						$output = false;
-
-						// $key = 'My strong random secret key';
-						$key = Config::get ('app.key');
-
-						// initialization vector
-						$iv = md5 (md5 ($key));
-
-						if ($action == 'encrypt') {
-							 $output = mcrypt_encrypt (MCRYPT_RIJNDAEL_256, md5 ($key), $string, MCRYPT_MODE_CBC, $iv);
-							 $output = base64_encode ($output);
-						} else if ($action == 'decrypt') {
-							 $output = mcrypt_decrypt (MCRYPT_RIJNDAEL_256, md5 ($key), base64_decode ($string), MCRYPT_MODE_CBC, $iv);
-							 $output = rtrim ($output, "");
-						}
-
-						return $output;
-				 }
-
-				 $plain_txt = "This is my plain text " . str_random (10);
-
-				 $encrypted_txt = encrypt_decrypt ('encrypt', $plain_txt);
-				 echo "Encrypted Text = $encrypted_txt\n";
-				 echo "<br />";
-				 $decrypted_txt = encrypt_decrypt ('decrypt', $encrypted_txt);
-				 echo "Decrypted Text = $decrypted_txt\n";
-			});
-			/*==========  Decript  ==========*/
+	Route::get('q', function () {
+		return DB::table('master_locations')->where('level', 1)->lists('id'); //->get(array('id'));
+	});
 
 
-			Route::get ('aw', function () {
+	/*==========  End /Routing   ==========*/
+	Route::get('enc', function () {
+		function encrypt_decrypt($action, $string)
+		{
+			$output = false;
 
-				 return Icsconfig::getLicense ();
-			});
+			// $key = 'My strong random secret key';
+			$key = Config::get('app.key');
+
+			// initialization vector
+			$iv = md5(md5($key));
+
+			if ($action == 'encrypt') {
+				$output = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, $iv);
+				$output = base64_encode($output);
+			} else if ($action == 'decrypt') {
+				$output = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($string), MCRYPT_MODE_CBC, $iv);
+				$output = rtrim($output, "");
+			}
+
+			return $output;
+		}
+
+		$plain_txt = "This is my plain text " . str_random(10);
+
+		$encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
+		echo "Encrypted Text = $encrypted_txt\n";
+		echo "<br />";
+		$decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
+		echo "Decrypted Text = $decrypted_txt\n";
+	});
+	/*==========  Decript  ==========*/
 
 
-			Route::get ('iron', function () {
-				 for ($i = 0; $i < 10; $i ++) {
-						echo 'Running ' . $i . '<br/>';
-						$message = '[....] Hi...' . time ();
-						Queue::push ('Emayk\Ics\Queue\iron', array ('message' => $message));
-						sleep (2);
-				 }
-				 echo 'Done';
+	Route::get('aw', function () {
 
-			});
+		return Icsconfig::getLicense();
+	});
 
-			Route::get ('crow', function () {
+
+	Route::get('iron', function () {
+		for ($i = 0; $i < 10; $i++) {
+			echo 'Running ' . $i . '<br/>';
+			$message = '[....] Hi...' . time();
+			Queue::push('Emayk\Ics\Queue\iron', array('message' => $message));
+			sleep(2);
+		}
+		echo 'Done';
+
+	});
+
+	Route::get('crow', function () {
 
 
 //				$crawler = new \Symfony\Component\DomCrawler\Crawler(null, 'google.com');
 //				$file = File::getRemote('http://www.kaskus.co.id/classified/317');
-				 $file = <<<'HTML'
+		$file = <<<'HTML'
 <!DOCTYPE html><html lang="ID" itemscope itemtype="http://schema.org/WebPage"><head><title>Komputer | Kaskus - The Largest Indonesian Community</title><meta itemprop="name" content="Komputer | Kaskus - The Largest Indonesian Community"><meta itemprop="description" content="Jual beli komputer (hardware, software) "><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /><meta charset="utf-8"/><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="-1" /><meta http-equiv="Cache-Control" content="no-cache" /><meta name="keywords" content="Komputer, kaskus,forum,indonesia,kaskuser,kaskusradio,radio,indo,jual beli,news,berita" /><meta name="description" content="Jual beli komputer (hardware, software) " /><meta name="author" content="Darta Media Indonesia" /><meta http-equiv="content-language" content="id, en"><meta name="generator" content="DrewBull" /><meta name="revisit-after" content="7" /><meta name="webcrawlers" content="all" /><meta name="rating" content="general" /><meta name="spiders" content="all" /><meta name="robots" content="all" /><meta http-equiv="imagetoolbar" content="no" /><meta name="copyright" CONTENT="&copy; 1999â€“2014 Kaskus Networks All Right Reserved"><link href="http://www.kaskus.co.id/rss/forum/317" rel="alternate" type="application/rss+xml" title="Komputer | Kaskus - The Largest Indonesian Community"/><link href="http://cdn.kaskus.com/themes_2.0/stylesheets/style.css" rel="stylesheet" type="text/css" media="all"/><script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/modernizr.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/tools.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/jknav.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/hotkeys.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/tooltip.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/selectbox.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/carousel.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/javascript/header.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/js/jquery.cookie.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/js/moderation.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/js/smilies/jquery.modalbox-1.2.0.js"></script><script type="text/javascript" src="http://cdn.kaskus.com/themes_2.0/js/jquery.cookie.js"></script><script type="text/javascript">
 	function show_forum_categories()
 	{
@@ -358,11 +358,11 @@ $(document).ready(function(){
 HTML;
 
 
-				 $cachedir = \Config::get ('cache.path');
+		$cachedir = \Config::get('cache.path');
 
 
-				 $url        = 'http://www.kaskus.co.id/classified/317';
-				 $url_thread = 'http://www.kaskus.co.id';
+		$url        = 'http://www.kaskus.co.id/classified/317';
+		$url_thread = 'http://www.kaskus.co.id';
 
 
 //				$html = new ThauEx\SimpleHtmlDom\SHD();//
@@ -372,109 +372,109 @@ HTML;
 //				$html = new simple_html_dom();
 //				$html->load($file);
 
-				 $html       = new simple_html_dom();
-				 $fileremote = File::getRemote ($url);
-				 $html->load ($fileremote);
+		$html       = new simple_html_dom();
+		$fileremote = File::getRemote($url);
+		$html->load($fileremote);
 
 
-				 $baris     = 0;
-				 $tds       = array ();
-				 $table     = $html->find ('table.zebra', 0);
-				 $a_baris   = array ();
-				 $sf_href   = '';
-				 $sf_text   = '';
-				 $reply     = 0;
-				 $viewer    = 0;
-				 $last_post = '';
-				 $last_by   = '';
-				 $last_date = '';
-				 $last_href = '';
+		$baris     = 0;
+		$tds       = array();
+		$table     = $html->find('table.zebra', 0);
+		$a_baris   = array();
+		$sf_href   = '';
+		$sf_text   = '';
+		$reply     = 0;
+		$viewer    = 0;
+		$last_post = '';
+		$last_by   = '';
+		$last_date = '';
+		$last_href = '';
 
-				 foreach ($table->find ('tr') as $tr) {
-						foreach ($tr->find ('td') as $k => $td) {
-							 //								 Hilangkan Image
-							 foreach ($td->find ('img') as $img)
-									$img->outertext = '';
+		foreach ($table->find('tr') as $tr) {
+			foreach ($tr->find('td') as $k => $td) {
+				//								 Hilangkan Image
+				foreach ($td->find('img') as $img)
+					$img->outertext = '';
 
 //								 Hilangkan Figure
-							 foreach ($td->find ('figure') as $figure)
-									$figure->outertext = '';
+				foreach ($td->find('figure') as $figure)
+					$figure->outertext = '';
 //								 Hilangkan Span
-							 foreach ($td->find ('span') as $span)
-									$span->outertext = $span->innertext;
+				foreach ($td->find('span') as $span)
+					$span->outertext = $span->innertext;
 
-							 //								 Hilangkan Post Title
-							 foreach ($td->find ('.post-title') as $title)
-									$title->outertext = '';
+				//								 Hilangkan Post Title
+				foreach ($td->find('.post-title') as $title)
+					$title->outertext = '';
 
-							 switch ($k) {
-									case 0:
-									{
+				switch ($k) {
+					case 0:
+					{
 
-										 foreach ($td->find ('a') as $b) {
-												$sf_text = $b->innertext;
-												$sf_href = $b->href;
-										 }
-										 break;
-									}
-									case 1:
-									{
-										 foreach ($td->find ('a') as $t) {
-												$last_post = $t->innertext;
-												$last_href = $t->href;
-										 }
-
-										 foreach ($td->find ('.date') as $d)
-												$last_date = trim (str_replace ('Today', '', $d->innertext));
-										 foreach ($td->find ('.fn') as $by)
-												$last_by = $by->innertext;
-
-										 break;
-									}
-									case 2:
-									{
-
-										 foreach ($td->find ('div.replies b') as $r)
-												$reply = $r->plaintext;
-										 foreach ($td->find ('div.views b') as $v)
-												$viewer = $v->plaintext;
-										 if (is_string ($viewer)) {
-												$viewer = intval (str_replace (',', '', $viewer));
-										 }
-										 break;
-									}
-							 }
-
-
-							 $a_baris = array ('subforum'      => trim ($sf_text),
-																 'subforum_href' => $url . $sf_href,
-																 'stats_view'    => $viewer,
-																 'stats_reply'   => $reply,
-																 'last_by'       => $last_by,
-																 'last_date'     => $last_date,
-																 'last_post'     => $last_post,
-																 'last_href'     => $url_thread . $last_href
-							 );
+						foreach ($td->find('a') as $b) {
+							$sf_text = $b->innertext;
+							$sf_href = $b->href;
 						}
-						$baris ++;
-
-						if (! empty($sf_text)) {
-							 $tds[] = $a_baris;
+						break;
+					}
+					case 1:
+					{
+						foreach ($td->find('a') as $t) {
+							$last_post = $t->innertext;
+							$last_href = $t->href;
 						}
 
-				 }
+						foreach ($td->find('.date') as $d)
+							$last_date = trim(str_replace('Today', '', $d->innertext));
+						foreach ($td->find('.fn') as $by)
+							$last_by = $by->innertext;
 
-				 return Response::json ($tds);
+						break;
+					}
+					case 2:
+					{
 
-				 s ($tds);
+						foreach ($td->find('div.replies b') as $r)
+							$reply = $r->plaintext;
+						foreach ($td->find('div.views b') as $v)
+							$viewer = $v->plaintext;
+						if (is_string($viewer)) {
+							$viewer = intval(str_replace(',', '', $viewer));
+						}
+						break;
+					}
+				}
 
-				 foreach ($html->find ('a') as $element)
+
+				$a_baris = array('subforum'      => trim($sf_text),
+				                 'subforum_href' => $url . $sf_href,
+				                 'stats_view'    => $viewer,
+				                 'stats_reply'   => $reply,
+				                 'last_by'       => $last_by,
+				                 'last_date'     => $last_date,
+				                 'last_post'     => $last_post,
+				                 'last_href'     => $url_thread . $last_href
+				);
+			}
+			$baris++;
+
+			if (!empty( $sf_text )) {
+				$tds[ ] = $a_baris;
+			}
+
+		}
+
+		return Response::json($tds);
+
+		s($tds);
+
+		foreach ($html->find('a') as $element)
 //					 $link[]['href'] = $element->href;
-						$link[] = array (
-							 'tags' => $element->plaintext,
-							 'href' => $element->href
-						);
-				 s ($link);
+			$link[ ] = array(
+				'tags' => $element->plaintext,
+				'href' => $element->href
+			);
+		s($link);
 
 //				$f = new ThauEx\SimpleHtmlDom\SimpleHtmlDom($file);
 //				$sh = new ThauEx\SimpleHtmlDom\SHD();
@@ -531,46 +531,46 @@ HTML;
 //				);
 
 //				return $html;
-			});
+	});
 
 
-			Route::get ('stream', function () {
+	Route::get('stream', function () {
 //				 public static function stream($callback, $status = 200, array $headers = array())
 //				 Response::stream(function() use($fileContent) {
 //						echo $fileContent;
 //				 }, 200, $headers);
 //
-				 $timoty = array ('ganteng', 'jelek', 'sedeng', 'keren');
+		$timoty = array('ganteng', 'jelek', 'sedeng', 'keren');
 
-				 return Response::stream (function () use ($timoty) {
-						for ($i = 0; $i <= 100; $i ++) {
-							 echo "{$i} Timoty " . $timoty[rand (0, count ($timoty) - 1)] . " ";
-							 sleep (1);
-						}
-				 });
-			});
+		return Response::stream(function () use ($timoty) {
+			for ($i = 0; $i <= 100; $i++) {
+				echo "{$i} Timoty " . $timoty[ rand(0, count($timoty) - 1) ] . " ";
+				sleep(1);
+			}
+		});
+	});
 
 
-			Route::get ('grade', function () {
-				 $fg = \Emayk\Ics\Repo\Fabricgrade\Fabricgrade::find (1);
+	Route::get('grade', function () {
+		$fg = \Emayk\Ics\Repo\Fabricgrade\Fabricgrade::find(1);
 
-				 return s ($fg->products ()->get ()->first ()->toArray ());
+		return s($fg->products()->get()->first()->toArray());
 
-			});
+	});
 
-			Route::get ('fake', function () {
+	Route::get('fake', function () {
 
 //				$data = $this->app['icsfaker'];
-				 $data = new \Emayk\Ics\Support\Dummy\Dummy();
+		$data = new \Emayk\Ics\Support\Dummy\Dummy();
 
 //					$data = App::make('icsfaker');
 //				return $data->colorName();
-				 $dt = serialize ($data->dateTimeBetween ());
+		$dt = serialize($data->dateTimeBetween());
 
-				 return $dt;
+		return $dt;
 //				return Icsdummy::get()->colorName;
 //				return Icsdummy::color('rgbColodsadsarAsArray');
-				 $class = '\Faker\Provider\Lorem';
+		$class = '\Faker\Provider\Lorem';
 //				return Icsdummy::getAllClassFaker();
 //				return $data->email;
 //				return Icsdummy::get()->colorName;
@@ -578,18 +578,18 @@ HTML;
 //				return Icsdummy::getColorFunctionToArray($class);
 //				return Icsdummy::color('rgbColodsadsarAsArray');
 
-			});
+	});
 
-			Route::get ('create/product', function () {
+	Route::get('create/product', function () {
 
-				 $data                  = new \Emayk\Ics\Support\Dummy\Dummy();
-				 $category              = new \Emayk\Ics\Repo\Productcategory\Productcategory();
-				 $category->createby_id = $data->getFaker ()->dateTimeBetween ();
-				 $product               = new \Emayk\Ics\Repo\Products\Products();
+		$data                  = new \Emayk\Ics\Support\Dummy\Dummy();
+		$category              = new \Emayk\Ics\Repo\Productcategory\Productcategory();
+		$category->createby_id = $data->getFaker()->dateTimeBetween();
+		$product               = new \Emayk\Ics\Repo\Products\Products();
 //				$product->cat_id = $data->
-			});
+	});
 
-			Route::get ('chat', function () {
+	Route::get('chat', function () {
 //					$chat = new \Emayk\Ics\Support\Dummy\Chat();
 //					$echoserver = new Ratchet\Server\EchoServer();
 //				$app = new Ratchet\App('localhost', 8080);
@@ -597,12 +597,12 @@ HTML;
 //				$app->route('/echo', $echoserver, array('*'));
 //    		$app->run();
 
-				 return \Config::get ('socket::socket.url');
-			});
+		return \Config::get('socket::socket.url');
+	});
 
 
-			Route::get ('generate', function () {
-				 $fake = \Faker\Factory::create ();
+	Route::get('generate', function () {
+		$fake = \Faker\Factory::create();
 
 //				$cat = new \Emayk\Ics\Repo\Productcategory\Productcategory();
 
@@ -620,7 +620,7 @@ HTML;
 //				}
 //				return $cat::lists('id');
 
-				 $fake = \Faker\Factory::create ();
+		$fake = \Faker\Factory::create();
 //				$user = new \Emayk\Ics\Repo\Users\Users(
 //					 array('username' => 'emay',
 //							'fullname' => 'emayk',
@@ -635,16 +635,179 @@ HTML;
 //					 )
 //				);
 //				$user->save();
-				 $user = \Emayk\Ics\Repo\Users\Users::generateUserAdmin ();
+		$user = \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
 
-				 return $user;
-			});
+		return $user;
+	});
 
-			Route::get('readfaker',function(){
-				 $filename =  '/Volumes/Data/projects/emay/vendor/fzaninotto/faker/readme.md';
-				 $text = File::get($filename);
+	Route::get('readfaker', function () {
+		$filename = '/Volumes/Data/projects/emay/vendor/fzaninotto/faker/readme.md';
+		$text     = File::get($filename);
 
-				 return Parsedown::instance()->parse($text);
-			});
+		return Parsedown::instance()->parse($text);
+	});
 
-	 });
+
+	Route::get('extendfaker', function () {
+		$faker        = new \Emayk\Faker\Factory();
+		$bank_account = array();
+
+		for ($i = 0; $i < 16; $i++) {
+			$account_name    = $faker->unique()->bankaccountname;
+			$account         = array('name' => $account_name,
+			                         'info' => "Info {$account_name}"
+			);
+			$bank_account[ ] = array_merge($account, $faker->fillattributes);
+		}
+
+		return $bank_account;
+
+		\DB::table('master_bank_account_type')->insert($bank_account);
+
+//				 return $bank_account;
+		$total = $faker->totalbank - 2;
+		for ($i = 0; $i < $total; $i++) {
+
+			$bank     = array('name'    => $faker->bankindonesia,
+			                  'info'    => 'Bank',
+			                  'address' => $faker->streetAddress,
+			                  'notelp'  => $faker->phoneNumber,
+			                  'uuid'    => $faker->uuid
+			);
+			$banks[ ] = array_merge($bank, $faker->fillattributes);
+		}
+
+//				 return $banks;
+		\DB::table('master_banks')->insert($banks);
+
+		return 'Done';
+		$totalnegara = $faker->countNegara();
+		$sep         = '</br>';
+		for ($i = 0; $i < $totalnegara; $i++) {
+			echo $faker->negara . $sep;
+		}
+
+		return $faker->streetAddress;
+
+	});
+
+
+	/*Testing Input*/
+	Route::post('input', function () {
+
+
+		return Input::all();
+	});
+
+
+	/*Debug Post*/
+	Route::group(array('prefix' => 'post', 'as' => 'debugpost'), function () {
+
+		$faker = new \Emayk\Faker\Factory();
+		/*Create User */
+
+		Route::post('createuser', function () {
+//				 $dept = new Emayk\Ics\Repo\Dept\Dept(array ('id' => 1, 'name' => 'System'));
+//				 $dept->save ();
+
+//				 $pos = new Emayk\Ics\Repo\Positions\Positions(array ('id' => 1, 'name' => 'System'));
+//				 $pos->save ();
+
+			$user = new Emayk\Ics\Repo\Users\Users( array(
+				'username'     => 'admin',
+				'password'     => '123',
+				'dept_id'      => 1,
+				'pos_id'       => 1,
+				'status_id'    => 1,
+				'warehouse_id' => 1
+
+			) );
+			$user->save();
+		});
+
+		Route::get('create_product_category', function () use ($faker) {
+			$categories = array();
+			for ($i = 0; $i <= 20; $i++) {
+				$category = array(
+					'id'           => $i,
+					'name'         => $faker->productcategory,
+					'info'         => 'Category Product',
+					'parent_id'    => 0,
+					'parent_type'  => '',
+					'kodeinternal' => $faker->uuid,
+					'uuid'         => $faker->uuid,
+				);
+
+				$categories[ ] = array_merge($category, $faker->fillattributes);
+			}
+			$cat = new Emayk\Ics\Repo\Productcategory\Productcategory();
+			$cat->insert($categories);
+
+			return $categories;
+		});
+
+		Route::get('create_product', function () use ($faker) {
+			$cat   = Emayk\Ics\Repo\Productcategory\Productcategory::create(
+				array('name' => 'Category ' . $faker->productcategory));
+			$catid = $cat->id;
+
+			$fabrictype = Emayk\Ics\Repo\Fabrictype\Fabrictype::create(
+				array('name' => 'Type fabric ' . $faker->jeniskain)
+			);
+
+			$type = Emayk\Ics\Repo\Producttype\Producttype::create(
+				array('name'          => 'Type Product ' . $faker->productcategory,
+				      'fabrictype_id' => $fabrictype->id
+				));
+
+			$type = $type->id;
+
+
+			/*Units */
+			$unit_type = Emayk\Ics\Repo\Unittypes\Unittypes::create(
+				array('name' => 'Unit Type ' . $faker->randomLetter)
+			);
+
+			$unit = Emayk\Ics\Repo\Units\Units::create(
+				array('name' => 'Unit ' . $faker->productcategory, 'type_id' => $unit_type->id));
+
+			$unit = $unit->id;
+
+			return;
+//						$product = new Emayk\Ics\Repo\Products\Products(
+//							 array (
+//									'cat_id'          => $catid ,
+//									'codeinternal'    => ,
+//									'contruction'     => ,
+//									'createby_id'     => ,
+//									'created_at'      => ,
+//									'lastupdateby_id' => ,
+//									'name'            => ,
+//									'nodesign'        => ,
+//									'parent_id'       => ,
+//									'parent_type'     => ,
+//									'type_id'         => $posid,
+//									'unitweight_id'   => ,
+//									'unitwidth_id'    => ,
+//									'updated_at'      => ,
+//									'uuid'            => ,
+//									'weight'          => ,
+//									'width'           => ,
+//								 )
+//						);
+//						$product->save ();
+
+
+		});
+	});
+
+
+	$app = $this->app;
+	/*Ics Debug Testing*/
+	Route::get('env', function () use ($app) {
+		$environment = App::environment();
+		s(IcsLogger::debug('mantap bray '.time(), array($environment)) );
+		s(IcsLogger::loginfailure(array('Error Si dodo '.time(), $environment )) ) ;
+		return s($environment);
+	});
+});

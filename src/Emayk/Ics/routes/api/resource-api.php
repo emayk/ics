@@ -106,3 +106,5 @@ Route::resource('transpaymentdpgeneral', 'Emayk\Ics\Repo\Transpaymentdpgeneral\T
 Route::resource('transpaymentdpfabric', 'Emayk\Ics\Repo\Transpaymentdpfabric\TranspaymentdpfabricController');
 /*==========  Register Resource Statsproduct  ==========*/
 Route::resource('statsproduct', 'Emayk\Ics\Repo\Statsproduct\StatsproductController');
+/*==========  Register Resource Login  ==========*/
+Route::resource('login', 'Emayk\Ics\Repo\Login\LoginController');

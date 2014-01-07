@@ -367,3 +367,10 @@ App::bindIf('Emayk\Ics\Repo\Statsproduct\StatsproductInterface',function(){
 	return new Repo\Statsproduct\StatsproductEloquent(new Repo\Statsproduct\Statsproduct() );
 });
 
+
+/*==========  Register Interface Login  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Login\LoginInterface',function(){
+	return new Repo\Login\LoginEloquent(new Repo\Login\Login() );
+});
+
