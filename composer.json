@@ -1,6 +1,6 @@
 {
     "name": "emayk/ics",
-    "description": "Application Centralization System",
+    "description": "Ics",
     "authors": [
         {
             "name": "Emay",
@@ -9,9 +9,25 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.1.*"
-    },
+        "illuminate/support": "4.1.*",
+        "phpoffice/phpexcel": "dev-develop",
+        "dompdf/dompdf": "dev-master",
+        "pusher/pusher-php-server": "dev-serializer",
+        "maatwebsite/excel": "dev-master",
+        "pda/pheanstalk": "dev-master",
+        "twilio/sdk": "dev-master",
+        "iron-io/iron_mq": "dev-master",
+        "shark/simple_html_dom": "dev-master",
+        "intervention/image": "dev-master",
+        "intervention/imagecache": "dev-master",
+        "sunra/php-simple-html-dom-parser": "v1.5.0",
+        "emayk/faker": "dev-master"
 
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master",
+        "orchestra/testbench": "2.1.*"
+    },
 
     "autoload": {
         "classmap": [

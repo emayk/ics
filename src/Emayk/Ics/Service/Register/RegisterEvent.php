@@ -17,38 +17,37 @@
  **/
 
 
-Event::listen('product.refresh', function($product)
-{
-	 $cache_total = \Cache::remember('count_products',10,function() use ($product){
-			return $product->count();
-	 });
-		$total = $product->count();
-	 $page = \Input::get('page');
-	 if ($total == $cache_total){
-			\Cache::remember('products'.$page,10,function() use($product) {
-						$product = $product
-							->take(Input::get('limit',1))
-							->skip(Input::get('start',1))->get();
-						return $product;
-				 });
-
-	 }else{
-			\Cache::forget('count_products');
-			\Cache::forget('products'.$page);
-			// Buat Baru
-			\Cache::remember('products'.$page,10,function() use($product) {
-						$product = $product
-							->take(Input::get('limit',1))
-							->skip(Input::get('start',1))->get();
-						return $product;
-				 });
-			\Cache::remember('count_products',10,function() use ($product){
-				 return $product->count();
+Event::listen('product.refresh', function ($product) {
+	$cache_total = \Cache::remember('count_products', 10, function () use ($product) {
+		return $product->count();
+	});
+	$total       = $product->count();
+	$page        = \Input::get('page');
+	if ($total == $cache_total) {
+		\Cache::remember('products' . $page, 10, function () use ($product) {
+				$product = $product
+					->take(Input::get('limit', 1))
+					->skip(Input::get('start', 1))->get();
+				return $product;
 			});
-	 }
+
+	} else {
+		\Cache::forget('count_products');
+		\Cache::forget('products' . $page);
+		// Buat Baru
+		\Cache::remember('products' . $page, 10, function () use ($product) {
+				$product = $product
+					->take(Input::get('limit', 1))
+					->skip(Input::get('start', 1))->get();
+				return $product;
+			});
+		\Cache::remember('count_products', 10, function () use ($product) {
+			return $product->count();
+		});
+	}
 });
 
-Event::listen('user.login',function($user){
+Event::listen('user.login', function ($user) {
 //
 //	Event::fire('user.login', array(
 //		array(
@@ -61,13 +60,13 @@ Event::listen('user.login',function($user){
 //		'data' => "Input {$decode_username},{$decode_password}" )
 //		));
 
-	s($user['msg']);
-	s($user['data']);
-	s(Input::get('user'));
 	DB::table('sys_log')->insert(array(
-		'message' => $user['msg'],
-		'description' => $user['data']
+		'message'     => $user[ 'msg' ],
+		'description' => $user[ 'data' ],
+		'created_at'  => \Carbon\Carbon::create(),
+		'updated_at'  => \Carbon\Carbon::create()
 	));
+
 //		Log::info("user.activity", array(
 //			'context' => Auth::getUser(),
 //			'level' => 'user.activity',
@@ -75,4 +74,4 @@ Event::listen('user.login',function($user){
 //			'action' => 'wao'
 //		) );
 
-},1);
+}, 1);

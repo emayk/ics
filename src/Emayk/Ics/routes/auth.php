@@ -12,7 +12,7 @@ Route::get('regensession', function () {
 /*==========  Login Routing  ==========*/
 Route::post('login.php', function () {
 	Input::replace(
-		array('user'     => base64_encode('admin1'),
+		array('user'     => base64_encode('admin'),
 		      'password' => base64_encode('123')
 		));
 
@@ -33,9 +33,11 @@ Route::post('login.php', function () {
 	};
 
 	Event::fire('user.login', array(
+		'msg' =>
 		array(
 			'msg'  => "{$fullname} {$msg}",
-			'data' => "Input {$decode_username},{$decode_password}" )
+			'data' => "Input {$decode_username},{$decode_password}" ),
+
 		));
 
 	return array('success'  => $authenticated,
