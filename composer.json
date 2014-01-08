@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.1.*",
+        "laravel/framework": "4.1.11",
         "phpoffice/phpexcel": "dev-develop",
         "dompdf/dompdf": "dev-master",
         "pusher/pusher-php-server": "dev-serializer",
