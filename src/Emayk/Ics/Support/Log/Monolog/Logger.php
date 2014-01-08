@@ -27,6 +27,8 @@ use \Emayk\Ics\Exception\FileNotFoundException;
 use \Config;
 use \Log;
 
+//use \Events;
+
 /**
  * Class Logger
  *
@@ -159,7 +161,7 @@ class Logger
 	public function debug($message, array $context = array())
 	{
 		Log::useDailyFiles($this->setterFn('Ics-Common'));
-		Log::debug($message,$context);
+		Log::debug($message, $context);
 	}
 
 	/**
@@ -170,9 +172,53 @@ class Logger
 	 */
 	public function info($message, array $context = array())
 	{
-		return $this->logger->addInfo($message, $context);
+		return $this->log($message, $context);
 	}
 
+	protected  function log($message, array $context = array(), $severity = 'info')
+	{
+		$severity = strtolower($severity);
+		switch ($severity) {
+			case 'debug' :
+			{
+				Log::debug($message, $context);
+				break;
+			}
+			case 'notice' :
+			{
+				Log::notice($message, $context);
+				break;
+			}
+			case 'error' :
+			{
+				Log::error($message, $context);
+				break;
+			}
+			case 'warning' :
+			{
+				Log::warning($message, $context);
+				break;
+			}
+			case 'critical' :
+			{
+				Log::critical($message, $context);
+				break;
+			}
+			case 'alert' :
+			{
+				Log::alert($message, $context);
+				break;
+			}
+			default :
+				{
+				Log::info($message, $context);
+				break;
+				}
+
+		}
+
+		return Log::info($message, $context);
+	}
 
 	/**
 	 * @param array $context
@@ -180,7 +226,8 @@ class Logger
 	public function loginfailure(array $context = array())
 	{
 		Log::useDailyFiles($this->setterFn('LoginFailure'));
-		Log::debug('Error Login ',$context);
+		Log::debug('Error Login ', $context);
+		Event::fire('user.login.failure', $context);
 	}
 
 	/**
@@ -189,8 +236,10 @@ class Logger
 	 */
 	public function login($message, $context = array())
 	{
-		$logger = $this->createMonolog('security', 'info', 'Login');
-		$logger->addInfo($message, $context);
+//		$logger = $this->createMonolog('security', 'info', 'Login');
+//		$logger->addInfo($message, $context);
+		$this->log($message,$context,'alert');
+		Event::fire('user.login.failure', $context);
 	}
 
 	/**
@@ -260,8 +309,10 @@ class Logger
 	 */
 	protected function setterFn($file)
 	{
-		return $this->getPath() . '/' . 'IcsLog_' . date('d_m_Y') . '__' . $file . '.log';
+		return $this->getPath() . '/' . 'IcsLog_' . $file . '.log';
 	}
+
+
 }
 
 /** 1/7/14 **/
