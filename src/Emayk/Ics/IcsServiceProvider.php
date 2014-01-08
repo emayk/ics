@@ -54,7 +54,7 @@
 			public function boot ()
 			{
 				 $this->package ('emayk/ics');
-				 $this->logSystem();
+//				 $this->logSystem();
 				 include __DIR__ . '/routes/root.php';
 				 include __DIR__ . '/Service/helpers.php';
 				 include __DIR__ . '/Service/Boot/BootServiceProvider.php';

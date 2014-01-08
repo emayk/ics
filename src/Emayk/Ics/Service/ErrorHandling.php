@@ -38,20 +38,9 @@
 	 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 	 $app = $this->app;
-	 # Handle HttpException errors (Not others)
 	 $app->error (function (HttpExceptionInterface $exception, $code) use ($app) {
-
-//			$e = new \Exception($exception->getMessage());
-			msglog(get_class($exception), $exception->getMessage(), $code);
-
+		 Log::error ("[{$code}] Application Error [HttpExceptionInterface]", array ($exception));
 			if ($app['request']->header ('accept') === 'application/json') {
-				 // I thought you must create 'Request' object manually
-				 // as $app['response'] doesn't exit when this is ran...
-				 // However we can grab its Facade (apparently)
-				 // via $app['Response'] - Note the capitalization
-
-				 //$response = new Response; # Don't need
-
 				 return $app['Response']::json ([
 							 'success' => false,
 							 'error'   => true,
@@ -71,8 +60,7 @@
 		*
 		*/
 	 App::error (function (Exception $exception, $code) use ($app) {
-			msglog ($exception->getMessage (), $exception, $code);
-			Log::error ('Application Error ', array ($exception));
+			Log::error ("[{$code}] Application Error ", array ($exception));
 			if (! $app['request']->header ('accept') === 'application/json') {
 				 return $app['Response']::json (array (
 						'success' => false,
@@ -90,9 +78,8 @@
 		*
 		*/
 	 App::error (function (Illuminate\Database\Eloquent\ModelNotFoundException $exception, $code) use ($app) {
-			$msg = "[{$code}] Application Error [ Model Not Found]";
-			Log::error ($msg, array ($exception->getMessage ()));
-			msglog($exception->getMessage (), $exception, $code);
+			Log::error ("[{$code}] Application Error [ Model Not Found]", array ($exception->getMessage ()));
+
 			if ($app['request']->header ('accept') === 'application/json') {
 				 return Response::json (array (
 						'success' => false,
@@ -111,7 +98,6 @@
 		*/
 	 App::error (function (Illuminate\Database\QueryException $exception, $code) use ($app) {
 			Log::error ("[{$code}] Application Error [QueryException]", array ($exception->getMessage ()));
-			msglog($exception->getMessage (), $exception, $code);
 			if ($app['request']->header ('accept') === 'application/json') {
 				 return Response::json (array (
 						'success' => false,
@@ -128,7 +114,6 @@
 		*/
 	 App::error (function (BadMethodCallException $exception, $code) use ($app) {
 			Log::error ("[{$code}] Application Error [BadMethodCallException]", array ($exception->getMessage ()));
-			msglog($exception->getMessage (), $exception, $code);
 			if ($app['request']->header ('accept') === 'application/json') {
 				 return Response::json (array (
 						'success' => false,

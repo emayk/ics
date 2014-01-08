@@ -1,12 +1,11 @@
 <?php namespace Emayk\Ics\Message;
 
-interface MessageInterface{
+interface MessageInterface
+{
 	/**
-	*
-	* Mengirimkan Pesan
-	*
-	**/
-
-	public function send($channel,$event,$msg);
-	// public function about();
+	 *
+	 * Mengirimkan Pesan
+	 *
+	 **/
+	public function send($channel, $event, $msg);
 }

@@ -44,7 +44,7 @@ class Productcategory extends Model {
 
     public function products()
     {
-        return $this->hasMany('Emayk\Ics\Repo\Productsuppliers\Productsuppliers','');
+        return $this->hasMany('\Emayk\Ics\Repo\Products\Products','cat_id');
     }
 
 }

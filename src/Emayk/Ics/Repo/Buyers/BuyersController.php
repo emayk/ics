@@ -1,32 +1,35 @@
 <?php
 
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-**/
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ **/
 
 namespace Emayk\Ics\Repo\Buyers;
+
 use Emayk\Ics\Controllers\BaseController as Base;
 use \Input;
 
-class BuyersController extends Base {
- protected  $buyers;
-    function __construct(BuyersInterface $buyers)
-    {
-        $this->buyers = $buyers;
-    }
+class BuyersController extends Base
+{
+	protected $buyers;
+
+	function __construct(BuyersInterface $buyers)
+	{
+		$this->buyers = $buyers;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -61,45 +64,49 @@ class BuyersController extends Base {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 *
 	 * @return Response
 	 */
 	public function show($id)
 	{
-			return $this->buyers->show($id);
+		return $this->buyers->show($id);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 *
 	 * @return Response
 	 */
 	public function edit($id)
 	{
-			return $this->buyers->edit($id);
+		return $this->buyers->edit($id);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 *
 	 * @return Response
 	 */
 	public function update($id)
 	{
-			return $this->buyers->update($id);
+		return $this->buyers->update($id);
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
+	 *
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
-			return $this->buyers->destroy($id);
+		return $this->buyers->destroy($id);
 	}
 
 }

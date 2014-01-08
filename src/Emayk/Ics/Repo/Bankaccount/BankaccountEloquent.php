@@ -62,6 +62,7 @@
 				 $page        = \Input::get ('page');
 				 $limit       = \Input::get ('limit', 1);
 				 $start       = \Input::get ('start', 1);
+
 				 $bankaccount = $this->bankaccount
 					 ->orderBy ('id', 'DESC')
 					 ->skip ($start)
@@ -99,7 +100,10 @@
 //				 }
 //
 
-				 $fake   = \Faker\Factory::create ();
+				/**
+				 * Debug Input
+				 */
+				$fake   = \Faker\Factory::create ();
 				 $bankid = bank::lists ('id');
 				 //account milik ?
 				 $owner                 = \Emayk\Ics\Repo\Suppliers\Suppliers::first (array ('id'));
@@ -118,6 +122,7 @@
 							 'updated_at' => Carbon::create ()
 						)
 				 );
+
 
 				 $this->bankaccount->owner_id    = Input::get ('owner_id');
 				 $this->bankaccount->owner_type  = Input::get ('owner_type');
@@ -154,6 +159,7 @@
 						$deleted = $this->bankaccount
 							->find ($id)
 							->delete ();
+					  Log::info('bank.delete',array('action $id'));
 
 						return \Response::json (array (
 							 'results' => $deleted,
@@ -202,6 +208,7 @@
 				 $db->updated_at      = Carbon::create ();
 				 $db->uuid            = uniqid ('Update_');
 				 $db->save ();
+					Log::info('bankaccount.update',array('data'=> Input::all()));
 				 return \Icsoutput::msgSuccess ($db->toArray ());
 			}
 
@@ -237,7 +244,7 @@
 			 */
 			public function show ($id)
 			{
-				 // TODO: Implement show() method.
+				 return $this->bankaccount->findOrFail($id);
 			}
 
 			/**

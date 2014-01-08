@@ -1,14 +1,24 @@
 <?php namespace Emayk\Ics\Message\Pusher;
 /**
-* Pusher
-*/
+ * Pusher
+ */
+/**
+ * Class Channel
+ *
+ * @package Emayk\Ics\Message\Pusher
+ */
 class Channel
 {
-	protected $data ;
+	/**
+	 * @var
+	 */
+	protected $data;
+
+	/**
+	 * @return array
+	 */
 	public function getSettings()
 	{
-		return array(
-		             'channel' => 'ics'
-		             )
+		return array('channel' => 'ics');
 	}
 }

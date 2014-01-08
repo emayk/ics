@@ -37,7 +37,6 @@ Route::post('login.php', function () {
 		array(
 			'msg'  => "{$fullname} {$msg}",
 			'data' => "Input {$decode_username},{$decode_password}" ),
-
 		));
 
 	return array('success'  => $authenticated,
@@ -52,13 +51,24 @@ Route::get('login', function () {
 });
 /*==========  Logout Get  ==========*/
 Route::get('logout.php', function () {
+	$uid = Auth::user()->getAuthIdentifier();
 	Auth::logout();
 	$logout = true;
 	if ($logout) {
 		Session::forget('logged');
 		$msg = 'Successfully Logout from System';
+
+
 	} else {
 		$msg = 'Cannot Logout, Please Try Again';
 	}
+
+	Event::fire('user.login', array(
+		'msg' =>
+			array(
+				'msg'  => "{$msg}",
+				'data' => "data:[$uid]" ),
+	));
+
 	return \Response::json(array('success' => $logout, 'message' => $msg));
 });
