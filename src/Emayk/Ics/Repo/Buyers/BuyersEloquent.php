@@ -280,9 +280,9 @@ class BuyersEloquent implements BuyersInterface
 	public function show($id)
 	{
 		$total = 100;
-		$date  = Carbon::now()->addSeconds(5);
+		$date  = Carbon::now()->addMinute();
 		$uid = ( is_null(\Auth::getUser()) ) ? 1 : \Auth::getUser()->id;
-		Queue::later($date, '\Emayk\Ics\Support\Queue\CreateBuyers', array('total' => $total,'uid' => $uid ));
+		Queue::later($date, '\Emayk\Ics\Queue\Iron\CreateBuyers', array('total' => $total,'uid' => $uid ));
 		return 'im execute at ' . date('d m Y h:i:s');
 	}
 

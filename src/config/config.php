@@ -1,9 +1,8 @@
 <?php
 
 return Array(
-	'appName' => '',
-	'prefix_url' => '',
-	'programmer' => '',
+	'appName' => 'Ics',
+	'programmer' => 'Emay Komarudin',
 	'version' => '',
 	/**
 	*
@@ -13,7 +12,16 @@ return Array(
 
 	'messageType' => 'pusher',
 	'path' => array(
-		'logger' => storage_path().'/logs'
+		'baseUrl' => 'ics',
+		'logger' => storage_path().'/logs',
+		/**
+		 * Lokasi Framework Extjs 4.2
+		 * relative dari public_path
+		 * cth : '/extjs' => http://example.com/extjs
+		 */
+		'extjs' => '/extjs',
 	)
+
+
 
 );

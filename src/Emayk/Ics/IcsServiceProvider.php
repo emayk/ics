@@ -45,6 +45,7 @@
 			 * @var bool
 			 */
 			protected $defer = false;
+		  protected $version = 'v1.0.0.beta';
 
 			/**
 			 * Bootstrap the application events.
@@ -54,7 +55,6 @@
 			public function boot ()
 			{
 				 $this->package ('emayk/ics');
-//				 $this->logSystem();
 				 include __DIR__ . '/routes/root.php';
 				 include __DIR__ . '/Service/helpers.php';
 				 include __DIR__ . '/Service/Boot/BootServiceProvider.php';

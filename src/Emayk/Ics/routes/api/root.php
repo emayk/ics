@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'api'),function() use ($nsController)  {
+Route::group(array('prefix' => 'api'),function()  {
 	/*==========  Routing Begin  ==========*/
 		Route::get('/',
             array('as' => 'icsservice',

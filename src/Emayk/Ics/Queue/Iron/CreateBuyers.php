@@ -18,7 +18,7 @@
  **/
 
 
-namespace Emayk\Ics\Support\Queue;
+namespace Emayk\Ics\Queue\Iron;
 
 
 use Carbon\Carbon;

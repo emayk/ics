@@ -1,0 +1,1 @@
+Ext.define('App.model.test.Status', {extend:'App.model.test.mAbstract', fields:['name', 'uuid'] });

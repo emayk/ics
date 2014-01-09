@@ -1,0 +1,51 @@
+{
+  "bodyStyle": "padding:15px",
+  "closable": true,
+  "closeAction": "destroy",
+  "itemId": "test",
+  "items": [
+    {
+      "flex": 1,
+      "items": [
+        {
+          "items": [
+            {
+              "fieldLabel": "Search Product",
+              "xtype": "textfield"
+            },
+            {
+              "itemId": "btnSearch",
+              "text": "Search",
+              "xtype": "button"
+            }
+          ],
+          "layout": { "type" : "hbox" , "align" : "stretch" },
+          "defaults" : { "anchor" : "100%" },
+          "xtype": "form"
+        }
+      ],
+      "xtype": "container"
+    },
+    {
+      "flex": 3,
+      "frame": "true",
+      "items": [
+        {
+          "html": "Grid Here",
+          "xtype": "container"
+        },{
+        	"html" : "Grid 2",
+        	"xtype" : "button"
+        }
+      ],
+      "title": " Grid",
+      "xtype": "container"
+    }
+  ],
+  "layout": {
+    "align": "stretch",
+    "type": "vbox"
+  },
+  "title": "Test Form",
+  "xtype": "container"
+}

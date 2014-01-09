@@ -1,0 +1,146 @@
+{
+  "success": true,
+  "results": [
+    {
+      "id": "1",
+      "name": "System",
+      "info": "System Dept",
+      "uuid": "de54d30e-24f0-11e3-987e-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "2",
+      "name": "Admin",
+      "info": "Administrator",
+      "uuid": "de5685f0-24f0-11e3-97de-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "3",
+      "name": "Purchase",
+      "info": "Purchasing",
+      "uuid": "de582932-24f0-11e3-a0c1-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "4",
+      "name": "Gudang",
+      "info": "Gudang",
+      "uuid": "de59df98-24f0-11e3-b7aa-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "5",
+      "name": "Departement 0",
+      "info": "Departement 0",
+      "uuid": "de4447f0-24f0-11e3-ad92-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "6",
+      "name": "Departement 1",
+      "info": "Departement 1",
+      "uuid": "de45f546-24f0-11e3-853e-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "7",
+      "name": "Departement 2",
+      "info": "Departement 2",
+      "uuid": "de479d42-24f0-11e3-ace8-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "8",
+      "name": "Departement 3",
+      "info": "Departement 3",
+      "uuid": "de494534-24f0-11e3-9e80-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "9",
+      "name": "Departement 4",
+      "info": "Departement 4",
+      "uuid": "de4af4d8-24f0-11e3-9838-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "10",
+      "name": "Departement 5",
+      "info": "Departement 5",
+      "uuid": "de4c9a18-24f0-11e3-81f1-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "11",
+      "name": "Departement 6",
+      "info": "Departement 6",
+      "uuid": "de4e3ec2-24f0-11e3-b3ef-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "12",
+      "name": "Departement 7",
+      "info": "Departement 7",
+      "uuid": "de4fe402-24f0-11e3-90c8-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "13",
+      "name": "Departement 8",
+      "info": "Departement 8",
+      "uuid": "de51897e-24f0-11e3-9cb2-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    },
+    {
+      "id": "14",
+      "name": "Departement 9",
+      "info": "Departement 9",
+      "uuid": "de532d2e-24f0-11e3-95f5-60fb42ee2e02",
+      "createby_id": "1",
+      "lastupdateby_id": "1",
+      "created_at": "2013-09-24 15:11:09",
+      "updated_at": "2013-09-24 15:11:09"
+    }
+  ],
+  "total": 14
+}

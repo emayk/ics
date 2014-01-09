@@ -5,7 +5,7 @@
  * url format prefix_url/test
  *
  **/
-Route::group(array('prefix' => 'test'), function () use ($nsController) {
+Route::group(array('prefix' => 'test'), function () {
 
 	Route::get('/', function () {
 		return 'page testing Only';

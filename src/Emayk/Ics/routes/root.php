@@ -1,15 +1,7 @@
 <?php
-$root = Config::get('ics::prefix_url');
-$nsController = 'Emayk\\Ics\\Controllers\\';
-
-Route::group(array('prefix' => $root),function() use ($nsController){
+Route::group(array('prefix' => \Config::get('ics::path.baseUrl') ),function(){
 	/*==========  Routing Home  ==========*/
-	Route::get('/',
-	           array(
-	                 'as' => 'icsroot',
-	                 'uses' => $nsController.'BaseController@index'
-	                 )
-	           );
+	Route::get('/', array('as' => 'icsroot', 'uses' => 'Emayk\\Ics\\Controllers\\BaseController@index'));
 	/*==========  Routing Home  ==========*/
 	require __DIR__.'/auth.php';
 	/*==========  Routing Home  ==========*/
