@@ -22,8 +22,6 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
-class Generate {
-
-}
+class Generate extends AbstractGenerate{}
 
 /** 1/8/14 **/ 

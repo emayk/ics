@@ -21,6 +21,8 @@
 namespace Emayk\Ics\Repo\Users;
 
 use \Carbon\Carbon;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
+use Emayk\Ics\Support\Dummy\Faker\Position;
 use \Illuminate\Database\Eloquent\Model;
 use \Auth;
 use \DB;
@@ -56,9 +58,26 @@ use \Illuminate\Auth\Reminders\RemindableInterface;
 
 class Users extends Model implements UserInterface, RemindableInterface
 {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_users';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
+	/**
+	 * @var array
+	 */
+	protected static $defaultUserAdmin = array(
+		'username' => 'admin',
+		'password' => '123'
+	);
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
@@ -66,7 +85,14 @@ class Users extends Model implements UserInterface, RemindableInterface
 	 */
 	protected $hidden = array('password');
 
-	protected static $defaultLocation = array('country' => 'Indonesia', 'province' => 'Jawa Barat', 'city' => 'Bandung');
+	/**
+	 * @var array
+	 */
+	protected static $defaultLocation = array(
+		'country'  => 'Indonesia',
+		'province' => 'Jawa Barat',
+		'city'     => 'Bandung'
+	);
 
 
 	/**
@@ -330,167 +356,55 @@ class Users extends Model implements UserInterface, RemindableInterface
 	}
 
 	/**
+	 * @param $query
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function scopeUsername($query, $name)
+	{
+		return $query->whereUsername($name);
+	}
+
+	/**
+	 * @return AbstractGenerate
+	 */
+	public static function  getFake()
+	{
+		return new AbstractGenerate();
+	}
+
+	/**
 	 * @return Model|static
 	 * @throws \Exception
 	 */
 	public static function generateUserAdmin()
 	{
-		$useradmin = self::where('username', 'emay');
+
+		$useradmin = self::Username(static::$defaultUserAdmin[ 'username' ]);
 		if ($useradmin->count()) throw new \Exception( 'User Admin Sudah Dibuat' );
 
-		$fake = Faker\Factory::create();
-		/**
-		 *
-		 * Proses Position
-		 *
-		 */
-		$namePos = 'System';
-		$pos     = Positions::where('name', $namePos);
-
-		if (!$pos->count()) {
-			$pos    = Positions::create(
-				array_merge(
-					array(
-						'name' => $namePos,
-						'info' => "Information {$namePos}"
-					), static::onlyOncefillerAttributes()));
-			$pos_id = $pos->id;
-		} else {
-			$pos_id = $pos->pluck('id');
-		}
-		/**
-		 *
-		 * Proses Department
-		 *
-		 */
-		$namedept = 'System';
-		$dept     = Dept::where('name', $namedept);
-		if (!$dept->count()) {
-			$dept    = Dept::create(
-				array_merge(
-					array('name' => $namedept, 'info' => "Information {$namedept}"),
-					static::onlyOncefillerAttributes()
-				));
-			$dept_id = $dept->id;
-		} else {
-			$dept_id = $dept->pluck('id');
-		}
-
-		$nameWarehouse = 'Warehouse Center';
-		$warehouses    = Warehouse::where('name', $nameWarehouse);
-		if (!$warehouses->count()) {
-			/**
-			 * Jika Tidak Ada , Upayakan Untuk Membuatnya
-			 *
-			 * Tujuan :
-			 * Membuat Warehouse
-			 *
-			 * Tahap
-			 * - Cek dulu lokasi city sudah ada atau belum
-			 */
-
-			/**
-			 * Cek Negara apakah Ada
-			 */
-			$country = static::getLocationByName(0, 1, static::$defaultLocation[ 'country' ]);
-
-			if ($country->count() > 0) {
-				$countryId = $country->pluck('id');
-
-				/**
-				 * Jika Ada, Cari Province
-				 */
-				$province = static::getLocationByName($countryId, 2, static::$defaultLocation[ 'province' ]);
-				if ($province->count() > 0) {
-					/**
-					 * Jika ada Province , Lakukan cari Kota
-					 */
-					$provinceId = $province->pluck('id');
-					$city       = $province = static::getLocationByName($provinceId, 2, static::$defaultLocation[ 'city' ]);
-					if ($city->count() == 0) {
-						$city = static::createLocation(static::$defaultLocation[ 'city' ], $provinceId, 3);
-						/** @noinspection PhpUndefinedFieldInspection */
-						$city_id = $city->id;
-					} else {
-						$city_id = $city->pluck('id');
-					}
-
-				} else {
-					/**
-					 * Jika Province Tidak Ada , Proses Buat Province dan City
-					 */
-					$province = static::createLocation(static::$defaultLocation[ 'province' ], $countryId, 2);
-					$city     = static::createLocation(static::$defaultLocation[ 'city' ], $province->id, 3);
-					/** @noinspection PhpUndefinedFieldInspection */
-					$city_id = $city->id;
-				}
-			} else {
-				/**
-				 * Jika Negara Tidak ada maka
-				 * Buat Negara, Province dan City
-				 */
-				$country  = static::createLocation(static::$defaultLocation[ 'country' ], 0, 1);
-				$province = static::createLocation(static::$defaultLocation[ 'province' ], $country->id, 2);
-				$city     = static::createLocation(static::$defaultLocation[ 'city' ], $province->id, 3);
-				/** @noinspection PhpUndefinedFieldInspection */
-				$city_id = $city->id;
-
-			}
-
-			/**
-			 * Check Apakah Category Warehouse center Sudah ada
-			 */
-			$nameWarehouseCategory = 'Center';
-			$warehouseCat          = Warehousecategory::where('name');
-			if (!$warehouseCat->count()) {
-				$warehouseCat   = Warehousecategory::create(
-					array_merge(
-						[
-							'name' => $nameWarehouseCategory, 'info' => "Category Warehouse {$nameWarehouseCategory}"
-						],
-						static::onlyOncefillerAttributes()
-					));
-				$warehouseCatId = $warehouseCat->id;
-			} else {
-				$warehouseCatId = $warehouseCat->pluck('id');
-			}
-
-
-			$warehouse = Warehouse::where('name', $nameWarehouse);
-			if (!$warehouse->count()) {
-				$warehouse   = Warehouse::create(
-					array_merge(
-						[
-							'name'    => $nameWarehouse,
-							'address' => $fake->streetAddress,
-							'city_id' => $city_id,
-							'cat_id'  => $warehouseCatId,
-						], static::onlyOncefillerAttributes()
-					)
-				);
-				$warehouseId = $warehouse->id;
-			} else {
-				$warehouseId = $warehouse->pluck('id');
-			}
-		}
-
-
-		$user = self::create(
+		$posId       = Positions::getIdDefaultPositionOrCreate();
+		$deptId      = Dept::getIdDefaultDepartementOrCreate();
+		$warehouseId = Warehouse::getDefaultWarehouseIdOrCreate();
+		$statusId    = Status::getIdDefaultStatusOrCreate();
+		$user        = self::create(
 			array_merge(
 				array(
-					'username'     => 'emay',
-					'fullname'     => 'emayk',
-					'email'        => $fake->companyEmail,
-					'pos_id'       => $pos_id,
-					'dept_id'      => $dept_id,
+					'username'     => static::$defaultUserAdmin[ 'username' ],
+					'fullname'     => " Name " . static::$defaultUserAdmin[ 'username' ],
+					'email'        => static::getFake()->getFake()->companyEmail,
+					'pos_id'       => $posId,
+					'dept_id'      => $deptId,
 					'warehouse_id' => $warehouseId,
-					'status_id'    => 1,
-					'password'     => '123',
+					'status_id'    => $statusId,
+					'password'     => static::$defaultUserAdmin[ 'password' ],
 				), self::onlyOncefillerAttributes())
 		);
 
 		return $user;
 	}
+
 
 	/**
 	 * @return array
@@ -538,6 +452,13 @@ class Users extends Model implements UserInterface, RemindableInterface
 	}
 
 
+	/**
+	 * @param $name
+	 * @param $parent_id
+	 * @param $level
+	 *
+	 * @return Model|static
+	 */
 	protected static function  createLocation($name, $parent_id, $level)
 	{
 		$location = Locations::create(

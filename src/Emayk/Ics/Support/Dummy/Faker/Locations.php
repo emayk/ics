@@ -83,6 +83,18 @@ class Locations extends AbstractGenerate
 	}
 
 	/**
+	 * @param $name
+	 * @param $level
+	 * @param $parent_id
+	 *
+	 * @return array
+	 */
+	public function createLocationByName($name,$level,$parent_id)
+	{
+		return array_merge($this->generate($name,$level,$parent_id), $this->othersAttributesArray() );
+	}
+
+	/**
 	 * @return array
 	 */
 	public function country()
@@ -98,8 +110,9 @@ class Locations extends AbstractGenerate
 	 *
 	 * @return array
 	 */
-	public function province($countryId, $countryName = 'Name Country')
+	public function province($countryId, $countryName = '')
 	{
+		if (empty($countryName)) $countryName = "{$countryId} ";
 		$name = "{$countryName}-Province " . $this->createLetters(12);
 		return array_merge($this->generate($name, 2, $countryId), $this->othersAttributesArray() );
 	}

@@ -22,6 +22,7 @@
 namespace Emayk\Ics\Repo\Dept;
 
 
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Emayk\Ics\Support\Dummy\Faker\Departement;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,8 +42,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $suppliers
  */
 class Dept extends  Model{
-    protected  $table = 'master_departements';
-	 protected $guarded = array();
+	/**
+	 * @var string
+	 */
+	protected  $table = 'master_departements';
+	/**
+	 * @var string
+	 */
+	protected static $defaultName = 'System';
+	/**
+	 * @var array
+	 */
+	protected $guarded = array();
 	 /**
 		* @return \Illuminate\Database\Eloquent\Relations\HasMany
 		*/
@@ -65,6 +76,13 @@ class Dept extends  Model{
     }
 
 
+	/**
+	 * @param bool $resultIds
+	 * @param int  $count
+	 *
+	 * @return array|string
+	 * @throws \Exception
+	 */
 	public static function generateMassive($resultIds = false,$count = 100)
 	{
 		if (self::count() > 1000) throw new \Exception( 'Departement Sudah Lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
@@ -79,4 +97,42 @@ class Dept extends  Model{
 		Log::debug('Departement Masih Kosong , Sudah diisi '.count($depts) );
 		return ($resultIds) ? $depts : "Generate Departement with ". count($depts) . " records";
 	}
+
+	/**
+	 * @return AbstractGenerate
+	 */
+	public static function getFake()
+	{
+		return new AbstractGenerate();
+	}
+
+	/**
+	 * @param $query
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function scopeName($query,$name)
+	{
+	return $query->whereName($name);
+	}
+
+	/**
+	 * @return int|mixed
+	 */
+	public static function  getIdDefaultDepartementOrCreate()
+{
+	$dept = static::Name(static::$defaultName);
+	if ($dept->count()){
+		$id = $dept->pluck('id');
+	}else{
+		/*Create*/
+		$dept = static::create(
+			static::getFake()->getDept()->dept(static::$defaultName)
+		);
+		$id = $dept->id;
+	}
+	return $id;
+}
+
 }

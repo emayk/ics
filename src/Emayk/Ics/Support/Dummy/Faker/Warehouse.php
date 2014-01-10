@@ -22,8 +22,34 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
-class Warehouse {
+/**
+ * Class Warehouse
+ *
+ * @package Emayk\Ics\Support\Dummy\Faker
+ */
+class Warehouse extends AbstractGenerate{
+	/**
+	 * @param $name
+	 * @param $cityId
+	 * @param $catId
+	 *
+	 * @return array
+	 */
+	public function createWarehouse($name, $cityId,$catId)
+	{
+		return array_merge(
+			array('name' => $name,
+				'address' => $this->fake->streetAddress,
+				'city_id' => $cityId,
+				'cat_id' => $catId
+			), $this->othersAttributesArray()
+		);
+	}
 
+	public function createWarehouseCategory($name)
+	{
+		return array_merge(array('name' => $name, 'info' => "Information {$name}"),$this->othersAttributesArray());
+	}
 }
 
 /** 1/11/14 **/ 

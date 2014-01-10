@@ -21,85 +21,56 @@ namespace Emayk\Ics\Repo\Login;
 use Emayk\Ics\Controllers\BaseController as Base;
 use \Input;
 
+/**
+ * Class LoginController
+ *
+ * @package Emayk\Ics\Repo\Login
+ */
 class LoginController extends Base {
- protected  $login;
-    function __construct(LoginInterface $login)
+	/**
+	 * @var LoginInterface
+	 */
+	protected  $login;
+
+	/**
+	 * @param LoginInterface $login
+	 */
+	function __construct(LoginInterface $login)
     {
         $this->login = $login;
     }
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return $this->login->all();
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return $this->login->create();
-	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function login()
 	{
-		return $this->login->store();
+		return $this->login->login();
 	}
 
+	public function getLogin()
+	{
+		return $this->login->getLogin();
+	}
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @internal param int $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function logout()
 	{
-			return $this->login->show($id);
+			return $this->login->logout();
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @return mixed
 	 */
-	public function edit($id)
-	{
-			return $this->login->edit($id);
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-			return $this->login->update($id);
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-			return $this->login->destroy($id);
-	}
+	public function regenerate()
+ {
+	 return $this->login->regenerate();
+ }
 
 }

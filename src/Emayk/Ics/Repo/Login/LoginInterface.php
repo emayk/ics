@@ -20,62 +20,14 @@ namespace Emayk\Ics\Repo\Login;
 
 
 interface LoginInterface {
+
 	/**
-	 * Menampilkan Daftar Resource
+	 * Melakukan Login
 	 *
 	 * @return Response
 	 */
-    public function all();
-	/**
-	 * Menyimpan Resource Baru
-	 *
-	 * @return Response
-	 */
-    public function store();
-	/**
-	 * Menampilkan Form New
-	 *
-	 * @return Response
-	 */
-    public function create();
-	/**
-	 * Menampilkan Resource
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-    public function show($id);
-	/**
-	 * Menampilkan Data Untuk di edit
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-    public function edit($id);
-	/**
-	 * Update Resource Tertentu dari Storage
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-    public function update($id);
-	/**
-	 * Menghapus Spesifikasi Resource dari Storage
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-    public function delete($id);
-	/**
-	 * Mencari Record berdasarkan Primary key
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-    public function find($id);
-    /**
-    * Remove from Storage
-    *
-    */
-    public function destroy($id);
+    public function login();
+    public function getLogin();
+    public function logout();
+		public function regenerate();
 }

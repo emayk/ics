@@ -21,105 +21,33 @@
 
 namespace Emayk\Ics\Repo\Login;
 
-
 class LoginArray implements  LoginInterface{
+	protected $login;
 
-    protected $login;
-    /*function __construct() { }*/
+	/**
+	 * Melakukan Login
+	 *
+	 * @return Response
+	 */
+	public function getLogin()
+	{
+		// TODO: Implement getLogin() method.
+	}
 
-    /**
-     * @return mixed
-     */
-    public function all()
-    {
-        // TODO: Implement all() method.
-    }
+	public function login()
+	{
+		// TODO: Implement login() method.
+	}
 
-    /**
-     * Simpan Login
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        // TODO: Implement store() method.
-    }
+	public function logout()
+	{
+		// TODO: Implement logout() method.
+	}
 
-    /**
-     * Menghapus Login
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
-        // TODO: Implement delete() method.
-    }
+	public function regenerate()
+	{
+		// TODO: Implement regenerate() method.
+	}
 
-    /**
-     * Update Informasi Login
-     *
-     * @param $id
-     * @param array $login
-     * @return mixed
-     */
-    public function update($id)
-    {
-        // TODO: Implement update() method.
-    }
-
-    /**
-     *
-     * Mendapatkan Login berdasarkan id yang diberikan
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function find($id)
-    {
-        // TODO: Implement find() method.
-    }
-
-
-    /**
-    *
-    * Menampilkan Page Untuk Buat Data
-    *
-    **/
-
-    public function create()
-    {
-        // TODO: Implement create() method.
-    }
-        /**
-     * Menampilkan Resource
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        // TODO: Implement show() method.
-    }
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
-
-    /**
-     * Remove from Storage
-     *
-     */
-    public function destroy($id)
-    {
-        // TODO: Implement destroy() method.
-    }
 
 }

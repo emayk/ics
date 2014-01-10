@@ -107,17 +107,16 @@ class Contactperson extends Model
 
 		$buyerIds = Buyers::lists('id');
 		if (!count($buyerIds)) {
-
-			Log::debug('Buyer Masih Kosong , Sudah diisi '.count($buyerIds) );
+			\Log::debug('Buyer Masih Kosong , Sudah diisi '.count($buyerIds) );
 		}
 
 		$contactX = new ContactPersonFaker();
 		$contacts = array();
 		for ($contact = 0; $contact < 2000; $contact++) {
-			$pos_id      = $contactX->getFake()->randomElement($pos);
-			$dept_id     = $contactX->getFake()->randomElement($depts);
-			$supplier_id = $contactX->getFake()->randomElement($suppliers);
-			$buyer_id    = $contactX->getFake()->randomElement($buyers);
+			$pos_id      = $contactX->getFake()->randomElement($posIds);
+			$dept_id     = $contactX->getFake()->randomElement($deptIds);
+			$supplier_id = $contactX->getFake()->randomElement($supplierIds);
+			$buyer_id    = $contactX->getFake()->randomElement($buyerIds);
 
 			$parents = array(
 				[

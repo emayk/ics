@@ -84,11 +84,16 @@ class Typesuppliersbuyers extends Model
 			}
 		};
 
-		return ($resultIds) ? $typesIds : "Generate data ". count($typesIds). " records";
+		return ( $resultIds ) ? $typesIds : "Generate data " . count($typesIds) . " records";
 	}
 
+	public static function getIdsOrGenerateDummydata()
+	{
+		return static::generateDummyData(true);
+	}
 	/**
 	 * Mendapatkan Semua ID
+	 *
 	 * @return array
 	 */
 	public static function getListIds()

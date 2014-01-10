@@ -388,54 +388,10 @@ Route::group(array('prefix' => 'test'), function () {
 //				$product->cat_id = $data->
 	});
 
-	Route::get('chat', function () {
-//					$chat = new \Emayk\Ics\Support\Dummy\Chat();
-//					$echoserver = new Ratchet\Server\EchoServer();
-//				$app = new Ratchet\App('localhost', 8080);
-//				$app->route('/chat', $chat);
-//				$app->route('/echo', $echoserver, array('*'));
-//    		$app->run();
-
-		return \Config::get('socket::socket.url');
-	});
-
 
 	Route::get('generate', function () {
 		$fake = \Faker\Factory::create();
-
-//				$cat = new \Emayk\Ics\Repo\Productcategory\Productcategory();
-
-//				if (!$cat::count()){
-//					 for ($c=0;$c < 5;$c++)
-//					 {
-//							$cat::create(
-//								 array('name' => $fake->name,
-//											 'info' => $fake->name,
-//											 'uuid' => $fake->uuid
-//								 )
-//							);
-//					 }
-//
-//				}
-//				return $cat::lists('id');
-
-		$fake = \Faker\Factory::create();
-//				$user = new \Emayk\Ics\Repo\Users\Users(
-//					 array('username' => 'emay',
-//							'fullname' => 'emayk',
-//							'email' => $fake->companyEmail,
-//							'pos_id' => 1,
-//							'dept_id' => 1,
-//							'warehouse_id' => 1,
-//							'status_id' => 1,
-//							'password' => 'test',
-//							'createby_id' => 1,
-//							'lastupdateby_id' => 1
-//					 )
-//				);
-//				$user->save();
 		$user = \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
-
 		return $user;
 	});
 
@@ -495,8 +451,6 @@ Route::group(array('prefix' => 'test'), function () {
 
 	/*Testing Input*/
 	Route::post('input', function () {
-
-
 		return Input::all();
 	});
 
@@ -644,16 +598,22 @@ Route::group(array('prefix' => 'test'), function () {
 		 */
 
 		Route::get('contacts1', function () use ($fake) {
-			return ( $countryIds = \Emayk\Ics\Repo\Locations\Locations::where('parent_id',0)->lists('id') );
+			return ( $countryIds = \Emayk\Ics\Repo\Locations\Locations::where('parent_id', 0)->lists('id') );
 		});
 
 
 		Route::get('contacts', function () use ($fake) {
+			Input::replace(array('name' => base64_encode('emay'), 'password' => base64_encode(123)));
+
+			return Input::all();
+			return s(\Emayk\Ics\Repo\Locations\Locations::Cities(2)->get()->toArray());
+			return \Emayk\Ics\Repo\Locations\Locations::getIdsCity(2);
+//			return \Emayk\Ics\Repo\Locations\Locations::getIdsProvince(1);
+//			return \Emayk\Ics\Repo\Locations\Locations::getIdsCountry();
+
 //			return \Emayk\Ics\Repo\Suppliers\Suppliers::generateMassiveDummy();
 //			return \Emayk\Ics\Repo\Positions\Positions::generateMassiveDataDummy();
 			return \Emayk\Ics\Repo\Contactperson\Contactperson::generateMassive();
-
-
 
 
 			$pos = \Emayk\Ics\Repo\Positions\Positions::lists('id');
@@ -747,13 +707,17 @@ Route::group(array('prefix' => 'test'), function () {
 			return \Emayk\Ics\Repo\Locations\Locations::generateMassiveLocation();
 		});
 
-		Route::get('useradmin',function(){
+		Route::get('useradmin', function () {
+//			return \Emayk\Ics\Repo\Locations\Locations::getIdsDefaultCountryOrCreate();
+//			return \Emayk\Ics\Repo\Positions\Positions::where('name', 'System')->pluck('id');
 			$user = \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
 			return s($user);
 		});
 
-		Route::get('users',function(){
-
+		Route::get('users', function () {
+//			$user = \Emayk\Ics\Repo\Users\Users::create();
+			$fake = new \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate();
+			return $fake->getFake()->firstName;
 		});
 // End Genereate Section
 	});

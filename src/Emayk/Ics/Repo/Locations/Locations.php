@@ -21,6 +21,7 @@
 namespace Emayk\Ics\Repo\Locations;
 
 
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -37,14 +38,33 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer        $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property mixed          defaultLocation
  */
 class Locations extends Model
 {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_locations';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
+	/**
+	 * @var array
+	 */
+	protected static $defaultLocation = array('country' => 'Indonesia', 'province' => 'Jawa Barat', 'city' => 'Bandung');
 
-
+	/**
+	 * @param $id
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
 	public static function recordExist($id)
 	{
 		if (is_array($id)) {
@@ -59,11 +79,17 @@ class Locations extends Model
 	}
 
 
+	/**
+	 * @param bool $resultIds
+	 *
+	 * @return array|string
+	 * @throws \Exception
+	 */
 	public static function generateMassiveLocation($resultIds = false)
 	{
 		$total = self::lists('id');
 		if (count($total) > 1000) throw new \Exception( 'Data sudah lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
-		$dummy_location = new \Emayk\Ics\Support\Dummy\Faker\Locations();
+		$dummy_location = new FakeLocations();
 		$generate       = [];
 		for ($location = 0; $location < 20; $location++) {
 			$d_country = $dummy_location->country();
@@ -86,7 +112,256 @@ class Locations extends Model
 	}
 
 
-	public  function getLocationById($parentId, $level, $id)
+	/**
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	protected static function createLocationCountry($count = 10)
+	{
+
+		$fake = self::getFake();
+		for ($location = 0; $location < $count; $location++) {
+			$country = self::create($fake->country());
+			$ids [ ] = $country->id;
+		}
+		return $ids;
+	}
+
+	/**
+	 * Melakukan Penambahan Lokasi
+	 * berdasarkan countryId
+	 *
+	 * @param     $countryId
+	 *
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	protected static function createLocationProvinces($countryId, $count = 10)
+	{
+		$fake = self::getFake();
+		for ($pro = 0; $pro < $count; $pro++) {
+			$d_province = $fake->province($countryId);
+			$province   = self::create($d_province);
+			$ids [ ]    = $province->id;
+		}
+		return $ids;
+	}
+
+	/**
+	 * @param     $provinceId
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	protected static function createLocationCities($provinceId, $count = 10)
+	{
+		for ($pro = 0; $pro < $count; $pro++) {
+			$city        = static::createLocation("{$provinceId} City " . rand(2, 1000), $provinceId, 3);
+			$cityIds [ ] = $city->id;
+		}
+		return $cityIds;
+	}
+
+	/**
+	 * @param int $count
+	 *
+	 * @return array|mixed
+	 */
+	public static function getLocationIdsOrCreate($count = 10)
+	{
+		$countryIds = static::getIdsCountry();
+		if (!$countryIds->count()) {
+			/**
+			 * Jika Belum Ada
+			 */
+			$countryIds = static::createLocationCountry($count);
+			foreach ($countryIds as $countryId) {
+				/**
+				 * Create Province
+				 */
+				$provincesIds = static::createLocationProvinces($countryId);
+				foreach ($provincesIds as $provinceId) {
+					$cityIds = static::createLocationCities($provinceId);
+				}
+			}
+		} else {
+			/**
+			 * Check Punya Province ?
+			 */
+			foreach ($countryIds as $countryId) {
+				$provincesIds = static::getIdsProvince($countryId);
+				if (!count($provincesIds)) {
+					/**
+					 * Jika Belum ada ,
+					 * Buat Province dan Kota
+					 */
+
+					/**
+					 * Buat Province
+					 */
+					$provincesIds [ ] = static::createLocationProvinces($countryId);
+
+					/**
+					 * Buat Kota
+					 */
+					foreach ($provincesIds as $provinceId) {
+						$city        = static::createLocation("{$countryId} - {$provinceId} City " . rand(2, 1000), $provinceId, 3);
+						$cityIds [ ] = $city->id;
+					}
+				} else {
+					/* Jika Province Ada */
+					foreach ($provincesIds as $provinceId) {
+						/*Check apakah Province Memiliki City*/
+						$cityIds = static::getIdsCity($provinceId);
+						if (!count($cityIds)) {
+							/*Jika Belum ada */
+							$city        = static::createLocation("{$countryId} - {$provinceId} City " . rand(2, 1000), $provinceId, 3);
+							$cityIds [ ] = $city->id;
+						};
+					}
+				}
+			}
+		}
+
+		return array('countryIds' => $countryIds, 'provinceIds' => $provincesIds, 'cityIds' => $cityIds);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getIdsCountry()
+	{
+		return static::Country()->lists('id');
+	}
+
+	/**
+	 * @param $query
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function scopeName($query, $name)
+	{
+		return $query->whereName($name);
+	}
+
+	/**
+	 * Mendapatkan Ids Province dari country Id Yang diberikan
+	 *
+	 * @param $countryId
+	 *
+	 * @return mixed
+	 */
+	public static function getIdsProvince($countryId)
+	{
+		return static::Provinces($countryId)->lists('id');
+	}
+
+	/**
+	 * @param $query
+	 * @param $countryId
+	 *
+	 * @return mixed
+	 */
+	public function scopeProvinces($query, $countryId)
+	{
+		return $query->ofParentId($countryId)->ofLevel(2);
+	}
+
+	/**
+	 * Mendapatkan ID City
+	 *
+	 * @param $provinceId
+	 *
+	 * misal :
+	 * $provinceId =1;
+	 * print_r( \Emayk\Ics\Repo\Locations\Locations::getIdsCity($provinceId) );
+	 *
+	 * @return mixed
+	 */
+	public static function getIdsCity($provinceId)
+	{
+		return static::Cities($provinceId)->lists('id');
+	}
+
+	/**
+	 * @param $query
+	 * @param $provinceId
+	 *
+	 * @return mixed
+	 */
+	public function scopeCities($query, $provinceId)
+	{
+		return $query->ofParentId($provinceId)->OfLevel(3);
+	}
+
+	/**
+	 * @param $query
+	 * @param $level
+	 *
+	 * @return mixed
+	 */
+	public function scopeOfLevel($query, $level)
+	{
+		return $query->whereLevel($level);
+	}
+
+	/**
+	 * Mendapatkan Parent Parent ID
+	 * Cth :
+	 * $location = Locations::ofParentId(1)->get();
+	 *
+	 * @param $query    Model
+	 * @param $parentId parameter parent_id
+	 *
+	 * @return mixed
+	 */
+	public function scopeOfParentId($query, $parentId)
+	{
+		return $query->whereParentId($parentId);
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function scopeCountry($query)
+	{
+		return $query->ofLevel(1)->OfParentId(0);
+	}
+
+	/**
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
+	public function scopeProvince($q)
+	{
+		return $q->where('level', 2);
+	}
+
+	/**
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
+	public function scopeCity($q)
+	{
+		return $q->where('level', 3);
+	}
+
+
+	/**
+	 * @param $parentId
+	 * @param $level
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function getLocationById($parentId, $level, $id)
 	{
 		$location = static::where('id', $id)
 			->where('parent_id', $parentId)
@@ -94,7 +369,14 @@ class Locations extends Model
 		return $location;
 	}
 
-	public  static function  getLocationByName($parentId, $level, $name = 'indonesia')
+	/**
+	 * @param        $parentId
+	 * @param        $level
+	 * @param string $name
+	 *
+	 * @return mixed
+	 */
+	public static function  getLocationByName($parentId, $level, $name = 'indonesia')
 	{
 		$location = static::where('name', $name)
 			->where('parent_id', $parentId)
@@ -102,7 +384,14 @@ class Locations extends Model
 		return $location;
 	}
 
-	public  static function  createLocation($name, $parent_id, $level)
+	/**
+	 * @param $name
+	 * @param $parent_id
+	 * @param $level
+	 *
+	 * @return Model|static
+	 */
+	public static function  createLocation($name, $parent_id, $level)
 	{
 		$location = static::create(
 			array_merge(
@@ -127,6 +416,105 @@ class Locations extends Model
 			'created_at'      => Carbon::create(),
 			'updated_at'      => Carbon::create(),
 		);
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function scopeDefaultCountry($query)
+	{
+		return $query->Name($this->defaultLocation[ 'country' ]);
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function scopeDefaultProvince($query)
+	{
+		return $query->Name($this->defaultLocation[ 'province' ]);
+	}
+
+	/**
+	 * Mendapatkan Location
+	 *
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function scopeDefaultCity($query)
+	{
+		return $query->Name($this->defaultLocation[ 'city' ]);
+	}
+
+	/**
+	 * @return AbstractGenerate
+	 */
+	protected static function getFake()
+	{
+		return new AbstractGenerate();
+	}
+
+	/**
+	 * Mendapatkan ID Default Country
+	 * Jika Belum maka dibuatkan
+	 *
+	 * @return int
+	 */
+
+	public static function  getIdsDefaultCountryOrCreate()
+	{
+
+		$id = static::Name(static::$defaultLocation[ 'country' ])->lists('id');
+		if (!count($id)) {
+			$c = static::create(
+				static::getFake()->getLocation()->createLocationByName(static::$defaultLocation[ 'country' ], 1, 0)
+			);
+			/** @var $id \Emayk\Ics\Repo\Locations\Locations */
+			$id = $c->id;
+		};
+		return $id;
+	}
+
+	/**
+	 * Mendapatkan ID default Province
+	 *
+	 * @param $countryId
+	 *
+	 * @return int
+	 */
+	public static function  getIdsDefaultProvinceOrCreate($countryId)
+	{
+		$id = static::Name(static::$defaultLocation[ 'province' ])->lists('id');
+		if (!count($id)) {
+			$c = static::create(
+				static::getFake()->getLocation()->createLocationByName(static::$defaultLocation[ 'province' ], 2, $countryId)
+			);
+			/** @var $id \Emayk\Ics\Repo\Locations\Locations */
+			$id = $c->id;
+		};
+		return $id;
+	}
+
+	/**
+	 * @param $provinceId
+	 *
+	 * @return Locations
+	 */
+	public static function  getIdsDefaultCityOrCreate($provinceId)
+	{
+		$id = static::Name(static::$defaultLocation[ 'city' ])->pluck('id');
+		if (null == $id) {
+			$c = static::create(
+				static::getFake()->getLocation()->createLocationByName(static::$defaultLocation[ 'city' ], 3, $provinceId)
+			);
+			/** @var $id \Emayk\Ics\Repo\Locations\Locations */
+			$id = $c->id;
+		};
+		return $id;
 	}
 
 }

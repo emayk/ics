@@ -15,13 +15,15 @@
 *
 * @author Emay Komarudin
 *
-* Model Structure Eloquent
-*
 **/
-namespace Emayk\Ics\Repo\Login;
-use Illuminate\Database\Eloquent\Model;
-class Login extends Model {
-	protected $guarded = array();
-	protected $table = 'master_users';
-	public static $rules = array();
+
+
+
+namespace spec\Emayk\Ics\Repo\Locations;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+class LocationsSpec extends ObjectBehavior
+{
 }

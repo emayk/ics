@@ -55,7 +55,14 @@ class Legality extends Model
 //			todo : legality supplier
 	}
 
-	public static function  generateMassiveLegality($resultIds = false,$count = 100)
+	/**
+	 * @param bool $resultIds
+	 * @param int  $count
+	 *
+	 * @return array|string
+	 * @throws \Exception
+	 */
+	public static function  generateMassiveLegality($resultIds = false, $count = 100)
 	{
 		$dLegality = new \Emayk\Ics\Support\Dummy\Faker\Legality();
 		$total     = self::count();
@@ -67,7 +74,24 @@ class Legality extends Model
 			$lIds[ ] = $legal->id;
 		}
 
-		return ($resultIds) ? $lIds :  "Generate Legality with ". count($lIds). " records";
+		return ( $resultIds ) ? $lIds : "Generate Legality with " . count($lIds) . " records";
+	}
+
+	/**
+	 * Mendapatkan Ids Legality
+	 * Jika tidak ada akan dibuat
+	 *
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	public function getIdsOrGenerateDummyData($count = 100)
+	{
+		$ids = static::lists('id');
+		if (!count($ids)) {
+			$ids [ ] = self::generateMassiveLegality(true,$count);
+		}
+		return $ids;
 	}
 
 }
