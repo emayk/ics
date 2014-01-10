@@ -7,7 +7,7 @@
 		/*Menit*/ </script>
 	<script type="text/javascript">
 		var appjs = "{{ Icsview::asset()}}";
-		var extjsbase= "{{Icsview::extjsasset()}}";
+		var extjsbase = "{{Icsview::extjsasset()}}";
 		var app_session_Expire = ((typeof _session_Expire !== 'undefined') && (_session_Expire > 0 ) ) ? _session_Expire : 60;
 		var ics = {
 			root: "{{ Icsview::linkBaseUrl()}}",
@@ -32,7 +32,7 @@
 		var urlroot = '{{ route("icsroot") }}';
 		var baseurl = urlroot;
 
-		var logged = '{{( Auth :: check() ) ? true : false; }}' ;
+		var logged = '{{( Auth :: check() ) ? true : false; }}';
 		var login_uid = '{{ (Auth::check()) ? Auth::user()->id  : null }}',
 			login_as = "{{ (Auth::check() ) ? Auth::user()->username : 'Anonymous' }}";
 		var token = '{{ csrf_token() }}';
@@ -55,9 +55,9 @@
 	<script src="{{ Icsview::asset('translations/locale.js')}}"></script>
 	<script type="text/javascript">var app_session_Expire = 30;</script>
 
-	</head>
-  <script type="text/javascript" src="{{Icsview::asset('frontend/app/function.js')}}"></script>
-	<script type="text/javascript" src="{{ Icsview::asset('frontend/app.js')}}"></script>
+</head>
+<script type="text/javascript" src="{{Icsview::asset('frontend/app/function.js')}}"></script>
+<script type="text/javascript" src="{{ Icsview::asset('frontend/app.js')}}"></script>
 <body>
 </body>
 </html>

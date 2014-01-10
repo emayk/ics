@@ -25,19 +25,23 @@ namespace Emayk\Ics\Support\Dummy\Faker;
 class Legality extends AbstractGenerate{
 	public function legality()
 	{
-		$name = 'Legality '.$this->fake->randomLetter.'-'.rand(100,200);
+		$name = 'Legality '.$this->createLetters().'-'.rand(100,200);
 		return array_merge(
 			array(
 				'name' => $name,
-				'information' => "Information {$name}"
+				'info' => "Information {$name}"
 			),
 			$this->othersAttributesArray()
 		);
 	}
 
-	public function create()
+	public function createLegalities($count = 10)
 	{
-		return $this->legality();
+		for ($l = 0 ; $l < $count;$l++)
+		{
+			$legal[] = $this->legality();
+		}
+		return $legal;
 	}
 }
 

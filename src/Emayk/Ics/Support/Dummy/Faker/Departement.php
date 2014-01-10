@@ -24,17 +24,10 @@ namespace Emayk\Ics\Support\Dummy\Faker;
 class Departement extends AbstractGenerate
 {
 
-	function __construct()
-	{
-		$this->dept();
-	}
-
 	public function dept()
 	{
-		$name = 'Departement ' .
-			rand(0, 10) . '-' . rand(90, 100) . '-' .
-			$this->fake->randomDigit .
-			$this->fake->randomLetter;
+		$name = 'Departement ' . rand(0, 10) . '-' . rand(90, 100) . '-' .
+			$this->fake->randomDigit . $this->createLetters();
 
 		return array_merge(
 			array(

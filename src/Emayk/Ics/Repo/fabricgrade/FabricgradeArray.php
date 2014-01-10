@@ -113,4 +113,8 @@ class FabricgradeArray implements  FabricgradeInterface{
         // TODO: Implement edit() method.
     }
 
+	public function destroy($id)
+	{
+		// TODO: Implement destroy() method.
+	}
 }

@@ -26,7 +26,7 @@ class Colors extends AbstractGenerate{
 
 	public function color()
 	{
-		$color = $this->fake->colorName;
+		$color = $this->fake->unique()->colorName;
 		return array_merge(
 			array(
 				'name' => $color,
@@ -35,6 +35,8 @@ class Colors extends AbstractGenerate{
 			$this->othersAttributesArray()
 		);
 	}
+
+
 }
 
 /** 1/8/14 **/ 

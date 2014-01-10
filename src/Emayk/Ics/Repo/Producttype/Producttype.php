@@ -19,7 +19,9 @@
 *
 **/
 namespace Emayk\Ics\Repo\Producttype;
+
 use Illuminate\Database\Eloquent\Model;
+use \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Producttype\Producttype'
  *
@@ -47,4 +49,23 @@ class Producttype extends Model {
     {
         return $this->hasMany('Emayk\Ics\Repo\Products\Products','type_id');
     }
+
+
+	public static  function generateMassiveDummy($ListfabricTypeIds,
+	                                     AbstractGenerate $fake,
+	                                     $resultsIds = false,$count = 10)
+	{
+		$ids = [];
+		foreach ($ListfabricTypeIds as $fabricTypeId)
+		{
+			$name = "Product Type {$fabricTypeId}".rand(10,300);
+			$productType = self::create(
+				array_merge( array(
+				  'name' => $name,'fabrictype_id' => $fabricTypeId
+			) ,$fake->othersAttributesArray()) );
+			$ids [] = $productType->id;
+		}
+
+		return ($resultsIds) ? $ids : "Generate Product Type with ". count($ids) . " records";
+	}
 }

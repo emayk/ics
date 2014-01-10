@@ -27,22 +27,22 @@ class Fabric extends AbstractGenerate{
 
 	public function grade()
 	{
-		$name = 'Grade Fabric '.$this->fake->randomLetter.'-'.rand(100,200);
+		$name = 'Grade Fabric '.$this->createLetters(15).rand(100,200);
 		return array_merge(
 			array(
 				'name' => $name,
-				'information' => "Information {$name}"
+				'info' => "Information {$name}"
 			),
 			$this->othersAttributesArray()
 		);
 	}
 	public function type()
 	{
-		$name = 'Type Fabric '.$this->fake->randomLetter.'-'.rand(100,200);
+		$name = 'Type Fabric '.$this->createLetters(15).rand(100,200);
 		return array_merge(
 			array(
 				'name' => $name,
-				'information' => "Information {$name}"
+				'info' => "Information {$name}"
 			),
 			$this->othersAttributesArray()
 		);

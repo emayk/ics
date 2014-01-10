@@ -22,48 +22,32 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
-/**
- * Class ContactPerson
- *
- * @package Emayk\Ics\Support\Dummy\Faker
- */
-class ContactPerson extends AbstractGenerate{
+class Position extends AbstractGenerate{
 
-	/**
-	 * @param $posId
-	 * @param $deptId
-	 * @param $parentId
-	 * @param $parentType
-	 *
-	 * @return array
-	 */
-	public function contact($posId,$deptId,$parentId,$parentType ='Suppliers')
+
+	public function generatePositions($count = 10)
 	{
-		$name = $this->fake->name;
+		for ($p = 0; $p < $count;$p++)
+		{
+			$positions [] = $this->createPosition();
+		}
+		return $positions;
+	}
+
+	public function createPosition()
+	{
 		return array_merge(
-			array(
-			'name' => $name,
-			'info' => "Information {$name}",
-			'pos_id' => $posId,
-			'dept_id' => $deptId,
-			'phone' => $this->fake->phoneNumber,
-			'email' => $this->fake->email,
-			'fax' => $this->fake->phoneNumber,
-			'parent_id' => $parentId,
-			'parent_type' => $parentType),
+			$this->setDummyAttribut('Position ' . $this->createLetters().rand(2,10) ),
 			$this->othersAttributesArray()
 		);
 	}
-
-	/**
-	 * @return \Faker\Generator
-	 */
-	public function getFake()
+	protected function setDummyAttribut($name)
 	{
-		return $this->fake;
+		return array(
+			'name' => $name,
+			'info' => "Informasion {$name}"
+		);
 	}
-
-
 }
 
-/** 1/8/14 **/ 
+/** 1/10/14 **/ 

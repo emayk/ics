@@ -4,12 +4,7 @@ var fromLocal = function(){
      return true;
 };
 
-
-/*==========  Aplikasi Logic begin  ==========*/
-//var weekendDelivery = false;
-//Ext.BLANK_IMAGE_URL = appjs + '/assets/images/s.gif';
 Ext.BLANK_IMAGE_URL = appjs + '/frontend/images/s.gif';
-//file:///Volumes/Data/projects/emay/workbench/emayk/ics/public/frontend/images/s.gif
 /*==========  Setup Namespace  ==========*/
 Ext.namespace('App').config = {
     /*==========  Nama Program  ==========*/
@@ -28,13 +23,9 @@ Ext.namespace('App').config = {
    url_logout: appjs + '/logout.php'
 };
 /*==========  Setup Config  ==========*/
-Ext.Loader.setConfig({  enabled : true ,
-    disableCaching :  true,
-    paths: {
-        Ext : extjsbase+'/src' ,
-//        'Ext.ux': appjs+'/app/ux'
-    }
-     });
+Ext.Loader.setConfig(
+    {  enabled : true , disableCaching :  true, paths: { Ext: extjsbase+'/src' } }
+);
 /**
 *
 * Application Core

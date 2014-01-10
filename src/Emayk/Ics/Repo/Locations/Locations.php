@@ -20,6 +20,7 @@
  **/
 namespace Emayk\Ics\Repo\Locations;
 
+
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -46,16 +47,86 @@ class Locations extends Model
 
 	public static function recordExist($id)
 	{
-		if (is_array($id))
-		{
-			foreach ($id as $rec)
-			{
+		if (is_array($id)) {
+			foreach ($id as $rec) {
 				if (self::where('id', $rec)->count() == 0) throw new \Exception( "Record Location Not Found with {$rec}" );
 			}
-		}else{
+		} else {
 			if (self::where('id', $id)->count() == 0) throw new \Exception( "Record Location Not Found with {$id}" );
 		}
 
 		return true;
 	}
+
+
+	public static function generateMassiveLocation($resultIds = false)
+	{
+		$total = self::lists('id');
+		if (count($total) > 1000) throw new \Exception( 'Data sudah lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
+		$dummy_location = new \Emayk\Ics\Support\Dummy\Faker\Locations();
+		$generate       = [];
+		for ($location = 0; $location < 20; $location++) {
+			$d_country = $dummy_location->country();
+			$country   = self::create($d_country);
+			$cIds [ ]  = $country->id;
+			for ($pro = 0; $pro < rand(15, 10); $pro++) {
+				$d_province = $dummy_location->province($country->id, $country->name);
+				$province   = self::create($d_province);
+				$pIds [ ]   = $province->id;
+				for ($ci = 0; $ci < rand(4, 10); $ci++) {
+					$d_city      = $dummy_location->city($province->id, $province->name);
+					$city        = self::create($d_city);
+					$generate[ ] = $city->id;
+					$cityIds[ ]  = $city->id;
+				}
+			}
+		}
+		$locations = ['country_ids' => $cIds, 'province_ids' => $pIds, 'city_ids' => $cityIds];
+		return ( $resultIds ) ? $locations : "Generate Location with " . count($generate) . " Records ";
+	}
+
+
+	public  function getLocationById($parentId, $level, $id)
+	{
+		$location = static::where('id', $id)
+			->where('parent_id', $parentId)
+			->where('level', $level);
+		return $location;
+	}
+
+	public  static function  getLocationByName($parentId, $level, $name = 'indonesia')
+	{
+		$location = static::where('name', $name)
+			->where('parent_id', $parentId)
+			->where('level', $level);
+		return $location;
+	}
+
+	public  static function  createLocation($name, $parent_id, $level)
+	{
+		$location = static::create(
+			array_merge(
+				array(
+					'name'  => $name, 'info' => "Information {$name} ", 'parent_id' => $parent_id,
+					'level' => $level, 'parent_type' => '\Emayk\Ics\Repo\Locations\Locations'
+				),
+				static::onlyOncefillerAttributes()
+			));
+		return $location;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected static function  onlyOncefillerAttributes()
+	{
+		return array(
+			'uuid'            => uniqid('System'),
+			'createby_id'     => 1,
+			'lastupdateby_id' => 1,
+			'created_at'      => Carbon::create(),
+			'updated_at'      => Carbon::create(),
+		);
+	}
+
 }

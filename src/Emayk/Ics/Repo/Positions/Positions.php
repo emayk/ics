@@ -68,4 +68,19 @@ class Positions extends Model {
 			// todo: list suppliers
 	 }
 
+
+	public static function generateMassiveDataDummy($resultIds = false,$count = 10)
+	{
+		$dataDummy = new \Emayk\Ics\Support\Dummy\Faker\Position();
+		$positions = $dataDummy->generatePositions($count);
+		foreach ($positions as $pos)
+		{
+			$p = self::create($pos);
+			$Ids [] = $p->id;
+		}
+		return ($resultIds) ? $Ids : "Generate Position with ".count($Ids). " records";
+	}
+
+
+
 }

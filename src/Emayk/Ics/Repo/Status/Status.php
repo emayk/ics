@@ -20,6 +20,7 @@
 		**/
 	 namespace Emayk\Ics\Repo\Status;
 
+	 use Faker\Factory;
 	 use Illuminate\Database\Eloquent\Model;
 
 	 /**
@@ -44,4 +45,37 @@
 			{
 				 return $this->hasMany ('\Emayk\Ics\Repo\Users\Users', 'status_id');
 			}
+
+		 public static function createDataStatus($resultsIds = false)
+		 {
+			 $statuses = ['Active','Non Active'];
+			 foreach ($statuses as $status)
+			 {
+
+				 $st = self::create(
+					 array_merge(
+					 array('info' => "Information {$status}",'name' => $status),static::othersAttributesArray()
+				 ) );
+				 $stIds [] = $st->id;
+			 }
+
+			 return ($resultsIds) ? $stIds : "Generate Status with ". count($stIds). " records";
+
+		 }
+
+		 public static  function othersAttributesArray($uuid = null,$createbyId = 1,$lastUpdateById =1)
+		 {
+			 $fake = Factory::create();
+			 if (null == $uuid) {
+				 $uuid = $fake->uuid;
+			 }
+			 return array(
+				 'uuid'            => $uuid,
+				 'createby_id'     => $createbyId,
+				 'lastupdateby_id' => $lastUpdateById,
+				 'created_at'      => $fake->dateTimeBetween(),
+				 'updated_at'      => $fake->dateTimeBetween(),
+			 );
+		 }
+
 	 }

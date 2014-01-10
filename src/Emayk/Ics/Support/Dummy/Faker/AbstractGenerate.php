@@ -22,10 +22,28 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
+/**
+ * Class AbstractGenerate
+ *
+ * @package Emayk\Ics\Support\Dummy\Faker
+ */
 class AbstractGenerate implements GenerateInterface {
+	/**
+	 * @var \Faker\Generator
+	 */
 	protected $fake;
+	/**
+	 * @var array
+	 */
 	protected $owners = array('\Emayk\Ics\Repo\Buyers\Buyers', '\Emayk\Ics\Repo\Suppliers\Suppliers');
+	/**
+	 * @var string
+	 */
 	protected $defaultOwner = '\Emayk\Ics\Repo\Suppliers\Suppliers';
+
+	/**
+	 *
+	 */
 	function __construct()
 	{
 		$this->fake = \Faker\Factory::create();
@@ -42,11 +60,21 @@ class AbstractGenerate implements GenerateInterface {
 		return $data[rand(0,count($data)-1)];
 	}
 
+	/**
+	 *
+	 */
 	public function create()
 	{
 		// TODO: Implement create() method.
 	}
 
+	/**
+	 * @param null $uuid
+	 * @param int  $createbyId
+	 * @param int  $lastUpdateById
+	 *
+	 * @return array
+	 */
 	public function othersAttributesArray($uuid = null,$createbyId = 1,$lastUpdateById =1)
 	{
 		if (null == $uuid) {
@@ -56,11 +84,56 @@ class AbstractGenerate implements GenerateInterface {
 			'uuid'            => $uuid,
 			'createby_id'     => $createbyId,
 			'lastupdateby_id' => $lastUpdateById,
-			'created_at'      => $this->fake->dateTimeBetween("-3 year"),
-			'updated_at'      => $this->fake->dateTimeBetween("-1 year"),
+			'created_at'      => $this->fake->dateTimeBetween(),
+			'updated_at'      => $this->fake->dateTimeBetween(),
 		);
 	}
 
+
+	/**
+	 * @param int $len
+	 *
+	 * @return string
+	 */
+	protected function createLetters($len = 10)
+	{
+		$o = '';
+		for ($c=0;$c<$len;$c++)
+		{
+			$o .= $this->fake->randomLetter;
+		}
+		return $o;
+	}
+
+	/**
+	 * @return \Faker\Generator
+	 */
+	public function getFake()
+	{
+		return $this->fake;
+	}
+
+	public function buyers()
+	{
+		return new Buyers();
+
+	}
+
+
+	public function typeSuplierBuyer()
+	{
+		return new TypeSupBuy();
+	}
+
+	public function getLegality()
+	{
+		return new Legality();
+	}
+
+	public function getProductType()
+	{
+		return new ProductType();
+	}
 
 }
 

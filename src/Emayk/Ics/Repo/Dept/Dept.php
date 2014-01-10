@@ -22,6 +22,7 @@
 namespace Emayk\Ics\Repo\Dept;
 
 
+use Emayk\Ics\Support\Dummy\Faker\Departement;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -62,4 +63,20 @@ class Dept extends  Model{
 	 public function suppliers(){
         return $this->hasMany('User');
     }
+
+
+	public static function generateMassive($resultIds = false,$count = 100)
+	{
+		if (self::count() > 1000) throw new \Exception( 'Departement Sudah Lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
+
+		$depts     = array();
+		$fakeDept = new Departement();
+
+		for ($dep = 1; $dep <= $count; $dep++) {
+			$d = self::create($fakeDept->dept());
+			$depts [] = $d->id;
+		}
+		Log::debug('Departement Masih Kosong , Sudah diisi '.count($depts) );
+		return ($resultIds) ? $depts : "Generate Departement with ". count($depts) . " records";
+	}
 }

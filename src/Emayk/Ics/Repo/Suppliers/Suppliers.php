@@ -19,6 +19,15 @@
 *
 **/
 namespace Emayk\Ics\Repo\Suppliers;
+
+use Aws\CloudFront\Exception\Exception;
+use Emayk\Ics\Repo\Fabrictype\Fabrictype;
+use Emayk\Ics\Repo\Legality\Legality;
+use Emayk\Ics\Repo\Locations\Locations;
+use Emayk\Ics\Repo\Producttype\Producttype;
+use Emayk\Ics\Repo\Status\Status;
+use Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers;
+use Emayk\Ics\Support\Dummy\Faker\Suppliers as SuppliersFaker;
 use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Suppliers\Suppliers'
@@ -59,4 +68,142 @@ class Suppliers extends Model {
     public function products(){
         return $this->hasMany('Emayk\Ics\Repo\Products\Products');
     }
+
+	public function type()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers','tipe_id');
+	}
+
+	public static function generateMassiveDummy($resultsIds = false,$count = 100)
+	{
+		$fake = new SuppliersFaker();
+		$listtypesId = Typesuppliersbuyers::lists('id');
+		if  (!count($listtypesId)) {
+			$supbuy = $fake->typeSuplierBuyer()->types();
+			foreach ($supbuy as $type)
+			{
+				$typex = Typesuppliersbuyers::create($type);
+				$listtypesId[] = $typex->id;
+			}
+		}
+
+		$listLegalitiesId = Legality::lists('id');
+		if (!count($listLegalitiesId)){
+			$legalities = $fake->getLegality()->createLegalities() ;
+			foreach ($legalities as $legal)
+			{
+				$l =  Legality::create($legal);
+				$listLegalitiesId [] = $l->id;
+			}
+		}
+
+		/**
+		 * Status
+		 */
+		$listStatusId = Status::lists('id');
+		if (!count($listStatusId)){
+			$listStatusId = Status::createDataStatus(true);
+		}
+
+		$typeProductIds = Producttype::lists('id');
+		if (!count($typeProductIds))
+		{
+			//buat type product
+			$listFabricType = Fabrictype::lists('id');
+			if (!count($listFabricType))
+			{
+				$listFabricType  = Fabrictype::generateMassive(true);
+			}
+
+			$typeProductIds = Producttype::generateMassiveDummy(
+				$listFabricType,$fake,true,10
+			);
+
+		}
+
+
+		/**
+		 * Locations
+		 */
+		$locationsIds = Locations::lists('id');
+		if (!count($locationsIds))	{
+			/**
+			 * Jika Kosong , Buat Massive
+			 */
+			$locationsIds = Locations::generateMassiveLocation(true);
+			$countryIds = $locationsIds['country_ids'];
+			$provinceIds = $locationsIds['province_ids'];
+			$cityIds = $locationsIds['city_ids'];
+
+
+		}else{
+			/**
+			 * Jika Lokasi Ada, Telusuri Country
+			 */
+			$countryIds = Locations::where('parent_id',0)->lists('id');
+			if (!count($countryIds) ) {
+				/**
+				 * Jika Country Tidak ada, Buat Masing2 Entry
+				 */
+				$country = Locations::createLocation('Indonesia',0,1);
+				$province = Locations::createLocation('Jawa Barat',$country->id,2);
+				$city = Locations::createLocation('Bandung',$province->id,3);
+
+				$countryIds = array($country->id);
+				$provinceIds = array($province->id);
+				$cityIds = array($city->id);
+
+
+
+			}else{
+				/**
+				 * Jika Negara Sudah Ada
+				 * Lakukan Extract Info Province dan Kota
+				 */
+				foreach ($countryIds as $cId)
+					/**
+					 * Dapatkan Info Province , Jika Tidak ada Throw
+					 */
+					$provinceIds = Locations::where('parent_id',$cId)->lists('id');
+				if (!count($provinceIds) ) throw new \Exception('Province None');
+				foreach ($provinceIds as $pId)
+				{
+					$cityIds = Locations::where('parent_id',$pId)->lists('id');
+				}
+			}
+		}
+
+
+
+		$countryId = $countryIds[0];
+		$provinceId = $provinceIds[0];
+		$cityId = $cityIds[0];
+
+
+		$suppliers = $fake->generateSuppliers($count,$listtypesId,$typeProductIds,$listLegalitiesId,
+			$countryId,$provinceId,$cityId,$listStatusId);
+
+		foreach ($suppliers as $sup)
+		{
+			$s = self::create($sup);
+			$supIds [] = $s->id;
+		}
+		Log::debug('Supplier Masih Kosong , Sudah diisi '.count($supIds) );
+		return ($resultsIds) ? $supIds : "Generate ". count($supIds) . " records";
+
+	}
+
+	/**
+	 * Mendapatkan Id Type Supplier
+	 * @return bool | array
+	 */
+	protected static function  getTypesId()
+	{
+		$a = new self();
+
+		return (!$a->count())  ? false :  $a->type()->lists('id');
+	}
+
+
+
 }

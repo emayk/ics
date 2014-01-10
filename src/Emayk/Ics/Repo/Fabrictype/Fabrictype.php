@@ -43,5 +43,16 @@ class Fabrictype extends Model {
 	 }
 
 
+	public static function generateMassive($resultIds = false,$count = 100)
+	{
+			if (self::count() > 1000) throw new \Exception( 'Grade Fabric sudah lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
+			$dummyFabric = new \Emayk\Ics\Support\Dummy\Faker\Fabric();
+			$typeIds     = array();
+			for ($ty = 1; $ty <= $count; $ty++) {
+				$type        = self::create($dummyFabric->type());
+				$typeIds[ ]  = $type->id;
+			}
 
+			return ($resultIds) ? $typeIds : "Generate fabric Type with ". count($typeIds). " records";
+	}
 }

@@ -44,7 +44,7 @@ class Currency extends AbstractGenerate
 	 *
 	 * @return array
 	 */
-	public function currency($name = 'Rupiah', $symbol = 'Rp', $country_id = 1)
+	public function create_Currency($country_id = 1, $name = 'Rupiah', $symbol = 'Rp')
 	{
 		return array_merge(array(
 			'name'       => $name,
@@ -65,14 +65,24 @@ class Currency extends AbstractGenerate
 
 		$currencies = array();
 		foreach ($listIdCountry as $countryId) {
-			$currencies[ ] = $this->currency(
+			$currencies[ ] = $this->create_Currency(
+				$countryId,
 				$this->fake->randomElement($this->name),
-				$this->fake->randomElement($this->symbols),
-				$countryId
+				$this->fake->randomElement($this->symbols)
 			);
 		}
 		return $currencies;
 	}
+
+	/**
+	 * @return \Faker\Generator
+	 */
+	public function getFake()
+	{
+		return $this->fake;
+	}
+
+
 }
 
 /** 1/8/14 **/ 

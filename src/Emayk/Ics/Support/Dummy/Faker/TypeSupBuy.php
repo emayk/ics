@@ -22,48 +22,37 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
-/**
- * Class ContactPerson
- *
- * @package Emayk\Ics\Support\Dummy\Faker
- */
-class ContactPerson extends AbstractGenerate{
+class TypeSupBuy extends AbstractGenerate {
+public  $types = array('PERORANGAN','PERUSAHAAN','LAIN-LAIN');
 
 	/**
-	 * @param $posId
-	 * @param $deptId
-	 * @param $parentId
-	 * @param $parentType
+	 * @param $name
 	 *
 	 * @return array
 	 */
-	public function contact($posId,$deptId,$parentId,$parentType ='Suppliers')
+	protected function  type($name)
 	{
-		$name = $this->fake->name;
 		return array_merge(
 			array(
-			'name' => $name,
-			'info' => "Information {$name}",
-			'pos_id' => $posId,
-			'dept_id' => $deptId,
-			'phone' => $this->fake->phoneNumber,
-			'email' => $this->fake->email,
-			'fax' => $this->fake->phoneNumber,
-			'parent_id' => $parentId,
-			'parent_type' => $parentType),
+				'name' => $name,
+				'info' => "Information {$name}"
+			),
 			$this->othersAttributesArray()
 		);
 	}
 
 	/**
-	 * @return \Faker\Generator
+	 * @return array
 	 */
-	public function getFake()
+	public function types()
 	{
-		return $this->fake;
+		$types = [];
+		foreach ($this->types as $type)
+		{
+			$types[] = $this->type($type);
+		}
+		return $types;
 	}
-
-
 }
 
-/** 1/8/14 **/ 
+/** 1/10/14 **/ 
