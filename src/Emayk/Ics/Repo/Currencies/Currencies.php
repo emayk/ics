@@ -21,6 +21,7 @@
 namespace Emayk\Ics\Repo\Currencies;
 
 use Emayk\Ics\Repo\Locations\Locations;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Emayk\Ics\Support\Dummy\Faker\Currency;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -41,8 +42,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Currencies extends Model
 {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_currencies';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
 
 	/**
@@ -56,29 +66,63 @@ class Currencies extends Model
 	}
 
 
+	/**
+	 * @param bool $resultIds
+	 *
+	 * @return array|string
+	 * @throws \Exception
+	 */
 	public static function generateMassive($resultIds = false)
 	{
 
 		$countries = Locations::where('level', 1);
 		if (!$countries->count()) throw new Exception( 'Negara Masih Kosong , Isi Dl' );
 
-
-		$listsCountries = $countries->lists('id');
-		$fakeCurrencies = new Currency();
-
-		/** @var $currencies array */
-		$currencies = array();
-		foreach ($listsCountries as $c) {
-			if (self::where('country_id',$c)->count()) continue;
-			$curr = $fakeCurrencies->create_Currency($c,
-				$fakeCurrencies->getFake()->unique()->country,
-				$fakeCurrencies->getFake()->locale);
-			$currency = self::create($curr);
-			/** @noinspection PhpUndefinedFieldInspection */
-			$currencies [ ] = $currency->id;
+		$fake         = static::getFake()->getCurrency();
+		$ListCurrency = $fake->getCurrencies();
+		$ids          = array();
+		foreach ($ListCurrency as $curr) {
+			/*dapatkan ID*/
+			$countryName = $curr[ 'country' ];
+			$currName    = $curr[ 'name' ];
+			$currSymbol  = $curr[ 'symbol' ];
+			$country     = Locations::whereName($countryName);
+			if ($country->count()) {
+				/*Jika Country Ada*/
+				$countryId = $country->pluck('id');
+				$record    = $fake->createRecordCurrency($countryId, $currName, $currSymbol);
+				$newrecord = static::createRecord($record);
+				$ids[ ]    = $newrecord->id;
+			};
 		}
+		return ( $resultIds ) ? $ids : "Generate Currency with " . count($ids) . " records";
+	}
 
-		return ( $resultIds ) ? $currencies : "Generate Currency with " . count($currencies) . " records with country " . count($listsCountries) . " records";
+	/**
+	 * @param array $record
+	 *
+	 * @return Model|static
+	 */
+	protected static function  createRecord(array $record)
+	{
+		return static::create($record);
+	}
 
+	/**
+	 * @return AbstractGenerate
+	 */
+	protected static function getFake()
+	{
+		return new AbstractGenerate();
+	}
+
+	public static function getIdsOrCreateSample()
+	{
+		$ids = static::lists('id');
+		if (!count($ids))
+		{
+			$ids = static::generateMassive(true);
+		}
+		return $ids;
 	}
 }

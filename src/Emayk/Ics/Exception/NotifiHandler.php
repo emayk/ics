@@ -29,12 +29,23 @@ class NotifiHandler implements NotifierInterface{
         $this->notifier = $notifier;
     }
 
-    public function handle(IcsException $exception)
+	public function notify($to)
+	{
+		// TODO: Implement notify() method.
+	}
+
+	/**
+	 * @param IcsException $exception
+	 */
+	public function handle(IcsException $exception)
     {
         $this->sendException($exception);
     }
 
-    protected function sendException($e)
+	/**
+	 * @param $e
+	 */
+	protected function sendException($e)
     {
         $this->notifier->notify('Error : '.
             get_class($e) . $e->getMessage()

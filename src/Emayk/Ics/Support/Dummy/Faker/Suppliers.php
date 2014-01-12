@@ -22,7 +22,24 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
+/**
+ * Class Suppliers
+ *
+ * @package Emayk\Ics\Support\Dummy\Faker
+ */
 class Suppliers extends AbstractGenerate{
+
+	/**
+	 * @param $typeId
+	 * @param $legalityId
+	 * @param $typeProdId
+	 * @param $countryId
+	 * @param $provinceId
+	 * @param $cityId
+	 * @param $statusId
+	 *
+	 * @return array
+	 */
 	public function createSupplier($typeId,$legalityId,$typeProdId,$countryId,$provinceId,$cityId,$statusId)
 	{
 		return array_merge(
@@ -52,22 +69,38 @@ class Suppliers extends AbstractGenerate{
 		);
 	}
 
+	/**
+	 * @param       $total
+	 * @param array $lists_typeId
+	 * @param array $lists_typeProdId
+	 * @param array $lists_legalityId
+	 * @param       $country
+	 * @param       $province
+	 * @param       $city
+	 * @param       $ListstatusIds
+	 *
+	 * @return array
+	 */
 	public function generateSuppliers($total, array $lists_typeId, array $lists_typeProdId,
 	                               array $lists_legalityId, $country, $province, $city,
-	                               $ListstatusIds)
+	                               array $ListstatusIds)
 	{
 		$suppliers = array();
-		for($buyer=0;$buyer <= $total;$buyer++)
+		for($record=0;$record <= $total;$record++)
 		{
-			$typeId = $this->getIdRandomFromArray($lists_typeId);
-			$typeProdId = $this->getIdRandomFromArray($lists_typeProdId);
-			$legalityId = $this->getIdRandomFromArray($lists_legalityId);
-			$statusId = $this->getIdRandomFromArray($ListstatusIds);
+			$typeId = $this->getRandomList($lists_typeId);
+			$typeProdId = $this->getRandomList($lists_typeProdId);
+			$legalityId = $this->getRandomList($lists_legalityId);
+			$statusId = $this->getRandomList($ListstatusIds);
 			$suppliers[] = $this->createSupplier($typeId,$legalityId,$typeProdId,$country,$province,$city,$statusId);
 		}
 		return $suppliers;
 	}
 
+	protected function getRandomList(array $lists)
+	{
+		return $this->getFake()->randomElement($lists);
+	}
 }
 
 /** 1/10/14 **/ 

@@ -20,7 +20,12 @@
  **/
 namespace Emayk\Ics\Repo\Buyers;
 
-use Emayk\Ics\Support\Dummy\Faker\Buyers as FakeBuyers;
+use Emayk\Ics\Repo\Locations\Locations;
+use Emayk\Ics\Repo\Producttype\Producttype;
+use Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
+use Emayk\Ics\Repo\Legality\Legality;
+use Emayk\Ics\Repo\Status\Status;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -54,250 +59,198 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon                                               $updated_at
  * @property-read \Emayk\Ics\Repo\Status\Status                           $status
  * @property-read \Emayk\Ics\Repo\Legality\Legality                       $legality
- * @property-read \Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers $type
- * @property-read \Emayk\Ics\Repo\Producttype\Producttype                 $product_type
- * @property-read \Emayk\Ics\Repo\Locations\Locations                     $country
- * @property-read \Emayk\Ics\Repo\Locations\Locations                     $province
- * @property-read \Emayk\Ics\Repo\Locations\Locations                     $city
+ * @property-read Typesuppliersbuyers                                     $type
+ * @property-read Producttype                                             $product_type
+ * @property-read Locations                                               $country
+ * @property-read Locations                                               $province
+ * @property-read Locations                                               $city
  * @property-read \Emayk\Ics\Repo\Users\Users                             $creator
  * @property-read \Emayk\Ics\Repo\Users\Users                             $updater
  */
 class Buyers extends Model
 {
-	protected $guarded = array();
-	protected $table = 'master_buyers';
-	public static $rules = array();
+    /**
+     * @var array
+     */
+    protected $guarded = array();
+    /**
+     * @var string
+     */
+    protected $table = 'master_buyers';
+    /**
+     * @var array
+     */
+    public static $rules = array();
 
-	/**
-	 *
-	 * Mendapatkan Alamat Lengkap
-	 *
-	 * @return string
-	 */
-	public function fullAddress()
-	{
-		return $this->address . ' ' . $this->rt . '/' . $this->rw . ' ' .
-		$this->province->name . ' ' .
-		$this->city->name . ' ' .
-		$this->country->name .
-		$this->codepos;
-	}
+    /**
+     *
+     * Mendapatkan Alamat Lengkap
+     *
+     * @return string
+     */
+    public function fullAddress()
+    {
+        return $this->address . ' ' . $this->rt . '/' . $this->rw . ' ' .
+        $this->province->name . ' ' .
+        $this->city->name . ' ' .
+        $this->country->name .
+        $this->codepos;
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function status()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Status\Status', 'status_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function status()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Status\Status', 'status_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function legality()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Legality\Legality', 'legality_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function legality()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Legality\Legality', 'legality_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function type()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers', 'tipe_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers', 'tipe_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function product_type()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Producttype\Producttype', 'typeprod_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product_type()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Producttype\Producttype', 'typeprod_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function country()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'country_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'country_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function province()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'province_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function province()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'province_id');
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function city()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'city_id');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function city()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'city_id');
+    }
 
-	/**
-	 * Create By
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function creator()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Users\Users', 'createby_id');
-	}
-
-
-	/**
-	 * Last Update By
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function updater()
-	{
-		return $this->belongsTo('Emayk\Ics\Repo\Users\Users', 'lastupdateby_id');
-	}
+    /**
+     * Create By
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Users\Users', 'createby_id');
+    }
 
 
-	public static function  generateDummyData($resultsIds = false,$count = 10)
-	{
-		/**
-		 * Buat Data fake Instance
-		 */
-		$fake = new FakeBuyers();
-		/**
-		 * Cari Type Supplier dan Buyer
-		 */
-//		$listtypesId = ::lists('id');
-		if (!count($listtypesId)) {
-			/**
-			 * Jika Tidak ada (Buat)
-			 */
-			$supbuy = $fake->typeSuplierBuyer()->types();
-			foreach ($supbuy as $type) {
-				$typex          = Typesuppliersbuyers::create($type);
-				$listtypesId[ ] = $typex->id;
-			}
-		}
-
-		/**
-		 * Cari Legalitas
-		 */
-		$listLegalitiesId = Legality::lists('id');
-		if (!count($listLegalitiesId)) {
-			/**
-			 * Buat Jika Belum ada
-			 */
-			$legalities = $fake->getLegality()->createLegalities();
-			foreach ($legalities as $legal) {
-				$l                    = Legality::create($legal);
-				$listLegalitiesId [ ] = $l->id;
-			}
-		}
-
-		/**
-		 * Status
-		 */
-		$listStatusId = Status::lists('id');
-		if (!count($listStatusId)) {
-			/**
-			 * Buat Jika Belum ada
-			 */
-			$listStatusId = Status::createDataStatus(true);
-		}
-
-		$typeProductIds = Producttype::lists('id');
-		/**
-		 * Cari ,
-		 * Jika tidak ada Type product akan dibuatkan
-		 */
-		if (!count($typeProductIds)) {
-			/**
-			 * Buat Product Type
-			 */
-
-			/**
-			 * Cari Fabric Type ,
-			 * Jika Tidak ada akan dibuat.
-			 */
-			$listFabricType = Fabrictype::lists('id');
-			if (!count($listFabricType)) {
-				$listFabricType = Fabrictype::generateMassive(true);
-			}
-			/**
-			 * Lakukan Proses Buat Product
-			 */
-			$typeProductIds = Producttype::generateMassiveDummy(
-				$listFabricType, $fake, true, 10
-			);
-		}
+    /**
+     * Last Update By
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function updater()
+    {
+        return $this->belongsTo('Emayk\Ics\Repo\Users\Users', 'lastupdateby_id');
+    }
 
 
-		/**
-		 * Locations
-		 */
-		$locationsIds = Locations::lists('id');
-		if (!count($locationsIds)) {
-			/**
-			 * Jika Tidak ada, Buat
-			 */
-			$locationsIds = Locations::generateMassiveLocation(true);
-			$countryIds   = $locationsIds[ 'country_ids' ];
-			$provinceIds  = $locationsIds[ 'province_ids' ];
-			$cityIds      = $locationsIds[ 'city_ids' ];
-		} else {
-			/**
-			 * Jika Lokasi Ada, Telusuri Country
-			 */
-			$countryIds = Locations::where('parent_id', 0)->lists('id');
-			if (!count($countryIds)) {
-				/**
-				 * Jika Country Tidak ada,
-				 * Buat Masing2 Entry (Province , City)
-				 */
-				$country  = Locations::createLocation('Indonesia', 0, 1);
-				$province = Locations::createLocation('Jawa Barat', $country->id, 2);
-				$city     = Locations::createLocation('Bandung', $province->id, 3);
-				/**
-				 * Masukan List Ids yang sudah dibuat ke masing2 variable
-				 */
-				$countryIds  = array($country->id);
-				$provinceIds = array($province->id);
-				$cityIds     = array($city->id);
-			} else {
-				/**
-				 * Jika Negara Sudah Ada
-				 * Lakukan Extract Info Province dan Kota
-				 */
-				foreach ($countryIds as $cId)
-					/**
-					 * Dapatkan Info Province , Jika Tidak ada Throw
-					 */
-					$provinceIds = Locations::where('parent_id', $cId)->lists('id');
-				if (!count($provinceIds)) throw new \Exception( 'Province None' );
-				foreach ($provinceIds as $pId) {
-					$cityIds = Locations::where('parent_id', $pId)->lists('id');
-				}
-			}
-		}
+    /**
+     * @param bool $resultsIds
+     * @param int $count
+     *
+     * @return array|string
+     */
+    public static function  generateDummyData($resultsIds = false, $count = 10)
+    {
+        /** Legalitas */
+        $listLegalitiesId = Legality::getIdsOrGenerateDummyData(100);
+        /** Status */
+        $listStatusId = Status::getIdsOrCreate();
+        /*Product Type*/
+        $typeProductIds = Producttype::getIdsOrCreateDummy(100);
+        /*Type Supplier*/
+        $typeIdsSupBuy = Typesuppliersbuyers::generateDummyData(true);
+        /** Locations */
+        $countryId = Locations::getIdsDefaultCountryOrCreate();
 
-		$countryId  = $countryIds[ 0 ];
-		$provinceId = $provinceIds[ 0 ];
-		$cityId     = $cityIds[ 0 ];
+        $provinceId = Locations::getIdsDefaultProvinceOrCreate($countryId);
+        $cityId = Locations::getIdsDefaultCityOrCreate($provinceId);
 
-		$suppliers = $fake->generateSuppliers(
-			$count, $listtypesId, $typeProductIds, $listLegalitiesId,
-			$countryId, $provinceId, $cityId, $listStatusId);
 
-		foreach ($suppliers as $sup) {
-			$s          = self::create($sup);
-			$supIds [ ] = $s->id;
-		}
-		Log::debug('Supplier Masih Kosong , Sudah diisi ' . count($supIds));
-		return ( $resultsIds ) ? $supIds : "Generate " . count($supIds) . " records";
+        $records = static::getFake()
+            ->getBuyers()
+            ->createBuyers(10, $typeIdsSupBuy, $typeProductIds, $listLegalitiesId, $countryId, $provinceId, $cityId, $listStatusId);
 
-	}
+
+        foreach ($records as $record) {
+            $newrecord = static::createRecord($record);
+            $recordIds [] = $newrecord->id;
+        }
+
+        \Log::debug('Supplier Masih Kosong , Sudah diisi ' . count($recordIds));
+        return ($resultsIds) ? $recordIds : "Generate " . count($recordIds) . " records";
+    }
+
+    /**
+     * @param int $count
+     *
+     * @return array
+     */
+    public static function  getRecordIdsOrCreate($count = 10)
+    {
+        $recordIds = static::getListId();
+        if (!count($recordIds)) {
+            /*Create*/
+            $recordIds = static::generateDummyData(true, $count);
+        };
+        return $recordIds;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected static function getListId()
+    {
+        return static::lists('id');
+    }
+
+    /**
+     * @param array $record
+     *
+     * @return Model|static
+     */
+    protected static function  createRecord(array $record)
+    {
+        return static::create($record);
+    }
+
+    /**
+     * @return AbstractGenerate
+     */
+    protected static function getFake()
+    {
+        return new AbstractGenerate();
+    }
 
 }

@@ -24,6 +24,7 @@ use Emayk\Ics\Repo\Buyers\Buyers;
 use Emayk\Ics\Repo\Dept\Dept;
 use Emayk\Ics\Repo\Positions\Positions;
 use Emayk\Ics\Repo\Suppliers\Suppliers;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Emayk\Ics\Support\Dummy\Faker\ContactPerson as ContactPersonFaker;
 use Illuminate\Database\Eloquent\Model;
 
@@ -85,61 +86,43 @@ class Contactperson extends Model
 	 *
 	 * @param bool $resultIds
 	 *
+	 * @param int  $count
+	 *
 	 * @return array|string
-	 * @throws \Exception
 	 */
-	public static function generateMassive($resultIds = false)
+	public static function generateMassive($resultIds = false, $count = 100)
 	{
-		$posIds = Positions::lists('id');
-		if (!count($posIds)) {
-			$posIds = Positions::generateMassiveDataDummy(true);
-		}
+		$posIds = Positions::getIdsPositionOrCreateMassiveDummy();
 
-		$deptIds = Dept::lists('id');
-		if (!count($deptIds)) {
-			$deptIds = Dept::generateMassive(true);
-		}
+		$deptIds = Dept::getIdsOrCreateMassiveDummy();
 
-		$supplierIds = Suppliers::lists('id');
-		if (!count($supplierIds)) {
-			$supplierIds =  Suppliers::generateMassiveDummy(true);
-		}
+		$supplierIds = Suppliers::getRecordIdsOrCreate(200);
 
-		$buyerIds = Buyers::lists('id');
-		if (!count($buyerIds)) {
-			\Log::debug('Buyer Masih Kosong , Sudah diisi '.count($buyerIds) );
-		}
+		$buyerIds = Buyers::getRecordIdsOrCreate(200);
 
-		$contactX = new ContactPersonFaker();
+
+		$records = static::getFake()
+			->getContacts()
+			->generateContacts(
+				$count, $posIds, $deptIds, $supplierIds, $buyerIds);
+
 		$contacts = array();
-		for ($contact = 0; $contact < 2000; $contact++) {
-			$pos_id      = $contactX->getFake()->randomElement($posIds);
-			$dept_id     = $contactX->getFake()->randomElement($deptIds);
-			$supplier_id = $contactX->getFake()->randomElement($supplierIds);
-			$buyer_id    = $contactX->getFake()->randomElement($buyerIds);
-
-			$parents = array(
-				[
-					'id'   => $buyer_id,
-					'type' => '\Emayk\Ics\Repo\Buyers\Buyers'
-				],
-				[
-					'id'   => $supplier_id,
-					'type' => '\Emayk\Ics\Repo\Suppliers\Suppliers'
-				]
-			);
-
-			$c           = $parents[ rand(0, 1) ];
-			$parent_id   = $c[ 'id' ];
-			$parent_type = $c[ 'type' ];
-
-			$cp          = self::create(
-				$contactX->contact($pos_id, $dept_id, $parent_id, $parent_type)
-			);
-			$contacts[ ] = $cp->id;
+		foreach ($records as $record) {
+			$newrecord    = static::create($record);
+			$contacts [ ] = $newrecord->id;
 		}
 
 		return ( $resultIds ) ? $contacts : 'Generate Contact Person with ' . count($contacts) . ' records';
 
+	}
+
+	protected static function pickOne(array $list)
+	{
+		return static::getFake()->getFake()->randomElement($list);
+	}
+
+	protected static function  getFake()
+	{
+		return new AbstractGenerate();
 	}
 }

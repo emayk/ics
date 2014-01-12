@@ -24,4 +24,9 @@ class Statsproduct extends Model {
 	protected $guarded = array();
 	protected $table = 'stats_products';
 	public static $rules = array();
+
+	public function  products()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Products\Products','product_id');
+	}
 }

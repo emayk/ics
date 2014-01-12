@@ -22,112 +22,116 @@
 namespace Emayk\Ics\Repo\Buyers;
 
 
+/**
+ * Class BuyersArray
+ * @package Emayk\Ics\Repo\Buyers
+ */
 class BuyersArray implements BuyersInterface
 {
 
-	protected $buyers;
+    protected $buyers;
 
-	/*function __construct() { }*/
+    /*function __construct() { }*/
 
-	/**
-	 * @return mixed
-	 */
-	public function all()
-	{
-		// TODO: Implement all() method.
-	}
+    /**
+     * @return mixed
+     */
+    public function all()
+    {
+        // TODO: Implement all() method.
+    }
 
-	/**
-	 * Simpan Buyers
-	 *
-	 * @return mixed
-	 */
-	public function store()
-	{
-		// TODO: Implement store() method.
-	}
+    /**
+     * Simpan Buyers
+     *
+     * @return mixed
+     */
+    public function store()
+    {
+        // TODO: Implement store() method.
+    }
 
-	/**
-	 * Menghapus Buyers
-	 *
-	 * @param $id
-	 *
-	 * @return mixed
-	 *
-	 */
-	public function delete($id)
-	{
-		// TODO: Implement delete() method.
-	}
+    /**
+     * Menghapus Buyers
+     *
+     * @param $id
+     *
+     * @return mixed
+     *
+     */
+    public function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
 
-	/**
-	 * Update Informasi Buyers
-	 *
-	 * @param $id
-	 *
-	 * @return mixed
-	 */
-	public function update($id)
-	{
-		// TODO: Implement update() method.
-	}
+    /**
+     * Update Informasi Buyers
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function update($id)
+    {
+        // TODO: Implement update() method.
+    }
 
-	/**
-	 *
-	 * Mendapatkan Buyers berdasarkan id yang diberikan
-	 *
-	 * @param $id
-	 *
-	 * @return mixed
-	 */
-	public function find($id)
-	{
-		// TODO: Implement find() method.
-	}
+    /**
+     *
+     * Mendapatkan Buyers berdasarkan id yang diberikan
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function find($id)
+    {
+        // TODO: Implement find() method.
+    }
 
 
-	/**
-	 *
-	 * Menampilkan Page Untuk Buat Data
-	 *
-	 **/
+    /**
+     *
+     * Menampilkan Page Untuk Buat Data
+     *
+     **/
 
-	public function create()
-	{
-		// TODO: Implement create() method.
-	}
+    public function create()
+    {
+        // TODO: Implement create() method.
+    }
 
-	/**
-	 * Menampilkan Resource
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		// TODO: Implement show() method.
-	}
+    /**
+     * Menampilkan Resource
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function show($id)
+    {
+        // TODO: Implement show() method.
+    }
 
-	/**
-	 * Menampilkan Data Untuk di edit
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		// TODO: Implement edit() method.
-	}
+    /**
+     * Menampilkan Data Untuk di edit
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function edit($id)
+    {
+        // TODO: Implement edit() method.
+    }
 
-	/**
-	 * Remove from Storage
-	 *
-	 */
-	public function destroy($id)
-	{
-		// TODO: Implement destroy() method.
-	}
+    /**
+     * Remove from Storage
+     *
+     */
+    public function destroy($id)
+    {
+        // TODO: Implement destroy() method.
+    }
 
 }

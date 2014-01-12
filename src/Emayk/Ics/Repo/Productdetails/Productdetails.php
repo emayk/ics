@@ -19,6 +19,7 @@
 *
 **/
 namespace Emayk\Ics\Repo\Productdetails;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Productdetails\Productdetails'
@@ -50,4 +51,22 @@ class Productdetails extends Model {
     {
         return $this->belongsTo('Emayk\Ics\Repo\Products\Products','product_id');
     }
+
+	protected static function  getFake()
+{
+	return new AbstractGenerate();
+}
+	protected static  function getIdOrCreate($productId,$colorId, $unitId, $gradeId, $currSp, $currSpm)
+	{
+		$product = static::whereProductId($productId);
+		if (!$product->count()){
+			$newRecord = static::create(
+					static::getFake()->getProduct()->createDetail($productId,$colorId, $unitId, $gradeId, $currSp, $currSpm)
+			);
+			$productId = $newRecord->id;
+		}else{
+			$productId = $product->pluck('id');
+		}
+		return $productId;
+	}
 }

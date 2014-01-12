@@ -1,6 +1,10 @@
 <?php namespace Emayk\Ics\Facades;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class Config
+ * @package Emayk\Ics\Facades
+ */
 class Config extends Facade {
 
     /**

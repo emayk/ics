@@ -8,14 +8,26 @@ use Emayk\Ics\Message\Message;
  */
 class MessageArray extends Message implements MessageInterface
 {
-	protected $about = 'Message Array System';
+    /**
+     * @var string
+     */
+    protected $about = 'Message Array System';
 
-	public function send($channel, $event, $msg)
+    /**
+     * @param $channel
+     * @param $event
+     * @param $msg
+     * @return array
+     */
+    public function send($channel, $event, $msg)
 	{
 		return array('channel' => $channel, 'event' => $event, 'msg' => $msg);
 	}
 
-	public function about()
+    /**
+     * @return string
+     */
+    public function about()
 	{
 		return $this->about;
 	}

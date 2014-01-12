@@ -19,6 +19,7 @@
 *
 **/
 namespace Emayk\Ics\Repo\Images;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Images\Images'
@@ -44,38 +45,94 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\user[] $location
  */
 class Images extends Model {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'sys_images';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
 
-	 public function users()
+	/**
+	 *
+	 */
+	public function users()
 	 {
 //		todo : image users
 //			return $this->hasMany('user','')
 	 }
 
-	 public function buyers()
+	/**
+	 *
+	 */
+	public function buyers()
 	 {
 //			return $this->hasMany('user','')
 	 }
 
-	 public function supplier()
+	/**
+	 *
+	 */
+	public function supplier()
 	 {
 //			return $this->hasMany('user','')
 	 }
 
-	 public function profile()
+	/**
+	 *
+	 */
+	public function profile()
 	 {
 //			return $this->hasMany('user','')
 	 }
 
-	 public function location()
+	/**
+	 *
+	 */
+	public function location()
 	 {
 //			return $this->hasMany('user','')
 	 }
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function imageable(){
 		 return $this->morphTo();
 	}
 
+
+	/**
+	 * @param $ownerId
+	 * @param $ownerType
+	 *
+	 * @return int
+	 */
+	public static function getIdsOrCreate($ownerId,$ownerType)
+	{
+			$ids = static::where('imageable_type',$ownerType)->where('imageable_id',$ownerId);//->get();
+		if ($ids->count())
+		{
+			$record = $ids->pluck('id');
+
+		}else{
+			$newrecord = static::create(static::getFake()->createRecordImage($ownerId,$ownerType) );
+			$record = $newrecord->id;
+		}
+
+		return $record;
+	}
+
+	/**
+	 * @return AbstractGenerate
+	 */
+	protected static function  getFake()
+{
+	return new AbstractGenerate();
+}
 }

@@ -54,10 +54,23 @@ class Locations extends Model
 	 * @var array
 	 */
 	public static $rules = array();
+
+
+	/**
+	 * List Countries
+	 *
+	 * @var array
+	 */
+	protected static $countriesName = array("Albania", "Afghanistan", "Argentina", "Aruba", "Australia", "Azerbaijan New", "Bahamas", "Barbados", "Belarus", "Belize", "Bermuda", "Bolivia", "Bosnia and Herzegovina Convertible", "Botswana", "Bulgaria", "Brazil", "Brunei Darussalam", "Cambodia", "Canada", "Cayman Islands", "Chile", "China Yuan", "Colombia", "Costa Rica", "Croatia", "Cuba", "Czech Republic", "Denmark", "Dominican Republic", "East Caribbean", "Egypt", "El Salvador", "Estonia", "Euro Member", "Falkland Islands (Malvinas)", "Fiji", "Ghana", "Gibraltar", "Guatemala", "Guernsey", "Guyana", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Iran", "Isle of Man", "Israel", "Jamaica", "Japan", "Jersey", "Kazakhstan", "Korea (North)", "Korea (South)", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Liberia", "Lithuania", "Macedonia", "Malaysia", "Mauritius", "Mexico", "Mongolia", "Mozambique", "Namibia", "Nepal", "Netherlands Antilles", "New Zealand", "Nicaragua", "Nigeria", "Korea (North)", "Norway", "Oman", "Pakistan", "Panama", "Paraguay", "Peru Nuevo", "Philippines", "Poland", "Qatar", "Romania New", "Russia", "Saint Helena", "Saudi Arabia", "Serbia", "Seychelles", "Singapore", "Solomon Islands", "Somalia", "South Africa", "Korea (South)", "Sri Lanka", "Sweden", "Switzerland", "Suriname", "Syria", "Taiwan New", "Thailand", "Trinidad and Tobago", "Turkey", "Turkey", "Tuvalu", "Ukraine", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Venezuela", "Viet Nam", "Yemen", "Zimbabwe");
+
 	/**
 	 * @var array
 	 */
-	protected static $defaultLocation = array('country' => 'Indonesia', 'province' => 'Jawa Barat', 'city' => 'Bandung');
+	protected static $defaultGeo = array(
+		'country'  => 'Indonesia',
+		'province' => 'Jawa Barat',
+		'city'     => 'Bandung'
+	);
 
 	/**
 	 * @param $id
@@ -85,7 +98,7 @@ class Locations extends Model
 	 * @return array|string
 	 * @throws \Exception
 	 */
-	public static function generateMassiveLocation($resultIds = false)
+	public static function generateMassiveLocation1($resultIds = false)
 	{
 		$total = self::lists('id');
 		if (count($total) > 1000) throw new \Exception( 'Data sudah lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
@@ -111,6 +124,30 @@ class Locations extends Model
 		return ( $resultIds ) ? $locations : "Generate Location with " . count($generate) . " Records ";
 	}
 
+	/**
+	 *
+	 */
+	public static function createRecordCountry($resultIds = false)
+	{
+		foreach (static::$countriesName as $countryName) {
+			$newrecord = static::createRecord(
+				static::getFake()->getLocation()->createLocationByName($countryName, 1, 0) );
+			$ids [ ]   = $newrecord->id;
+		}
+
+		return ( $resultIds ) ? $ids : "Generate with " . count($ids) . " records";
+
+	}
+
+	/**
+	 * @param $record
+	 *
+	 * @return Model|static
+	 */
+	protected static function  createRecordLocation($record)
+	{
+		return static::create($record);
+	}
 
 	/**
 	 * @param int $count
@@ -229,11 +266,91 @@ class Locations extends Model
 	}
 
 	/**
-	 * @return mixed
+	 * @return Array
 	 */
 	public static function getIdsCountry()
 	{
 		return static::Country()->lists('id');
+	}
+
+	/**
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	public static function getIdsCountryOrCreate($count = 10)
+	{
+		$records = static::Country();
+		if ($records->count()) {
+			$ids = $records->lists('id');
+		} else {
+			$records = static::getFake()->getLocation()->country(static::$countries);
+			foreach ($records as $rec) {
+				$record = static::createRecord($rec);
+				$ids[ ] = $record->id;
+			}
+		}
+		return $ids;
+	}
+
+	/**
+	 * @param array $countryIds
+	 *
+	 * @return array
+	 */
+	public static function getIdsProvinceOrCreate(array $countryIds)
+	{
+		$provinceIds = array();
+		foreach ($countryIds as $countryId) {
+			$record = static::Provinces($countryId);
+			if ($record->count()) {
+				$provinceIds [ ] = $record->lists('id');
+			} else {
+				$record          = static::getFake()->getLocation()->province($countryId);
+				$province        = static::createRecord($record);
+				$provinceIds [ ] = $province->id;
+			}
+		}
+		return $provinceIds;
+	}
+
+	/**
+	 * @param array $provinceIds
+	 *
+	 * @return array
+	 */
+	public static function getIdsCityOrCreate(array $provinceIds)
+	{
+		$cityIds = array();
+		foreach ($provinceIds as $provinceId) {
+			$record = static::Cities($provinceId);
+			if ($record->count()) {
+				$cityIds [ ] = $record->lists('id');
+			} else {
+				$record      = static::getFake()->getLocation()->city($provinceId);
+				$city        = static::createRecord($record);
+				$cityIds [ ] = $city->id;
+			}
+		}
+		return $cityIds;
+	}
+
+	/**
+	 * @param array $record
+	 *
+	 * @return Model|static
+	 */
+	protected static function  createRecord(array $record)
+	{
+		return static::create($record);
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getDefaultGeo()
+	{
+		return self::$defaultGeo;
 	}
 
 	/**
@@ -468,15 +585,37 @@ class Locations extends Model
 	public static function  getIdsDefaultCountryOrCreate()
 	{
 
-		$id = static::Name(static::$defaultLocation[ 'country' ])->lists('id');
-		if (!count($id)) {
-			$c = static::create(
-				static::getFake()->getLocation()->createLocationByName(static::$defaultLocation[ 'country' ], 1, 0)
+		$record = static::Name(static::$defaultGeo[ 'country' ]);
+		if (!$record->count()) {
+			$c  = static::create(
+				static::getFake()->getLocation()->createLocationByName(static::$defaultGeo[ 'country' ], 1, 0)
 			);
-			/** @var $id \Emayk\Ics\Repo\Locations\Locations */
 			$id = $c->id;
-		};
+		} else {
+			$id = $record->pluck('id');
+		}
 		return $id;
+	}
+
+	public static function createDefaultLocationSample()
+	{
+		$countryName = static::$defaultGeo['country'];
+		$provinceName = static::$defaultGeo['province'];
+		$cityName = static::$defaultGeo['city'];
+
+		$countryId = static::createRecord(
+			static::getFake()->getLocation()->createLocationByName($countryName, 1, 0)
+		);
+
+		$provinceId = static::createRecord(
+			static::getFake()->getLocation()->createLocationByName($provinceName, 2, $countryId->id)
+		);
+
+		$cityId = static::createRecord(
+			static::getFake()->getLocation()->createLocationByName($cityName, 2, $provinceId->id)
+		);
+
+		return "Generate Data Location with {$countryName} - {$provinceName} - {$cityName} Successfully";
 	}
 
 	/**
@@ -488,14 +627,16 @@ class Locations extends Model
 	 */
 	public static function  getIdsDefaultProvinceOrCreate($countryId)
 	{
-		$id = static::Name(static::$defaultLocation[ 'province' ])->lists('id');
-		if (!count($id)) {
+		$record = static::Name(static::$defaultGeo[ 'province' ]);
+		if (!$record->count()) {
 			$c = static::create(
-				static::getFake()->getLocation()->createLocationByName(static::$defaultLocation[ 'province' ], 2, $countryId)
+				static::getFake()->getLocation()->createLocationByName(static::$defaultGeo[ 'province' ], 2, $countryId)
 			);
 			/** @var $id \Emayk\Ics\Repo\Locations\Locations */
 			$id = $c->id;
-		};
+		} else {
+			$id = $record->pluck('id');
+		}
 		return $id;
 	}
 
@@ -506,14 +647,15 @@ class Locations extends Model
 	 */
 	public static function  getIdsDefaultCityOrCreate($provinceId)
 	{
-		$id = static::Name(static::$defaultLocation[ 'city' ])->pluck('id');
-		if (null == $id) {
-			$c = static::create(
-				static::getFake()->getLocation()->createLocationByName(static::$defaultLocation[ 'city' ], 3, $provinceId)
+		$record = static::Name(static::$defaultGeo[ 'city' ]);
+		if (!$record->count()) {
+			$c  = static::create(
+				static::getFake()->getLocation()->createLocationByName(static::$defaultGeo[ 'city' ], 3, $provinceId)
 			);
-			/** @var $id \Emayk\Ics\Repo\Locations\Locations */
 			$id = $c->id;
-		};
+		} else {
+			$id = $record->pluck('id');
+		}
 		return $id;
 	}
 

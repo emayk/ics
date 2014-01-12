@@ -20,9 +20,6 @@
 
 namespace Emayk\Ics\Support\Dummy\Faker;
 
-
-use Aws\Tests\Common\Exception\InstanceProfileCredentialsExceptionTest;
-
 /**
  * Class Locations
  *
@@ -89,19 +86,25 @@ class Locations extends AbstractGenerate
 	 *
 	 * @return array
 	 */
-	public function createLocationByName($name,$level,$parent_id)
+	public function createLocationByName($name, $level, $parent_id)
 	{
-		return array_merge($this->generate($name,$level,$parent_id), $this->othersAttributesArray() );
+		return array_merge($this->generate($name, $level, $parent_id), $this->othersAttributesArray());
 	}
 
 	/**
+	 *
+	 * @param array $listCountriesName
+	 *
 	 * @return array
 	 */
-	public function country()
+	public function country(array $listCountriesName)
 	{
-		$name = $this->fake->unique()->country;
-		return array_merge($this->generate($name, 1), $this->othersAttributesArray()
-		);
+		foreach ($listCountriesName as $countryName)
+		{
+			$records [ ] = array_merge($this->generate($countryName, 1), $this->othersAttributesArray()
+			);
+		}
+		return $records;
 	}
 
 	/**
@@ -112,9 +115,9 @@ class Locations extends AbstractGenerate
 	 */
 	public function province($countryId, $countryName = '')
 	{
-		if (empty($countryName)) $countryName = "{$countryId} ";
+		if (empty( $countryName )) $countryName = "{$countryId} ";
 		$name = "{$countryName}-Province " . $this->createLetters(12);
-		return array_merge($this->generate($name, 2, $countryId), $this->othersAttributesArray() );
+		return array_merge($this->generate($name, 2, $countryId), $this->othersAttributesArray());
 	}
 
 	/**
@@ -123,10 +126,10 @@ class Locations extends AbstractGenerate
 	 *
 	 * @return array
 	 */
-	public function city($provinceId, $provinceName)
+	public function city($provinceId, $provinceName = '')
 	{
-		$name = "{$provinceName}-City " . $this->fake->city;
-		return array_merge($this->generate($name, 3, $provinceId), $this->othersAttributesArray() );
+		if (empty( $provinceName )) $name = "{$provinceName}-City " . $this->fake->city;
+		return array_merge($this->generate($name, 3, $provinceId), $this->othersAttributesArray());
 	}
 }
 

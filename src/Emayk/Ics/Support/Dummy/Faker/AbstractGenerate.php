@@ -19,13 +19,6 @@
 
 
 namespace Emayk\Ics\Support\Dummy\Faker;
-
-
-/**
- * Class AbstractGenerate
- *
- * @package Emayk\Ics\Support\Dummy\Faker
- */
 /**
  * Class AbstractGenerate
  *
@@ -76,6 +69,22 @@ class AbstractGenerate implements GenerateInterface
 	}
 
 	/**
+	 * @return Currency
+	 */
+	public function getCurrency()
+	{
+		return new Currency();
+	}
+
+	/**
+	 * @return Colors
+	 */
+	public function  getColor()
+	{
+		return new Colors();
+	}
+
+	/**
 	 * @param null $uuid
 	 * @param int  $createbyId
 	 * @param int  $lastUpdateById
@@ -122,12 +131,19 @@ class AbstractGenerate implements GenerateInterface
 	/**
 	 * @return Buyers
 	 */
-	public function buyers()
+	public function getBuyers()
 	{
 		return new Buyers();
 
 	}
 
+	/**
+	 * @return Products
+	 */
+	public function getProduct()
+	{
+		return new Products();
+	}
 
 	/**
 	 * @return TypeSupBuy
@@ -135,6 +151,14 @@ class AbstractGenerate implements GenerateInterface
 	public function typeSuplierBuyer()
 	{
 		return new TypeSupBuy();
+	}
+
+	/**
+	 * @return TypeSupBuy
+	 */
+	public function getTypeSupplierBuyer()
+	{
+		return $this->typeSuplierBuyer();
 	}
 
 	/**
@@ -151,6 +175,14 @@ class AbstractGenerate implements GenerateInterface
 	public function getProductType()
 	{
 		return new ProductType();
+	}
+
+	/**
+	 * @return Fabric
+	 */
+	public function getFabric()
+	{
+		return new Fabric();
 	}
 
 	/**
@@ -183,6 +215,98 @@ class AbstractGenerate implements GenerateInterface
 	public function getWarehouse()
 	{
 		return new Warehouse();
+	}
+
+	/**
+	 * @return Suppliers
+	 */
+	public function getSupplier()
+	{
+		return new Suppliers();
+	}
+
+	/**
+	 * @return ContactPerson
+	 */
+	public function getContacts()
+	{
+		return new ContactPerson();
+	}
+
+	/**
+	 * @return Banks
+	 */
+	public function getBank()
+	{
+		return new Banks();
+	}
+
+
+	/**
+	 * @param $name
+	 * @param $typeId
+	 *
+	 * @return array
+	 */
+	public function createRecordUnit($name, $typeId)
+	{
+		return array_merge(array(
+			'name'    => $name,
+			'info'    => "Information {$name}",
+			'type_id' => $typeId
+		), $this->othersAttributesArray());
+	}
+
+
+	/**
+	 * @param $name
+	 *
+	 * @return array
+	 */
+	protected function recordUnitType($name)
+	{
+		return array_merge(array(
+			'name' => $name,
+			'info' => "Information {$name}",
+		), $this->othersAttributesArray());
+	}
+
+	/**
+	 * @return array
+	 */
+	public function createRecordUnitType()
+	{
+		$units = array('Panjang', 'Lebar', 'Lain-Lain');
+
+		foreach ($units as $unit) {
+			$records [ ] = $this->recordUnitType($unit);
+		}
+		return $records;
+	}
+
+
+	/**
+	 * @param $ownerId
+	 * @param $ownerType
+	 *
+	 * @return array
+	 */
+	public function createRecordImage($ownerId, $ownerType)
+	{
+		$name  = "image" . rand(1, 900) . $this->createLetters(20);
+		$dir   = public_path('/packages/emayk/ics/uploads/Products');
+//		$image = $this->getFake()->image($dir, 640, 480, 'business');
+		$image = 'imagefile'.rand(0,2000);
+		return array_merge(array(
+			"name"           => $name,
+			"info"           => "Information {$name}",
+			"filename"       => $image,
+			"filelocation"   => public_path(),
+			"url"            => url($dir),
+			"thumbfile"      => $image,
+			"imageable_id"   => $ownerId,
+			"imageable_type" => $ownerType
+		), $this->othersAttributesArray());
 	}
 }
 

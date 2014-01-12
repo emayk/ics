@@ -96,6 +96,16 @@ class Fabricgrade extends Model
 
 		return ($resultsIds) ? $gradeIds : "Generate Data Fabrice Grade " . count($gradeIds) . " records";
 	}
+
+	public static function getIdsOrCreate($count = 10 )
+	{
+		$ids = static::lists('id');
+		if (!count($ids) )
+		{
+			$ids = static::generateMassive(true,$count);
+		}
+		return $ids;
+	}
 }
 
 

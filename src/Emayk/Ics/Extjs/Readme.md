@@ -3,15 +3,15 @@
 cara penggunaan :
 
 ## Server
-require 'ExtDirect.php';
+    ```require 'ExtDirect.php';
 
-class Server
-{
-    public function date( $format )
+    class Server
     {
-        return date( $format );
-    }
-}
+        public function date( $format )
+        {
+            return date( $format );
+        }
+    }```
 
 ExtDirect::provide( 'Server' );
 

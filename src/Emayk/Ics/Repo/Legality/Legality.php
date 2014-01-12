@@ -20,6 +20,7 @@
  **/
 namespace Emayk\Ics\Repo\Legality;
 
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,20 +37,42 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Legality extends Model
 {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_legalities';
+	/**
+	 * @var string
+	 */
+	protected static $defaultName = 'PT';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
 
+	/**
+	 *
+	 */
 	public function office()
 	{
 //			todo : legality office
 	}
 
+	/**
+	 *
+	 */
 	public function buyer()
 	{
 //			todo : legality buyer
 	}
 
+	/**
+	 *
+	 */
 	public function supplier()
 	{
 //			todo : legality supplier
@@ -64,17 +87,38 @@ class Legality extends Model
 	 */
 	public static function  generateMassiveLegality($resultIds = false, $count = 100)
 	{
-		$dLegality = new \Emayk\Ics\Support\Dummy\Faker\Legality();
-		$total     = self::count();
-		if ($total > 1000) throw new \Exception( 'Data sudah lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
-
-		$lIds = array();
-		for ($l = 1; $l <= $count; $l++) {
-			$legal   = self::create($dLegality->legality());
-			$lIds[ ] = $legal->id;
+		$total = self::count();
+		if ($total > 1000) {
+			$msg = 'Data sudah lebih dari 1000 Record, Tidak Perlu Tambah Lagi';
+			$lIds = array();
+		}else{
+			$lIds = array();
+			if (!static::hasDefault()) $lIds [] = static::getIdsDefaultOrCreate();
+			for ($l = 1; $l <= $count; $l++) {
+				$legal   = self::createRecord(static::getFake()->getLegality()->legality());
+				$lIds[ ] = $legal->id;
+			}
+			$msg = "Generate Legality with " . count($lIds) . " records";
 		}
+		return ( $resultIds ) ? $lIds : $msg;
+	}
 
-		return ( $resultIds ) ? $lIds : "Generate Legality with " . count($lIds) . " records";
+	/**
+	 * @return AbstractGenerate
+	 */
+	protected static function getFake()
+	{
+		return new AbstractGenerate();
+	}
+
+	/**
+	 * @param array $record
+	 *
+	 * @return Model|static
+	 */
+	protected static function createRecord(array $record)
+	{
+		return self::create($record);
 	}
 
 	/**
@@ -85,13 +129,69 @@ class Legality extends Model
 	 *
 	 * @return array
 	 */
-	public function getIdsOrGenerateDummyData($count = 100)
+	public static function getIdsOrGenerateDummyData($count = 100)
 	{
-		$ids = static::lists('id');
+		$ids = static::getListIds();
 		if (!count($ids)) {
-			$ids [ ] = self::generateMassiveLegality(true,$count);
-		}
+			$ids = self::generateMassiveLegality(true, $count);
+		};
 		return $ids;
 	}
 
+	/**
+	 * @return mixed
+	 */
+	protected static function  getListIds()
+	{
+		return self::lists('id');
+	}
+
+	/**
+	 * @param $query
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function scopeName($query, $name)
+	{
+		return $query->whereName($name);
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getDefaultName()
+	{
+		return self::$defaultName;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function  getIdsDefaultOrCreate()
+	{
+		if (!static::hasDefault()) {
+				$newrecord = static::createRecord(static::getFake()->getLegality()->legality(static::$defaultName));
+			  $id = $newrecord->id;
+		} else {
+			$id = static::getDefaultIds();
+		}
+		return $id;
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected static function hasDefault()
+	{
+		return ( static::Name(static::$defaultName)->count() > 0 );
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getDefaultIds()
+	{
+		return static::Name(static::$defaultName)->pluck('id');
+	}
 }

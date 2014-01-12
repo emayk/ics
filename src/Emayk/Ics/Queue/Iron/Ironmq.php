@@ -22,8 +22,10 @@
 namespace Emayk\Ics\Queue\Iron;
 
 
-class Ironmq {
-
-}
+/**
+ * Class Ironmq
+ * @package Emayk\Ics\Queue\Iron
+ */
+class Ironmq { }
 
 /** 1/9/14 **/ 

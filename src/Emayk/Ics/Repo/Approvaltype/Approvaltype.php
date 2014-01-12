@@ -30,11 +30,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\[] $orders
  */
 class Approvaltype extends Model {
-	protected $guarded = array();
-	protected $table = 'master_approval_type';
-	public static $rules = array();
+    /**
+     * @var array
+     */
+    protected $guarded = array();
+    /**
+     * @var string
+     */
+    protected $table = 'master_approval_type';
+    /**
+     * @var array
+     */
+    public static $rules = array();
 
-	 public function orders()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
 	 {
 			return $this->hasMany('','');
 	 }

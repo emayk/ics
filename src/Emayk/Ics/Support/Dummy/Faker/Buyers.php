@@ -21,13 +21,29 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
+/**
+ * Class Buyers
+ *
+ * @package Emayk\Ics\Support\Dummy\Faker
+ */
 class Buyers extends AbstractGenerate
 {
-	public function buyer($type, $legality, $typeprod,
-	                      $country, $province, $city,
-	                      $createby = 1, $lastupdateby = 1)
+	/**
+	 * @param $type
+	 * @param $legality
+	 * @param $typeprod
+	 * @param $country
+	 * @param $province
+	 * @param $city
+	 *
+	 * @return array
+	 */
+	protected  function buyer($type, $legality, $typeprod,
+	                      $country, $province, $city,$status)
 	{
-		return array(
+		return
+		array_merge(
+			array(
 			'name'            => $this->fake->name,
 			'codepos'         => '4090' . $this->fake->randomDigit,
 			'npwp'            => '920-20202-30303' . $this->fake->randomDigit,
@@ -40,58 +56,84 @@ class Buyers extends AbstractGenerate
 			'rt'              => rand(1, 15),
 			'rw'              => rand(1, 15),
 			'phone'           => $this->fake->phoneNumber,
-			'status_id'       => 1,
+			'status_id'       => $status,
 			'tipe_id'         => $type,
 			'legality_id'     => $legality,
 			'typeprod_id'     => $typeprod,
 			'country_id'      => $country,
 			'province_id'     => $province,
 			'city_id'         => $city,
-			'uuid'            => $this->fake->uuid,
-			'createby_id'     => $createby,
-			'lastupdateby_id' => $lastupdateby,
-			'codeinternal'    => $this->fake->uuid,
-			'created_at'      => $this->fake->dateTimeBetween("-5 year"),
-			'updated_at'      => $this->fake->dateTimeBetween("-2 year")
+			), $this->othersAttributesArray()
 		);
 	}
 
 
 	/**
-	 *
-	 * Mengenerate Buyer Sesuai dengan Jumlah Yang diberikan
-	 *
 	 * @param       $total
 	 * @param array $lists_typeId
 	 * @param array $lists_typeProdId
 	 * @param array $lists_legalityId
-	 * @param       $country
-	 * @param       $province
-	 * @param       $city
-	 * @param int   $createby
-	 * @param int   $lastupdateby
+	 * @param       $countryId
+	 * @param       $provinceId
+	 * @param       $cityId
+	 *
+	 * @param array $statusIds
 	 *
 	 * @return array
 	 */
 	public function generatebuyers($total, array $lists_typeId, array $lists_typeProdId,
-	                               array $lists_legalityId, $country, $province, $city,
-	                               $createby = 1, $lastupdateby = 1)
+	                               array $lists_legalityId, $countryId, $provinceId, $cityId, array $statusIds)
 	{
-		$buyers = array();
-		for($buyer=0;$buyer <= $total;$buyer++)
+		$records = array();
+		for($record=0;$record <= $total;$record++)
 		{
 			$typeId = $this->getIdRandomFromArray($lists_typeId);
 			$typeProdId = $this->getIdRandomFromArray($lists_typeProdId);
 			$legalityId = $this->getIdRandomFromArray($lists_legalityId);
-			$buyers[] = $this->buyer($typeId,$legalityId,$typeProdId,$country,$province,$city,$createby,$lastupdateby);
+			$statusId = $this->getIdRandomFromArray($statusIds);
+			$records[] = $this->createBuyer($typeId,$legalityId,$typeProdId,$countryId,$provinceId,$cityId,$statusId);
 		}
-		return $buyers;
+		return $records;
 	}
 
-	public function create()
+	/**
+	 * @param $typeId
+	 * @param $legalityId
+	 * @param $typeprodId
+	 * @param $countryId
+	 * @param $provinceId
+	 * @param $cityId
+	 *
+	 * @param $status
+	 *
+	 * @return array
+	 */
+	public function createBuyer($typeId, $legalityId, $typeprodId,
+	                            $countryId, $provinceId, $cityId,$status)
 	{
-
+		return $this->buyer($typeId,$legalityId,$typeprodId,$countryId,$provinceId,$cityId,$status);
 	}
+
+	/**
+	 * @param       $count
+	 * @param array $lists_typeId
+	 * @param array $lists_typeProdId
+	 * @param array $lists_legalityId
+	 * @param       $countryId
+	 * @param       $provinceId
+	 * @param       $cityId
+	 *
+	 * @param       $statusIds
+	 *
+	 * @return array
+	 */
+	public function createBuyers($count,array $lists_typeId, array $lists_typeProdId,
+	                             array $lists_legalityId, $countryId, $provinceId, $cityId,$statusIds)
+	{
+		return $this->generatebuyers($count, $lists_typeId, $lists_typeProdId,
+			$lists_legalityId, $countryId, $provinceId, $cityId,$statusIds);
+	}
+
 }
 
 /** 1/8/14 **/ 

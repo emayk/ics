@@ -19,13 +19,6 @@
 
 
 namespace Emayk\Ics\Support\Dummy\Faker;
-
-
-	/**
-	 * Class Products
-	 *
-	 * @package Emayk\Ics\Support\Dummy\Faker
-	 */
 /**
  * Class Products
  *
@@ -43,29 +36,87 @@ class Products extends AbstractGenerate
 		'Category G', 'Category H',
 		'Category I', 'Category J',
 	);
-protected  $defaultParentType = '\Emayk\Ics\Repo\Productcategory\Productcategory';
-	/**
-	 * Membuat Product
-	 */
-	public function product()
-	{
 
+	/**
+	 * @var array
+	 */
+	protected $types = array();
+	/**
+	 * @var array
+	 */
+	protected $unitWeight = array();
+	/**
+	 * @var array
+	 */
+	protected $unitWidth = array();
+	/**
+	 * @var array
+	 */
+	protected $unitOther = array();
+	/**
+	 * @var array
+	 */
+	protected $detail = array();
+	/**
+	 * @var array
+	 */
+	protected $stock = array();
+	/**
+	 * @var array
+	 */
+	protected $stockhistory = array();
+
+	/**
+	 * @var string
+	 */
+	protected $defaultParentType = '\Emayk\Ics\Repo\Productcategory\Productcategory';
+
+	/**
+	 * @return string
+	 */
+	public function getDefaultParentType()
+	{
+		return $this->$defaultParentType;
+	}
+
+	/**
+	 * @param        $catId
+	 * @param        $typeId
+	 * @param        $unitWeightId
+	 * @param        $unitWidthId
+	 * @param int    $parentId
+	 * @param string $parentType
+	 *
+	 * @return array
+	 */
+	public function product($catId, $typeId, $unitWeightId, $unitWidthId, $parentId = 0, $parentType = '')
+	{
+		return array_merge(array(
+			"name"          => 'Product ' . $this->createLetters(),
+			"nodesign"      => 'Design' . $this->getFake()->randomDigitNotNull . $this->createLetters(5),
+			"contruction"   => 'Contruction' . $this->getFake()->randomDigit,
+			"cat_id"        => $catId,
+			"type_id"       => $typeId,
+			"weight"        => $this->getFake()->randomDigit . rand(1, 100),
+			"unitweight_id" => $unitWeightId,
+			"width"         => $this->getFake()->randomDigit . rand(20, 190),
+			"unitwidth_id"  => $unitWidthId,
+			"codeinternal"  => $this->getFake()->uuid,
+			"parent_id"     => $parentId,
+			"parent_type"   => $parentType
+		), $this->othersAttributesArray());
 	}
 
 
 	/**
-	 * Membuat Category
-	 *
 	 * @param null $name
 	 * @param int  $parent_id
-	 * @param int  $createbyId
-	 * @param int  $lastUpdateById
 	 *
 	 * @return array
 	 */
-	public function category($name = null, $parent_id = 0, $createbyId = 1, $lastUpdateById = 1)
+	public function category($name = null, $parent_id = 0)
 	{
-		if (null == $name) $name = $this->fake - randomElement($this->categories);
+		if (null == $name) $name = $this->fake->randomElement($this->categories) . rand(9, 900);
 		$category = array(
 			'name'         => $name,
 			'info'         => "Information {$name}",
@@ -73,28 +124,94 @@ protected  $defaultParentType = '\Emayk\Ics\Repo\Productcategory\Productcategory
 			'parent_type'  => $this->defaultParentType,
 			'kodeinternal' => $this->fake->uuid,
 		);
-		return array_merge($category, $this->othersAttributesArray($createbyId, $lastUpdateById));
+		return array_merge($category, $this->othersAttributesArray());
+	}
+
+	/**
+	 * @param $name
+	 * @param $parentId
+	 *
+	 * @return array
+	 */
+	public function createRecordCategory($name = '', $parentId = 0)
+	{
+		return $this->category($name, $parentId);
 	}
 
 
 	/**
-	 * Mendapatkan List Category
-	 * berdasarkan Total Category yang diberikan
-	 *
-	 * @param $total
+	 * @param $productId
+	 * @param $colorId
+	 * @param $unitId
+	 * @param $gradeId
+	 * @param $currSp
+	 * @param $currSpm
 	 *
 	 * @return array
 	 */
-	public function createNestedCategori($total)
+	public function createDetail($productId, $colorId, $unitId, $gradeId, $currSp, $currSpm)
 	{
-		$categories = array();
-		for ($cat = 0; $cat <= $total; $cat++) {
-			for ($c = 1; $c <= 3; $c++) {
-				$name          = $this->fake->randomElement($this->categories);
-				$categories[ ] = $this->category("{$name} {$cat}-{$c}", $cat);
-			}
-		}
-		return $categories;
+		$sp  = ( $this->getFake()->randomDigit * rand(9000, 10033) );
+		$spm = ( $sp - ( 1000 * rand(900, 9999) ) );
+		return array_merge(
+			array(
+				"product_id"    => $productId,
+				"color_id"      => $colorId,
+				"unit_id"       => $unitId,
+				"grade_id"      => $gradeId,
+				"salesprice"    => $sp,
+				"salespricemin" => $spm,
+				"currsp_id"     => $currSp,
+				"currspm_id"    => $currSpm,
+				"parent_id"     => $productId,
+				"parent_type"   => '\Emayk\Ics\Repo\Products\Products'
+			),
+			$this->othersAttributesArray()
+		);
+	}
+
+	/**
+	 * @param $productId
+	 * @param $warehouseId
+	 * @param $unitId
+	 *
+	 * @return array
+	 */
+	public function createStockProduct($productId, $warehouseId, $unitId)
+	{
+		return array_merge(array(
+			"product_id"   => $productId,
+			"total"        => 0,
+			"wh_id"        => $warehouseId,
+			"lengthfabric" => rand(90, 1000),
+			"onday"        => $this->getFake()->dateTimeBetween("-2 month"),
+			"unit_id"      => $unitId,
+		), $this->othersAttributesArray());
+	}
+
+	/**
+	 * @param $stockId
+	 * @param $rollNumber
+	 * @param $qtyIn
+	 * @param $qtyOut
+	 *
+	 * @param $qtyBalance
+	 *
+	 *
+	 * @return array
+	 */
+	public function createHistoryStockProduct($stockId,$rollNumber, $qtyIn, $qtyOut,$qtyBalance,$total)
+	{
+//		$qtyBalance = ($qtyIn - $qtyOut);
+		return array_merge(array(
+			"stock_id"    => $stockId,
+			"refdoc"      => $this->getFake()->uuid,
+			"noroll"      => $rollNumber,
+			"qty_in"      => $qtyIn,
+			"qty_out"     => $qtyOut,
+			"qty_balance" => $qtyBalance,
+			"total" => $total,
+		), $this->othersAttributesArray());
 	}
 }
 

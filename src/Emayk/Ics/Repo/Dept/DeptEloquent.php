@@ -20,9 +20,10 @@
 **/
 namespace Emayk\Ics\Repo\Dept;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use \Response;
-use \Input;
+use Auth;
+use Icsoutput;
+use Response;
+use Input;
 
 class DeptEloquent implements DeptInterface{
     protected $dept;
@@ -73,8 +74,8 @@ class DeptEloquent implements DeptInterface{
         $this->dept->name = Input::get('name');
         $this->dept->info = Input::get('info');
         $this->dept->uuid = uniqid('New_');
-        $this->dept->createby_id = \Auth::user()->id;
-        $this->dept->lastupdateby_id = \Auth::user()->id;
+        $this->dept->createby_id = Auth::user()->id;
+        $this->dept->lastupdateby_id = Auth::user()->id;
         $this->dept->created_at = new Carbon();
         $this->dept->updated_at = new Carbon();
         $saved = $this->dept->save() ? true : false ;
@@ -95,11 +96,11 @@ class DeptEloquent implements DeptInterface{
         if ($this->hasAccess())
         {
             $deleted = $this->dept->find($id)->delete();
-            return \Icsoutput::toJson(array(
+            return Icsoutput::toJson(array(
                 'results' => $deleted
             ),$deleted);
         }else{
-            return \Icsoutput::toJson(array(
+            return Icsoutput::toJson(array(
                 'results' => false,
                 'reason' => 'Dont Have Access to Delete '
             ),false);
@@ -115,15 +116,18 @@ class DeptEloquent implements DeptInterface{
     public function update($id)
     {
         $db = $this->dept->find($id);
+        /** @noinspection PhpUndefinedFieldInspection */
         $db->name = Input::get('name');
+        /** @noinspection PhpUndefinedFieldInspection */
         $db->info = Input::get('info');
+        /** @noinspection PhpUndefinedFieldInspection */
         $db->uuid = uniqid('Update_');
         return $db->save();
     }
 
     protected function  hasAccess(){
 
-        return (isset( \Auth::user()->id ) );
+        return (isset( Auth::user()->id ) );
     }
 
 }

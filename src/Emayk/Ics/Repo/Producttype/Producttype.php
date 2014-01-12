@@ -65,47 +65,31 @@ class Producttype extends Model
 
 
 	/**
-	 * @param                  $ListfabricTypeIds
-	 * @param AbstractGenerate $fake
-	 * @param bool             $resultsIds
-	 * @param int              $count
-	 *
-	 * @return array|string
-	 */
-	public static function generateMassiveDummy($ListfabricTypeIds,
-	                                            AbstractGenerate $fake,
-	                                            $resultsIds = false, $count = 10)
-	{
-		$ids = [];
-		foreach ($ListfabricTypeIds as $fabricTypeId) {
-			$name        = "Product Type {$fabricTypeId}" . rand(10, 300);
-			$productType = self::create(
-				array_merge(array(
-					'name' => $name, 'fabrictype_id' => $fabricTypeId
-				), $fake->othersAttributesArray()));
-			$ids [ ]     = $productType->id;
-		}
-
-		return ( $resultsIds ) ? $ids : "Generate Product Type with " . count($ids) . " records";
-	}
-
-	/**
 	 * @param int $count
 	 *
-	 * @internal param bool $resultsIds
-	 * @return array|string
+	 * @return array
 	 */
 	public static function getIdsOrCreateDummy ($count = 10)
 	{
 		$ids = static::lists('id');
 		if (!count($ids)) {
-
 			$ListfabricTypeIds = Fabrictype::getIdsOrCreateDummy($count);
-			$fake              = new  AbstractGenerate();
-			$ids               = static::generateMassiveDummy($ListfabricTypeIds, $fake, true, $count);
+			$records = static::getFake()->getProductType()->generateMassiveRecords($ListfabricTypeIds,$count);
+			foreach ($records as $rec)
+			{
+				$prodType = static::create($rec);
+				$ids [] = $prodType->id;
+			}
 		};
-
 		return $ids;
 
+	}
+
+	/**
+	 * @return AbstractGenerate
+	 */
+	public static function getFake()
+	{
+		return new  AbstractGenerate();
 	}
 }

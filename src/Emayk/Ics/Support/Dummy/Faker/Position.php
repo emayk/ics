@@ -41,7 +41,7 @@ class Position extends AbstractGenerate
 	public function generatePositions($count = 10)
 	{
 		for ($p = 0; $p < $count; $p++) {
-			$positions [ ] = $this->createPosition('Position ');
+			$positions [ ] = $this->createPosition();
 		}
 		return $positions;
 	}
@@ -53,7 +53,7 @@ class Position extends AbstractGenerate
 	 */
 	public function createPosition($name = '')
 	{
-		if (empty( $name )) $name = $name . $this->createLetters() . rand(2, 10);
+		if (empty( $name )) $name = 'Position ' . $this->createLetters() . rand(2, 10);
 		return array_merge(
 			$this->setDummyAttribut($name),
 			$this->othersAttributesArray()

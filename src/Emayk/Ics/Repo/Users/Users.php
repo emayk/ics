@@ -20,9 +20,7 @@
  **/
 namespace Emayk\Ics\Repo\Users;
 
-use \Carbon\Carbon;
 use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
-use Emayk\Ics\Support\Dummy\Faker\Position;
 use \Illuminate\Database\Eloquent\Model;
 use \Auth;
 use \DB;
@@ -33,7 +31,6 @@ use \Emayk\Ics\Repo\Positions\Positions;
 use \Emayk\Ics\Repo\Warehouse\Warehouse;
 use \Emayk\Ics\Repo\Warehousecategory\Warehousecategory;
 use \Emayk\Ics\Repo\Locations\Locations;
-use \Faker;
 use \Illuminate\Auth\UserInterface;
 use \Illuminate\Auth\Reminders\RemindableInterface;
 
@@ -380,96 +377,32 @@ class Users extends Model implements UserInterface, RemindableInterface
 	 */
 	public static function generateUserAdmin()
 	{
+		$username  = static::$defaultUserAdmin[ 'username' ];
+		$useradmin = self::Username($username);
 
-		$useradmin = self::Username(static::$defaultUserAdmin[ 'username' ]);
-		if ($useradmin->count()) throw new \Exception( 'User Admin Sudah Dibuat' );
-
-		$posId       = Positions::getIdDefaultPositionOrCreate();
-		$deptId      = Dept::getIdDefaultDepartementOrCreate();
-		$warehouseId = Warehouse::getDefaultWarehouseIdOrCreate();
-		$statusId    = Status::getIdDefaultStatusOrCreate();
-		$user        = self::create(
-			array_merge(
-				array(
-					'username'     => static::$defaultUserAdmin[ 'username' ],
-					'fullname'     => " Name " . static::$defaultUserAdmin[ 'username' ],
-					'email'        => static::getFake()->getFake()->companyEmail,
-					'pos_id'       => $posId,
-					'dept_id'      => $deptId,
-					'warehouse_id' => $warehouseId,
-					'status_id'    => $statusId,
-					'password'     => static::$defaultUserAdmin[ 'password' ],
-				), self::onlyOncefillerAttributes())
-		);
-
-		return $user;
-	}
-
-
-	/**
-	 * @return array
-	 */
-	protected static function  onlyOncefillerAttributes()
-	{
-		return array(
-			'uuid'            => uniqid('System'),
-			'createby_id'     => 1,
-			'lastupdateby_id' => 1,
-			'created_at'      => Carbon::create(),
-			'updated_at'      => Carbon::create(),
-		);
-	}
-
-	/**
-	 * @param        $parentId
-	 * @param        $level
-	 * @param string $name
-	 *
-	 * @return mixed
-	 */
-	protected static function  getLocationByName($parentId, $level, $name = 'indonesia')
-	{
-		$location = Locations::where('name', $name)
-			->where('parent_id', $parentId)
-			->where('level', $level);
-		return $location;
-	}
-
-
-	/**
-	 * @param $parentId
-	 * @param $level
-	 * @param $id
-	 *
-	 * @return mixed
-	 */
-	protected function getLocationById($parentId, $level, $id)
-	{
-		$location = Locations::where('id', $id)
-			->where('parent_id', $parentId)
-			->where('level', $level);
-		return $location;
-	}
-
-
-	/**
-	 * @param $name
-	 * @param $parent_id
-	 * @param $level
-	 *
-	 * @return Model|static
-	 */
-	protected static function  createLocation($name, $parent_id, $level)
-	{
-		$location = Locations::create(
-			array_merge(
-				array(
-					'name'  => $name, 'info' => "Information {$name} ", 'parent_id' => $parent_id,
-					'level' => $level, 'parent_type' => '\Emayk\Ics\Repo\Locations\Locations'
-				),
-				static::onlyOncefillerAttributes()
-			));
-		return $location;
+		if ($useradmin->count()) {
+			$msg = 'User Admin Sudah Dibuat';
+		} else {
+			$posId       = Positions::getIdDefaultPositionOrCreate();
+			$deptId      = Dept::getIdDefaultDepartementOrCreate();
+			$warehouseId = Warehouse::getDefaultWarehouseIdOrCreate();
+			$statusId    = Status::getIdDefaultStatusOrCreate();
+			$user        = self::create(
+				array_merge(
+					array(
+						'username'     => static::$defaultUserAdmin[ 'username' ],
+						'fullname'     => lcfirst(static::$defaultUserAdmin[ 'username' ]),
+						'email'        => static::getFake()->getFake()->companyEmail,
+						'pos_id'       => $posId,
+						'dept_id'      => $deptId,
+						'warehouse_id' => $warehouseId,
+						'status_id'    => $statusId,
+						'password'     => static::$defaultUserAdmin[ 'password' ],
+					), static::getFake()->othersAttributesArray())
+			);
+			$msg = "Generate User Admin {$user->username} Successfully";
+		}
+		return $msg;
 	}
 
 }

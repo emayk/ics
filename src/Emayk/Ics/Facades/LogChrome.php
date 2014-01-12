@@ -1,6 +1,10 @@
 <?php namespace Emayk\Ics\Facades;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class LogChrome
+ * @package Emayk\Ics\Facades
+ */
 class LogChrome extends Facade {
 
     /**

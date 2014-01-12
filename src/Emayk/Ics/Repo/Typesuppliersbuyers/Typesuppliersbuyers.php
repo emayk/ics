@@ -20,7 +20,7 @@
  **/
 namespace Emayk\Ics\Repo\Typesuppliersbuyers;
 
-use Emayk\Ics\Support\Dummy\Faker\TypeSupBuy;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -39,8 +39,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Typesuppliersbuyers extends Model
 {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_type_supplier_buyer';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
 
 	/**
@@ -62,6 +71,14 @@ class Typesuppliersbuyers extends Model
 	}
 
 	/**
+	 * @return AbstractGenerate
+	 */
+	public static function  getFake()
+	{
+		return new AbstractGenerate();
+	}
+
+	/**
 	 *
 	 * Mengenerate data dump
 	 *
@@ -76,21 +93,59 @@ class Typesuppliersbuyers extends Model
 			/**
 			 * Jika Belum ada akan dibuat
 			 */
-			$fake  = new TypeSupBuy();
-			$types = $fake->types();
-			foreach ($types as $t) {
-				$ty           = self::create($t);
+			$types = static::getFake()->getTypeSupplierBuyer()->types();
+			foreach ($types as $type) {
+				$ty           = self::create($type);
 				$typesIds [ ] = $ty->id;
 			}
+			\Log::debug("Sudah digenerate " . count($typesIds) . " record");
 		};
 
 		return ( $resultIds ) ? $typesIds : "Generate data " . count($typesIds) . " records";
 	}
 
+	/**
+	 * @return int
+	 */
+	public static function getIdDefaultTypeOrCreate()
+	{
+		$records = static::getListIds();
+		if (count($records) ) {
+			/*Jika sudah ada Pilih salah satu id */
+			$record = $records[rand(0,count($records)-1)];
+		}else{
+			/*Belum ada*/
+			$records = static::getFake()->getTypeSupplierBuyer()->createDefaultType();
+			foreach ($records as $rec)
+			{
+				$newrecord = static::create($rec);
+			}
+			/*Ambil Id*/
+			$record = $newrecord->id;
+		}
+		return $record;
+	}
+
+	/**
+	 * @return array
+	 */
 	public static function getIdsOrGenerateDummydata()
 	{
 		return static::generateDummyData(true);
 	}
+
+	/**
+	 * @param $q
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	public function scopeOfName($q,$name)
+	{
+		return $q->whereName($name);
+	}
+
+
 	/**
 	 * Mendapatkan Semua ID
 	 *

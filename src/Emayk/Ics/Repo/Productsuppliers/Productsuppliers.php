@@ -33,6 +33,7 @@ class Productsuppliers extends Model {
 	protected $guarded = array();
 	protected $table = 'master_product_suppliers';
 	public static $rules = array();
+	public  $timestamps = false;
 
     public function products()
     {

@@ -72,7 +72,6 @@ class Status extends Model
 	{
 		$statuses = [static::$defaultStatus, 'Non Active'];
 		foreach ($statuses as $status) {
-
 			$st        = static::create(
 				array_merge(
 					array('info' => "Information {$status}", 'name' => $status), static::getFake()->othersAttributesArray()

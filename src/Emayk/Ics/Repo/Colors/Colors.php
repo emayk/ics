@@ -20,6 +20,7 @@
  **/
 namespace Emayk\Ics\Repo\Colors;
 
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use \Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,9 +37,65 @@ use \Illuminate\Database\Eloquent\Model;
  */
 class Colors extends Model
 {
-	protected $guarded = array();
-	protected $table = 'master_colors';
-	public static $rules = array();
+    /**
+     * @var array
+     */
+    protected $guarded = array();
+    /**
+     * @var string
+     */
+    protected $table = 'master_colors';
+    /**
+     * @var array
+     */
+    public static $rules = array();
 
 
+    /**
+     * @param bool $resultIds
+     * @param int $count
+     *
+     * @return array|string
+     */
+    public static function generateColorSample($resultIds = false, $count = 100)
+    {
+        $colors = static::getFake()->getColor()->generateColorSample($count);
+        foreach ($colors as $color) {
+            $newrecord = static::createRecord($color);
+            $ids [] = $newrecord->id;
+        }
+        return ($resultIds) ? $ids : "Generate Data " . count($ids) . " records";
+    }
+
+    /**
+     * @param int $count
+     *
+     * @return array|string
+     */
+    public static function  getIdsOrCreate($count = 10)
+    {
+        $ids = static::lists('id');
+        if (!count($ids)) {
+            $ids = static::generateColorSample(true, $count);
+        }
+        return $ids;
+    }
+
+    /**
+     * @param array $color
+     *
+     * @return Model|static
+     */
+    protected static function  createRecord(array $color)
+    {
+        return static::create($color);
+    }
+
+    /**
+     * @return AbstractGenerate
+     */
+    protected static function getFake()
+    {
+        return new AbstractGenerate();
+    }
 }

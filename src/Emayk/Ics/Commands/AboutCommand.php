@@ -1,6 +1,9 @@
 <?php namespace Emayk\Ics\Commands;
 
+use Emayk\Ics\Support\Dummy\Chat;
 use Illuminate\Console\Command;
+use Ratchet\App;
+use Ratchet\Server\EchoServer;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -21,9 +24,9 @@ class AboutCommand extends Command {
 	protected $description = 'Integrated Central System';
 
 	/**
+     *
 	 * Create a new command instance.
 	 *
-	 * @return void
 	 */
 	public function __construct()
 	{
@@ -48,9 +51,9 @@ class AboutCommand extends Command {
 		$this->info('');
 		$this->info("[".date('d M Y h:i:s')."] Create By Emay");
 		$this->info("=================================");
-				$chat = new \Emayk\Ics\Support\Dummy\Chat();
-				$echoserver = new \Ratchet\Server\EchoServer();
-				$app = new \Ratchet\App('localhost', 8080);
+				$chat = new Chat();
+				$echoserver = new EchoServer();
+				$app = new App('localhost', 8080);
 				$app->route('/chat', $chat);
 				$app->route('/echo', $echoserver, array('*'));
 				$app->run();

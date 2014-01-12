@@ -22,8 +22,16 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
+/**
+ * Class TypeSupBuy
+ *
+ * @package Emayk\Ics\Support\Dummy\Faker
+ */
 class TypeSupBuy extends AbstractGenerate {
-public  $types = array('PERORANGAN','PERUSAHAAN','LAIN-LAIN');
+	/**
+	 * @var array
+	 */
+	public  $types = array('PERORANGAN','PERUSAHAAN','LAIN-LAIN');
 
 	/**
 	 * @param $name
@@ -52,6 +60,25 @@ public  $types = array('PERORANGAN','PERUSAHAAN','LAIN-LAIN');
 			$types[] = $this->type($type);
 		}
 		return $types;
+	}
+
+	/**
+	 * Membuat type Supplier
+	 * @param $name
+	 *
+	 * @return array
+	 */
+	public function createType($name)
+	{
+		return $this->type($name);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function createDefaultType()
+	{
+		return $this->types();
 	}
 }
 

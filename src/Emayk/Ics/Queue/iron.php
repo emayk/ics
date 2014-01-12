@@ -4,14 +4,24 @@
 namespace Emayk\Ics\Queue;
 
 use Log;
-class iron {
 
-	 public function fire($job, $data)
-	 {
-			Log::info('Log message', array('context' => $data));
+/**
+ * Class iron
+ * @package Emayk\Ics\Queue
+ */
+class Iron
+{
 
-			$job->delete();
-	 }
+    /**
+     * @param $job
+     * @param $data
+     */
+    public function fire($job, $data)
+    {
+        Log::info('Log message', array('context' => $data));
+
+        $job->delete();
+    }
 
 
 } 

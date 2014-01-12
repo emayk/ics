@@ -1,6 +1,10 @@
 <?php namespace Emayk\Ics\Facades;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class Excel
+ * @package Emayk\Ics\Facades
+ */
 class Excel extends Facade {
 
     /**

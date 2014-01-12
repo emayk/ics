@@ -18,6 +18,10 @@
 
 namespace Emayk\Ics\Repo\Bank;
 
+/**
+ * Interface BankInterface
+ * @package Emayk\Ics\Repo\Bank
+ */
 interface BankInterface {
 	 /**
 		* Menampilkan Daftar Resource

@@ -22,8 +22,15 @@
 namespace Emayk\Ics\Repo\Bankaccount;
 
 
+/**
+ * Class BankaccountArray
+ * @package Emayk\Ics\Repo\Bankaccount
+ */
 class BankaccountArray implements  BankaccountInterface{
 
+    /**
+     * @var
+     */
     protected $bankaccount;
     /*function __construct() { }*/
 

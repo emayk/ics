@@ -576,20 +576,187 @@ Route::group(array('prefix' => 'test'), function () {
 	Route::group(array('prefix' => 'generate'), function () {
 		$fake = \Faker\Factory::create();
 		Route::get('/', function () {
-			return 'Blank';
+			return Response::stream(function () {
+					$sep = "<br/>";
+					echo "[ ".\Carbon\Carbon::create()." ]"."Generate Data Sample Begin";
+					echo "<br/> <hr>";
+//					User
+//					printf("[  %s  ]  %s  %s <br/>",date('d M Y'),
+//						"Generate User Admin ...Warehouse and Category Warehouse ",
+//					\Emayk\Ics\Repo\Users\Users::generateUserAdmin());
+					echo "Generate User Admin ...Warehouse and Category Warehouse";
+					echo \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
+					sleep(1);
+					echo $sep;
+//Legalitas
+					echo "Generate Legality ...";
+					echo \Emayk\Ics\Repo\Legality\Legality::generateMassiveLegality();
+					sleep(1);
+					echo $sep;
+//departement
+					echo "Generate Departement ...";
+					echo \Emayk\Ics\Repo\Dept\Dept::generateMassive();
+					echo $sep;
+					sleep(1);
+//Position
+					echo "Generate Position ...";
+					echo \Emayk\Ics\Repo\Positions\Positions::generateMassiveDataDummy(false,50);
+					echo $sep;
+					sleep(1);
+//Color
+					echo "Generate Color ";
+					echo \Emayk\Ics\Repo\Colors\Colors::generateColorSample();
+					sleep(1);
+					echo $sep;
+//Location
+					echo "Generate Default Location ";
+					echo \Emayk\Ics\Repo\Locations\Locations::createRecordCountry();
+					sleep(1);
+					echo $sep;
+//currency
+					echo "Generate Currency ";
+					echo \Emayk\Ics\Repo\Currencies\Currencies::generateMassive();
+					sleep(1);
+					echo $sep;
+//Fabric Grade
+					echo "Generate Fabric Grade...";
+					echo \Emayk\Ics\Repo\Fabricgrade\Fabricgrade::generateMassive();
+					echo $sep;
+					sleep(1);
+//					fabric type
+					echo "Generate  Fabric Type ...";
+					echo \Emayk\Ics\Repo\Fabrictype\Fabrictype::generateMassive();
+					sleep(1);
+					echo $sep;
+//Bank
+					echo "Generate  Bank ...";
+					echo \Emayk\Ics\Repo\Bank\Bank::getIdsOrCreateBanks();
+					sleep(1);
+					echo $sep;
+//					Generate Account
+					echo "Generate  Type Account Bank ...";
+					echo \Emayk\Ics\Repo\Bankaccounttype\Bankaccounttype::getDefaultBankTypeIdsOrCreate();
+					sleep(1);
+					echo $sep;
+					//					Generate Rekening Bank
+					echo "Generate   Account Bank ...";
+					echo \Emayk\Ics\Repo\Bankaccount\Bankaccount::createMassiveSampleRecord(false,100);
+					sleep(1);
+					echo $sep;
+
+//					Generate Buyer Supplier and Contact Person
+					echo "Generate  Buyers, Supplier, Contact Person ...";
+					echo \Emayk\Ics\Repo\Contactperson\Contactperson::generateMassive(false, 100);
+					sleep(1);
+					echo $sep;
+//					Generate Phones
+
+					echo "Generate Phone Buyers, Supplier ...";
+					echo \Emayk\Ics\Repo\Phones\Phones::generateMassivePhoneSample(false, 300);
+					sleep(1);
+					echo $sep;
+//					Generate Product, Detail , Stock, Stock History
+
+					echo "Generate Product , detail , Stock,stock detail ...";
+					echo \Emayk\Ics\Repo\Products\Products::generateSampleProducts();
+					sleep(1);
+					echo $sep;
+//					Generate Office
+
+
+
+
+					echo "<br/> <hr>";
+					sleep(1);
+					echo "[ ".\Carbon\Carbon::create()." ]"."Finish....,Generate Done";
+				}
+			);
 		});
+
+
+	Route::get('stockhistory',function(){
+
+		$stockId =1 ;
+		$total = \Emayk\Ics\Repo\Stockproducts\Stockproducts::whereId($stockId)->pluck('total');
+		return $total;
+
+		$stock = \Emayk\Ics\Repo\Stockproducts\Stockproducts::find($stockId);
+		$stock->total = 0;
+		$stock->save();
+
+		$stockHistories = \Emayk\Ics\Repo\Stockproducthistory\Stockproducthistory::whereStockId($stockId);
+		if ($stockHistories->count())
+		{
+			$ids = $stockHistories->lists('id');
+			foreach ($ids as $shId)
+			{
+				\Emayk\Ics\Repo\Stockproducthistory\Stockproducthistory::destroy($shId);
+			}
+			/*Update Stock Id ke 0*/
+			$stock = \Emayk\Ics\Repo\Stockproducts\Stockproducts::find($stockId);
+			$stock->total = 0;
+			$stock->save();
+		}
+
+		for ($history = 0; $history < 9; $history++) {
+			//		Buat Stock Detail/History
+			if (( $history % 2 == 0 ) || ( $history == 0 )) {
+				$typeHistory = 'in';
+			} else {
+				$typeHistory = 'out';
+			}
+
+			$firstHistory = ($history==0);
+			\Emayk\Ics\Repo\Stockproducthistory\Stockproducthistory::createHistoryStockSample($stockId,$typeHistory,$firstHistory);
+		}
+
+		return "Done ".time();
+	});
+
+		Route::get('productImage', function () {
+			return \Emayk\Ics\Repo\Bankaccount\Bankaccount::createMassiveSampleRecord(false,100);
+//			$image = new \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate();
+//			$record = $image->createRecordImage(1,'hdsahdsah');
+//			return $record;
+
+			for ($rec=90;$rec < 100;$rec++)
+			{
+					$ids [] = \Emayk\Ics\Repo\Images\Images::getIdsOrCreate($rec,'dsadhsuadhsua112'.$rec);
+			}
+			return $ids;
+		});
+		Route::get('product', function () {
+			return \Emayk\Ics\Repo\Products\Products::generateSampleProducts();
+		});
+		Route::get('unittype', function () {
+			return \Emayk\Ics\Repo\Unittypes\Unittypes::getIdsOrCreate();
+		});
+		Route::get('productcat', function () {
+
+return \Emayk\Ics\Repo\Productcategory\Productcategory::getIdsOrCreateSampelData();
+//			s(count($cat));
+//			return s($cat);
+//			echo \Emayk\Ics\Repo\Positions\Positions::generateMassiveDataDummy(false,50);
+		});
+//		Route::get('banktype', function () {
+//			return \Emayk\Ics\Repo\Bankaccounttype\Bankaccounttype::getDefaultBankTypeIdsOrCreate(true);
+//		});
+
+		Route::get('banks', function () {
+			return \Emayk\Ics\Repo\Bank\Bank::getIdsOrCreateBanks();
+		});
+
 
 		/**
 		 * Generate Colors
 		 */
+		Route::get('country', function () {
+			return \Emayk\Ics\Repo\Locations\Locations::createRecordCountry();
+		});
+
+
 		Route::get('colors', function () use ($fake) {
-			$data   = new \Emayk\Ics\Support\Dummy\Faker\Colors();
-			$colors = array();
-			for ($color = 0; $color <= 10; $color++) {
-				$colors[ ] = $data->color();
-			}
-			\Emayk\Ics\Repo\Colors\Colors::insert($colors);
-			return ' Generate Color done';
+			return \Emayk\Ics\Repo\Colors\Colors::generateColorSample();
 		});
 
 		/**
@@ -597,79 +764,14 @@ Route::group(array('prefix' => 'test'), function () {
 		 * Pastikan Record sebelumnya sudah ada
 		 */
 
-		Route::get('contacts1', function () use ($fake) {
-			return ( $countryIds = \Emayk\Ics\Repo\Locations\Locations::where('parent_id', 0)->lists('id') );
+		Route::get('phone', function () use ($fake) {
+			return \Emayk\Ics\Repo\Phones\Phones::generateMassivePhoneSample(false, 300);
+			return 'generate Phones';
 		});
 
 
 		Route::get('contacts', function () use ($fake) {
-			Input::replace(array('name' => base64_encode('emay'), 'password' => base64_encode(123)));
-
-			return Input::all();
-			return s(\Emayk\Ics\Repo\Locations\Locations::Cities(2)->get()->toArray());
-			return \Emayk\Ics\Repo\Locations\Locations::getIdsCity(2);
-//			return \Emayk\Ics\Repo\Locations\Locations::getIdsProvince(1);
-//			return \Emayk\Ics\Repo\Locations\Locations::getIdsCountry();
-
-//			return \Emayk\Ics\Repo\Suppliers\Suppliers::generateMassiveDummy();
-//			return \Emayk\Ics\Repo\Positions\Positions::generateMassiveDataDummy();
-			return \Emayk\Ics\Repo\Contactperson\Contactperson::generateMassive();
-
-
-			$pos = \Emayk\Ics\Repo\Positions\Positions::lists('id');
-			if (!count($pos)) throw new \Exception( 'Position Masih Kosong , Isi Dl' );
-			$depts = \Emayk\Ics\Repo\Dept\Dept::lists('id');
-			if (!count($depts)) throw new \Exception( 'Departement Masih Kosong , Isi Dl' );
-
-			$suppliers = \Emayk\Ics\Repo\Suppliers\Suppliers::lists('id');
-			if (!count($suppliers)) {
-				\Emayk\Ics\Repo\Suppliers\Suppliers::generateMassiveDummy();
-//				throw new \Exception( 'Supplier Masih Kosong , Isi Dl' );
-			}
-
-			$buyers = \Emayk\Ics\Repo\Buyers\Buyers::lists('id');
-			if (!count($buyers)) throw new \Exception( 'Buyer Masih Kosong , Isi Dl' );
-
-			$contactX = new \Emayk\Ics\Support\Dummy\Faker\ContactPerson();
-			$contacts = array();
-			for ($contact = 0; $contact < 2000; $contact++) {
-				$pos_id      = $fake->randomElement($pos);
-				$dept_id     = $fake->randomElement($depts);
-				$supplier_id = $fake->randomElement($suppliers);
-				$buyer_id    = $fake->randomElement($buyers);
-
-				$parents = array(
-					array(
-						'id'   => $buyer_id,
-						'type' => '\Emayk\Ics\Repo\Buyers\Buyers'
-					),
-					array(
-						'id'   => $supplier_id,
-						'type' => '\Emayk\Ics\Repo\Suppliers\Suppliers'
-					)
-				);
-
-				$c           = $parents[ rand(0, 1) ];
-				$parent_id   = $c[ 'id' ];
-				$parent_type = $c[ 'type' ];
-
-				$cp = \Emayk\Ics\Repo\Contactperson\Contactperson::create(
-					$contactX->contact($pos_id, $dept_id, $parent_id, $parent_type)
-				);
-				Log::debug(memory_get_usage(true), array('id' => $cp->id, 'proses ke ' => $contact));
-
-				$contacts[ ] = $contactX->contact($pos_id, $dept_id, $parent_id, $parent_type);
-			}
-
-			/**
-			 * Jika Menggunakan Bulk Method, disimpan dl pada variable contacts
-			 * baru di insert ke db
-			 * pastikan config my.cnf disesuaikan
-			 */
-//			\Emayk\Ics\Repo\Contactperson\Contactperson::insert($contacts);
-
-			return 'Done Generate with ' . count($contacts) . ' data';
-
+			return \Emayk\Ics\Repo\Contactperson\Contactperson::generateMassive(false, 100);
 		});
 
 		/**
@@ -708,14 +810,11 @@ Route::group(array('prefix' => 'test'), function () {
 		});
 
 		Route::get('useradmin', function () {
-//			return \Emayk\Ics\Repo\Locations\Locations::getIdsDefaultCountryOrCreate();
-//			return \Emayk\Ics\Repo\Positions\Positions::where('name', 'System')->pluck('id');
 			$user = \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
-			return s($user);
+			return ( $user ) ? "Done {$user->username}" : "Failed";
 		});
 
 		Route::get('users', function () {
-//			$user = \Emayk\Ics\Repo\Users\Users::create();
 			$fake = new \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate();
 			return $fake->getFake()->firstName;
 		});

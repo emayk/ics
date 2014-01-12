@@ -1,6 +1,10 @@
 <?php namespace Emayk\Ics\Facades;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Class ExtjsDirect
+ * @package Emayk\Ics\Facades
+ */
 class ExtjsDirect extends Facade {
 
     /**

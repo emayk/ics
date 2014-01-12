@@ -16,7 +16,7 @@
 * @author Emay Komarudin
 **/
 
-namespace Emay\Ics\Support\Seed;
+namespace Emayk\Ics\Support\Seed;
 
 class BanksTableSeeder extends Seeder
 {

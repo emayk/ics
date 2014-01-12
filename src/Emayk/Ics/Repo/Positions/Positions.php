@@ -21,7 +21,6 @@
 namespace Emayk\Ics\Repo\Positions;
 
 use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
-use Emayk\Ics\Support\Dummy\Faker\Position;
 use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Positions\Positions'
@@ -110,16 +109,33 @@ class Positions extends Model
 	 */
 	public static function generateMassiveDataDummy($resultIds = false, $count = 10)
 	{
-		$dataDummy = new Position();
-		$positions = $dataDummy->generatePositions($count);
+		$positions = static::getFake()->getPosition()->generatePositions($count);
+		$ids = array();
+		if (!static::hasDefault()) { $ids [] = static::getIdDefaultPositionOrCreate(); }
 		foreach ($positions as $pos) {
 			$p       = self::create($pos);
 			$Ids [ ] = $p->id;
 		}
+
 		\Log::debug('Location Masih Kosong , Sudah diisi ' . count($Ids));
 		return ( $resultIds ) ? $Ids : "Generate Position with " . count($Ids) . " records";
 	}
 
+	/**
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	public static  function getIdsPositionOrCreateMassiveDummy($count = 10)
+	{
+		$posIds = static::lists('id');
+		if (!count($posIds)) {
+			$default = array(static::getIdDefaultPositionOrCreate() );
+			$newRecords = Positions::generateMassiveDataDummy(true,$count);
+			$posIds = array_merge($default,$newRecords);
+		};
+		return $posIds;
+	}
 	/**
 	 * @return array
 	 */
@@ -128,6 +144,13 @@ class Positions extends Model
 		return static::getFake()->getPosition()->createPosition(static::$defaultName);
 	}
 
+	/**
+	 * @return bool
+	 */
+	protected static function  hasDefault()
+{
+	return (static::Name(static::$defaultName)->count() > 0);
+}
 	/**
 	 * @return mixed
 	 */

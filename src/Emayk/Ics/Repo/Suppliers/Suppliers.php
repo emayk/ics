@@ -27,6 +27,7 @@ use Emayk\Ics\Repo\Locations\Locations;
 use Emayk\Ics\Repo\Producttype\Producttype;
 use Emayk\Ics\Repo\Status\Status;
 use Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Emayk\Ics\Support\Dummy\Faker\Suppliers as SuppliersFaker;
 use Illuminate\Database\Eloquent\Model;
 use Log;
@@ -64,114 +65,120 @@ use Log;
  */
 class Suppliers extends Model
 {
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_suppliers';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function products()
 	{
 		return $this->hasMany('Emayk\Ics\Repo\Products\Products');
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function type()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers', 'tipe_id');
 	}
 
-	public static function generateMassiveDummy($resultsIds = false, $count = 100)
+	/**
+	 * @return AbstractGenerate
+	 */
+	public static function getFake()
 	{
-		/**
-		 * Buat Data fake Instance
-		 */
-		$fake = new SuppliersFaker();
-		/**
-		 * Cari Type Supplier dan Buyer
-		 */
-		$listtypesId[ ] = Typesuppliersbuyers::getIdsOrGenerateDummydata();
-		/**
-		 * Cari Legalitas
-		 */
+		return new AbstractGenerate();
+	}
+
+	/**
+	 * @param bool $resultsIds
+	 * @param int  $count
+	 *
+	 * @return array|string
+	 */
+	protected  static function generateMassiveDummy($resultsIds = false, $count = 100)
+	{
+		/** Buat Data fake Instance */
+		$fake = static::getFake()->getSupplier();
+
+		/** Cari Legalitas */
 		$listLegalitiesId = Legality::getIdsOrGenerateDummyData(100);
-		/**
-		 * Status
-		 */
+		/** Status */
+
 		$listStatusId = Status::getIdsOrCreate();
+
+		/*Product Type*/
 		$typeProductIds = Producttype::getIdsOrCreateDummy(100);
 
-		/**
-		 * Locations
-		 */
-		$locationsIds = Locations::lists('id');
-		if (!count($locationsIds)) {
-			/**
-			 * Jika Tidak ada, Buat
-			 */
-			$locationsIds = Locations::generateMassiveLocation(true);
-			$countryIds   = $locationsIds[ 'country_ids' ];
-			$provinceIds  = $locationsIds[ 'province_ids' ];
-			$cityIds      = $locationsIds[ 'city_ids' ];
-		} else {
-			/**
-			 * Jika Lokasi Ada, Telusuri Country
-			 */
-			$countryIds = Locations::where('parent_id', 0)->lists('id');
-			if (!count($countryIds)) {
-				/**
-				 * Jika Country Tidak ada,
-				 * Buat Masing2 Entry (Province , City)
-				 */
-				$country  = Locations::createLocation('Indonesia', 0, 1);
-				$province = Locations::createLocation('Jawa Barat', $country->id, 2);
-				$city     = Locations::createLocation('Bandung', $province->id, 3);
-				/**
-				 * Masukan List Ids yang sudah dibuat ke masing2 variable
-				 */
-				$countryIds  = array($country->id);
-				$provinceIds = array($province->id);
-				$cityIds     = array($city->id);
-			} else {
-				/**
-				 * Jika Negara Sudah Ada
-				 * Lakukan Extract Info Province dan Kota
-				 */
-				foreach ($countryIds as $cId)
-					/**
-					 * Dapatkan Info Province , Jika Tidak ada Throw
-					 */
-					$provinceIds = Locations::where('parent_id', $cId)->lists('id');
-				if (!count($provinceIds)) throw new \Exception( 'Province None' );
-				foreach ($provinceIds as $pId) {
-					$cityIds = Locations::where('parent_id', $pId)->lists('id');
-				}
-			}
-		}
+		/*Type Supplier*/
+		$typeIdsSupBuy =  Typesuppliersbuyers::generateDummyData(true);
+//		return $typeIdsSupBuy;
+		/** Locations */
+		$countryId = Locations::getIdsDefaultCountryOrCreate();
 
-		$countryId  = $countryIds[ 0 ];
-		$provinceId = $provinceIds[ 0 ];
-		$cityId     = $cityIds[ 0 ];
+		$provinceId = Locations::getIdsDefaultProvinceOrCreate($countryId);
+
+		$cityId = Locations::getIdsDefaultCityOrCreate($provinceId);
 
 		$suppliers = $fake->generateSuppliers(
-			$count, $listtypesId, $typeProductIds, $listLegalitiesId,
+			$count, $typeIdsSupBuy, $typeProductIds, $listLegalitiesId,
 			$countryId, $provinceId, $cityId, $listStatusId);
 
 		foreach ($suppliers as $sup) {
-			$s          = self::create($sup);
+			$s          = static::create($sup);
 			$supIds [ ] = $s->id;
 		}
+
+
 		Log::debug('Supplier Masih Kosong , Sudah diisi ' . count($supIds));
 		return ( $resultsIds ) ? $supIds : "Generate " . count($supIds) . " records";
 	}
 
 	/**
-	 * Mendapatkan Id Type Supplier
+	 * @param bool $resultIds
+	 * @param int  $count
 	 *
-	 * @return bool | array
+	 * @return array|string
 	 */
-	protected static function  getTypesId()
+	public  static function generateRecordsFromDummy($resultIds = false,$count = 100)
 	{
-		$a = new self();
-		return ( !$a->count() ) ? false : $a->type()->lists('id');
+		return static::generateMassiveDummy($resultIds,$count);
+	}
+
+	/**
+	 * @param int $count
+	 *
+	 * @return array|string
+	 */
+	public static  function getRecordIdsOrCreate($count = 10)
+	{
+		$recordIds = static::getListIds();
+		if (!count($recordIds))
+		{
+			/*Create*/
+			$recordIds = static::generateMassiveDummy(true,$count);
+		};
+		return $recordIds;
 	}
 
 
+	/**
+	 * @return mixed
+	 */
+	protected static function getListIds()
+	{
+		return static::lists('id');
+	}
 }

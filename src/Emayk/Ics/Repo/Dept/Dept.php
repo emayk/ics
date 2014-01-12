@@ -23,8 +23,8 @@ namespace Emayk\Ics\Repo\Dept;
 
 
 use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
-use Emayk\Ics\Support\Dummy\Faker\Departement;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Dept\Dept'
@@ -86,18 +86,28 @@ class Dept extends  Model{
 	public static function generateMassive($resultIds = false,$count = 100)
 	{
 		if (self::count() > 1000) throw new \Exception( 'Departement Sudah Lebih dari 1000 Record,Tidak Perlu Tambah Lagi' );
-
-		$depts     = array();
-		$fakeDept = new Departement();
-
 		for ($dep = 1; $dep <= $count; $dep++) {
-			$d = self::create($fakeDept->dept());
+			$d = self::create(static::getFake()->getDept()->dept());
 			$depts [] = $d->id;
 		}
 		Log::debug('Departement Masih Kosong , Sudah diisi '.count($depts) );
 		return ($resultIds) ? $depts : "Generate Departement with ". count($depts) . " records";
 	}
 
+	/**
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	public static function getIdsOrCreateMassiveDummy($count = 10)
+	{
+		$deptIds = static::lists('id');
+		if (!count($deptIds)) {
+			$deptIds = array_merge(array(static::getIdDefaultDepartementOrCreate()),
+				static::generateMassive(true,$count) );
+		}
+		return $deptIds;
+	}
 	/**
 	 * @return AbstractGenerate
 	 */

@@ -239,7 +239,8 @@ class BuyersEloquent implements BuyersInterface
 		$db->typeprod_id     = Input::get("typeprod_id");
 		$db->province_id     = Input::get("province_id");
 		$db->legality_id     = Input::get("legality_id");
-		$db->city_id         = Input::get("city_id");
+        /** @noinspection PhpUndefinedFieldInspection */
+        $db->city_id         = Input::get("city_id");
 		$db->country_id      = Input::get("country_id");
 		$db->updated_at      = new Carbon();
 		return ( $db->save() )

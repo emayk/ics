@@ -19,77 +19,81 @@ namespace Emayk\Ics\Repo\Buyers;
  **/
 
 
+/**
+ * Interface BuyersInterface
+ * @package Emayk\Ics\Repo\Buyers
+ */
 interface BuyersInterface
 {
-	/**
-	 * Menampilkan Daftar Resource
-	 *
-	 * @return Response
-	 */
-	public function all();
+    /**
+     * Menampilkan Daftar Resource
+     *
+     * @return Response
+     */
+    public function all();
 
-	/**
-	 * Menyimpan Resource Baru
-	 *
-	 * @return Response
-	 */
-	public function store();
+    /**
+     * Menyimpan Resource Baru
+     *
+     * @return Response
+     */
+    public function store();
 
-	/**
-	 * Menampilkan Form New
-	 *
-	 * @return Response
-	 */
-	public function create();
+    /**
+     * Menampilkan Form New
+     *
+     * @return Response
+     */
+    public function create();
 
-	/**
-	 * Menampilkan Resource
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function show($id);
+    /**
+     * Menampilkan Resource
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function show($id);
 
-	/**
-	 * Menampilkan Data Untuk di edit
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function edit($id);
+    /**
+     * Menampilkan Data Untuk di edit
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function edit($id);
 
-	/**
-	 * Update Resource Tertentu dari Storage
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function update($id);
+    /**
+     * Update Resource Tertentu dari Storage
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function update($id);
 
-	/**
-	 * Menghapus Spesifikasi Resource dari Storage
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function delete($id);
+    /**
+     * Menghapus Spesifikasi Resource dari Storage
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function delete($id);
 
-	/**
-	 * Mencari Record berdasarkan Primary key
-	 *
-	 * @param  int $id
-	 *
-	 * @return Response
-	 */
-	public function find($id);
+    /**
+     * Mencari Record berdasarkan Primary key
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function find($id);
 
-	/**
-	 * Remove from Storage
-	 *
-	 */
-	public function destroy($id);
+    /**
+     * Remove from Storage
+     *
+     */
+    public function destroy($id);
 }

@@ -22,11 +22,19 @@
 namespace Emayk\Ics\Support\Dummy\Faker;
 
 
+/**
+ * Class Colors
+ *
+ * @package Emayk\Ics\Support\Dummy\Faker
+ */
 class Colors extends AbstractGenerate{
 
-	public function color()
+	/**
+	 * @return array
+	 */
+	protected  function color()
 	{
-		$color = $this->fake->unique()->colorName;
+		$color = $this->getFake()->unique()->colorName.'_sample_'.time();
 		return array_merge(
 			array(
 				'name' => $color,
@@ -36,7 +44,19 @@ class Colors extends AbstractGenerate{
 		);
 	}
 
-
+	/**
+	 * @param int $count
+	 *
+	 * @return array
+	 */
+	public function generateColorSample($count = 10)
+	{
+		for ($record=0;$record<$count;$record++)
+		{
+			$colors[] = $this->color();
+		}
+		return $colors;
+	}
 }
 
 /** 1/8/14 **/ 

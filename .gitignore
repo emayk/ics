@@ -1,5 +1,11 @@
 /vendor
+/public/uploads
 /.idea
+/spec
+/build
+_ide_helper.php
+*.todo
 composer.phar
 composer.lock
 .DS_Store
+tspec.sh
