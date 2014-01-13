@@ -62,6 +62,7 @@ use Log;
  * @property \Carbon\Carbon                                                                    $created_at
  * @property \Carbon\Carbon                                                                    $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Products\Products[] $products
+ * @property-read \Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers $type
  */
 class Suppliers extends Model
 {

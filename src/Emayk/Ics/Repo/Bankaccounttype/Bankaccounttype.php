@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon                                                                          $created_at
  * @property \Carbon\Carbon                                                                          $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Bankaccount\Bankaccount[] $accounts
+ * @method static Emayk\Ics\Repo\Bankaccounttype\Bankaccounttype name($name) 
  */
 class Bankaccounttype extends Model
 {

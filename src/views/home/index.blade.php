@@ -44,19 +44,20 @@
 		var user = {
 			id: "{{ (Auth::check()) ? Auth::user()->id : 0 }}",
 			as: "{{ (Auth::check()) ? Auth::user()->username : 'Anonymous' }}",
-			fn: "{{ (Auth::check()) ? Auth::user()->fullname : 'Anonymous' }}",
+			fn: "{{ (Auth::check()) ? Auth::user()->fullname : 'Anonymous' }}"
 		};
 		window.stats = {};
 	</script>
 
-	<!--    <script type="text/javascript" src="{{ Icsview::asset('extjs/ext-all.js') }} "></script>-->
-	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-dev.js') }} "></script>
+	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-debug-w-comments.js') }} "></script>
+<!--	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-dev.js') }} "></script>-->
 
 	<script src="{{ Icsview::asset('translations/locale.js')}}"></script>
 	<script type="text/javascript">var app_session_Expire = 30;</script>
 
 </head>
 <script type="text/javascript" src="{{Icsview::asset('frontend/app/function.js')}}"></script>
+<script type="text/javascript" src="{{Icsview::asset('frontend/config.js')}}"></script>
 <script type="text/javascript" src="{{ Icsview::asset('frontend/app.js')}}"></script>
 <body>
 </body>

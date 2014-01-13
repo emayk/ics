@@ -1,34 +1,10 @@
+
 var fromLocal = function () {
-//    function base_url() {
-//        return window.location.protocol + '//' + window.location.host + '/';
-//    }
-//
-//    return (base_url() == 'http://localhost/');
     return true;
+//    return ((window.location.protocol + '//' + window.location.host + '/') === 'http://localhost:9090');
 };
 
-Ext.BLANK_IMAGE_URL = appjs + '/frontend/images/s.gif';
-/*==========  Setup Namespace  ==========*/
-Ext.namespace('App').config = {
-    /*==========  Nama Program  ==========*/
-    APP_NAME: 'Aplikasi Perkantoran',
-    /*==========  URL API  ==========*/
-    APP_URL_API: api_url,
-    APP_PAGING_PERPAGE: 15,
-    APP_DEBUG: true,
-    APP_TOKEN: token,
-    APP_SessionExpire: 1,
-    LicenseTo: license_to,
-    /*==========  User ID   ==========*/
-    APP_UID: 1,
-    LOGIN_NAME: login_as,
-    islogin: false,
-    url_logout: appjs + '/logout.php'
-};
-/*==========  Setup Config  ==========*/
-Ext.Loader.setConfig(
-    {  enabled: true, disableCaching: true, paths: { Ext: extjsbase + '/src' } }
-);
+
 /**
  *
  * Application Core
@@ -36,37 +12,43 @@ Ext.Loader.setConfig(
  **/
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-var requires, controllers;
+//var requires, controllers;
 if (fromLocal()) {
-    requires = [];
+//    requires = [];
     controllers = [
-        //core
+    /**
+     * Core
+     */
         'cLogin',
         'TranslationManager',
-        'cMenu',
-        // end core
-
-
-        'cOrders',
-        'wizard.Order',
-
-        'transaction.ctransaction', /*cl2-0*/
-        // 'cImport',
-        // 'master.ctlProducts',
-        'master.ctlSupplier',
-//    'wizard.Supplier',
-
-//        Done
-        'master.Departement',
+        'cMenu','master.Departement',
+    /**
+     * Master
+     *
+     */
+//        'master.Departement'
         'master.Legalitas',
         'master.Banks',
         'master.Color',
         'master.Currency',
         'master.Gradekain',
         'master.Gudang',
+    /**
+     * Order
+     */
+        'cOrders',
+        'wizard.Order',
+
+        'transaction.ctransaction', //*cl2-0*//*
+        // 'cImport',
+        // 'master.ctlProducts',
+        'master.ctlSupplier',
+    'wizard.Supplier',
+
 
         'master.ctlProducts',
         'ctlSettingProgram'
+
         /*Working ON Approval Order*/
     ];
 
@@ -115,6 +97,7 @@ if (fromLocal()) {
 
     ];
 }
+
 Ext.application({
     requires: [
         // 'App.util.MD5',
@@ -130,10 +113,14 @@ Ext.application({
     ],
     name: 'App',
     appFolder: appjs + '/frontend/app',
-//    file:///Volumes/Data/projects/emay/public/packages/emayk/ics/frontend/app/
     controllers: controllers,
+//    controllers: [
+//        'cLogin',
+//        'TranslationManager',
+//        'cMenu','master.Departement'
+//    ],
     autoCreateViewport: false,
-    display_splash: false,
+    display_splash: true,
 
     init: function () {
         Ext.tip.QuickTipManager.init();
@@ -141,27 +128,33 @@ Ext.application({
             this.app_init();
         }
     },
+    splashscreen: null,
     app_init: function () {
-        splashscreen = Ext.getBody().mask('Loading application ' + App.config.APP_NAME, 'splashscreen');
-        splashscreen.addCls('splashscreen');
+        this.splashscreen = Ext.getBody().mask('Loading application ' + App.config.APP_NAME, 'splashscreen');
+        this.splashscreen.addCls('splashscreen');
         Ext.DomHelper.insertFirst(
             Ext.query('.x-mask-msg')[0], {cls: 'x-splash-icon'}
         );
     },
 
     app_launch: function () {
+        var me = this;
         if (this.display_splash) {
             var task = new Ext.util.DelayedTask(function () {
-                splashscreen.fadeOut({duration: 1000, remove: true });
-                splashscreen.next().fadeOut({duration: 1000, remove: true, listeners: {afteranimate: function (el, startTime, eOpts) {
+                me.splashscreen.fadeOut({duration: 1000, remove: true });
+                me.splashscreen.next().fadeOut({duration: 1000, remove: true, listeners: {afteranimate: function (el, startTime, eOpts) {
+
                     if (!is_login()) {
                         Ext.widget('login');
+                        log('im here 1'+new Date());
                     } else {
                         Ext.create('App.view.Viewport');
                         App.util.SessionMonitor.start();
+                        log('im here'+new Date());
                     }
                 } } });
                 log('application Launch Loaded');
+
             });
             task.delay((!isDebug()) ? 5000 : 500);
         } else {

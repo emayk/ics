@@ -3,11 +3,11 @@ Ext.define('App.view.layout.Logo', {
     alias: 'widget.Logo',
     width: '50%',
     height: 100,
-    title: ics.appname ,
+    title: App.config.APP_NAME ,
 
-    src :  assets+'/assets/img/logo.jpg',
+    src :  App.config.logoImg,
     layout: 'fit',
     initComponent : function() {
         this.callParent(arguments);
-    },
+    }
 });

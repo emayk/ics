@@ -219,8 +219,10 @@ function requestMessageProcessor(proxy, response) {
 function winHelp(code) {
     App.util.Util.winHelp(code);
 }
+
+
 function getApiUrl() {
-    return api_url;
+    return  api_url;
 }
 function navigate(panel, direction) {
     var layout = panel.getLayout();
@@ -344,6 +346,15 @@ function gettoken() {
 function licence_to() {
     var lt = (ics.license != '') ? ics.license : ' Unlicensed';
     return 'License To : ' + lt;
+};
+
+function generate_transaction_list()
+{
+
+}
+function generate_trx_list()
+{
+
 };
 function license_to() {
     return licence_to()

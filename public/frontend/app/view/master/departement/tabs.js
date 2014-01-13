@@ -16,4 +16,25 @@
  *
  **/
 
+Ext.define('App.view.master.departement.tabs',{
+   extend: 'Ext.panel.Panel',
+   alias : 'widget.masterdepartementtabs',
+    items:[
+        {
+            xtype : 'panel',
+            title: 'Grid Departement'
+//            xtype: 'departementGridList'
+        }
+    ],
+//    bbar: [
+//        {
+//            text: 'Help',
+//            iconCls : 'Help',
+//            handler: function(){
+//                msgError('Not Implement');
+//            }
+//        }
+//    ]
+});
+
 

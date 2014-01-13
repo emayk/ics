@@ -20,6 +20,16 @@
 **/
 namespace Emayk\Ics\Repo\Statsproduct;
 use Illuminate\Database\Eloquent\Model;
+/**
+ * An Eloquent Model: 'Emayk\Ics\Repo\Statsproduct\Statsproduct'
+ *
+ * @property integer $id
+ * @property integer $product_id
+ * @property integer $count_stock
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Emayk\Ics\Repo\Products\Products $products
+ */
 class Statsproduct extends Model {
 	protected $guarded = array();
 	protected $table = 'stats_products';

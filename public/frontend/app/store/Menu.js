@@ -10,7 +10,7 @@ Ext.define('App.store.Menu', {
     proxy: {
         type: 'rest',
         // url: 'php/menu.php',
-        url: api_url + '/menu',
+        url: getApiUrl() + '/menu',
 
         reader: {
             type: 'json',

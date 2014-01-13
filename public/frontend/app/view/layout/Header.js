@@ -9,7 +9,7 @@ Ext.define('App.view.layout.Header', {
         {
             xtype: 'label',
             html: '<div id="titleHeader">'+
-            getAppName() +'<span style="font-size:12px;"></span></div>'
+            App.config.APP_NAME +'<span style="font-size:12px;"></span></div>'
         },
         {
             xtype: 'tbfill'
@@ -19,8 +19,7 @@ Ext.define('App.view.layout.Header', {
             xtype: 'button',
             text: translations.logout,
             itemId: 'logout',
-            iconCls: 'logout',
-            // handler : logout
+            iconCls: 'logout'
         }
     ]
 });

@@ -40,6 +40,7 @@ use Log;
  * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $users
  * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $buyers
  * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $suppliers
+ * @method static Emayk\Ics\Repo\Dept\Dept name($name) 
  */
 class Dept extends  Model{
 	/**

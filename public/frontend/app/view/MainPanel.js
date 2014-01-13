@@ -1,14 +1,14 @@
-var itemsMainPanel;
+
 if (fromLocal()) {
     // log('Hiding West Menu');
 //    var m = myq('mainmenu');
 //    if (typeof m !=='undefined') m.toggleCollapse();
-    log('Im From Local Just Create for Development Only');
+//    log('Im From Local Just Create for Development Only');
     itemsMainPanel = [
-//        { xtype : 'productaddstock', title: 'Home', iconCls:'home', closable:false},
+        { xtype : 'container', title: 'Home', iconCls:'home', closable:false},
 //        { xtype : 'container', title: 'Home', iconCls:'home', closable:false},
 //        { xtype:'settingstab',iconCls: 'home',title: 'Work Settings',closable : false},
-        { xtype: 'productstab', iconCls: 'home', title: 'Working On 2', closable: false}
+//        { xtype: 'productstab', iconCls: 'home', title: 'Working On 2', closable: false}
 //        { xtype:'tabProducts',iconCls: 'home',title: 'Working On 2',closable : false},
 
 //        { xtype:'gudangGridList',iconCls: 'home',title: 'Working On',closable : false},
@@ -65,11 +65,14 @@ if (fromLocal()) {
 }
 
 Ext.define('App.view.MainPanel', {
-    extend: 'Ext.tab.Panel',
-    requires: [
-        'App.view.trx.order.TabOrder'],
+    extend: "Ext.tab.Panel",
+//    requires: [
+//        'App.view.trx.order.TabOrder'],
     alias: 'widget.mainpanel',
     activeTab: 0,
     plain: true,
     items: itemsMainPanel
+//    items: [
+//        { xtype : 'container', title: 'Home', iconCls:'home', closable:false}
+//    ]
 });

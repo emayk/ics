@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon                                                                      $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Suppliers\Suppliers[] $suppliers
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Buyers\Buyers[]       $buyers
+ * @method static Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers ofName($name) 
  */
 class Typesuppliersbuyers extends Model
 {

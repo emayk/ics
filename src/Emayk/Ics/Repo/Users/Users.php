@@ -51,6 +51,7 @@ use \Illuminate\Auth\Reminders\RemindableInterface;
  * @property integer        $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @method static Emayk\Ics\Repo\Users\Users username($name) 
  */
 
 class Users extends Model implements UserInterface, RemindableInterface

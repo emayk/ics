@@ -8,13 +8,13 @@ Ext.define('App.view.menu.Accordion', {
     iconCls: 'sitemap',
     title: 'Menu',
       defaults: {
-       stateEvents: ["collapse","expand"]
-        ,getState:function() {return { collapsed:this.collapsed}; }
+       stateEvents: ["collapse","expand"],
+       getState:function() {return { collapsed:this.collapsed}; }
     },
     tools:[{
     type:'refresh',
     tooltip: 'Refresh Menu',
-    itemId: 'refresh',
+    itemId: 'refresh'
     // // hidden:true,
     // handler: function(event, toolEl, panelHeader) {
     //     // refresh logic

@@ -20,6 +20,24 @@
 **/
 namespace Emayk\Ics\Repo\Login;
 use Illuminate\Database\Eloquent\Model;
+/**
+ * An Eloquent Model: 'Emayk\Ics\Repo\Login\Login'
+ *
+ * @property integer $id
+ * @property string $username
+ * @property string $fullname
+ * @property string $email
+ * @property integer $pos_id
+ * @property integer $dept_id
+ * @property integer $warehouse_id
+ * @property integer $status_id
+ * @property string $password
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ */
 class Login extends Model {
 	protected $guarded = array();
 	protected $table = 'master_users';

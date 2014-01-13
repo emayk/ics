@@ -44,8 +44,8 @@ Ext.define('App.view.Viewport', {
 
     {
         /*==========  Bawah  ==========*/
-        region: 'south', border: false, items: [{xtype : 'appfooter'}, ]
-    },
+        region: 'south', border: false, items: [{xtype : 'appfooter'} ]
+    }
 
     // {
     //     /*==========  Kanan  ==========*/

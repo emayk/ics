@@ -41,6 +41,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer        $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property integer $total
+ * @property-read \ $stock
  */
 class Stockproducthistory extends Model
 {
@@ -80,11 +82,11 @@ class Stockproducthistory extends Model
 	 *
 	 * @return int|mixed
 	 */
-	protected static function createHistoryStockSample($stockId, $typeHistory = 'in', $firstHistory = true)
+	public static function createHistoryStockSample($stockId, $typeHistory = 'in', $firstHistory = true)
 	{
 		$rollNumber   = 'Stock-' . $stockId . rand(1, 1000); //Stockproducts::whereOnday($stockId);
 		$recordStock  = Stockproducts::findOrFail($stockId);
-		$total_active = $recordStock->total;
+		$totalActive = $recordStock->total;
 		$typeHistory  = strtolower($typeHistory);
 
 		$qtyIn  = rand(1, 200);
@@ -93,9 +95,9 @@ class Stockproducthistory extends Model
 		if (!in_array($typeHistory, array('in', 'out'))) $typeHistory = 'in';
 
 		/*Jika Qty Keluar Lebih besar dari Total Yang ada */
-		if ($total_active < $qtyOut) $qtyOut = $total_active;
+		if ($totalActive < $qtyOut) $qtyOut = $totalActive;
 		/*Jika Total 0 Maka Tidak Bisa mengeluarkan Barang*/
-		if ($total_active == 0) $qtyOut = 0;
+		if ($totalActive == 0) $qtyOut = 0;
 
 		if ($firstHistory) {
 			$qtyOut = 0;
@@ -104,19 +106,19 @@ class Stockproducthistory extends Model
 			$typeHistory = 'in';
 		} else {
 			/*Rumus => total = (totalsebelumny)+(qtyIn-QtyOut)  */
-			$total = ( $total_active + ( $qtyIn - $qtyOut ) );
+			$total = ( $totalActive + ( $qtyIn - $qtyOut ) );
 		}
 
 
 		if ($typeHistory == 'in') {
 			/*Jika History Input/Terima Barang*/
 			$qtyOut     = 0;
-			$qtyBalance = $total_active + $qtyIn;
+			$qtyBalance = $totalActive + $qtyIn;
 		} else {
 			/*Jika Keluar Barang */
 			/* dan akan mengurang balance */
 			$qtyIn      = 0;
-			$qtyBalance = $total_active + ( $qtyIn - $qtyOut );
+			$qtyBalance = $totalActive + ( $qtyIn - $qtyOut );
 		}
 
 		$recordHistoryStock = static::create(

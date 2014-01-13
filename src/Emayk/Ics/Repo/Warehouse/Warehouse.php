@@ -41,6 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Emayk\Ics\Repo\Countries\Countries                                                    $city
  * @property-read Warehousecategory                                                                      $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Stockproducts\Stockproducts[] $stocks
+ * @method static Emayk\Ics\Repo\Warehouse\Warehouse name($name) 
  */
 class Warehouse extends Model
 {

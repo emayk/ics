@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer        $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Productdetails\Productdetails[] $productdetail
  */
 class Fabricgrade extends Model
 {

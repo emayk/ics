@@ -818,6 +818,15 @@ return \Emayk\Ics\Repo\Productcategory\Productcategory::getIdsOrCreateSampelData
 			$fake = new \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate();
 			return $fake->getFake()->firstName;
 		});
+
+
+        Route::get('app.js',function(){
+            $test = time();
+            $contents = View::make('ics::extjs.app',compact('test'));
+            $response = Response::make($contents);
+            $response->header('Content-Type','application/javascript');
+            return $response;
+        });
 // End Genereate Section
 	});
 

@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer        $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @method static Emayk\Ics\Repo\Legality\Legality name($name) 
  */
 class Legality extends Model
 {

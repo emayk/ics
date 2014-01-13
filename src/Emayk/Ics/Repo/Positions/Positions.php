@@ -40,6 +40,15 @@ use \Auth;
  * Class Positions
  *
  * @package Emayk\Ics\Repo\Positions
+ * @property integer $id
+ * @property string $name
+ * @property string $info
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @method static Emayk\Ics\Repo\Positions\Positions name($name) 
  */
 class Positions extends Model
 {

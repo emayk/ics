@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon                                                                              $created_at
  * @property \Carbon\Carbon                                                                              $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Stockproducts\Stockproducts[] $stocks
+ * @method static Emayk\Ics\Repo\Warehousecategory\Warehousecategory name($name) 
  */
 class Warehousecategory extends Model
 {

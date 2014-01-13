@@ -82,7 +82,8 @@ class Bank extends Eloquent
             $created = true;
         };
         $total = count($ids);
-        $msg = ($created) ? "Generate Record with {$total} records"
+        $msg = ($created)
+            ? "Generate Record with {$total} records"
             : "found record {$total} records";
 
         return ($resultIds) ? $ids : $msg;
