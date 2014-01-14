@@ -9,7 +9,7 @@ Ext.define('App.controller.master.Departement', {
     extend: 'Ext.app.Controller',
     views: [
         'App.view.master.departement.List',
-//        'App.view.master.departement.tabs'
+        'App.view.master.departement.tabs'
     ],
     models: ['App.model.Departement'],
     stores: ['App.store.Departements'],
@@ -17,11 +17,7 @@ Ext.define('App.controller.master.Departement', {
         {
             ref: 'grid',
             selector: 'departementGridList'
-        },
-//        {
-//            ref: "tabs",
-//            selector: "departementtabs"
-//        }
+        }
     ],
 
     init: function () {
@@ -33,6 +29,9 @@ Ext.define('App.controller.master.Departement', {
                 edit: function (editor, object) {
                     object.store.save();
                     this.getGrid().getStore().load();
+                },
+                render : function(grid){
+                    grid.getStore().load();
                 },
                 /**
                  * Proses Select Change Departement
@@ -76,6 +75,5 @@ Ext.define('App.controller.master.Departement', {
                 }
             }
         });
-    log('departement');
     }
 });

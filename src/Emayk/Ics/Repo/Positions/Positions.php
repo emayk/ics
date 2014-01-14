@@ -37,9 +37,8 @@ use Illuminate\Database\Eloquent\Model;
 use \Auth;
 
 /**
- * Class Positions
+ * An Eloquent Model: 'Emayk\Ics\Repo\Positions\Positions'
  *
- * @package Emayk\Ics\Repo\Positions
  * @property integer $id
  * @property string $name
  * @property string $info

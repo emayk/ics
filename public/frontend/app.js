@@ -21,33 +21,34 @@ if (fromLocal()) {
      */
         'cLogin',
         'TranslationManager',
-        'cMenu','master.Departement',
+        'cMenu',
     /**
      * Master
      *
      */
-//        'master.Departement'
+        'master.Departement',
         'master.Legalitas',
         'master.Banks',
         'master.Color',
-        'master.Currency',
-        'master.Gradekain',
-        'master.Gudang',
+        'master.Countries'
+//        'master.Currency',
+//        'master.Gradekain',
+//        'master.Gudang',
     /**
      * Order
      */
-        'cOrders',
-        'wizard.Order',
+//        'cOrders',
+//        'wizard.Order',
 
-        'transaction.ctransaction', //*cl2-0*//*
+//        'transaction.ctransaction', //*cl2-0*//*
         // 'cImport',
         // 'master.ctlProducts',
-        'master.ctlSupplier',
-    'wizard.Supplier',
+//        'master.ctlSupplier',
+//    'wizard.Supplier',
 
 
-        'master.ctlProducts',
-        'ctlSettingProgram'
+//        'master.ctlProducts',
+//        'ctlSettingProgram'
 
         /*Working ON Approval Order*/
     ];
@@ -114,21 +115,16 @@ Ext.application({
     name: 'App',
     appFolder: appjs + '/frontend/app',
     controllers: controllers,
-//    controllers: [
-//        'cLogin',
-//        'TranslationManager',
-//        'cMenu','master.Departement'
-//    ],
     autoCreateViewport: false,
-    display_splash: true,
-
+    /*Display Splash Screen*/
+    display_splash: false,
+    splashscreen: null,
     init: function () {
         Ext.tip.QuickTipManager.init();
         if (this.display_splash) {
             this.app_init();
         }
     },
-    splashscreen: null,
     app_init: function () {
         this.splashscreen = Ext.getBody().mask('Loading application ' + App.config.APP_NAME, 'splashscreen');
         this.splashscreen.addCls('splashscreen');
@@ -137,6 +133,9 @@ Ext.application({
         );
     },
 
+    /**
+     * Saat Launch Application
+     */
     app_launch: function () {
         var me = this;
         if (this.display_splash) {
@@ -151,6 +150,7 @@ Ext.application({
                         Ext.create('App.view.Viewport');
                         App.util.SessionMonitor.start();
                         log('im here'+new Date());
+                        me.collapseMode();
                     }
                 } } });
                 log('application Launch Loaded');
@@ -166,64 +166,16 @@ Ext.application({
             }
         }
 
-
+        if (isDebug()) {
+            me.collapseMode();
+        }
     },
     launch: function () {
         this.app_launch();
-        if (isDebug()) {
-            this.collapseMode();
-        }
+        log('launche.....');
+
     },
-
-//    launch2: function() {
-//        log('Application Loaded ');
-//
-//
-////        Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
-//        if (isDebug())
-//        {
-//            // var
-//            // infoPanel =
-//            if (this.autoCreateViewport)
-//                {
-//                    // Ext.getCmp('infoPanel').hide();
-//                    // infoPanel.hide();
-//                    // Ext.getCmp('menupanel').hide();
-//                    // Ext.getCmp('menupanel').collapse();
-//                    // Ext.getCmp('menupanel').toggleCollapse();
-//                }
-//            this.collapseMode();
-//
-//        }
-//
-//        // Ext.getCmp('menupanel').toggleCollapse();
-//
-//        // newpid
-//        //clear
-//        // Ext.util.Cookies.clear('newpid');
-//
-//        // Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider') );
-//
-//        // Ext.History.init();
-//        // this.SetupRestStateProvider();
-//        //
-//        //
-//        //
-//        //
-//    }
-////    ,
-
-//    SetupRestStateProvider : function(){
-//        if (Ext.supports.LocalStorage) {
-//            Ext.state.Manager.setProvider(
-//                Ext.create('Ext.state.LocalStorageProvider')
-//            );
-//        } else {
-//            Ext.state.Manager.setProvider(
-//                Ext.create('Ext.state.CookieProvider')
-//        );
-//        }
-//    }
+    /*Collapse Menu dan Header*/
     collapseMode: function () {
         var vp = Ext.ComponentQuery.query('mainviewport')[0];
         if (vp) {

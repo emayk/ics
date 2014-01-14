@@ -26,14 +26,14 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\WarehouseCategory\WarehouseCategory'
  *
- * @property integer                                                                                     $id
- * @property string                                                                                      $name
- * @property string                                                                                      $info
- * @property string                                                                                      $uuid
- * @property integer                                                                                     $createby_id
- * @property integer                                                                                     $lastupdateby_id
- * @property \Carbon\Carbon                                                                              $created_at
- * @property \Carbon\Carbon                                                                              $updated_at
+ * @property integer $id
+ * @property string $name
+ * @property string $info
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Stockproducts\Stockproducts[] $stocks
  * @method static Emayk\Ics\Repo\Warehousecategory\Warehousecategory name($name) 
  */

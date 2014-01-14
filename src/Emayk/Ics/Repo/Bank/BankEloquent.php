@@ -21,7 +21,7 @@ namespace Emayk\Ics\Repo\Bank;
 use \Cache;
 use Carbon\Carbon;
 use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
-use \Input;
+use Input;
 use Response;
 
 /**
@@ -48,14 +48,22 @@ class BankEloquent implements BankInterface
     public function all()
     {
 
-        $page = \Input::get('page', 1);
+        $page = Input::get('page', 1);
         $banks = $this->bank;
-        $bank = Cache::remember('bank' . $page, 10, function () use ($banks) {
-                $limit = \Input::get('limit', 1);
-                $start = \Input::get('start', 0);
 
-                return $banks->skip($start)->take($limit)->get();
-            });
+//        $bank = Cache::remember('bank' . $page, 10, function () use ($banks) {
+//                $limit = \Input::get('limit', 1);
+//                $start = \Input::get('start', 0);
+//
+//                return $banks->skip($start)->take($limit)->get();
+//            });
+
+
+        $limit = Input::get('limit', 1);
+        $start = Input::get('start', 0);
+
+        $bank = $banks->skip($start)->take($limit)->get();
+
 
         $total = $this->bank->count();
 
@@ -65,7 +73,7 @@ class BankEloquent implements BankInterface
         );
 
         return \Response::json($data)
-            ->setCallback(\Input::get('callback'));
+            ->setCallback(Input::get('callback'));
 
     }
 
@@ -77,24 +85,15 @@ class BankEloquent implements BankInterface
     public function store()
     {
         $fake = new AbstractGenerate();
-        Input::replace(
-            array(
-                'name' => 'Bank Name' . time(),
-                'info' => 'Info Bank ',
-                'address' => 'Jalan2',
-                'notelp' => $fake->getFake()->phoneNumber,
+        $saved = $this->bank->create(
+            array_merge(Input::except('uuid'),array(
+                'info' => 'Info Bank '.Input::get('name'),
                 'uuid' => $fake->getFake()->uuid,
                 'createby_id' => 1,
                 'lastupdateby_id' => 1,
                 'created_at' => Carbon::create(),
                 'updated_at' => Carbon::create(),
-            )
-        );
-
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-
-        $saved = $this->bank->create(
-            Input::all()
+            ))
         );
 
         return Response::json(array(
@@ -146,25 +145,13 @@ class BankEloquent implements BankInterface
      */
     public function update($id)
     {
-
-        Input::replace(
-            array(
-                'updated_at' => Carbon::create(),
-            )
-        );
-
-
         $db = $this->bank->findOrFail($id);
-        $input = array(
-            'name' => Input::get('name'),
-            'info' => 'Info Bank Updated ',
-            'address' => Input::get('address'),
-            'notelp' => Input::get('notelp'),
-            'uuid' => Input::get('uuid'),
-            'updated_at' => Input::get('updated_at'),
-        );
+        $db->name = trim(Input::get('name'));
+        $db->notelp = trim(Input::get('notelp'));
+        $db->address = trim(Input::get('address'));
 
-        return ($db->update($input))
+        $saved = $db->save();
+        return ($saved)
             ? \Icsoutput::msgSuccess($db->toArray())
             : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
     }

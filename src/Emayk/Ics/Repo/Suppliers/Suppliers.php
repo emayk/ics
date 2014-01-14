@@ -35,32 +35,32 @@ use Log;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Suppliers\Suppliers'
  *
- * @property integer                                                                           $id
- * @property string                                                                            $name
- * @property string                                                                            $codepos
- * @property string                                                                            $npwp
- * @property string                                                                            $fax
- * @property string                                                                            $email
- * @property float                                                                             $plafon
- * @property integer                                                                           $kredit
- * @property \Carbon\Carbon                                                                    $deleted_at
- * @property string                                                                            $address
- * @property string                                                                            $rt
- * @property string                                                                            $rw
- * @property string                                                                            $phone
- * @property integer                                                                           $status_id
- * @property integer                                                                           $tipe_id
- * @property integer                                                                           $legality_id
- * @property integer                                                                           $typeprod_id
- * @property integer                                                                           $country_id
- * @property integer                                                                           $province_id
- * @property integer                                                                           $city_id
- * @property string                                                                            $uuid
- * @property integer                                                                           $createby_id
- * @property integer                                                                           $lastupdateby_id
- * @property string                                                                            $codeinternal
- * @property \Carbon\Carbon                                                                    $created_at
- * @property \Carbon\Carbon                                                                    $updated_at
+ * @property integer $id
+ * @property string $name
+ * @property string $codepos
+ * @property string $npwp
+ * @property string $fax
+ * @property string $email
+ * @property float $plafon
+ * @property integer $kredit
+ * @property \Carbon\Carbon $deleted_at
+ * @property string $address
+ * @property string $rt
+ * @property string $rw
+ * @property string $phone
+ * @property integer $status_id
+ * @property integer $tipe_id
+ * @property integer $legality_id
+ * @property integer $typeprod_id
+ * @property integer $country_id
+ * @property integer $province_id
+ * @property integer $city_id
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property string $codeinternal
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Products\Products[] $products
  * @property-read \Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers $type
  */

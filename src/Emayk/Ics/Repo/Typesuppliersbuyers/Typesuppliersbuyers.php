@@ -26,16 +26,16 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers'
  *
- * @property integer                                                                             $id
- * @property string                                                                              $name
- * @property string                                                                              $info
- * @property string                                                                              $uuid
- * @property integer                                                                             $createby_id
- * @property integer                                                                             $lastupdateby_id
- * @property \Carbon\Carbon                                                                      $created_at
- * @property \Carbon\Carbon                                                                      $updated_at
+ * @property integer $id
+ * @property string $name
+ * @property string $info
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Suppliers\Suppliers[] $suppliers
- * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Buyers\Buyers[]       $buyers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Buyers\Buyers[] $buyers
  * @method static Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers ofName($name) 
  */
 class Typesuppliersbuyers extends Model

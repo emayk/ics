@@ -33,8 +33,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $uuid
  * @property integer $createby_id
  * @property integer $lastupdateby_id
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $created_at
  */
 class Settingprogram extends Model {
 	protected $guarded = array();

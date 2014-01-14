@@ -37,18 +37,18 @@ use \Illuminate\Auth\Reminders\RemindableInterface;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Users\Users'
  *
- * @property integer        $id
- * @property string         $username
- * @property string         $fullname
- * @property string         $email
- * @property integer        $pos_id
- * @property integer        $dept_id
- * @property integer        $warehouse_id
- * @property integer        $status_id
- * @property string         $password
- * @property string         $uuid
- * @property integer        $createby_id
- * @property integer        $lastupdateby_id
+ * @property integer $id
+ * @property string $username
+ * @property string $fullname
+ * @property string $email
+ * @property integer $pos_id
+ * @property integer $dept_id
+ * @property integer $warehouse_id
+ * @property integer $status_id
+ * @property string $password
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @method static Emayk\Ics\Repo\Users\Users username($name) 

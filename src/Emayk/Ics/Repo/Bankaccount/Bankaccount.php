@@ -29,20 +29,20 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Bankaccount\Bankaccount'
  *
- * @property integer                                              $id
- * @property integer                                              $bank_id
- * @property string                                               $number
- * @property string                                               $name
- * @property integer                                              $owner_id
- * @property string                                               $owner_type
- * @property integer                                              $type_id
- * @property string                                               $uuid
- * @property integer                                              $createby_id
- * @property integer                                              $lastupdateby_id
- * @property \Carbon\Carbon                                       $created_at
- * @property \Carbon\Carbon                                       $updated_at
- * @property-read Bank                       $bank
- * @property-read Bankaccounttype $type
+ * @property integer $id
+ * @property integer $bank_id
+ * @property string $number
+ * @property string $name
+ * @property integer $owner_id
+ * @property string $owner_type
+ * @property integer $type_id
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Emayk\Ics\Repo\Bank\Bank $bank
+ * @property-read \Emayk\Ics\Repo\Bankaccounttype\Bankaccounttype $type
  */
 class Bankaccount extends Model
 {

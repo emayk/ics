@@ -159,7 +159,7 @@ class ColorsEloquent implements ColorsInterface
         $updated = $db->save();
         return Response::json(array(
             'success' => $updated,
-            'results' => $this->colors->toArray()
+            'results' => $db->toArray()
         ));
     }
 

@@ -3,7 +3,36 @@
     height:38px;*/
 }
 
-​
+/*​.add {*/
+    /*background-image: url("../images/add.png");*/
+    /*background-image: url("../icons/add__Icon_16x16.png");*/
+    /*background-position: center !important;*/
+    /*width: auto !important;*/
+    /*background-repeat: no-repeat;*/
+/*}*/
+
+
+
+​.export {
+    /*background-image: url("../icons/export16.png");*/
+    /*background-image: url("../icons/export16.png") !important;*/
+    /*background-image: url('../icons/add.png') !important;*/
+    /*background-image: url("../icons/add__Icon_16x16.png") !important;;*/
+    background-image: url('../icons/ms-excel.gif') !important;
+    /*background-position: center !important;*/
+    /*width: auto !important;*/
+    /*background-repeat: no-repeat;*/
+}
+
+​.import {
+    /*background-image: url("../icons/import16.png")  !important;*/
+    background-image: url('../icons/ms-excel.gif') !important;
+    /*background-position: center !important;*/
+    /*width: auto !important;*/
+    /*background-repeat: no-repeat;*/
+}
+
+
 .logout {
     background-image: url("../icons/logout.png");
     background-position: center !important;

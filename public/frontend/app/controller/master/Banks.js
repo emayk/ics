@@ -1,81 +1,125 @@
-Ext.define('App.controller.master.Banks',{
-	name: 'App.controller.master.Banks',
-	extend: 'Ext.app.Controller',
-	views:[
-		'master.bank.List', //bankListGrid
-		'master.bank.AddForm', //bankEdit
-		'master.bank.addWindow', //bankAddWindow
-	],
-	models:['Bank'],
-	stores:['Banks'],
-	refs: [
-		{ ref: 'bankGrid', selector: 'bankListGrid'},
-		{ ref: 'bankForm', selector: 'bankEdit'},
-		{ ref: 'addWindow', selector: 'bankAddWindow'}
-	],
-	init: function(){
-		log('Controller Banks Loaded');
-		this.control({
-			'bankListGrid': { itemdblclick: this.EditBank },
-			'bankEdit button[action=save]': { click: this.saveBank },
-			'bankListGrid button[action=add]': { click: this.AddBank }
-		});
-	},
-	onRender: function(){
-		log(this.name + 'Loaded');
-	},
-    AddBank: function(grid, record) {
-        var edit = Ext.create('App.view.master.bank.AddForm').show();
-        	this.application.currentRecord = 0;
+/**
+ * Controller Master Bank
+ */
+Ext.define('App.controller.master.Banks', {
+    name: 'App.controller.master.Banks',
+    extend: 'Ext.app.Controller',
+    views: [
+        'App.view.master.bank.List', //bankListGrid
+        'App.view.master.bank.AddForm', //masterbankwindowedit
+        'App.view.master.bank.addWindow' //bankAddWindow
+    ],
+    models: ['App.model.Bank'],
+    stores: ['App.store.Banks'],
+    refs: [
+        { ref: 'bankGrid', selector: 'bankListGrid'},
+        { ref: 'winForm', selector: 'masterbankwindowedit'},
+        { ref: 'formBank', selector: 'masterbankwindowedit #formbank'},
+        { ref: 'addWindow', selector: 'bankAddWindow'}
+
+    ],
+    init: function () {
+        var me = this;
+        log('Controller Banks Loaded');
+        me.control({
+            "bankListGrid": {
+                itemdblclick: me.onDoubleClickItemBank,
+                render: function (grid) {
+                    grid.getStore().load();
+                }
+            },
+            "masterbankwindowedit button[action=save]": { click: me.saveBank },
+            "bankListGrid button[action=delete]": { click: me.deleteBank },
+            "bankListGrid button[action=add]": { click: me.AddBank }
+        });
     },
-    /*==========  Saat Di Double Klik Pada Grid  ==========*/
-	EditBank: function(grid,record){
-		log('Windows Loaded to Edit Bank');
-			view = Ext.widget('bankEdit');
-			view.down('form').loadRecord(record);
-	},
-	
-	
-	updateBank : function(record){
-		console.log(record.get('id'));
-		var id = record.get('id'),
-			name = record.get('name'),
-			view = Ext.widget('bankEdit',{
-			title: 'Bank Information ' + id
-		});
-			view.down('form').loadRecord(record);
-	},
-	/*==========  Saat Pada Tombol Save Pada Form Add/Edit Di Klik  ==========*/
-	saveBank: function(button){
-		log('Proses Save Bank');
-		console.log(button);
-        /*==========  Buat Form Untuk Form Edit  ==========*/
-    	var win 		= button.up('window'),
-    		form 		= win.down('form'),
-    		record 		= form.getRecord(),
-    		values		= form.getValues();
-        /*==========  update record  ==========*/
-        var refresh = false;
-		if (!record)
-		{
-			record = Ext.create('App.model.Bank');
-			record.set(values);
-			this.getBanksStore().add(record);
-			refresh = true;
-		}else{
-    		record.set(values);
-		}
-    	/*==========  window di tutup  ==========*/
-    	win.close();
-    	/*==========  synchronize the store after editing the record  ==========*/
-    	this.getBanksStore().sync();
+    /**
+     * Tombol Add ditekan
+     * untuk menambahkan Informasi Bank
+     *
+     * @param grid
+     * @param record
+     * @constructor
+     */
+    AddBank: function (grid, record) {
+        var me = this, gridlist = me.getBankGrid(), winEdit;
 
-    	if (refresh){
-    		this.getBanksStore().load();
-    	}
-    	Ext.getCmp('pagingBank').doRefresh();
-	},
+        if (!winEdit) {
+            var model = Ext.create('App.model.Bank', {
+                name: 'New Bank '
+            });
 
-	 
-    
+            winEdit = Ext.create('App.view.master.bank.AddForm', {
+                title: 'New Bank '
+            });
+            var form = winEdit.down('form');
+            form.loadRecord(model);
+
+            winEdit.show();
+        }
+        ;
+    },
+
+    onDoubleClickItemBank: function (grid, record) {
+        log('Windows Loaded to Edit Bank');
+        var win;
+
+        if (!win) {
+            win = Ext.create('App.view.master.bank.AddForm', {
+                title: 'Information of ' + record.get('name')
+            });
+
+            win.down('form').getForm().loadRecord(record);
+            win.show();
+        }
+
+    },
+    /**
+     * Saat Tekan tombol Simpan/save
+     * @param button
+     */
+    saveBank: function (button) {
+        log('Proses Save Bank');
+        var me = this,
+            win = button.up('window'),
+            form = win.down('form'),
+            record = form.getRecord(),
+            grid = me.getBankGrid(),
+            store = grid.getStore(),
+            values = form.getValues();
+
+        record.set(values);
+        record.save();
+        store.load();
+        win.close();
+    },
+    /**
+     * Delete Bank
+     * @param btn
+     * @returns {boolean}
+     */
+    deleteBank: function (btn) {
+        var me = this,
+            grid = me.getBankGrid(),
+            record = grid.getSelectionModel().getSelection()[0],
+            store = grid.getStore();
+        if (record === undefined) {
+            msgError('Pilih Record Bank Dulu');
+            return false;
+        }
+
+        store.remove(record);
+        store.sync();
+        log(store.count());
+        /**
+         * Jika Jumlah Store Sudah 0 pada page saat delete record
+         */
+        if (store.count() == 0) {
+            store.loadPage(1);
+        } else {
+            store.load();
+        }
+    }
+
+
 });

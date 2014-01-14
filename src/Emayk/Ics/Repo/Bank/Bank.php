@@ -25,16 +25,16 @@ use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Bank\Bank'
  *
- * @property integer                                                                                 $id
- * @property string                                                                                  $name
- * @property string                                                                                  $info
- * @property string                                                                                  $address
- * @property string                                                                                  $notelp
- * @property string                                                                                  $uuid
- * @property integer                                                                                 $createby_id
- * @property integer                                                                                 $lastupdateby_id
- * @property \Carbon\Carbon                                                                          $created_at
- * @property \Carbon\Carbon                                                                          $updated_at
+ * @property integer $id
+ * @property string $name
+ * @property string $info
+ * @property string $address
+ * @property string $notelp
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Bankaccount\Bankaccount[] $accounts
  */
 class Bank extends Eloquent

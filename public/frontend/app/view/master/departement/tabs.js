@@ -18,23 +18,18 @@
 
 Ext.define('App.view.master.departement.tabs',{
    extend: 'Ext.panel.Panel',
+    title : 'Departement',
+    requires:[
+        'App.view.master.departement.List'
+    ],
    alias : 'widget.masterdepartementtabs',
+    layout: { type: 'fit', align: 'stretch' },
+    autoScroll: true,
     items:[
         {
-            xtype : 'panel',
-            title: 'Grid Departement'
-//            xtype: 'departementGridList'
+            xtype: 'departementGridList'
         }
-    ],
-//    bbar: [
-//        {
-//            text: 'Help',
-//            iconCls : 'Help',
-//            handler: function(){
-//                msgError('Not Implement');
-//            }
-//        }
-//    ]
+    ]
 });
 
 

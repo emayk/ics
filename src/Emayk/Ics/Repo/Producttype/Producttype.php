@@ -27,14 +27,14 @@ use \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Producttype\Producttype'
  *
- * @property integer                                                                           $id
- * @property string                                                                            $name
- * @property integer                                                                           $fabrictype_id
- * @property string                                                                            $uuid
- * @property integer                                                                           $createby_id
- * @property integer                                                                           $lastupdateby_id
- * @property \Carbon\Carbon                                                                    $created_at
- * @property \Carbon\Carbon                                                                    $updated_at
+ * @property integer $id
+ * @property string $name
+ * @property integer $fabrictype_id
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Products\Products[] $products
  */
 class Producttype extends Model

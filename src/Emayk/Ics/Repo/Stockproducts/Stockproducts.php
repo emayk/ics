@@ -28,24 +28,23 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Stockproducts\Stockproducts'
  *
- * @property integer                                                  $id
- * @property integer                                                  $catwh_id
- * @property integer                                                  $product_id
- * @property integer                                                  $total
- * @property integer                                                  $wh_id
- * @property integer                                                  $lengthfabric
- * @property string                                                   $onday
- * @property integer                                                  $unit_id
- * @property string                                                   $uuid
- * @property integer                                                  $createby_id
- * @property integer                                                  $lastupdateby_id
- * @property \Carbon\Carbon                                           $created_at
- * @property \Carbon\Carbon                                           $updated_at
- * @property-read \Emayk\Ics\Repo\Products\Products                   $product
+ * @property integer $id
+ * @property integer $product_id
+ * @property integer $total
+ * @property integer $wh_id
+ * @property integer $lengthfabric
+ * @property string $onday
+ * @property integer $unit_id
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Emayk\Ics\Repo\Products\Products $product
  * @property-read \Emayk\Ics\Repo\WarehouseCategory\WarehouseCategory $categorywarehouse
- * @property-read Warehouse                 $warehouse
- * @property-read \Emayk\Ics\Repo\Users\Users                         $createby
- * @property-read \Emayk\Ics\Repo\Users\Users                         $updateby
+ * @property-read \Emayk\Ics\Repo\Warehouse\Warehouse $warehouse
+ * @property-read \Emayk\Ics\Repo\Users\Users $createby
+ * @property-read \Emayk\Ics\Repo\Users\Users $updateby
  */
 class Stockproducts extends Model
 {

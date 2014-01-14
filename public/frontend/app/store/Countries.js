@@ -3,11 +3,15 @@ Ext.define('App.store.Countries',{
 	model: 'App.model.Country',
     proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/countries',
+		url: getApiUrl() +'/locations',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		}
+		},
+        extraParams:{
+            'type' : 'country',
+            'parentId': 0
+        }
 	}
 });

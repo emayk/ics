@@ -1,19 +1,20 @@
-// listcity
+/**
+ * Store Combo Countries
+ */
 Ext.define('App.store.combo.cbCountries',{
 	extend: 'Ext.data.Store',
-	// autoLoad : true,
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'ajax',
-		url: api_url +'/list/country',
+		url: getApiUrl() +'/locations',
 		reader: {
 			type: 'json',
-			root: 'data',
+			root: 'results',
 			totalProperty: 'total'
 		},
 		extraParams: {
-		'cbreq' : true,'level' : 1
-		},
-
+		'cbreq' : true,
+            'level' : 1
+		}
 	}
 });

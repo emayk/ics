@@ -40,33 +40,35 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Products\Products'
  *
- * @property integer                                                                                           $id
- * @property string                                                                                            $name
- * @property string                                                                                            $nodesign
- * @property string                                                                                            $contruction
- * @property integer                                                                                           $cat_id
- * @property integer                                                                                           $type_id
- * @property string                                                                                            $weight
- * @property integer                                                                                           $unitweight_id
- * @property integer                                                                                           $width
- * @property integer                                                                                           $unitwidth_id
- * @property string                                                                                            $codeinternal
- * @property integer                                                                                           $parent_id
- * @property string                                                                                            $parent_type
- * @property string                                                                                            $uuid
- * @property integer                                                                                           $createby_id
- * @property integer                                                                                           $lastupdateby_id
- * @property \Carbon\Carbon                                                                                    $created_at
- * @property \Carbon\Carbon                                                                                    $updated_at
- * @property-read Productcategory                                                                              $category
- * @property-read Producttype                                                                                  $type
- * @property-read Units                                                                                        $unitweight
- * @property-read Units                                                                                        $unitwidth
- * @property-read \User                                                                                        $createby
- * @property-read \Emayk\Ics\Repo\Users\Users                                                                  $updateby
- * @property-read Productdetails                                                                               $detail
- * @property-read \Illuminate\Database\Eloquent\Collection|Stockproducts[]                                     $stocks
- * @property-read \Illuminate\Database\Eloquent\Collection|Productsuppliers[]                                  $suppliers
+ * @property integer $id
+ * @property string $name
+ * @property string $nodesign
+ * @property string $contruction
+ * @property integer $cat_id
+ * @property integer $type_id
+ * @property string $weight
+ * @property integer $unitweight_id
+ * @property integer $width
+ * @property integer $unitwidth_id
+ * @property string $codeinternal
+ * @property integer $parent_id
+ * @property string $parent_type
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Emayk\Ics\Repo\Productcategory\Productcategory $category
+ * @property-read \Emayk\Ics\Repo\Producttype\Producttype $type
+ * @property-read \Emayk\Ics\Repo\Units\Units $unitweight
+ * @property-read \Emayk\Ics\Repo\Units\Units $unitwidth
+ * @property-read \Emayk\Ics\Repo\Users\Users $createby
+ * @property-read \Emayk\Ics\Repo\Users\Users $updateby
+ * @property-read \Emayk\Ics\Repo\Productdetails\Productdetails $detail
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Stockproducts\Stockproducts[] $stocks
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Productsuppliers\Productsuppliers[] $suppliers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Statsproduct\Statsproduct[] $stats
+ * @property-read \Emayk\Ics\Repo\Statsproduct\Statsproduct $countStocks
  */
 class Products extends Model
 {

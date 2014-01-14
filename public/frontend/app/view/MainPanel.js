@@ -5,7 +5,13 @@ if (fromLocal()) {
 //    if (typeof m !=='undefined') m.toggleCollapse();
 //    log('Im From Local Just Create for Development Only');
     itemsMainPanel = [
-        { xtype : 'container', title: 'Home', iconCls:'home', closable:false},
+        { xtype : 'masterlocationtab', title: 'Locations', iconCls:'home', closable:false},
+//        { xtype : 'listcitiesGP', title: 'Locations', iconCls:'home', closable:false},
+//        { xtype : 'listprovincesGP', title: 'Locations', iconCls:'home', closable:false},
+//        { xtype : 'listcountriesGP', title: 'Locations', iconCls:'home', closable:false},
+        { xtype : 'colorGridList', title: 'Colors', iconCls:'home', closable:false},
+        { xtype : 'bankListGrid', title: 'Banks', iconCls:'home', closable:false},
+        { xtype : 'masterdepartementtabs', title: 'Departements', iconCls:'home', closable:false},
 //        { xtype : 'container', title: 'Home', iconCls:'home', closable:false},
 //        { xtype:'settingstab',iconCls: 'home',title: 'Work Settings',closable : false},
 //        { xtype: 'productstab', iconCls: 'home', title: 'Working On 2', closable: false}

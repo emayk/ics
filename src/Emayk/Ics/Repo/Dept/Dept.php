@@ -37,8 +37,8 @@ use Log;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $users
- * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $buyers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Users\Users[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Users\Users[] $buyers
  * @property-read \Illuminate\Database\Eloquent\Collection|\User[] $suppliers
  * @method static Emayk\Ics\Repo\Dept\Dept name($name) 
  */
@@ -146,4 +146,11 @@ class Dept extends  Model{
 	return $id;
 }
 
+    /**
+     * @return bool
+     */
+    public function canUpdate()
+    {
+        return true;
+    }
 }

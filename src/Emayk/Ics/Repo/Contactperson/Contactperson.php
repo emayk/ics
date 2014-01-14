@@ -31,23 +31,23 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Contactperson\Contactperson'
  *
- * @property integer        $id
- * @property string         $name
- * @property string         $info
- * @property integer        $pos_id
- * @property integer        $dept_id
- * @property string         $phone
- * @property string         $email
- * @property string         $fax
- * @property integer        $parent_id
- * @property string         $parent_type
- * @property string         $uuid
- * @property integer        $createby_id
- * @property integer        $lastupdateby_id
+ * @property integer $id
+ * @property string $name
+ * @property string $info
+ * @property integer $pos_id
+ * @property integer $dept_id
+ * @property string $phone
+ * @property string $email
+ * @property string $fax
+ * @property integer $parent_id
+ * @property string $parent_type
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read Positions $position
- * @property-read Dept      $departement
+ * @property-read \Emayk\Ics\Repo\Positions\Positions $position
+ * @property-read \Emayk\Ics\Repo\Dept\Dept $departement
  */
 class Contactperson extends Model
 {

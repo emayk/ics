@@ -25,18 +25,18 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Productcategory\Productcategory'
  *
- * @property integer                                                                                           $id
- * @property string                                                                                            $name
- * @property string                                                                                            $info
- * @property integer                                                                                           $parent_id
- * @property string                                                                                            $parent_type
- * @property string                                                                                            $kodeinternal
- * @property string                                                                                            $uuid
- * @property integer                                                                                           $createby_id
- * @property integer                                                                                           $lastupdateby_id
- * @property \Carbon\Carbon                                                                                    $created_at
- * @property \Carbon\Carbon                                                                                    $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Productsuppliers\Productsuppliers[] $products
+ * @property integer $id
+ * @property string $name
+ * @property string $info
+ * @property integer $parent_id
+ * @property string $parent_type
+ * @property string $kodeinternal
+ * @property string $uuid
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Products\Products[] $products
  */
 class Productcategory extends Model
 {

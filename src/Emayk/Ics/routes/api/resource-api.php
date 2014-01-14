@@ -13,8 +13,7 @@ Route::resource('colors', 'Emayk\Ics\Repo\Colors\ColorsController');
 Route::resource('currencies', 'Emayk\Ics\Repo\Currencies\CurrenciesController');
 /*==========  Register Resource Fabricgrade  ==========*/
 Route::resource('fabricgrade', 'Emayk\Ics\Repo\Fabricgrade\FabricgradeController');
-/*==========  Register Resource Countries  ==========*/
-Route::resource('countries', 'Emayk\Ics\Repo\Countries\CountriesController');
+
 /*==========  Register Resource Warehouse  ==========*/
 Route::resource('warehouse', 'Emayk\Ics\Repo\Warehouse\WarehouseController');
 /*==========  Register Resource Warehousecategory  ==========*/
@@ -51,6 +50,9 @@ Route::resource('contactperson', 'Emayk\Ics\Repo\Contactperson\ContactpersonCont
 /*==========  Register Resource Fabrictype  ==========*/
 Route::resource('fabrictype', 'Emayk\Ics\Repo\Fabrictype\FabrictypeController');
 /*==========  Register Resource Locations  ==========*/
+/**
+ * Locations
+ */
 Route::resource('locations', 'Emayk\Ics\Repo\Locations\LocationsController');
 /*==========  Register Resource Warehouseofficer  ==========*/
 Route::resource('warehouseofficer', 'Emayk\Ics\Repo\Warehouseofficer\WarehouseofficerController');

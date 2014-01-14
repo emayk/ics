@@ -742,6 +742,7 @@ function msgError(msg, title) {
  *
  **/
 function belumImplement(msg) {
+    var msg = msg || "Belum Implementasi";
     msgError(msg, 'Not Implementasi');
 }
 function noimplement(msg) {

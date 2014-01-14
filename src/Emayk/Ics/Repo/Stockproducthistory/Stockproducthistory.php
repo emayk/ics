@@ -28,20 +28,20 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Stockproducthistory\Stockproducthistory'
  *
- * @property integer        $id
- * @property integer        $stock_id
- * @property string         $refdoc
- * @property string         $noroll
- * @property integer        $qty_in
- * @property integer        $qty_out
- * @property integer        $qty_balance
- * @property string         $uuid
- * @property string         $authenticate_text
- * @property integer        $createby_id
- * @property integer        $lastupdateby_id
+ * @property integer $id
+ * @property integer $stock_id
+ * @property string $refdoc
+ * @property string $noroll
+ * @property integer $qty_in
+ * @property integer $qty_out
+ * @property integer $qty_balance
+ * @property integer $total
+ * @property string $uuid
+ * @property string $authenticate_text
+ * @property integer $createby_id
+ * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property integer $total
  * @property-read \ $stock
  */
 class Stockproducthistory extends Model

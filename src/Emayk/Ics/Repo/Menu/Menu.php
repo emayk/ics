@@ -1,7 +1,7 @@
 <?php namespace Emayk\Ics\Repo\Menu;
 use Illuminate\Database\Eloquent\Model;
  /**
- * Menu Model
+ * An Eloquent Model: 'Emayk\Ics\Repo\Menu\Menu'
  *
  * @property integer $id
  * @property string $text

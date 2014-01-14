@@ -4,11 +4,6 @@ Ext.define('App.model.Country',{
     'id',
 	'name',
 	{ name : 'info',	type: 'string'},
-	{ 
-		name: 'parent_id',
-		type: 'int',
-		defaultValue: 0
-	},
 	'uuid'
 	],
 	validations: [

@@ -18,7 +18,7 @@
 **/
 
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -62,15 +62,15 @@ return array(
     |
     */
 
-    'connections' => array(
+    'connections' => [
 
-        'sqlite' => array(
+        'sqlite' => [
             'driver'   => 'sqlite',
             'database' => __DIR__.'/../database/production.sqlite',
             'prefix'   => '',
-        ),
+        ],
 
-        'mysql' => array(
+        'mysql' => [
             'driver'    => 'mysql',
             'host'      => 'localhost',
             'database'  => 'myapp_test',
@@ -79,9 +79,9 @@ return array(
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-        ),
+        ],
 
-        'pgsql' => array(
+        'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => 'localhost',
             'database' => 'database',
@@ -90,18 +90,18 @@ return array(
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
-        ),
+        ],
 
-        'sqlsrv' => array(
+        'sqlsrv' => [
             'driver'   => 'sqlsrv',
             'host'     => 'localhost',
             'database' => 'database',
             'username' => 'root',
             'password' => '',
             'prefix'   => '',
-        ),
+        ],
 
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -127,18 +127,18 @@ return array(
     |
     */
 
-    'redis' => array(
+    'redis' => [
 
         'cluster' => false,
 
-        'default' => array(
+        'default' => [
             'host'     => '127.0.0.1',
             'port'     => 6379,
             'database' => 0,
-        ),
+        ],
 
-    ),
+    ],
 
-);
+];
 
  
