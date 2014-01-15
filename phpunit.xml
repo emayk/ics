@@ -8,7 +8,7 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="./../../../vendor/autoload.php"
+         bootstrap="bootstrap/autoload.php"
         >
     <testsuites>
         <testsuite name="Emay ICS test Suite">
@@ -16,5 +16,3 @@
         </testsuite>
     </testsuites>
 </phpunit>
-          <!--bootstrap="./../../../vendor/autoload.php" -->
-         <!--bootstrap="vendor/autoload.php"-->
