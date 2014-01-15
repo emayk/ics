@@ -2,6 +2,7 @@ Ext.define('App.view.master.location.ListProvinces', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.listprovincesGP',
     store: 'App.store.Provinces',
+    emptyText: 'Empty Province',
     requires:[
         'App.form.combobox.cbCountries'
     ],

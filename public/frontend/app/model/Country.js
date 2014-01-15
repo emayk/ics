@@ -1,3 +1,6 @@
+/**
+ * Model Country
+ */
 Ext.define('App.model.Country',{
 	extend: 'Ext.data.Model',
 	fields:[

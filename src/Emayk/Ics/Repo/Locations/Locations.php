@@ -38,18 +38,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static Emayk\Ics\Repo\Locations\Locations name($name) 
- * @method static Emayk\Ics\Repo\Locations\Locations provinces($countryId) 
- * @method static Emayk\Ics\Repo\Locations\Locations cities($provinceId) 
- * @method static Emayk\Ics\Repo\Locations\Locations ofLevel($level) 
- * @method static Emayk\Ics\Repo\Locations\Locations ofParentId($parentId) 
- * @method static Emayk\Ics\Repo\Locations\Locations country() 
- * @method static Emayk\Ics\Repo\Locations\Locations province() 
- * @method static Emayk\Ics\Repo\Locations\Locations city() 
- * @method static Emayk\Ics\Repo\Locations\Locations defaultCountry() 
- * @method static Emayk\Ics\Repo\Locations\Locations defaultProvince() 
- * @method static Emayk\Ics\Repo\Locations\Locations defaultCity() 
- * @method static Emayk\Ics\Repo\Locations\Locations parentId($parenId) 
+ * @method static Emayk\Ics\Repo\Locations\Locations name($name)
+ * @method static Emayk\Ics\Repo\Locations\Locations provinces($countryId)
+ * @method static Emayk\Ics\Repo\Locations\Locations cities($provinceId)
+ * @method static Emayk\Ics\Repo\Locations\Locations ofLevel($level)
+ * @method static Emayk\Ics\Repo\Locations\Locations ofParentId($parentId)
+ * @method static Emayk\Ics\Repo\Locations\Locations country()
+ * @method static Emayk\Ics\Repo\Locations\Locations province()
+ * @method static Emayk\Ics\Repo\Locations\Locations city()
+ * @method static Emayk\Ics\Repo\Locations\Locations defaultCountry()
+ * @method static Emayk\Ics\Repo\Locations\Locations defaultProvince()
+ * @method static Emayk\Ics\Repo\Locations\Locations defaultCity()
+ * @method static Emayk\Ics\Repo\Locations\Locations parentId($parenId)
  */
 class Locations extends Model
 {
@@ -684,27 +684,46 @@ class Locations extends Model
     {
         $level = $this->getLevelFromString(strtolower($type));
 
-        $result = static::ofLevel($level)->ofParentId($parentId)->get()->toArray();
+
+        $result = static::ofLevel($level)->ofParentId($parentId);
+        $total = $result->count();
+        /**
+         * Limit
+         */
+        if (isset($allInput['limit'])) {
+            $limit = $allInput['limit'];
+            $result = $result->take($limit);
+        };
+        /**
+         * Mulai
+         */
+        if (isset($allInput['start'])) {
+            $start = $allInput['start'];
+            $result = $result->skip($start);
+        }
+
+        $result = $result->get()->toArray();
         $res = [];
         /**
          * dapatkan selain parent 0
          */
-        if ($parentId>0)
-        {
-        foreach ($result as $r) {
-            $recParent = $this->getParent($parentId);
-            $parentRecord = array(
-                'id' => $recParent->id,
-                'name' => $recParent->name);
-            $res[] = array_merge($r, array(
-                    'parent' => $parentRecord)
-            );
+        if ($parentId > 0) {
+            foreach ($result as $r) {
+                $recParent = $this->getParent($parentId);
+                $parentRecord = array(
+                    'id' => $recParent->id,
+                    'name' => $recParent->name);
+                $res[] = array_merge($r, array(
+                        'parent' => $parentRecord)
+                );
 
-        }
-        }else{
+            }
+        } else {
             $res = $result;
         }
-        return $res;
+        $out['total'] = $total;
+        $out['results'] = $res;
+        return $out;
     }
 
     /**
@@ -713,7 +732,7 @@ class Locations extends Model
      */
     public function getParent($parentId)
     {
-        return  static::whereId($parentId)->first();
+        return static::whereId($parentId)->first();
     }
 
     /**

@@ -143,8 +143,9 @@ class CurrenciesEloquent implements CurrenciesInterface{
         $db = $this->currencies->find($id);
         /*==========  Sesuaikan  ==========*/
          $db->name = Input::get('name');
-        $country_id = (Input::get('negara_id') == 0) ? 1 : Input::get('negara_id');
-         $db->country_id = $country_id;
+//        $country_id = (Input::get('negara_id') == 0) ? 1 : Input::get('negara_id');
+//         $db->country_id = $country_id;
+         $db->country_id = Input::get('country_id');
          $db->shortname = Input::get('shortname');
         $db->uuid = uniqid('Update_');
         return ($db->save()) ?

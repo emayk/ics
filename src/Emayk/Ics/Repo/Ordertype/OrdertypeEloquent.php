@@ -88,13 +88,14 @@ class OrdertypeEloquent implements OrdertypeInterface{
                         ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->ordertype->name = Input::get('name');
-        // $this->ordertype->info = Input::get('info');
-        // $this->ordertype->uuid = uniqid('New_');
-        // $this->ordertype->createby_id = \Auth::user()->id;
-        // $this->ordertype->lastupdateby_id = \Auth::user()->id;
-        // $this->ordertype->created_at = new Carbon();
-        // $this->ordertype->updated_at = new Carbon();
+
+         $this->ordertype->name = Input::get('name');
+         $this->ordertype->info = Input::get('info');
+         $this->ordertype->uuid = uniqid('New_');
+         $this->ordertype->createby_id = \Auth::user()->id;
+         $this->ordertype->lastupdateby_id = \Auth::user()->id;
+         $this->ordertype->created_at = new Carbon();
+         $this->ordertype->updated_at = new Carbon();
         $saved = $this->ordertype->save() ? true : false ;
         return Response::json(array(
             'success' => $saved,
@@ -140,8 +141,8 @@ class OrdertypeEloquent implements OrdertypeInterface{
     {
         $db = $this->ordertype->find($id);
         /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
+         $db->name = Input::get('name');
+         $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save())
             ? \Icsoutput::msgSuccess( $db->toArray() )

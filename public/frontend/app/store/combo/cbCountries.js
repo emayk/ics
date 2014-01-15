@@ -1,12 +1,15 @@
 /**
+ *
  * Store Combo Countries
+ *
  */
 Ext.define('App.store.combo.cbCountries',{
 	extend: 'Ext.data.Store',
 	fields: [ 'id','name' ],
+    pageSize: 10,
     proxy: {
 		type: 'ajax',
-		url: getApiUrl() +'/locations',
+        url: getApiUrl() +'/locations',
 		reader: {
 			type: 'json',
 			root: 'results',
@@ -14,7 +17,7 @@ Ext.define('App.store.combo.cbCountries',{
 		},
 		extraParams: {
 		'cbreq' : true,
-            'level' : 1
+        'level' : 1
 		}
 	}
 });

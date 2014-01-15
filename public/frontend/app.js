@@ -1,4 +1,3 @@
-
 var fromLocal = function () {
     return true;
 //    return ((window.location.protocol + '//' + window.location.host + '/') === 'http://localhost:9090');
@@ -30,10 +29,20 @@ if (fromLocal()) {
         'master.Legalitas',
         'master.Banks',
         'master.Color',
-        'master.Countries'
-//        'master.Currency',
-//        'master.Gradekain',
-//        'master.Gudang',
+        'master.Countries',
+        'master.Currency',
+        'master.Gradekain',
+        'master.Gudang',
+        'master.TypeOrder',
+    /**
+     * Versi Baru
+     * penamamaan Controller
+     */
+        'cBuyers',
+        'cSuppliers'
+//        Lewat----
+//        'master.Headoffice',
+//        'master.ctlUnit',
     /**
      * Order
      */
@@ -55,48 +64,49 @@ if (fromLocal()) {
 
 } else {
     requires = [];
-    controllers = [
-        // 'cTrace',
-        /*==========  Menu  ==========*/
-        // 'ctlSetup',
-        'security.Users',
-        // 'ctlTest',
-        'cMenu',
-        'cLogin',
-        'corderApproval',
-        'TranslationManager',
-        'wizard.Supplier',
-        /*==========  Profiles Controller  ==========*/
-        'Profiles',
-        'master.Legalitas',
-        // 'master.Users',
-        'master.Banks',
-        'master.ContactPerson',
-        'master.Departement',
-        'master.Gradekain',
-        'master.Gudang',
-        'master.Color',
-        'master.Currency',
-        'master.TypeOrder',
-        'master.Countries',
-        'master.Provinces',
-        'master.Cities',
-        'master.Headoffice',
-        'master.ctlUnit',
-        'master.ctlProducts',
-//        'master.ctlProducts_disable',
-        // 'transaction.CtlOrders'
-        'cOrders', //Done
-        // 'ctlFile',
-
-        'master.ctlSupplier',
-        'master.typePayment',
+    controllers = []
+//    controllers = [
+//        // 'cTrace',
+//        /*==========  Menu  ==========*/
+//        // 'ctlSetup',
+//        'security.Users',
+//        // 'ctlTest',
+//        'cMenu',
+//        'cLogin',
+//        'corderApproval',
+//        'TranslationManager',
+//        'wizard.Supplier',
+//        /*==========  Profiles Controller  ==========*/
+//        'Profiles',
+//        'master.Legalitas',
+//        // 'master.Users',
+//        'master.Banks',
+//        'master.ContactPerson',
+//        'master.Departement',
+//        'master.Gradekain',
+//        'master.Gudang',
+//        'master.Color',
+//        'master.Currency',
+//        'master.TypeOrder',
+//        'master.Countries',
+//        'master.Provinces',
+//        'master.Cities',
+//        'master.Headoffice',
+//        'master.ctlUnit',
+//        'master.ctlProducts',
+////        'master.ctlProducts_disable',
+//        // 'transaction.CtlOrders'
+//        'cOrders', //Done
+//        // 'ctlFile',
 //
-        /*Working On Controller*/
-        'cImport',
-        'wizard.Order'
-
-    ];
+//        'master.ctlSupplier',
+//        'master.typePayment',
+////
+//        /*Working On Controller*/
+//        'cImport',
+//        'wizard.Order'
+//
+//    ];
 }
 
 Ext.application({
@@ -145,11 +155,11 @@ Ext.application({
 
                     if (!is_login()) {
                         Ext.widget('login');
-                        log('im here 1'+new Date());
+                        log('im here 1' + new Date());
                     } else {
                         Ext.create('App.view.Viewport');
                         App.util.SessionMonitor.start();
-                        log('im here'+new Date());
+                        log('im here' + new Date());
                         me.collapseMode();
                     }
                 } } });

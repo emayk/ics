@@ -4,15 +4,15 @@ Ext.define('App.store.combo.cbCities',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/countries',
+		url: getApiUrl() +'/locations',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
 		},
 		extraParams: {
-		    'cb' : true,
-		    'level' : 3
+            'cbreq' : true,
+            'level' : 3
 		}
 	}
 });

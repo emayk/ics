@@ -21,14 +21,15 @@ namespace Emayk\Ics\Repo\Bank;
 /**
  * Bank Controller
  */
-use \Controller;
 
+
+use Emayk\Ics\Controllers\BaseController;
 /**
  * Class BankController
  *
  * @package Emayk\Ics\Repo\Bank
  */
-class BankController extends Controller
+class BankController extends BaseController
 {
     /**
      * @var BankInterface
@@ -48,6 +49,7 @@ class BankController extends Controller
      */
     public function index()
     {
+
 
         return $this->bank->all();
     }

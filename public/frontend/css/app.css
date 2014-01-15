@@ -35,9 +35,6 @@
 
 .logout {
     background-image: url("../icons/logout.png");
-    background-position: center !important;
-    width: auto !important;
-    background-repeat: no-repeat;
 }
 
 .mchecked {

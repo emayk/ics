@@ -44,6 +44,7 @@ class Offices extends Model {
 	protected $guarded = array();
 	protected $table = 'master_offices';
 	public static $rules = array();
+    public $hidden = array('parent_type');
 
 	 public function country()
 	 {

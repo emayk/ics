@@ -20,8 +20,10 @@ namespace Emayk\Ics\Repo\Bank;
 
 use \Cache;
 use Carbon\Carbon;
+use Clockwork;
 use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Input;
+use Log;
 use Response;
 
 /**
@@ -51,14 +53,6 @@ class BankEloquent implements BankInterface
         $page = Input::get('page', 1);
         $banks = $this->bank;
 
-//        $bank = Cache::remember('bank' . $page, 10, function () use ($banks) {
-//                $limit = \Input::get('limit', 1);
-//                $start = \Input::get('start', 0);
-//
-//                return $banks->skip($start)->take($limit)->get();
-//            });
-
-
         $limit = Input::get('limit', 1);
         $start = Input::get('start', 0);
 
@@ -86,8 +80,8 @@ class BankEloquent implements BankInterface
     {
         $fake = new AbstractGenerate();
         $saved = $this->bank->create(
-            array_merge(Input::except('uuid'),array(
-                'info' => 'Info Bank '.Input::get('name'),
+            array_merge(Input::except('uuid'), array(
+                'info' => 'Info Bank ' . Input::get('name'),
                 'uuid' => $fake->getFake()->uuid,
                 'createby_id' => 1,
                 'lastupdateby_id' => 1,

@@ -1,3 +1,8 @@
+/**
+ *
+ * Model Province
+ *
+ */
 Ext.define('App.model.Province', {
     extend: 'Ext.data.Model',
     fields: [
@@ -14,11 +19,19 @@ Ext.define('App.model.Province', {
             type: 'length',
             field: 'name',
             min: 2
-        },
-
+        }
     ],
-    init: function () {
-        // log('Model Country Loaded');
-    },
-
+    proxy: {
+        type: 'rest',
+        url: getApiUrl() +'/locations',
+        reader: {
+            type: 'json',
+            root: 'results',
+            totalProperty: 'total'
+        },
+        extraParams: {
+            'type': 'province',
+            'level' : 2
+        }
+    }
 });

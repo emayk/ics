@@ -11,7 +11,7 @@ Ext.define('App.view.master.color.List', {
             header: 'Name',
             dataIndex: 'name',
             flex: 1,
-            editor: { allowBlank: true },
+            editor: { allowBlank: true }
         },
         {
             header: 'Information ',

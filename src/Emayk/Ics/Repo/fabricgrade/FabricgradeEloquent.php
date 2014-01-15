@@ -49,16 +49,17 @@ class FabricgradeEloquent implements FabricgradeInterface{
      */
     public function all()
     {
-        $page = \Input::get('page');
-			 	$limit = \Input::get('limit',1);
-			 	$start = \Input::get('start',1);
+
+        $page = Input::get('page');
+			 	$limit = Input::get('limit',1);
+			 	$start = Input::get('start',1);
         $fabricgrade = $this->fabricgrade
-            ->orderBy('id','DESC')
+            ->orderBy('id','DESC');
+        $total = $fabricgrade->count();
+        $fabricgrade = $fabricgrade
             ->skip($start)
             ->take($limit)
             ->get()->toArray();
-        $total = $this->fabricgrade
-            ->all()->count();
 
         $fabricgrades = array(
             'success' => true,
@@ -67,7 +68,7 @@ class FabricgradeEloquent implements FabricgradeInterface{
         );
 
         return Response::json($fabricgrades)
-            ->setCallback(\Input::get('callback'));
+            ->setCallback(Input::get('callback'));
 
     }
 
@@ -87,6 +88,7 @@ class FabricgradeEloquent implements FabricgradeInterface{
                         'results' => null
                         ))->setCallback();
         }
+//        $record =
         /*==========  Sesuaikan dengan Field di table  ==========*/
          $this->fabricgrade->name = Input::get('name');
          $this->fabricgrade->info = Input::get('info');

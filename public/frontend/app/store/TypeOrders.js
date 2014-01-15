@@ -1,12 +1,14 @@
+/**
+ * Store Type Order
+ */
 Ext.define('App.store.TypeOrders',{
 	extend: 'Ext.data.Store',
-	model : 'App.model.Color',
-	idStore: 'typeorderIdStore',
-    autoSync: true,
+	model : 'App.model.Orders.mOrderType',
+//    autoSync: true,
      
 	proxy: {
 	type: 'rest',
-	url: api_url +'/typeorder',
+	url: getApiUrl() +'/ordertype',
 	reader: {
 		type: 'json',
 		root: 'results',

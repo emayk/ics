@@ -26,7 +26,9 @@ Ext.define('App.controller.master.Countries', {
         'App.view.master.location.winCity',
         'App.view.master.location.frmCity',
 
-        'App.store.combo.cbCountries'
+        'App.form.combobox.cbProvinces',
+        'App.form.combobox.cbCountries'
+
     ],
     models: [
         'App.model.Country',
@@ -37,7 +39,8 @@ Ext.define('App.controller.master.Countries', {
         'App.store.Countries',
         'App.store.Provinces',
         'App.store.Cities',
-        'App.store.combo.cbCountries'
+        'App.store.combo.cbCountries',
+        'App.store.combo.cbProvinces'
     ],
     refs: [
         /*Grids*/
@@ -89,7 +92,8 @@ Ext.define('App.controller.master.Countries', {
              * Add Country
              */
             'listcountriesGP > toolbar > button[action=add]': {
-                click: me.addCountryProcess
+//                click: me.addCountryProcess
+                click: me.addRecordCountry
             },
             /**
              * Remove Country
@@ -103,25 +107,41 @@ Ext.define('App.controller.master.Countries', {
                 itemclick: me.getRecordsCities,
                 canceledit: me.onCancelEditingProvince
             },
+            /*Add Province*/
+            'listprovincesGP > toolbar > button[action=add]': {
+                click: me.addRecordProvince
+            },
 
             'listcitiesGP': {
                 canceledit: me.onCancelEditingCity
+            },
+            /*Add City*/
+            'listcitiesGP > toolbar > button[action=add]': {
+                click: me.addRecordCity
             }
 
         });
     },
+    /**
+     *
+     * Launch Controller Override Parent
+     *
+     */
     onLaunch: function () {
         /**
          * Setup Store Listener
          */
         var me = this;
+        /*Country*/
         me.setupCountryStoreListener();
+        me.setupProvinceStoreListener();
+        me.setupCityStoreListener();
 
         log('controller launcher countries');
     },
 
     /**
-     * Setup Listenet Store Country
+     * Setup Listener Store Country
      */
     setupCountryStoreListener: function () {
         /**
@@ -134,64 +154,275 @@ Ext.define('App.controller.master.Countries', {
          * apalagi kalo code status != 200.
          */
         var me = this,
-            storeCountries = me.getGridCountry().getStore(); //me.getAppStoreCountriesStore();
-        storeCountries.on(
+            grid = me.getGridCountry();
+
+
+        if (!grid) {
+            return false;
+        }
+
+        var storeCountries = grid.getStore();
+        /**
+         * Fixed saat reload,
+         * logout automatis
+         */
+        if (storeCountries) {
+            storeCountries.on(
+                /**
+                 * Ini akan selalu dijalankan saat proses edit
+                 */
+                'update', function (store, record, operation, eOpts) {
+//                    store.reload();
+                }, this
+            );
             /**
-             * Ini akan selalu dijalankan saat proses edit
+             * Ini fire saat proxy berubah data.
+             */
+            storeCountries.on(
+                'datachanged', function (store, eOpts) {
+                    log('data changed bray');
+                }, this
+            );
+            /**
+             * masih tanda tanya :-)
+             */
+            storeCountries.on(
+                'beforesync', function (options, eOpts) {
+                    log('before sync');
+                    log(options);
+                    log(eOpts);
+                }, this
+            );
+
+            storeCountries.on(
+                /**
+                 * Ini Tidak Akan Fire!
+                 * jika success dari proxy == false (success == false)
+                 * maka untuk mengatasinya
+                 * gunakan success = true, tapi dengan tambahan
+                 * error = true,
+                 * misal jsonnya
+                 * { success : true, error : false, reason : 'update fail' }
+                 *
+                 */
+                'write', function (store, operation, eOpts) {
+                    var json = Ext.JSON.decode(operation.response.responseText),
+                        error = json.error;
+                    if (error) {
+                        /**
+                         * Jika Error, tampilkan Message (reason)
+                         * @type {string|String}
+                         */
+                        var reason = json.reason;
+                        msgError(reason);
+                    }
+                    ;
+                }, this
+            );
+        }
+    },
+
+    setupProvinceStoreListener: function () {
+        /**
+         * Catatan :
+         * @todo :
+         * Untuk semua response
+         * yang menentukan adalah error = true,
+         * walaupun success = true,
+         * extjs tidak akan mengeksekusi listener write (kalo success == false)
+         * apalagi kalo code status != 200.
+         */
+        var me = this,
+            grid = me.getGridProvince();
+
+        if (!grid) return false;
+        var store = grid.getStore();
+
+        store.on(
+            /**
+             * Ini akan selalu dijalankan saat proses update
              */
             'update', function (store, record, operation, eOpts) {
-                store.reload();
+//                store.reload();
             }, this
         );
         /**
          * Ini fire saat proxy berubah data.
          */
-        storeCountries.on(
+        store.on(
             'datachanged', function (store, eOpts) {
-                log('data changed bray');
+                log('datachanged fire!!!');
             }, this
         );
         /**
          * masih tanda tanya :-)
          */
-        storeCountries.on(
-            'beforesync', function ( options, eOpts ) {
-                log('before sync');
-                log(options);
-                log(eOpts);
+        store.on(
+            'beforesync', function (options, eOpts) {
+                log('before sync fire!!!');
+
+                if (!options.create) {
+                    log("Option Bukan Create");
+                } else {
+                    log("Option Create");
+                    grid.getView().refresh();
+                }
+                log(options.create);
+//                log(eOpts);
             }, this
         );
 
-        storeCountries.on(
+        store.on(
             /**
-             * Ini Tidak Akan Fire!
-             * jika success dari proxy == false (success == false)
-             * maka untuk mengatasinya
-             * gunakan success = true, tapi dengan tambahan
-             * error = true,
-             * misal jsonnya
-             * { success : true, error : false, reason : 'update fail' }
-             *
+             * @see Note setupCountryStoreListener#L135
              */
             'write', function (store, operation, eOpts) {
                 var json = Ext.JSON.decode(operation.response.responseText),
                     error = json.error;
-                if (error)
-                {
+                if (error) {
                     /**
                      * Jika Error, tampilkan Message (reason)
                      * @type {string|String}
                      */
                     var reason = json.reason;
                     msgError(reason);
-                };
+                }
+                ;
+            }, this
+        );
+    },
+
+    /**
+     * Setup Listener City
+     */
+    setupCityStoreListener: function () {
+        /**
+         * Note
+         * @see setupCountryStoreListener
+         */
+        var me = this,
+            grid = me.getGridCity();
+        if (!grid) return false;
+        var store = grid.getStore();
+
+        store.on(
+            /**
+             * Ini akan selalu dijalankan saat proses update
+             */
+            'update', function (store, record, operation, eOpts) {
+//                store.reload();
             }, this
         );
 
+        store.on(
+            /**
+             * @see Note setupCountryStoreListener#L135
+             */
+            'write', function (store, operation, eOpts) {
+                var json = Ext.JSON.decode(operation.response.responseText),
+                    error = json.error;
+                if (error) {
+                    /**
+                     * Jika Error, tampilkan Message (reason)
+                     * @type {string|String}
+                     */
+                    var reason = json.reason;
+                    msgError(reason);
+                }
+                ;
+            }, this
+        );
     },
+    /**
+     * Proses Tambah Record Kota
+     */
+    addRecordCity: function () {
 
-    finishedLoading: function () {
-        log('write event ..just for test');
+        /**
+         * Check Parent ID
+         */
+
+        var me = this,
+            provinceSelected = me.getGridProvince().getSelectionModel().getSelection()[0];
+
+        if (!provinceSelected) {
+            var msg = 'Province  Belum dipilih';
+            msgError(msg);
+            log(msg);
+            return false;
+        }
+        ;
+
+        var idProvince = provinceSelected.get('id');
+
+        var me = this, grid = me.getGridCity(),
+            cnt = me.cnt.newprovince,
+            model = Ext.create('App.model.City', {
+                name: 'New City ' + cnt,
+                parent_id: idProvince
+            }),
+            idRowEdit = 'cellEditorCities';
+        /*Proses Tambah */
+        me.processAdd(grid, model, idRowEdit);
+        me.cnt.newprovince++;
+    },
+    /**
+     * Proses Tambah Record Province
+     */
+    addRecordProvince: function () {
+
+        /**
+         * Check Parent ID
+         */
+
+        var me = this,
+            countrySelected = me.getGridCountry().getSelectionModel().getSelection()[0];
+
+        if (!countrySelected) {
+            var msg = 'Negara Belum dipilih';
+            msgError(msg);
+            log(msg);
+            return false;
+        }
+        ;
+
+        var idNegara = countrySelected.get('id');
+        log(idNegara);
+        var grid = me.getGridProvince(),
+            cnt = me.cnt.newprovince,
+            name = 'New Province ' + cnt,
+            model = Ext.create('App.model.Province', {
+                name: name,
+                info: "Information " + name,
+                parent_id: idNegara,
+                parentId: idNegara
+            }),
+
+            idRowEdit = 'cellEditorProvinces';
+        /*Proses Tambah */
+        me.processAdd(grid, model, idRowEdit);
+        me.cnt.newprovince++;
+    },
+    /**
+     * Proses Tambah Record Negara
+     */
+    addRecordCountry: function () {
+        /*Tambah negara*/
+        var me = this, grid = me.getGridCountry(),
+            cnt = me.cnt.newcountry,
+            model = Ext.create('App.model.Country', {
+                name: 'New Country' + cnt,
+                parent_id: 0
+            }),
+            idRowEdit = 'cellEditorCountries';
+        /*Proses Tambah */
+        me.processAdd(grid, model, idRowEdit);
+        me.cnt.newcountry++;
+    },
+    processAdd: function (grid, model, idRowedit) {
+        var rowEditing = grid.getPlugin(idRowedit);
+        grid.getStore().insert(0, model);
+        rowEditing.startEdit(0, 0);
     },
     doRefresh: function (grid) {
         log(grid);
@@ -234,38 +465,7 @@ Ext.define('App.controller.master.Countries', {
     renderGridCountry: function (grid) {
         grid.getStore().load();
     },
-    /**
-     * Tambah Negara
-     * @param btn
-     */
-    addCountryProcess: function (btn) {
-        /**
-         * Showing Form Window
-         * untuk tambah Negara
-         */
-        var me = this,
-            cnt = me.cnt.newcountry,
-            win;
 
-        /**
-         * Jika Belum ada , tampilkan
-         */
-        if (!win) {
-
-            var record = Ext.create('App.model.Country', {
-                name: 'New Country ' + cnt
-            });
-
-            win = Ext.create('App.view.master.location.winCountry', {
-                title: 'Add New Country ',
-                modal: true
-            });
-
-            win.show();
-            win.down('form').getForm().loadRecord(record);
-            me.cnt.newcountry++;
-        }
-    },
     /**
      * Remove Negara
      * @param button
@@ -315,7 +515,7 @@ Ext.define('App.controller.master.Countries', {
     },
     /**
      * Proses Record Province
-     *
+     * Fallback
      * @param records
      * @param operation
      * @param success
@@ -350,7 +550,7 @@ Ext.define('App.controller.master.Countries', {
         store.clearFilter();
         store.clearData();
         store.getProxy().setExtraParam('parentId', idProvince);
-        store.load();
+        store.reload();
         grid.getView().refresh();
     }
 

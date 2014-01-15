@@ -1,4 +1,6 @@
-// Controller Menu
+/**
+ * Controller Grade Kain
+ */
 Ext.define('App.controller.master.Gradekain',{
 	extend: 'Ext.app.Controller',
 	views:['App.view.master.gradekain.List'],
@@ -10,7 +12,7 @@ Ext.define('App.controller.master.Gradekain',{
 		selector : 'gradekainGridList'
 	}
 	],
-
+    cntnewgrade: 1,
 	init: function(){
          var me = this;
 		 me.control({
@@ -27,19 +29,25 @@ Ext.define('App.controller.master.Gradekain',{
 		 			this.getGrid().down('button[action=remove]').setDisabled(selections.length == 0);
 		 		}
 		 	},
-
+             /**
+              * Proses Tambah Grade Kain
+              */
 		 	'gradekainGridList > toolbar > button[action=add]' : {
 		 		click: function(button){
 		 			log('Add Gradekain');
-                    var me = this,
-                    model = Ext.create('App.model.Gradekain'),
+                    var me = this,cnt = me.cntnewgrade,
+                    model = Ext.create('App.model.Gradekain',{ name : 'New Grade ' + cnt } ),
                     grid = me.getGrid(),
 		 			rowEditing = grid.getPlugin('cellEditorGradeKain');
 
                     me.getGrid().getStore().insert(0, model );
 		 			rowEditing.startEdit(0, 0);
+                    me.cntnewgrade++;
 		 		}
 		 	},
+             /**
+              * Proses Remove
+              */
 		 	'gradekainGridList > toolbar > button[action=remove]' : {
 		 		click: function(button){
 		 			log('Remove Gradekain');

@@ -2,6 +2,9 @@ Ext.define('App.view.master.location.ListCities', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.listcitiesGP',
     emptyText: 'No Have Cities',
+    requires: [
+        'App.form.combobox.cbProvinces'
+    ],
 
     store: 'App.store.Cities',
     columns: [
@@ -16,17 +19,14 @@ Ext.define('App.view.master.location.ListCities', {
             editor: { allowBlank: true }
         },
         {
-            header: 'Province',
+            header: 'Province', flex: 1,
             dataIndex: 'parent_id',
-            flex: 1,
-            renderer: function (val) {
-                return getNameById('Provinces', val);
+            renderer: function (a, c, rec) {
+                return rec.get('parent_name');
             },
             editor: {
-                xtype: 'combobox',
-                store: 'App.store.Provinces',
-                displayField: 'name',
-                valueField: 'id'
+                xtype: 'cbProvinces',
+                fieldLabel: ''
             }
         },
         {

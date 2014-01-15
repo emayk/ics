@@ -1,15 +1,14 @@
+/**
+ * Model Tipe Order
+ */
 Ext.define('App.model.TypeOrder',{
 	extend: 'Ext.data.Model',
 	fields:[
-	{
-   		name: 'id',
-        type: 'int',
-        useNull: true
-	},
+	'id',
 	'name',
 		{
 			name : 'info',
-			type: 'string',
+			type: 'string'
 
 		},
 		'uuid',

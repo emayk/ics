@@ -24,6 +24,9 @@ Ext.define('App.controller.master.Gudang',{
 		 log(' Gudang Controller Init');
 
 		 this.control({
+             /**
+              * Daftar Gudang
+              */
 		 	'gudangGridList' : {
 
 		 		edit : function(editor,object){
@@ -41,7 +44,9 @@ Ext.define('App.controller.master.Gudang',{
                     this.getAppStoreWarehouseCbcategoryStore().load();
                 }
 		 	},
-
+             /**
+              * Tambah Gudang
+              */
 		 	'gudangGridList > toolbar > button[action=add]' : {
 		 		click: function(button){
 		 			log('Add Warehouse');
@@ -50,7 +55,9 @@ Ext.define('App.controller.master.Gudang',{
 		 			rowEditing.startEdit(0, 0);
 		 		}
 		 	},
-
+             /**
+              * Remove Gudang
+              */
 		 	'gudangGridList > toolbar > button[action=remove]' : {
 		 		click: function(button){
 		 			log('Remove Gudang');

@@ -31,7 +31,6 @@ Ext.define('App.view.master.legalitas.List', {
             flex: .4,
             items: [
                 {
-                    // icon: '/assets/fugue/icons/cross-shield.png',
                     tooltip: 'Delete',
                     iconCls: 'delete',
                     handler: function (grid, rowIndex, colIndex) {

@@ -1,13 +1,11 @@
 Ext.define('App.store.Headoffices',{
 	extend: 'Ext.data.Store',
 	model: 'App.model.Headoffice',
-	// idStore : 'storeIdHeadoffice',
     autosync: true,
-    autoload: true,
     // groupField: 'tipe',
     proxy: {
 		type: 'rest',
-		url: api_url +'/headoffice',
+		url: getApiUrl() +'/offices',
 		reader: {
 			type: 'json',
 			root: 'results',

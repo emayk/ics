@@ -22,7 +22,7 @@ Ext.define('App.view.master.location.tabs', {
     autoScroll: true,
     alias: 'widget.masterlocationtab',
     activeTab: 0,
-    layout : { type : 'vbox', align : 'stretch' },
+    layout : { type : 'hbox', align : 'stretch' },
     requires: [
         'App.view.master.location.ListCountries',
         'App.view.master.location.ListProvinces',

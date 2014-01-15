@@ -1,6 +1,8 @@
 /vendor
 /public/uploads
 /.idea
+/template
+mvc-extjs.sh
 /spec
 /build
 _ide_helper.php

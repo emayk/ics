@@ -49,7 +49,8 @@
 		window.stats = {};
 	</script>
 
-	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-debug-w-comments.js') }} "></script>
+<!--	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-debug-w-comments.js') }} "></script>-->
+	<script type="text/javascript" src="{{ Icsview::extjsasset('bootstrap.js') }} "></script>
 <!--	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-dev.js') }} "></script>-->
 
 	<script src="{{ Icsview::asset('translations/locale.js')}}"></script>

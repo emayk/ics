@@ -22,14 +22,24 @@
 namespace Emayk\Ics\Repo\Locations;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use \Response;
-use \Input;
+use Auth;
+use Response;
+use Input;
 
+/**
+ * Class LocationsEloquent
+ * @package Emayk\Ics\Repo\Locations
+ */
 class LocationsEloquent implements LocationsInterface
 {
+    /**
+     * @var Locations
+     */
     protected $locations;
 
+    /**
+     * @param Locations $locations
+     */
     function __construct(Locations $locations)
     {
         $this->locations = $locations;
@@ -59,6 +69,7 @@ class LocationsEloquent implements LocationsInterface
         $start = \Input::get('start', 1);
 
         /**
+         *
          * Request dari Combo box
          *
          */
@@ -73,7 +84,8 @@ class LocationsEloquent implements LocationsInterface
             $response = $data
                 ->skip($start)
                 ->take($limit)
-                ->get(array('id', 'name'))->toArray();
+                ->get(array('id', 'name'))
+                ->toArray();
 
             return Response::json(
                 array('results' => $response,
@@ -85,29 +97,35 @@ class LocationsEloquent implements LocationsInterface
         /**
          * Request dari Grid
          */
+        $locations = $this->locations
+            ->orderBy('created_at', 'DESC');
+
         if (Input::has('type')) {
             $type = Input::get('type');
             if (Input::has('parentId')) {
                 $parentId = Input::get('parentId');
                 $locations = $this->locations->findByTypeAndParent($type, $parentId, Input::all());
-                return $this->response($locations, count($locations));
+                return $this->response($locations['results'], $locations['total']);
             }
             $locations = $this->locations->findByType($type, Input::all());
-            return $this->response($locations, count($locations));
-        }
+            return $this->response($locations['results'],  $locations['total']);
+        };
 
-        $locations = $this->locations
-            ->orderBy('id', 'DESC')
+        $total = $locations->count();
+        $locations = $locations
             ->skip($start)
             ->take($limit)
             ->get()->toArray();
-        $total = $this->locations
-            ->all()->count();
 
         return $this->response($locations, $total);
 
     }
 
+    /**
+     * @param array $locations
+     * @param $total
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     protected function response(array $locations, $total)
     {
         $locationss = array(
@@ -119,6 +137,20 @@ class LocationsEloquent implements LocationsInterface
         return Response::json($locationss)
             ->setCallback(\Input::get('callback'));
 
+    }
+
+    protected function convertTypeToLevel($type)
+    {
+        if ($type == 'country') {
+            $level = 1; /*Menangani Country*/
+        };
+        if ($type == 'province') {
+            $level = 2; /*Menangani Province*/
+        };
+        if ($type == 'city') {
+            $level = 3; /*Menangani City*/
+        };
+        return $level;
     }
 
     /**
@@ -138,37 +170,56 @@ class LocationsEloquent implements LocationsInterface
                 ))->setCallback();
         }
 
-        $this->locations->name = Input::get('name');
-        $level = Input::get('level');
+
+//        return Input::all();
+        $type = Input::get('type');
+        $level = $this->convertTypeToLevel($type);
+
+
+//        $level = Input::get('level');
+        /**
+         * Control Control Name
+         */
+        $name = Input::get('name');
+
         if ($level == 1) {
-            /*Nama Tidak Boleh Sama */
-            $name = Input::get('name');
+            /*Nama Negara Tidak Boleh Sama */
+
             $exist = $this->locations->whereName($name)->count();
             if ($exist) {
                 return Response::json(
-                    array('success' => false,
+                    array('success' => true,
+                        'error' => true,
                         'reason' => 'Nama Negara harus Unique, sepertinya Negara Sudah ada'
                     ), 500
                 );
             };
             $parentId = 0;
         } else {
-            $parentId = Input::get('parent_id', 0);
+            $parentId = Input::get('parent_id');
         }
 
         /*Proses Saving*/
-        $this->locations->info = Input::get('info');
-        $this->locations->uuid = uniqid('New_');
-        $this->locations->parent_id = $parentId;
-        $this->locations->parent_type = '\Emayk\Ics\Repo\Locations\Locations';
-        $this->locations->createby_id = 1; // \Auth::user()->id;
-        $this->locations->lastupdateby_id = 1; //\Auth::user()->id;
-        $this->locations->created_at = new Carbon();
-        $this->locations->updated_at = new Carbon();
-        $saved = $this->locations->save() ? true : false;
+        $uid = \Auth::user()->id;
+        $newRecord = [
+            'name' => $name,
+            'level' => $level,
+            'info' => Input::get('info'),
+            'uuid' => uniqid('New_'),
+            'parent_id' => $parentId,
+            'parent_type' => '\Emayk\Ics\Repo\Locations\Locations',
+            'createby_id' => $uid,
+            'lastupdateby_id' => $uid,
+            'created_at' => Carbon::create(),
+            'updated_at' => Carbon::create()
+        ];
+        $saved = $this->locations->create($newRecord);
+
         return Response::json(array(
             'success' => $saved,
-            'results' => $this->locations->toArray()
+            'error' => !$saved,
+            'results' => $saved->toArray(),
+            'reason' => ($saved) ? 'Saved' : 'Error Saved'
         ))->setCallback();
     }
 
@@ -182,21 +233,44 @@ class LocationsEloquent implements LocationsInterface
     public function delete($id)
     {
 
-        if ($this->hasAccess()) {
-            $deleted = $this->locations
-                ->find($id)
-                ->delete();
-
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ), $deleted);
-
-        } else {
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ), false);
+        if (!$this->hasAccess()) {
+            return Response::json(
+                array(
+                    'success' => true,
+                    'error' => true,
+                    'reason' => 'Tidak diizinkan')
+            );
         }
+
+        /**
+         * Check Child
+         */
+        $haveChild = ($this->locations->whereParentId($id)->count() > 0);
+        if ($haveChild) {
+            /*Cancel*/
+            return Response::json(
+                array(
+                    'success' => true,
+                    'error' => true,
+                    'reason' => 'Still Have Child')
+            );
+        } else {
+            /**
+             * Proses Delete
+             * - bisa terjadi, record tidak bisa didelete karena sudah digunakan
+             * sama table lain (relationship)
+             */
+            $record = $this->locations->find($id);
+            $record = $record->delete();
+
+            return Response::json(
+                array(
+                    'success' => true,
+                    'error' => $record,
+                    'reason' => 'Successfully deleted')
+            );
+        }
+
     }
 
     /**
@@ -210,14 +284,6 @@ class LocationsEloquent implements LocationsInterface
         /**
          * test
          */
-
-        return Response::json(
-          array('success' => true,
-              'error' => true,
-          'reason' => Input::get('name').' Cannot Find blable')
-        );
-
-
         $db = $this->locations->find($id);
         /*==========  Sesuaikan  ==========*/
         $db->name = Input::get('name');

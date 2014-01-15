@@ -19,7 +19,7 @@
 
 Ext.define('App.view.master.location.frmCity', {
     extend: 'Ext.form.Panel',
-    alias : 'widget.masterlocationfrmProvince',
+    alias : 'widget.masterlocationfrmCity',
     defaults: {
         xtype : 'textfield',
         anchor : '95%',

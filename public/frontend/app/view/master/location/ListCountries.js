@@ -17,7 +17,7 @@ Ext.define('App.view.master.location.ListCountries', {
             header: 'Information',
             dataIndex: 'info', flex: 1,
             editor: {
-                allowBlank: false
+                allowBlank: true
             }
         },
 

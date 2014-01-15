@@ -5,6 +5,12 @@ if (fromLocal()) {
 //    if (typeof m !=='undefined') m.toggleCollapse();
 //    log('Im From Local Just Create for Development Only');
     itemsMainPanel = [
+        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
+        { xtype : 'appBuyersvBuyers', title: 'Buyer', iconCls:'home', closable:false},
+        { xtype : 'typeorderGridList', title: 'Type Order', iconCls:'home', closable:false},
+        { xtype : 'gudangGridList', title: 'Warehouse', iconCls:'home', closable:false},
+        { xtype : 'gradekainGridList', title: 'Fabric Grade', iconCls:'home', closable:false},
+        { xtype : 'currencyGridList', title: 'Currency', iconCls:'home', closable:false},
         { xtype : 'masterlocationtab', title: 'Locations', iconCls:'home', closable:false},
 //        { xtype : 'listcitiesGP', title: 'Locations', iconCls:'home', closable:false},
 //        { xtype : 'listprovincesGP', title: 'Locations', iconCls:'home', closable:false},

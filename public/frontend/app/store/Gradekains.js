@@ -1,8 +1,8 @@
 Ext.define('App.store.Gradekains',{
 	extend: 'Ext.data.Store',
-	model : 'App.model.Gradekain',
+	model : 'App.model.Gradekain'
 	// autoLoad : true,
-	idStore: 'gradekainStore',
+//	idStore: 'gradekainStore'
 //    autoSync: true,
      
 });

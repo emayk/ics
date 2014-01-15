@@ -21,8 +21,19 @@ namespace Emayk\Ics\Repo\Ordertype;
 use Emayk\Ics\Controllers\BaseController as Base;
 use \Input;
 
+/**
+ * Class OrdertypeController
+ * @package Emayk\Ics\Repo\Ordertype
+ */
 class OrdertypeController extends Base {
- protected  $ordertype;
+    /**
+     * @var OrdertypeInterface
+     */
+    protected  $ordertype;
+
+    /**
+     * @param OrdertypeInterface $ordertype
+     */
     function __construct(OrdertypeInterface $ordertype)
     {
         $this->ordertype = $ordertype;
