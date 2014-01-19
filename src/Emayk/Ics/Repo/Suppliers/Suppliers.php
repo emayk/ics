@@ -109,7 +109,7 @@ class Suppliers extends Model
 	 *
 	 * @return array|string
 	 */
-	protected  static function generateMassiveDummy($resultsIds = false, $count = 100)
+	public   static function generateMassiveDummy($resultsIds = false, $count = 100)
 	{
 		/** Buat Data fake Instance */
 		$fake = static::getFake()->getSupplier();
@@ -182,4 +182,9 @@ class Suppliers extends Model
 	{
 		return static::lists('id');
 	}
+
+    public function accountbank()
+    {
+        return $this->morphMany('\Emayk\Ics\Repo\Bankaccount\Bankaccount','owner');
+    }
 }

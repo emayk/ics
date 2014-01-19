@@ -9,7 +9,7 @@ Ext.define('App.store.combo.cbTypeBank',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'ajax',
-		url: api_url +'/type_bank',
+		url: getApiUrl() +'/bankaccounttype',
 		reader: {
 			type: 'json',
 			root: 'results',

@@ -24,14 +24,14 @@ Ext.define('App.store.Buyers.sBuyers',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.Buyers.mBuyers',
 
-/*	proxy: {
+	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/Buyers',
+		url: getApiUrl() +'/buyers',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},*/
+		}
+	}
 
 })

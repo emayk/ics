@@ -10,6 +10,7 @@ Ext.define('App.form.combobox.cbProvinces', {
     fieldLabel: 'Choose Provinces',
     store: 'App.store.combo.cbProvinces',
     queryMode: 'remote',
+    pageSize: 20,
     displayField: 'name',
     valueField: 'id',
 //    emptyText : 'Province Not Found',

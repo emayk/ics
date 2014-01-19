@@ -15,14 +15,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Emay Komarudin
- *
+ *Ô
  *
  *
  **/
 Ext.define('App.view.Suppliers.vSuppliers', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
     alias: 'widget.appSuppliersvSuppliers',
-    items: [
-        {html : 'Content vSuppliers Template', xtype: 'container' },
+    requires:[
+        'App.view.Suppliers.Lists',
+        'App.view.Suppliers.Edit'
     ],
+    items: [
+        {
+            xtype: 'appSuppliersvSuppliersLists',
+            title : 'Lists'
+        }
+    ]
 });

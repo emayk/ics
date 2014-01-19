@@ -29,7 +29,7 @@ Ext.define('App.util.SessionMonitor', {
             {
                 xtype: 'container',
                 frame: true,
-                html: e('session_desc'),
+                html: e('session_desc')
             },
             {
                 xtype: 'label',
@@ -44,7 +44,7 @@ Ext.define('App.util.SessionMonitor', {
                     App.util.SessionMonitor.window.hide();
                     App.util.SessionMonitor.start();
                     log('Regenerate Session');
-                    Ext.Ajax.request({url: appjs + '/regensession'});
+                    Ext.Ajax.request({url: getBaseUrl() + '/regensession'});
                 }
             },
             {

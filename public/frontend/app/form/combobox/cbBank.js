@@ -9,5 +9,5 @@ Ext.define('App.form.combobox.cbBank', {
     valueField: 'id',
     forceSelection: false,
      tpl: App.util.Form.combobox_tpl ,
-		displayTpl: App.util.Form.combobox_displayTpl,
+		displayTpl: App.util.Form.combobox_displayTpl
 });

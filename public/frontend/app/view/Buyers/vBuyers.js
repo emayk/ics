@@ -20,9 +20,18 @@
  *
  **/
 Ext.define('App.view.Buyers.vBuyers', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
     alias: 'widget.appBuyersvBuyers',
+    requires:[
+        'App.view.Buyers.Lists',
+        'App.view.Buyers.Edit',
+    ],
+    activeTab:0,
     items: [
-        {html : 'Content vBuyers Template', xtype: 'container' },
+        {
+            xtype : 'appBuyersvBuyersLists',
+            title : 'Lists'
+
+        }
     ],
 });

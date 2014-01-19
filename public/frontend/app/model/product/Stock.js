@@ -21,6 +21,7 @@ Ext.define('App.model.product.Stock',{
         'updated_at',
         'uuid',
         'wh_id'
+
 	],
 
     associations :[

@@ -39,7 +39,9 @@ if (fromLocal()) {
      * penamamaan Controller
      */
         'cBuyers',
-        'cSuppliers'
+        'cSuppliers',
+        'ctaxtype',
+        'master.ctlProducts'
 //        Lewat----
 //        'master.Headoffice',
 //        'master.ctlUnit',

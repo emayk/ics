@@ -9,6 +9,7 @@ Route::group(array('prefix' => 'api'),function()  {
             )
         );
         require __DIR__.'/resource-api.php';
+        require __DIR__.'/history.php';
 
 /*==========  /Routing Begin Api ==========*/
 });

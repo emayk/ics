@@ -330,6 +330,10 @@ function getBaseUrl() {
     return baseurl;
 //return window.location.protocol + '//' +  window.location.host + '/';
 }
+
+function getIcsPath(){
+    return appjs;
+}
 /**
  *
  * Mendapatkan Token

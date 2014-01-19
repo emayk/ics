@@ -88,13 +88,13 @@ class TaxtypeEloquent implements TaxtypeInterface{
                         ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->taxtype->name = Input::get('name');
-        // $this->taxtype->info = Input::get('info');
-        // $this->taxtype->uuid = uniqid('New_');
-        // $this->taxtype->createby_id = \Auth::user()->id;
-        // $this->taxtype->lastupdateby_id = \Auth::user()->id;
-        // $this->taxtype->created_at = new Carbon();
-        // $this->taxtype->updated_at = new Carbon();
+         $this->taxtype->name = Input::get('name');
+         $this->taxtype->info = Input::get('info');
+//         $this->taxtype->uuid = uniqid('New_');
+//         $this->taxtype->createby_id = \Auth::user()->id;
+//         $this->taxtype->lastupdateby_id = \Auth::user()->id;
+         $this->taxtype->created_at = new Carbon();
+         $this->taxtype->updated_at = new Carbon();
         $saved = $this->taxtype->save() ? true : false ;
         return Response::json(array(
             'success' => $saved,
@@ -140,9 +140,9 @@ class TaxtypeEloquent implements TaxtypeInterface{
     {
         $db = $this->taxtype->find($id);
         /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
-        $db->uuid = uniqid('Update_');
+         $db->name = Input::get('name');
+         $db->info = Input::get('info');
+//        $db->uuid = uniqid('Update_');
         return ($db->save())
             ? \Icsoutput::msgSuccess( $db->toArray() )
             : \Icsoutput::msgError(array('reason' => 'Cannot Update'));

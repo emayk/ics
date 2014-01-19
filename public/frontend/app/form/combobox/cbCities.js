@@ -4,6 +4,7 @@ Ext.define('App.form.combobox.cbCities', {
     fieldLabel: 'Choose Cities',
     store: 'App.store.combo.cbCities',
     queryMode: 'remote',
+    pageSize: 20,
     displayField: 'name',
     valueField: 'id',
     forceSelection: false,

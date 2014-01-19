@@ -2,6 +2,11 @@
 <head>
 	<title>Development {{ time() }} </title>
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all.css') }}">
+
+	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('ux/css/TabScrollerMenu.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/uxs.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/overrides.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/app.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/css/app.css') }}">
 	<script type="text/javascript"> var _session_Expire = -1;
 		/*Menit*/ </script>
@@ -57,6 +62,13 @@
 	<script type="text/javascript">var app_session_Expire = 30;</script>
 
 </head>
+
+<script type="text/javascript" src="{{Icsview::asset('frontend/plugins/filterbar/ux/form/field/ClearButton.js')}}"></script>
+<script type="text/javascript" src="{{Icsview::asset('frontend/plugins/filterbar/ux/form/field/OperatorButton.js')}}"></script>
+<script type="text/javascript" src="{{Icsview::asset('frontend/plugins/filterbar/ux/grid/column/ActionPro.js')}}"></script>
+<script type="text/javascript" src="{{Icsview::asset('frontend/plugins/filterbar/ux/grid/FilterBar.js')}}"></script>
+<script type="text/javascript" src="{{Icsview::asset('frontend/plugins/filterbar/ux/grid/AutoResizer.js')}}"></script>
+
 <script type="text/javascript" src="{{Icsview::asset('frontend/app/function.js')}}"></script>
 <script type="text/javascript" src="{{Icsview::asset('frontend/config.js')}}"></script>
 <script type="text/javascript" src="{{ Icsview::asset('frontend/app.js')}}"></script>

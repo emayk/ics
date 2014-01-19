@@ -6,6 +6,7 @@
 
 Ext.define('App.form.combobox.cbColor', {
 	alias : 'widget.cbcolor',
+    pageSize: 10,
     extend: 'Ext.form.ComboBox',
 //    queryMode: 'local',
     queryMode: 'remote',

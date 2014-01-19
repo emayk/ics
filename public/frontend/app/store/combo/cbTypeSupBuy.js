@@ -9,7 +9,7 @@ Ext.define('App.store.combo.cbTypeSupBuy',{
 	fields: [ 'id','name' ],
 	  proxy: {
         type: 'ajax',
-        url: api_url +'/supplier_type',
+        url: getApiUrl() +'/typesuppliersbuyers',
         reader: {
             type: 'json',
             root: 'results',
@@ -17,7 +17,7 @@ Ext.define('App.store.combo.cbTypeSupBuy',{
         },
         extraParams: {
             'cbreq' : true
-        },
+        }
     }
 });
 

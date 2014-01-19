@@ -58,6 +58,34 @@ class Bankaccount extends Model
      * @var array
      */
     public static $rules = array();
+    /**
+     * @var array
+     */
+    public $appends = array('bankname','banktype');
+
+    /**
+     * @return string
+     */
+    public function getBanknameAttribute()
+    {
+        return $this->attributes['bankname'] = $this->bank->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBanktypeAttribute()
+    {
+        return $this->attributes['banktype'] = $this->type->name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasStocksAttribute(){
+				return $this->attributes["hasStocks"] = true;
+	 }
+//
 
     /**
      *
@@ -143,6 +171,44 @@ class Bankaccount extends Model
         return ($resultsId) ? $records : "Generate Successfully with " . count($records) . " records";
     }
 
+    /**
+     * @param $query
+     * @param $id
+     * @return mixed
+     */
+    public function scopeSuppliers($query,$id)
+    {
+        return $query->whereOwnerType('\Emayk\Ics\Repo\Suppliers\Suppliers')->whereOwnerId($id);
+    }
 
+    /**
+     * @param $query
+     * @param $id
+     * @return mixed
+     */
+    public function scopeBuyers($query,$id)
+    {
+        return $query->whereOwnerType('\Emayk\Ics\Repo\Buyers\Buyers')->whereOwnerId($id);
+    }
+
+    /**
+     * Mendapatkan Supplier Account Bank
+     * @param $id
+     * @return mixed
+     */
+    public function getSupplier($id)
+    {
+        return $this->Suppliers($id);
+    }
+
+    /**
+     * Mendapatkan Buyer Account Bank
+     * @param $id
+     * @return mixed
+     */
+    public function getBuyer($id)
+    {
+        return $this->Buyers($id);
+    }
 
 }

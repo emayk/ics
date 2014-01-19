@@ -9,6 +9,7 @@ Ext.define('App.form.combobox.cbTypeSupBuy', {
 	extend: 'Ext.form.ComboBox',
     // queryMode: 'local',
     queryMode: 'remote',
+    pageSize: 10,
     fieldLabel : 'Choose Type ',
     allowBlank: false ,
     anchor : '-10',
@@ -19,5 +20,5 @@ Ext.define('App.form.combobox.cbTypeSupBuy', {
     emptyText: 'Select Type ',
     store :'App.store.combo.cbTypeSupBuy',
     tpl: App.util.Form.combobox_tpl ,
-    displayTpl: App.util.Form.combobox_displayTpl,
+    displayTpl: App.util.Form.combobox_displayTpl
 });

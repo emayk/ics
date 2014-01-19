@@ -8,6 +8,7 @@ Ext.define('App.form.combobox.cbCurrencies', {
 	alias : 'widget.cbcurrencies',
 	extend: 'Ext.form.ComboBox',
     queryMode: 'remote',
+    pageSize : 10,
     // queryMode: 'remote',
     fieldLabel : 'Choose Currency',
     allowBlank: false ,

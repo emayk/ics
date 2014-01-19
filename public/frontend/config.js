@@ -1,4 +1,3 @@
-
 var Ext = Ext || {};
 Ext.BLANK_IMAGE_URL = appjs + '/frontend/images/s.gif';
 /*==========  Setup Namespace  ==========*/
@@ -16,13 +15,27 @@ Ext.namespace('App').config = {
     APP_UID: 1,
     LOGIN_NAME: login_as,
     islogin: false,
-    logoImg : "",
+    logoImg: "",
     url_logout: appjs + '/logout.php'
 };
 /*==========  Setup Config  ==========*/
 Ext.Loader.setConfig(
-    {  enabled: true, disableCaching: true, paths: {
-        "Ext": extjsbase + "/src",
-        "Ext.ux" : extjsbase + "/ux"
-    } }
+    {
+        enabled: true,
+        disableCaching: true,
+        paths: {
+            "Ext": extjsbase + "/src",
+            "Ext.ux": extjsbase + "/ux"
+        }
+    }
 );
+
+Ext.require([
+    'Ext.tip.QuickTipManager',
+//    'Ext.window.Window',
+//    'Ext.tab.Panel',
+    'Ext.ux.TabScrollerMenu'
+]);
+
+//Ext.Loader.setPath('Ext.ux', '../ux/');
+//Ext.Loader.setPath('Ext.ux', extjsbase+'/ux/');

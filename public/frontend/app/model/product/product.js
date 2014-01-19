@@ -25,6 +25,7 @@ Ext.define('App.model.product.product',{
         'uuid',
         'createby_id',
         'lastupdateby_id',
+        'countstock',
         'created_at',
         'updated_at'
     ],

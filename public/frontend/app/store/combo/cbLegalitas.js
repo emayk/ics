@@ -9,7 +9,7 @@ Ext.define('App.store.combo.cbLegalitas',{
     fields: [ 'id','name' ],
     proxy: {
         type: 'ajax',
-        url: api_url +'/legality',
+        url: getApiUrl() +'/legality',
         reader: {
             type: 'json',
             root: 'results',
@@ -17,6 +17,6 @@ Ext.define('App.store.combo.cbLegalitas',{
         },
         extraParams: {
             'cbreq' : true
-        },
+        }
     }
 });

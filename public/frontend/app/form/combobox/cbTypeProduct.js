@@ -10,6 +10,7 @@ Ext.define('App.form.combobox.cbTypeProduct', {
     queryMode: 'remote',
     fieldLabel : 'Choose Type',
     allowBlank: false ,
+    pageSize: 10,
     anchor : '-10',
     displayField : 'name',
     valueField: 'id',

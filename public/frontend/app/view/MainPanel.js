@@ -5,7 +5,9 @@ if (fromLocal()) {
 //    if (typeof m !=='undefined') m.toggleCollapse();
 //    log('Im From Local Just Create for Development Only');
     itemsMainPanel = [
+        { xtype : 'productstab', title: 'Products', iconCls:'home', closable:false},
         { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
+        { xtype : 'apptaxtypevtaxtype', title: 'Tax Type', iconCls:'home', closable:false},
         { xtype : 'appBuyersvBuyers', title: 'Buyer', iconCls:'home', closable:false},
         { xtype : 'typeorderGridList', title: 'Type Order', iconCls:'home', closable:false},
         { xtype : 'gudangGridList', title: 'Warehouse', iconCls:'home', closable:false},
@@ -83,7 +85,12 @@ Ext.define('App.view.MainPanel', {
     alias: 'widget.mainpanel',
     activeTab: 0,
     plain: true,
-    items: itemsMainPanel
+    items: itemsMainPanel,
+    plugins: [{
+        ptype: 'tabscrollermenu',
+        maxText  : 15,
+        pageSize : 5
+    }]
 //    items: [
 //        { xtype : 'container', title: 'Home', iconCls:'home', closable:false}
 //    ]

@@ -1,91 +1,141 @@
-Ext.define('App.view.products.ListPrd',{
+Ext.define('App.view.products.ListPrd', {
     extend: 'Ext.panel.Panel',
-    alias : 'widget.productList',
-    requires:[
-        'App.view.products.tabdetail'
-    ],
+    alias: 'widget.productList',
+//    requires: [
+//        'App.view.products.tabdetail'
+//    ],
     layout: 'border',
-    bodyPadding : 10,
-    items : [
+    bodyPadding: 10,
+    items: [
         {
-            xtype : 'container',
-            title : 'center',
-            flex:.5,
-            region : 'center',
+            xtype: 'container',
+            title: 'center',
+            flex: .5,
+            region: 'center',
             layout: {
-                type : 'vbox',
-                align : 'stretch'
+                type: 'vbox',
+                align: 'stretch'
             },
             items: [
                 {
-                    xtype : 'panel',
+                    xtype: 'panel',
                     flex: .5,
-                    bodyPadding : 2,
-                    frame : true,
-                    layout : {
-                        type : 'fit',
-                        align : 'stretch'
+                    bodyPadding: 2,
+                    frame: true,
+                    layout: {
+                        type: 'fit',
+                        align: 'stretch'
                     },
-                    items:[
+                    items: [
                         {
-                            xtype : 'grid',
-                            autoScroll : true,
-                            itemId : 'gridProducts',
-                            store : 'App.store.product.Product',
-                            defaults:{
-                              flex :1
-                            },
-                            columns : [
+                            xtype: 'grid',
+                            autoScroll: true,
+                            itemId: 'gridProducts',
+                            store: 'App.store.product.Product',
+                            plugins: [
                                 {
-                                    header : translations.field.id,
-                                    dataIndex : 'id'
-                                },{
-                                    header : translations.field.name.default,
-                                    dataIndex : 'name',
-                                    flex:2
-                                },{
-                                    header : translations.field.design,
-                                    dataIndex : 'nodesign'
-                                },{
-                                    header : translations.field.contruction,
-                                    dataIndex : 'contruction'
-                                },{
-                                    header : translations.field.category.default,
-                                    dataIndex : 'cat_id',
-                                    renderer: function(v,meta,rec){
-                                        return rec.getCat().get('name');
-                                    },
-                                    flex :3
-                                },{
-                                    header : translations.field.type.default,
-                                    dataIndex : 'type_id',
-                                    renderer: function(v,meta,rec){
-                                        return rec.getType().get('name');
-                                    },
-                                    flex : 2
-                                },{
-                                    header : translations.field.width,
-                                    dataIndex : 'width',
-                                    renderer: function(v,meta,rec){
-                                        return v + ' ' + rec.getUnitwi().get('name');
-                                    }
-                                    ,flex : 2
-                                },{
-                                    header : translations.field.weight,
-                                    dataIndex : 'weight',
-                                    renderer: function(v,meta,rec){
-                                        return v + ' ' + rec.getUnitwe().get('name');
-                                    }
-                                },{
-                                    header : translations.field.uuid,
-                                    dataIndex : 'uuid'
-                                    ,flex : 2
+                                    ptype: 'filterbar',
+                                    renderHidden: false,
+                                    showShowHideButton: true,
+                                    showClearAllButton: true
                                 }
                             ],
-                            dockedItems:[
+                            columns: {
+                                plugins: [
+                                    {
+                                        ptype: 'gridautoresizer'
+                                    }
+                                ],
+                                items: [
+//                                    {
+//                                        xtype: 'rownumberer',
+//                                        text : '#',
+//                                        dataIndex: 'id',
+//                                        filter:true
+//                                    },
+                                    {
+                                        text: '#',
+                                        dataIndex: 'id',
+                                        filter: {
+                                            type: 'int',
+                                            minValue: 1
+                                        }
+                                    },
+                                    {
+                                        text: 'stocks',
+                                        dataIndex: 'countstock',
+                                        filter: true,
+                                        renderer: function () {
+
+                                            var cnt = randomInt(1000);
+                                            return cnt + ' items';
+                                        },
+                                        filter: {
+                                            type: 'int',
+                                            minValue: 1
+                                        }, flex: .5
+                                    },
+                                    {
+                                        text: translations.field.design,
+                                        dataIndex: 'nodesign', filter: true, flex: .5
+
+                                    },
+                                    {
+                                        text: translations.field.contruction,
+                                        dataIndex: 'contruction', filter: true, flex: .5
+
+                                    },
+                                    {
+                                        text: translations.field.category.default,
+                                        dataIndex: 'cat_id',
+                                        renderer: function (v, meta, rec) {
+                                            return rec.getCat().get('name');
+                                        },
+                                        filter: true, flex: .5
+                                    },
+                                    {
+                                        text: translations.field.type.default,
+                                        dataIndex: 'type_id',
+                                        renderer: function (v, meta, rec) {
+                                            return rec.getType().get('name');
+                                        },
+                                        filter: true, flex: .5
+                                    },
+                                    {
+                                        text: translations.field.width,
+                                        dataIndex: 'width',
+                                        renderer: function (v, meta, rec) {
+                                            return v + ' ' + rec.getUnitwi().get('name');
+                                        },
+
+                                        filter: {
+                                            type: 'int',
+                                            minValue: 1
+                                        }, flex: .5
+                                    },
+                                    {
+                                        text: translations.field.weight,
+                                        dataIndex: 'weight',
+                                        renderer: function (v, meta, rec) {
+                                            return v + ' ' + rec.getUnitwe().get('name');
+                                        }, flex: .5,
+
+                                        filter: {
+                                            type: 'int',
+                                            minValue: 1
+                                        }
+                                    }
+                                    ,
+                                    {
+                                        text: translations.field.uuid,
+                                        dataIndex: 'uuid', flex: .5
+                                    }
+                                ]
+                            },
+                            dockedItems: [
                                 {
-                                    xtype : 'pagingtoolbar',
-                                    store : 'App.store.product.Product',
+                                    xtype: 'pagingtoolbar',
+                                    store: 'App.store.product.Product',
                                     dock: 'bottom',
                                     displayInfo: true
                                 }
@@ -94,6 +144,64 @@ Ext.define('App.view.products.ListPrd',{
                     ]
                 }
             ]
+        }
+    ],
+    tbar : [
+        {
+            text: 'Add',
+            itemId : 'add',
+            iconCls: 'add'
+        },
+        {
+            text: 'Remove',
+            itemId : 'remove',
+            iconCls: 'delete'
+        },
+        '->',
+        {
+            text: 'Import',
+            itemId : 'import',
+            iconCls: 'excel',
+            handler: function(btn){
+                // todo : implement btn product
+                msgError(btn.text + ' Not Implement Yet')
+            }
+        },
+        {
+            text: 'Export',
+            itemId : 'export',
+            iconCls: 'excel',
+            handler: function(btn){
+                // todo : implement btn product
+                msgError(btn.text + ' Not Implement Yet')
+            }
+        },
+        '-',
+        {
+            xtype: 'textfield',
+            itemId: 'search-text',
+            emptyText : 'Search Product'
+        },
+        {
+            xtype: 'button',
+            itemId: 'search-btn',
+            textbtn: 'Search Button',
+            iconCls: 'find',
+            handler: function(btn){
+                // todo : implement btn product
+                msgError(btn.textbtn + ' Not Implement Yet')
+            }
+
+        },
+        '-',
+        {
+            text: 'Help',
+            itemId : 'help',
+            iconCls: 'help',
+            handler: function(btn){
+                // todo : implement btn product
+                msgError(btn.text + ' Not Implement Yet')
+            }
         }
     ]
 });

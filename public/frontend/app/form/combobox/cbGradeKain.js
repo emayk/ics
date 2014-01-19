@@ -7,6 +7,7 @@
 Ext.define('App.form.combobox.cbGradeKain', {
 	alias : 'widget.cbgradekain', extend: 'Ext.form.ComboBox',
 //    queryMode: 'local',
+    pageSize : 10,
     queryMode: 'remote',
     fieldLabel : 'Choose Grade', allowBlank: false ,
     // anchor : '-10',

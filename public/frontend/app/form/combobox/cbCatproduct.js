@@ -8,6 +8,7 @@ Ext.define('App.form.combobox.cbCatproduct', {
 	alias : 'widget.cbcatproduct',
 	extend: 'Ext.form.ComboBox',
 //    queryMode: 'local',
+    pageSize : 10,
     queryMode: 'remote',
     fieldLabel : 'Choose Category',
     allowBlank: false ,

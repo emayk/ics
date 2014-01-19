@@ -29,6 +29,7 @@ use Icsoutput;
 use Illuminate\Support\Facades\Auth;
 use Response;
 use Input;
+use Log;
 use Emayk\Ics\Repo\Bank\Bank as bank;
 
 /**
@@ -80,6 +81,9 @@ class BankaccountEloquent implements BankaccountInterface
         $limit = Input::get('limit', 1);
         $start = Input::get('start', 1);
 
+        if (Input::has('type')) {
+            return $this->processAccountType();
+        }
         $bankaccount = $this->bankaccount
             ->orderBy('id', 'DESC')
             ->skip($start)
@@ -100,6 +104,41 @@ class BankaccountEloquent implements BankaccountInterface
     }
 
     /**
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function  processAccountType()
+    {
+        $type = Input::get('type');
+        $id = Input::get('typeid');
+        $data = [];
+        if (strtolower($type) == 'supplier') {
+            /*Supplier*/
+            $data = $this->bankaccount->getSupplier($id);
+        } else {
+            /*Buyer*/
+            $data = $this->bankaccount->getBuyer($id);
+        }
+
+        $page = Input::get('page');
+        $limit = Input::get('limit', 1);
+        $start = Input::get('start', 1);
+
+        $total = $data->count();
+        $data = $data->skip($start)
+            ->take($limit)
+            ->get()->toArray();
+
+        $bankaccounts = array(
+            'success' => true,
+            'results' => $data,
+            'total' => $total
+        );
+
+        return Response::json($bankaccounts)
+            ->setCallback(\Input::get('callback'));
+    }
+
+    /**
      *
      * Proses Simpan Bankaccount
      *
@@ -107,51 +146,30 @@ class BankaccountEloquent implements BankaccountInterface
      */
     public function store()
     {
-//				 if (! $this->hasAccess ()) {
-//						return Response::json (
-//							 array (
-//									'success' => false,
-//									'reason'  => 'Action Need Login First',
-//									'results' => null
-//							 ))->setCallback ();
-//				 }
-//
+				 if (! $this->hasAccess ()) {
+						return Response::json (
+							 array (
+									'success' => false,
+									'reason'  => 'Action Need Login First',
+									'results' => null
+							 ))->setCallback ();
+				 }
 
-        /**
-         * Debug Input
-         */
-        $fake = Factory::create();
-        $bankid = bank::lists('id');
-        //account milik ?
-        $owner = Suppliers::first(array('id'));
-        $lists_type = Bankaccounttype::lists('id');
-        $random_number_account = rand(100, 900) . '-' . rand(900, 950) . '-' . rand(700, 800);
-        Input::replace(
-            array(
-                'bank_id' => $bankid[rand(0, count($bankid) - 1)],
-                'number' => $random_number_account,
-                'name' => $fake->name,
-                'owner_id' => $owner->id,
-                'owner_type' => get_class($owner),
-                'type_id' => $lists_type[rand(0, count($lists_type) - 1)],
-                'uuid' => $fake->uuid,
-                'uid' => 1,
-                'updated_at' => Carbon::create()
-            )
-        );
-
-
-        $this->bankaccount->owner_id = Input::get('owner_id');
-        $this->bankaccount->owner_type = Input::get('owner_type');
-        $this->bankaccount->createby_id = Input::get('uid');
-        $this->bankaccount->created_at = Carbon::create();
-        /*Field yang bisa diupdate */
-        $this->bankaccount->type_id = Input::get('type_id');
         $this->bankaccount->name = Input::get('name');
         $this->bankaccount->number = Input::get('number');
+        $this->bankaccount->owner_id = Input::get('owner_id');
+        $ownertype = Input::get('owner_type');
+        $ownertype = ($ownertype == 'supplier')
+            ? '\Emayk\Ics\Repo\Suppliers\Suppliers'
+            : '\Emayk\Ics\Repo\Buyers\Buyers';
+        $this->bankaccount->owner_type = $ownertype;
+        $this->bankaccount->createby_id = $this->getUid();
+        $this->bankaccount->created_at = Carbon::create();
+
+        $this->bankaccount->type_id = Input::get('type_id');
         $this->bankaccount->bank_id = Input::get('bank_id');
         $this->bankaccount->uuid = uniqid('New_');
-        $this->bankaccount->lastupdateby_id = Input::get('uid');
+        $this->bankaccount->lastupdateby_id = $this->getUid();
         $this->bankaccount->updated_at = Carbon::create();
         $saved = $this->bankaccount->save() ? true : false;
 
@@ -161,6 +179,13 @@ class BankaccountEloquent implements BankaccountInterface
         ))->setCallback();
     }
 
+    /**
+     * @return int
+     */
+    protected function getUid()
+    {
+        return (Auth::user()) ? Auth::user()->id : 1;
+    }
     /**
      * Menghapus Bankaccount
      *
@@ -180,19 +205,22 @@ class BankaccountEloquent implements BankaccountInterface
 
             return Response::json(array(
                 'results' => $deleted,
-                'success' => true
+                'success' => true,
+                'error' => false
             ));
 
         } else {
             return Icsoutput::toJson(array(
                 'results' => false,
+                'success' => true,
+                'error' => true,
                 'reason' => 'Dont Have Access to Delete '
             ), false);
         }
     }
 
     /**
-     * Update Informasi [[cName]]
+     * Update Informasi
      *
      * @param $id
      *
@@ -200,20 +228,6 @@ class BankaccountEloquent implements BankaccountInterface
      */
     public function update($id)
     {
-        $fake = Factory::create();
-        $bankid = bank::lists('id');
-        $lists_type = Bankaccounttype::lists('id');
-        $random_number_account = rand(100, 900) . '-' . rand(900, 950) . '-' . rand(700, 800);
-
-        Input::replace(
-            array(
-                'bank_id' => $bankid[rand(0, count($bankid) - 1)],
-                'number' => $random_number_account,
-                'name' => $fake->name,
-                'type_id' => $lists_type[rand(0, count($lists_type) - 1)],
-                'uid' => 1
-            )
-        );
 
         $db = $this->bankaccount->find($id);
         /*Field yang bisa diupdate */
@@ -221,7 +235,7 @@ class BankaccountEloquent implements BankaccountInterface
         $db->name = Input::get('name');
         $db->number = Input::get('number');
         $db->bank_id = Input::get('bank_id');
-        $db->lastupdateby_id = Input::get('uid');
+        $db->lastupdateby_id = 1;
         $db->updated_at = Carbon::create();
         $db->uuid = uniqid('Update_');
         $db->save();

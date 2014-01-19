@@ -10,6 +10,7 @@ Ext.define('App.form.combobox.cbLegalitas', {
     queryMode: 'remote',
     fieldLabel : 'Choose Legality',
     allowBlank: false ,
+    pageSize: 10,
     anchor : '-10',
     displayField : 'name',
     valueField: 'id',

@@ -200,7 +200,7 @@ class Buyers extends Model
 
         $records = static::getFake()
             ->getBuyers()
-            ->createBuyers(10, $typeIdsSupBuy, $typeProductIds, $listLegalitiesId, $countryId, $provinceId, $cityId, $listStatusId);
+            ->createBuyers($count, $typeIdsSupBuy, $typeProductIds, $listLegalitiesId, $countryId, $provinceId, $cityId, $listStatusId);
 
 
         foreach ($records as $record) {

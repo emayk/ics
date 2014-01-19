@@ -15,7 +15,7 @@ Route::post('login.php', '\Emayk\Ics\Repo\Login\LoginController@login');
 Route::get('login.php', '\Emayk\Ics\Repo\Login\LoginController@getLogin');
 /*==========  Logout Get  ==========*/
 Route::get('logout.php', function () {
-	$uid = Auth::user()->getAuthIdentifier();
+	$uid = Auth::user()->id();
 	Auth::logout();
 	$logout = true;
 

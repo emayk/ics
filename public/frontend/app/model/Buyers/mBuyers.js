@@ -21,5 +21,44 @@
  **/
 Ext.define('App.model.Buyers.mBuyers', {
     extend: 'Ext.data.Model',
-    fields: [ 'id', 'name' ]
+    fields: [
+        "id",
+        "name",
+        "codepos",
+        "npwp",
+        "fax",
+        "email",
+        {name : "plafon",type : 'int'},
+        {name : "kredit",type : 'int'},
+        {name : "rt",type : 'int'},
+        {name : "rw",type : 'int'},
+        "address",
+        "phone",
+        "status_id",
+        "tipe_id",
+        "legality_id",
+        "typeprod_id",
+        "country_id",
+        "province_id",
+        "city_id",
+        "note"
+//        "uuid",
+//        "createby_id",
+//        "lastupdateby_id",
+//        "codeinternal",
+//        "created_at",
+//        "updated_at"
+    ],
+
+    proxy: {
+        type: 'rest',
+        url: getApiUrl() + '/buyers',
+        reader: {
+            type: 'json',
+            root: 'results',
+            totalProperty: 'total'
+        }
+    }
+
 });
+
