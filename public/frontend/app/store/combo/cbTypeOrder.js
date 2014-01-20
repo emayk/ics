@@ -9,7 +9,7 @@ Ext.define('App.store.combo.cbTypeOrder',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'rest',
-		url: api_url +'/typeorder',
+		url: getApiUrl() +'/typeorder',
 		reader: {
 			type: 'json',
 			root: 'results',

@@ -49,6 +49,42 @@ class Fabrictype extends Model
 	 * @var array
 	 */
 	public static $rules = array();
+    /**
+     * @var array
+     */
+    public $appends = ['createby','updater'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo('\Emayk\Ics\Repo\Users\Users','createby_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function updater()
+    {
+        return $this->belongsTo('\Emayk\Ics\Repo\Users\Users','lastupdateby_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatebyAttribute()
+    {
+        return $this->attributes['createby'] = $this->creator()->pluck('username');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdaterAttribute()
+    {
+        return $this->attributes['updater'] = $this->updater()->pluck('username');
+    }
 
 	/**
 	 *
@@ -78,7 +114,10 @@ class Fabrictype extends Model
 		return ( $resultIds ) ? $typeIds : "Generate fabric Type with " . count($typeIds) . " records";
 	}
 
-	protected static function  getFake()
+    /**
+     * @return AbstractGenerate
+     */
+    protected static function  getFake()
 	{
 		return new AbstractGenerate();
 	}
@@ -95,4 +134,11 @@ class Fabrictype extends Model
 		if (!count($ids)) $ids = static::generateMassive(true, $count);
 		return $ids;
 	}
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productType(){
+        return $this->hasMany('\Emayk\Ics\Repo\Producttype\Producttype','fabrictype_id');
+    }
 }

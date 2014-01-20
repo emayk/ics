@@ -2,6 +2,8 @@ Ext.define('App.view.master.legalitas.List', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.masterlegalitasGridList',
     store: 'App.store.Legalitas',
+    padding: 10,
+    frame: true,
     columns: [
         {
             xtype: 'rownumberer'

@@ -5,6 +5,10 @@ if (fromLocal()) {
 //    if (typeof m !=='undefined') m.toggleCollapse();
 //    log('Im From Local Just Create for Development Only');
     itemsMainPanel = [
+        { xtype : 'apptypeAccountBankvtypeAccountBank', title: 'Type Account Bank', iconCls:'home', closable:false},
+        { xtype : 'appfabrictypevfabrictype', title: 'Type Fabric', iconCls:'home', closable:false},
+        { xtype : 'apptypeproductvtypeproduct', title: 'Type Product', iconCls:'home', closable:false},
+        { xtype : 'masterlegalitasGridList', title: 'Legalitas', iconCls:'home', closable:false},
         { xtype : 'productstab', title: 'Products', iconCls:'home', closable:false},
         { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
         { xtype : 'apptaxtypevtaxtype', title: 'Tax Type', iconCls:'home', closable:false},

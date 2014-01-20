@@ -99,13 +99,13 @@ class ProducttypeEloquent implements ProducttypeInterface{
                         ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->producttype->name = Input::get('name');
-        // $this->producttype->info = Input::get('info');
-        // $this->producttype->uuid = uniqid('New_');
-        // $this->producttype->createby_id = \Auth::user()->id;
-        // $this->producttype->lastupdateby_id = \Auth::user()->id;
-        // $this->producttype->created_at = new Carbon();
-        // $this->producttype->updated_at = new Carbon();
+         $this->producttype->name = Input::get('name');
+         $this->producttype->fabrictype_id = Input::get('fabrictype_id');
+         $this->producttype->uuid = uniqid('New_');
+         $this->producttype->createby_id = \Auth::user()->id;
+         $this->producttype->lastupdateby_id = \Auth::user()->id;
+         $this->producttype->created_at = new Carbon();
+         $this->producttype->updated_at = new Carbon();
         $saved = $this->producttype->save() ? true : false ;
         return Response::json(array(
             'success' => $saved,
@@ -151,8 +151,8 @@ class ProducttypeEloquent implements ProducttypeInterface{
     {
         $db = $this->producttype->find($id);
         /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
+         $db->name = Input::get('name');
+         $db->fabrictype_id = Input::get('fabrictype_id');
         $db->uuid = uniqid('Update_');
         return ($db->save())
             ? \Icsoutput::msgSuccess( $db->toArray() )

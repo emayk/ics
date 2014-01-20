@@ -52,6 +52,7 @@ class Producttype extends Model
 	 */
 	public static $rules = array();
 
+    public $appends = ['typefabric','createby','updater'];
 
 	/**
 	 * Type Products
@@ -62,6 +63,38 @@ class Producttype extends Model
 	{
 		return $this->hasMany('Emayk\Ics\Repo\Products\Products', 'type_id');
 	}
+	public function fabrictype()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Fabrictype\Fabrictype','fabrictype_id');
+	}
+
+    public function creator()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Users\Users','createby_id');
+	}
+
+    public function updater()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Users\Users','lastupdateby_id');
+	}
+
+    public function getCreatebyAttribute()
+    {
+        return $this->attributes['createby'] = $this->creator()->pluck('username');
+    }
+
+    public function getUpdaterAttribute()
+    {
+        return $this->attributes['updater'] = $this->updater()->pluck('username');
+    }
+    public function getTypefabricAttribute()
+    {
+        return $this->attributes['typefabric'] = $this->fabrictype()->pluck('name');
+    }
+
+
+
+
 
 
 	/**

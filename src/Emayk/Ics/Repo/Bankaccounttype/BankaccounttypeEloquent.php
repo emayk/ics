@@ -119,11 +119,12 @@ class BankaccounttypeEloquent implements BankaccounttypeInterface
 //	      ));
 
         /*==========  Sesuaikan dengan Field di table  ==========*/
+        $uid = (\Auth::getUser() == null) ? 1 : \Auth::getUser()->id;
         $this->bankaccounttype->name = Input::get('name');
         $this->bankaccounttype->info = "Info " . Input::get('info');
         $this->bankaccounttype->uuid = uniqid('New_');
-        $this->bankaccounttype->createby_id = Input::get('uid', 1);
-        $this->bankaccounttype->lastupdateby_id = Input::get('uid', 1);
+        $this->bankaccounttype->createby_id = $uid;
+        $this->bankaccounttype->lastupdateby_id = $uid;
         $this->bankaccounttype->created_at = new Carbon();
         $this->bankaccounttype->updated_at = new Carbon();
         $saved = $this->bankaccounttype->save() ? true : false;
@@ -146,7 +147,7 @@ class BankaccounttypeEloquent implements BankaccounttypeInterface
     public function delete($id)
     {
 
-        if (!$this->hasAccess()) {
+        if ($this->hasAccess()) {
             $uid = (\Auth::getUser() == null) ? 1 : \Auth::getUser()->id;
             $deleted = $this->bankaccounttype->findOrFail($id);
             $datadeleted = $deleted;
@@ -177,6 +178,7 @@ class BankaccounttypeEloquent implements BankaccounttypeInterface
         $db = $this->bankaccounttype->findOrFail($id);
         $uid = (null === \Auth::getUser()) ? 1 : \Auth::getUser()->id;
         $db->name = Input::get('name');
+        $db->info = Input::get('info');
         $db->lastupdateby_id = $uid;
         $db->updated_at = Carbon::create();
         $db->uuid = uniqid('Update_');

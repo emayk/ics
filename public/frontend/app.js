@@ -34,6 +34,10 @@ if (fromLocal()) {
         'master.Gradekain',
         'master.Gudang',
         'master.TypeOrder',
+        'master.Legalitas',
+        'ctypeproduct',
+        'cfabrictype',
+        'ctypeAccountBank',
     /**
      * Versi Baru
      * penamamaan Controller

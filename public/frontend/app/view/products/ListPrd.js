@@ -1,9 +1,6 @@
 Ext.define('App.view.products.ListPrd', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.productList',
-//    requires: [
-//        'App.view.products.tabdetail'
-//    ],
     layout: 'border',
     bodyPadding: 10,
     items: [

@@ -88,13 +88,13 @@ class FabrictypeEloquent implements FabrictypeInterface{
                         ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->fabrictype->name = Input::get('name');
-        // $this->fabrictype->info = Input::get('info');
-        // $this->fabrictype->uuid = uniqid('New_');
-        // $this->fabrictype->createby_id = \Auth::user()->id;
-        // $this->fabrictype->lastupdateby_id = \Auth::user()->id;
-        // $this->fabrictype->created_at = new Carbon();
-        // $this->fabrictype->updated_at = new Carbon();
+         $this->fabrictype->name = Input::get('name');
+         $this->fabrictype->info = Input::get('info');
+         $this->fabrictype->uuid = uniqid('New_');
+         $this->fabrictype->createby_id = \Auth::user()->id;
+         $this->fabrictype->lastupdateby_id = \Auth::user()->id;
+         $this->fabrictype->created_at = new Carbon();
+         $this->fabrictype->updated_at = new Carbon();
         $saved = $this->fabrictype->save() ? true : false ;
         return Response::json(array(
             'success' => $saved,
@@ -140,8 +140,8 @@ class FabrictypeEloquent implements FabrictypeInterface{
     {
         $db = $this->fabrictype->find($id);
         /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
+         $db->name = Input::get('name');
+         $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save())
             ? \Icsoutput::msgSuccess( $db->toArray() )
