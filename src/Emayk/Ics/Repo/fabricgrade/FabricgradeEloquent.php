@@ -1,45 +1,49 @@
 <?php
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-*
-* Bussiness Logic Fabricgrade
-*
-**/
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ * Bussiness Logic Fabricgrade
+ *
+ **/
 
 namespace Emayk\Ics\Repo\Fabricgrade;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
 
-class FabricgradeEloquent implements FabricgradeInterface{
+class FabricgradeEloquent implements FabricgradeInterface
+{
     protected $fabricgrade;
+
     function __construct(Fabricgrade $fabricgrade)
     {
         $this->fabricgrade = $fabricgrade;
     }
 
     /**
-    *
-    * Mendapatkan Record Fabricgrade berdasarkan ID yang diberikan
-    * @param  int $id ID Record
-    * @return Model Record Fabricgrade
-    **/
+     *
+     * Mendapatkan Record Fabricgrade berdasarkan ID yang diberikan
+     * @param  int $id ID Record
+     * @return Model Record Fabricgrade
+     **/
 
-    public function find($id){
+    public function find($id)
+    {
         return $this->fabricgrade->find($id);
     }
 
@@ -51,10 +55,21 @@ class FabricgradeEloquent implements FabricgradeInterface{
     {
 
         $page = Input::get('page');
-			 	$limit = Input::get('limit',1);
-			 	$start = Input::get('start',1);
+        $limit = Input::get('limit', 1);
+        $start = Input::get('start', 1);
+
+        if (Input::has('selected'))
+        {
+            $id = Input::get('selected');
+            $record = $this->fabricgrade->findOrFail($id);
+            return Response::json([
+                'success' => true, 'error' => false,
+                'results' => $record->toArray()
+            ]);
+        }
+
         $fabricgrade = $this->fabricgrade
-            ->orderBy('id','DESC');
+            ->orderBy('id', 'DESC');
         $total = $fabricgrade->count();
         $fabricgrade = $fabricgrade
             ->skip($start)
@@ -82,22 +97,22 @@ class FabricgradeEloquent implements FabricgradeInterface{
     {
         if (!$this->hasAccess()) {
             return Response::json(
-                      array(
-                        'success' => false,
-                        'reason'  => 'Action Need Login First',
-                        'results' => null
-                        ))->setCallback();
+                array(
+                    'success' => false,
+                    'reason' => 'Action Need Login First',
+                    'results' => null
+                ))->setCallback();
         }
 //        $record =
         /*==========  Sesuaikan dengan Field di table  ==========*/
-         $this->fabricgrade->name = Input::get('name');
-         $this->fabricgrade->info = Input::get('info');
-         $this->fabricgrade->uuid = uniqid('New_');
-         $this->fabricgrade->createby_id = \Auth::user()->id;
-         $this->fabricgrade->lastupdateby_id = \Auth::user()->id;
-         $this->fabricgrade->created_at = new Carbon();
-         $this->fabricgrade->updated_at = new Carbon();
-        $saved = $this->fabricgrade->save() ? true : false ;
+        $this->fabricgrade->name = Input::get('name');
+        $this->fabricgrade->info = Input::get('info');
+        $this->fabricgrade->uuid = uniqid('New_');
+        $this->fabricgrade->createby_id = \Auth::user()->id;
+        $this->fabricgrade->lastupdateby_id = \Auth::user()->id;
+        $this->fabricgrade->created_at = new Carbon();
+        $this->fabricgrade->updated_at = new Carbon();
+        $saved = $this->fabricgrade->save() ? true : false;
         return Response::json(array(
             'success' => $saved,
             'results' => $this->fabricgrade->toArray()
@@ -114,21 +129,20 @@ class FabricgradeEloquent implements FabricgradeInterface{
     public function delete($id)
     {
 
-        if ($this->hasAccess())
-        {
+        if ($this->hasAccess()) {
             $deleted = $this->fabricgrade
                 ->find($id)
                 ->delete();
 
             return \Icsoutput::toJson(array(
                 'results' => $deleted
-            ),$deleted);
+            ), $deleted);
 
-        }else{
+        } else {
             return \Icsoutput::toJson(array(
                 'results' => false,
                 'reason' => 'Dont Have Access to Delete '
-            ),false);
+            ), false);
         }
     }
 
@@ -142,33 +156,33 @@ class FabricgradeEloquent implements FabricgradeInterface{
     {
         $db = $this->fabricgrade->find($id);
         /*==========  Sesuaikan  ==========*/
-         $db->name = Input::get('name');
-         $db->info = Input::get('info');
+        $db->name = Input::get('name');
+        $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save()) ?
-            \Icsoutput::msgSuccess( $db->toArray() )
+            \Icsoutput::msgSuccess($db->toArray())
             : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
     }
 
     /**
-    *
-    * Apakah Sudah Login
-    *
-    * @return boolean
-    *
-    **/
+     *
+     * Apakah Sudah Login
+     *
+     * @return boolean
+     *
+     **/
     protected function  hasAccess()
     {
         return (!Auth::guest());
     }
 
     /**
-    *
-    * Menampilkan Page Create data Fabricgrade
-    *
-    **/
+     *
+     * Menampilkan Page Create data Fabricgrade
+     *
+     **/
 
-   public function create()
+    public function create()
     {
         // TODO: Implement create() method.
     }
@@ -176,17 +190,18 @@ class FabricgradeEloquent implements FabricgradeInterface{
     /**
      * Menampilkan Resource
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
-   public function show($id)
+    public function show($id)
     {
         // TODO: Implement show() method.
     }
+
     /**
      * Menampilkan Data Untuk di edit
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -199,9 +214,10 @@ class FabricgradeEloquent implements FabricgradeInterface{
         return $this->delete($id);
     }
 
-	 public function productDetail(){
-			return $this->fabricgrade->products()->get()->toArray();
-	 }
+    public function productDetail()
+    {
+        return $this->fabricgrade->products()->get()->toArray();
+    }
 
 
 }

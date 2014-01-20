@@ -26,6 +26,10 @@ use \Response;
 use \Input;
 
 class ProductdetailsEloquent implements ProductdetailsInterface{
+    /**
+     * @var array
+     */
+
     protected $productdetails;
     function __construct(Productdetails $productdetails)
     {
@@ -186,7 +190,20 @@ class ProductdetailsEloquent implements ProductdetailsInterface{
      */
    public function show($id)
     {
-        // TODO: Implement show() method.
+        $record = $this->productdetails->findOrFail($id);
+        return ($record) ?
+            Response::json(
+                [ 'success' => true, 'error' => false,
+                  'reason' => 'Cannot Find',
+                    'results' => $record->toArray()
+                    ]
+            )
+            : Response::json(
+              [
+                  'success' => true, 'error' => true,
+                  'reason' => 'Cannot Find'
+              ],404
+            );
     }
     /**
      * Menampilkan Data Untuk di edit

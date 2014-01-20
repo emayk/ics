@@ -47,12 +47,7 @@ Ext.define('App.view.products.ListPrd', {
                                     }
                                 ],
                                 items: [
-//                                    {
-//                                        xtype: 'rownumberer',
-//                                        text : '#',
-//                                        dataIndex: 'id',
-//                                        filter:true
-//                                    },
+//
                                     {
                                         text: '#',
                                         dataIndex: 'id',
@@ -63,12 +58,11 @@ Ext.define('App.view.products.ListPrd', {
                                     },
                                     {
                                         text: 'stocks',
-                                        dataIndex: 'countstock',
+                                        dataIndex: 'totalstocks',
                                         filter: true,
-                                        renderer: function () {
-
-                                            var cnt = randomInt(1000);
-                                            return cnt + ' items';
+                                        renderer: function (v,a,rec) {
+                                            var v = (v==null) ? v = 0 : v;
+                                            return v + ' items';
                                         },
                                         filter: {
                                             type: 'int',
@@ -77,37 +71,32 @@ Ext.define('App.view.products.ListPrd', {
                                     },
                                     {
                                         text: translations.field.design,
-                                        dataIndex: 'nodesign', filter: true, flex: .5
+                                        dataIndex: 'nodesign',
+                                        filter: true, flex: .5
 
                                     },
                                     {
                                         text: translations.field.contruction,
-                                        dataIndex: 'contruction', filter: true, flex: .5
+                                        dataIndex: 'contruction',
+                                        filter: true, flex: .5
 
                                     },
                                     {
                                         text: translations.field.category.default,
-                                        dataIndex: 'cat_id',
-                                        renderer: function (v, meta, rec) {
-                                            return rec.getCat().get('name');
-                                        },
+                                        dataIndex: 'catname',
                                         filter: true, flex: .5
                                     },
                                     {
                                         text: translations.field.type.default,
-                                        dataIndex: 'type_id',
-                                        renderer: function (v, meta, rec) {
-                                            return rec.getType().get('name');
-                                        },
+                                        dataIndex: 'typename',
                                         filter: true, flex: .5
                                     },
                                     {
                                         text: translations.field.width,
                                         dataIndex: 'width',
                                         renderer: function (v, meta, rec) {
-                                            return v + ' ' + rec.getUnitwi().get('name');
+                                            return v + ' ' + rec.get('widthname');
                                         },
-
                                         filter: {
                                             type: 'int',
                                             minValue: 1
@@ -117,9 +106,9 @@ Ext.define('App.view.products.ListPrd', {
                                         text: translations.field.weight,
                                         dataIndex: 'weight',
                                         renderer: function (v, meta, rec) {
-                                            return v + ' ' + rec.getUnitwe().get('name');
-                                        }, flex: .5,
-
+                                            return v + ' ' + rec.get('weightname');
+                                        },
+                                        flex: .5,
                                         filter: {
                                             type: 'int',
                                             minValue: 1

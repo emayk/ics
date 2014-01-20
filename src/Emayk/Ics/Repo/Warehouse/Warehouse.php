@@ -67,7 +67,7 @@ class Warehouse extends Model
 	 */
 	public function city()
 	{
-		return $this->belongsTo('Emayk\Ics\Repo\Countries\Countries', 'city_id');
+		return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'city_id');
 	}
 
 	/**

@@ -12,7 +12,7 @@ Ext.define('App.form.combobox.cbColor', {
     queryMode: 'remote',
     fieldLabel : 'Choose Color', allowBlank: false ,
     displayField : 'name', valueField: 'id',
-    // triggerAction: 'all',
+    triggerAction: 'all',
     forceSelection : false, emptyText: 'Select Color',
     store : 'App.store.combo.cbColors',
     tpl: App.util.Form.combobox_tpl ,

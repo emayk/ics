@@ -52,6 +52,17 @@ class ProducttypeEloquent implements ProducttypeInterface{
         $page = \Input::get('page');
 			 $limit = \Input::get('limit',1);
 			 $start = \Input::get('start',1);
+
+        if (Input::has('selected'))
+        {
+            $id = Input::get('selected');
+            $record = $this->producttype->findOrFail($id);
+            return Response::json([
+                'success' => true, 'error' => false,
+                'results' => $record->toArray()
+            ]);
+        }
+
         $producttype = $this->producttype
             ->orderBy('id','DESC')
             ->skip($start)

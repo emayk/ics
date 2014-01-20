@@ -1,14 +1,15 @@
-Ext.define('App.model.product.product',{
-   extend: 'Ext.data.Model',
-    requires:[
+Ext.define('App.model.product.product', {
+    extend: 'Ext.data.Model',
+    requires: [
         'App.model.product.type',
         'App.model.product.category',
+        'App.model.product.detail',
         'App.model.product.units',
         'App.model.product.unitweight',
         'App.model.product.updater',
         'App.model.product.creator'
     ],
-    fields:[
+    fields: [
         'id',
         'name',
         'nodesign',
@@ -27,63 +28,99 @@ Ext.define('App.model.product.product',{
         'lastupdateby_id',
         'countstock',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'catname',
+        'typename',
+        'totalstocks',
+        'widthname',
+        'weightname'
     ],
-    associations :[
+    associations: [
         {
-            type : 'belongsTo',
-            model : 'App.model.product.type',
+            /*Type Product*/
+            type: 'belongsTo',
+            model: 'App.model.product.type',
             instanceName: 'Type',
             foreignKey: 'type_id',
-            setterName : 'setType',
-            getterName : 'getType',
+            setterName: 'setType',
+            getterName: 'getType',
             associationKey: 'type'
+        },
+        {
+            /*Detail Product*/
+            type: 'belongsTo',
+            model: 'App.model.product.detail',
+            instanceName: 'Detail',
+            foreignKey: 'product_id',
+            setterName: 'setDetail',
+            getterName: 'getDetail',
+            associationKey: 'detail'
         },{
-            type : 'belongsTo',
-            model : 'App.model.product.category',
+            /*Stocks Product*/
+            type: 'hasMany',
+            model: 'App.model.product.Stock',
+            name: 'Stocks',
+//            instanceName: 'Stocks',
+//            foreignKey: 'product_id',
+            setterName: 'setStocks',
+            getterName: 'getStocks',
+            associationKey: 'stocks'
+        },
+        {
+            /*Category*/
+            type: 'belongsTo',
+            model: 'App.model.product.category',
             instanceName: 'Category',
             foreignKey: 'cat_id',
-            setterName : 'setCat',
-            getterName : 'getCat',
+            setterName: 'setCat',
+            getterName: 'getCat',
             associationKey: 'category'
-        },{
-            type : 'belongsTo',
-            model : 'App.model.product.unitweight',
+        },
+        {
+            /*Satuan Berat*/
+            type: 'belongsTo',
+            model: 'App.model.product.unitweight',
             instanceName: 'Unitweight',
             foreignKey: 'unitweight_id',
-            setterName : 'setUnitwe',
-            getterName : 'getUnitwe',
+            setterName: 'setUnitwe',
+            getterName: 'getUnitwe',
             associationKey: 'unitweight'
-        },{
-            type : 'belongsTo',
-            model : 'App.model.product.units',
+        },
+        {
+            /*Satuan*/
+            type: 'belongsTo',
+            model: 'App.model.product.units',
             instanceName: 'Unitwidth',
             foreignKey: 'unitwidth_id',
-            setterName : 'setUnitwi',
-            getterName : 'getUnitwi',
+            setterName: 'setUnitwi',
+            getterName: 'getUnitwi',
             associationKey: 'unitwidth'
-        },{
-            type : 'belongsTo',
-            model : 'App.model.product.creator',
+        },
+        {
+            /*Creator*/
+            type: 'belongsTo',
+            model: 'App.model.product.creator',
             instanceName: 'Creator',
             foreignKey: 'createby_id',
-            setterName : 'setCreator',
-            getterName : 'getCreator',
+            setterName: 'setCreator',
+            getterName: 'getCreator',
             associationKey: 'createby'
-        },{
-            type : 'belongsTo',
-            model : 'App.model.product.updater',
+        },
+        {
+            /*Updater*/
+            type: 'belongsTo',
+            model: 'App.model.product.updater',
             instanceName: 'Updater',
             foreignKey: 'lastupdateby_id',
-            setterName : 'setUpdater',
-            getterName : 'getUpdater',
+            setterName: 'setUpdater',
+            getterName: 'getUpdater',
             associationKey: 'updateby'
         }
     ],
 
-    proxy : {
-        url : getApiUrl() + '/products',
-        type : 'rest',
+    proxy: {
+        url: getApiUrl() + '/products',
+        type: 'rest',
         reader: {
             type: 'json',
             root: 'results',

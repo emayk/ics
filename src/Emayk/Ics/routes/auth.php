@@ -15,7 +15,7 @@ Route::post('login.php', '\Emayk\Ics\Repo\Login\LoginController@login');
 Route::get('login.php', '\Emayk\Ics\Repo\Login\LoginController@getLogin');
 /*==========  Logout Get  ==========*/
 Route::get('logout.php', function () {
-	$uid = Auth::user()->id();
+//	$uid = Auth::user()->id();
 	Auth::logout();
 	$logout = true;
 
@@ -26,7 +26,9 @@ Route::get('logout.php', function () {
 		'msg' =>
 			array(
 				'msg'  => "{$msg}",
-				'data' => "data:[$uid]" ),
+                "data" => "data:[1]"
+//				'data' => "data:[$uid]"
+            ),
 	));
 
 	return \Response::json(array('success' => $logout, 'message' => $msg));

@@ -66,13 +66,24 @@ class ColorsEloquent implements ColorsInterface
         $page = \Input::get('page');
         $limit = \Input::get('limit', 1);
         $start = \Input::get('start', 1);
-        $colors = $this->colors
-            ->orderBy('id', 'DESC')
-            ->skip($start)
+
+
+        if (Input::has('selected'))
+        {
+            $id = Input::get('selected');
+            $record = $this->colors->findOrFail($id);
+            return Response::json([
+                'success' => true, 'error' => false,
+                'results' => $record->toArray()
+            ]);
+        }
+
+        $colors = $this->colors;
+        $total = $colors->count();
+
+        $colors = $colors->skip($start)
             ->take($limit)
             ->get()->toArray();
-        $total = $this->colors
-            ->all()->count();
 
         $colorss = array(
             'success' => true,
@@ -194,7 +205,26 @@ class ColorsEloquent implements ColorsInterface
      */
     public function show($id)
     {
-//
+        $record = $this->colors->whereId($id);
+        if ($record)
+        {
+            $total = 1;
+            $record = $record->get()->toArray();
+            return Response::json([
+               'success' => true,
+                'error' => false,
+                'total' => $total,
+                'results' => $record
+            ]);
+        }else{
+            return Response::json([
+                'success' => true,
+                'error' => true,
+                'reason' => 'Cannot Find Record',
+                'total' => 0,
+                'results' => array()
+            ],404);
+        }
     }
 
     /**

@@ -262,8 +262,22 @@ class ProductsEloquent implements ProductsInterface
      */
     public function show($id)
     {
-//        return $this->products->where('id',$id)->get()->toArray();
-        return $this->products->findOrFail($id);
+        $record = $this->products->whereId($id);
+
+        return ($record->count() ) ?
+            Response::json(
+                [ 'success' => true, 'error' => false,
+                    'results' => $record
+                            ->with('type','detail','stocks')
+                            ->get()->toArray()
+                ]
+            )
+            : Response::json(
+                [
+                    'success' => true, 'error' => true,
+                    'reason' => 'Cannot Find'
+                ],404
+            );
     }
 
     /**

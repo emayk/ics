@@ -62,7 +62,7 @@ class Currencies extends Model
 	 */
 	public function country()
 	{
-		return $this->belongsTo('Emayk\Ics\Repo\Countries\Countries', 'country_id');
+		return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'country_id');
 	}
 
 

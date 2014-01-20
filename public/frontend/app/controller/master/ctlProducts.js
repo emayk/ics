@@ -8,9 +8,7 @@ Ext.define('App.controller.master.ctlProducts', {
     views: [
         'App.view.products.tab',
         'App.view.products.ListPrd',
-//        'App.view.products.tabdetail',
         'App.view.products.stocks',
-//        'App.view.products.win',
         'App.view.products.panelinfo',
         'App.view.products.formbasicinfo',
         /*Form Detail Product*/
@@ -31,7 +29,10 @@ Ext.define('App.controller.master.ctlProducts', {
         'App.form.combobox.cbGradeKain',
         'App.form.combobox.cbCurrencies',
         'App.form.combobox.cbTypeProduct',
-        'App.form.combobox.cbCatproduct'
+        'App.form.combobox.cbCatproduct',
+        'App.form.combobox.cbcurrsp',
+        'App.form.combobox.cbcurrspm',
+        'App.form.combobox.cbWarehouse'
     ],
 
     models: [
@@ -43,6 +44,7 @@ Ext.define('App.controller.master.ctlProducts', {
         'App.model.product.user',
         'App.model.product.creator',
         'App.model.product.Stock',
+        'App.model.product.stockhistory',
         'App.model.warehouse.category',
         'App.model.warehouse.warehouse',
         'App.model.product.updater'
@@ -50,6 +52,7 @@ Ext.define('App.controller.master.ctlProducts', {
     stores: [
         'App.store.product.Product',
         'App.store.product.pstocks',
+        'App.store.product.stockhistory',
         // stores Combobox
         'App.store.combo.cbUnitWeight',
         'App.store.combo.cbUnitWidth',
@@ -59,24 +62,38 @@ Ext.define('App.controller.master.ctlProducts', {
         'App.store.combo.cbGradeKain',
         'App.store.combo.cbTypeProduct',
         'App.store.combo.cbCurrency',
+        'App.store.combo.currsp',
+        'App.store.combo.currspm',
         'App.store.combo.cbCategory',
-        'App.store.product.history'
+        'App.store.product.history',
+        'App.store.combo.cbWarehouseStore'
 
     ],
+    /**
+     * Reference
+     */
     refs: [
         { ref: 'tab', selector: 'productstab'},
         { ref: 'btnAdd', selector: 'productstab button#add'},
         { ref: 'gridProducts', selector: 'productstab productList grid#gridProducts'},
-        { ref: 'panelDetail', selector: 'productstab productList > tabproductdetail panelDetail'},
-        { ref: 'gridStocks', selector: 'productstab productList > tabproductdetail productsstocks grid#gridproductstocks'},
-        { ref: 'winProduct', selector: 'winproductinfo'},
         { ref: 'productInfo', selector: 'productinfo'},
-        { ref: 'gridProductStock', selector: 'gridProductStocks'},
-        { ref: 'formProduct', selector: 'productform'},
+        { ref: 'formProduct', selector: 'productinfo #formbasicinfo'},
+        { ref: 'formDetail', selector: 'productinfo #formdetail'},
+        { ref: 'gridHistory', selector: 'productinfo #gridHistoryProduct'},
+        { ref: 'gridStockHistory', selector: 'productinfo #panelGridStock gridProductStockHistory'},
+        { ref: 'gridStock', selector: 'productinfo productgridstocks gridproductstocks'},
+        { ref: 'formAddStock', selector: "productinfo productgridstocks #formaddstock"},
+        { ref: 'btnAddStock', selector: "productinfo productgridstocks #formaddstock #addstock"},
+        { ref: 'btnResetStock', selector: "productinfo productgridstocks #formaddstock #resetstock"},
         { ref: 'btnSave', selector: 'productform button#save'}
     ],
     storeProductFormLoaded: false,
     storeComboLoaded: false,
+    formBasicInfoLoaded: false,
+    formDetailLoaded: false,
+    /**
+     * Initialize
+     */
     init: function () {
         var me = this;
         me.control({
@@ -92,11 +109,6 @@ Ext.define('App.controller.master.ctlProducts', {
              * Grid Product
              */
             'productList grid#gridProducts': {
-//                selectionchange: function (grid, records) {
-//                    var selected = records.length > 0;
-//
-////                    if (records.length) this.showDetailProduct(records[0]);
-//                },
                 /**
                  * Show Info Product at Double click event
                  * @param grid
@@ -107,8 +119,6 @@ Ext.define('App.controller.master.ctlProducts', {
                  * @param eOpts
                  */
                 itemdblclick: function (grid, record, item, index, e, eOpts) {
-//                    me.open_new_tab_product_info(record);
-//                    log('Double Click Item, Process Show Info');
                     me.showInfoProduct(record);
                 },
                 /**
@@ -122,87 +132,119 @@ Ext.define('App.controller.master.ctlProducts', {
                  */
                 itemcontextmenu: me.createContextMenu
             },
-            /**
-             * Product Info
-             */
-            'productinfo': {
+            'formproductbasicinfo': {
                 /**
-                 * At Render
-                 * @param panel
+                 * Render Form Basic Informasi
+                 * @param form
                  */
-                /*render: function (panel) {
-                    if (!this.storeProductFormLoaded) {
-//                        this.getAppStoreComboCbCategoryStore().load();
-//                        this.getAppStoreComboCbTypeProductStore().load();
-//                        this.getAppStoreComboCbUnitWeightStore().load();
-//                        this.getAppStoreComboCbUnitWidthStore().load();
-//                        this.getAppStoreComboCbColorsStore().load();
-//                        this.getAppStoreComboCbGradeKainStore().load();
-//                        this.getAppStoreComboCbCurrencyStore().load();
-                        this.storeProductFormLoaded = true;
-                    }
-                }*/
+                render: function (form) {
+                    var record = form.getForm().getRecord();
+                        /*Load Store weight*/
+                        form.down('[name=unitwidth_id]').getStore().load({ params: { selected: record.get('unitwidth_id')  } });
+                        /*Load Store width*/
+                        form.down('[name=unitweight_id]').getStore().load({ params: { selected: record.get('unitweight_id')  } });
+                        form.down('[name=unitweight_id]').getStore().load({ params: { selected: record.get('unitweight_id')  } });
+                        form.down('[name=cat_id]').getStore().load({ params: { selected: record.get('cat_id')  } });
+                        form.down('[name=type_id]').getStore().load({ params: { selected: record.get('type_id')  } });
+                }
+            },
+            /**
+             * Save Informasi Product
+             */
+            'formproductbasicinfo button#save': {
+                click: function (btn) {
+                    var form = btn.up('form').getForm(),
+                        record = form.getRecord(),
+                        values = form.getValues();
+                }
+            },
+            'formproductdetail': {
+                /**
+                 * Render Form Detail
+                 * @param form
+                 */
+                render: function (form) {
+                    var record = form.getForm().getRecord();
+                        /*Load Store weight*/
+                        form.down('[name=color_id]').getStore().load({ params: { selected: record.get('color_id')  } });
+                        form.down('[name=unit_id]').getStore().load({ params: { selected: record.get('unit_id')  } });
+                        form.down('[name=grade_id]').getStore().load({ params: { selected: record.get('grade_id') } });
+                        /*Untuk Currencies hanya salah satu saja*/
+                        form.down('[name=currsp_id]').getStore().load({ params: { selected: record.get('currsp_id')  } });
+                        form.down('[name=currspm_id]').getStore().load({ params: { selected: record.get('currspm_id')  } });
+                }
+            },
+            /**
+             * Save Informasi Detail
+             */
+            'formproductdetail button#save': {
+                click: function (btn) {
+                    var form = btn.up('form').getForm(),
+                        record = form.getRecord(),
+                        values = form.getValues();
+                }
             },
             /**
              * Add New Product
              */
             'productstab button#add': {
-//                click: me.add_new_product
-                click: me.addRecordProduct
+                click: function(btn){
+                    log('Product Add Button fire!');
+                }
             },
 
             /**
-             * Save Product Button
+             * History
              */
-            'productform button#save': {
-                click: function(btn){ log('Save Record Product'); }
-                /*click: function (btn) {
-                    var me = this;
-                     var panel = btn.up('productform');
-                     var f = btn.up('form').getForm();
-                     var v = f.getValues();
-                     if (!f.isValid()) return msgError('Please Validate Form');
-                     if (v.salesprice < v.salespricemin)
-                     return msgError('Sales Price Mustbe Higher than Sales Price Minimal');
-
-                     var product = Ext.create('App.model.product.product', {
-                     name: v.name,
-                     nodesign: v.nodesign,
-                     contruction: v.contruction,
-                     cat_id: v.cat_id,
-                     type_id: v.type_id,
-                     weight: v.weight,
-                     unitweight_id: v.unitweight_id,
-                     width: v.width,
-                     unitwidth_id: v.unitwidth_id
-                     });
-                     var tab = me.getTab();
-                     product.save({
-                     success: function (p) {
-                     var pid = p.get('id');
-                     log(p);
-                     me.saved = true;
-                     var detail = {
-                     product_id: pid,
-                     color_id: v.det_color_id,
-                     unit_id: v.det_unit_id,
-                     grade_id: v.det_grade_id,
-                     salesprice: v.det_salesprice,
-                     salespricemin: v.det_salespricemin,
-                     currsp_id: v.det_currsp_id,
-                     currspm_id: v.det_currspm_id
-                     };
-                     me.add_product_detail(panel, tab, pid, detail);
-                     },
-                     failure: function (p) {
-                     me.messageErrorBox();
-                     }
-                     });
-                }*/
+            'productinfo productgridstocks gridproductstocks': {
+                /**
+                 * Menampilkan History Stock
+                 */
+                itemclick: me.showHistoryStock
+            },
+            'productinfo productgridstocks #formaddstock #addstock': {
+                /**
+                 * Add Stock
+                 * @param btn
+                 */
+                click: function (btn) {
+                    log('click add stock', btn.text);
+                }
+            },
+            'productinfo productgridstocks #formaddstock #resetstock': {
+                /**
+                 * Reset Form Stock
+                 * @param btn
+                 */
+                click: function (btn) {
+                    log('click add stock', btn.text);
+                }
             }
         });
     },
-    createContextMenu : function (view, record, item, index, e, eOpts) {
+    showHistoryStock: function (grid, record, item, index, e, eOpts) {
+        /**
+         * Load Record to Form Add Stock
+         * @type {Object|*|get|get|Class|get}
+         */
+        var me = this, uuid = record.get('uuid');
+        var id = record.get('id');
+        var panel = grid.up('productgridstocks');
+        var gridHistory = panel.down('gridProductStockHistory');
+        var store = gridHistory.getStore();
+        store.getProxy().setExtraParam('stock_id', id);
+        store.load();
+    },
+    /**
+     * Create Context Menu
+     * @param view
+     * @param record
+     * @param item
+     * @param index
+     * @param e
+     * @param eOpts
+     */
+    createContextMenu: function (view, record, item, index, e, eOpts) {
         e.stopEvent();
         var pName = record.get('name');
         var me = this;
@@ -215,13 +257,6 @@ Ext.define('App.controller.master.ctlProducts', {
                         me.showInfoProduct(record);
                     }
                 },
-//                {
-//                    text: 'Edit Product ' + pName,
-//                    iconCls: 'edit',
-//                    handler: function (btn) {
-//                        log(btn.text);
-//                    }
-//                },
                 {
                     text: 'Delete Product ' + pName,
                     iconCls: 'delete',
@@ -233,131 +268,115 @@ Ext.define('App.controller.master.ctlProducts', {
         });
         menu.showAt(e.getXY());
     },
-    setupStoreHistory: function(id){
+    /**
+     * Setup Store History Product
+     * @param id
+     * @returns {history|*}
+     */
+    setupStoreHistory: function (id) {
         var store = Ext.create('App.store.product.history');
-        store.getProxy().setExtraParam('product_id',id);
+        store.getProxy().setExtraParam('product_id', id);
         store.load();
         return store;
     },
-    setupStoreStock: function(id){
+    /**
+     * Setup Product Stock History
+     * @returns {stockhistory|*}
+     */
+    setupStoreStockHistory: function () {
+        return Ext.create('App.store.product.stockhistory');
+    },
+    /**
+     * Setup Store Stock Product
+     * @param id
+     * @returns {pstocks|*}
+     */
+    setupStoreStock: function (id) {
         var store = Ext.create('App.store.product.pstocks');
-        store.getProxy().setExtraParam('product_id',id);
+        store.getProxy().setExtraParam('product_id', id);
         store.load();
         return store;
     },
-    showInfoProduct: function(record){
+    /**
+     * Menampilkan Informasi Product
+     * @param record
+     */
+    showInfoProduct: function (record) {
         var me = this, id = record.get('id');
-        var storeHistory = me.setupStoreHistory(id),
-            stockStore = me.setupStoreStock(id),
-            name = record.get('name'),
-            title = '[' +id+'] '+ name;
-        log(storeHistory);
+        me.loadRecordProduct(id);
+    },
+    /**
+     * Create Panel Info
+     * @param recordProduct
+     */
+    createPanelInfo: function (recordProduct) {
+        var me = this;
+        var name = recordProduct.get('name'),
+            id = recordProduct.get('id'),
+            title = '[' + id + '] ' + name;
+        var storeHistory = me.setupStoreHistory(recordProduct.get('id'));
+        var stockStore = me.setupStoreStock(id);
+        var storeStockHistory = me.setupStoreStockHistory();
 
-
-        var panel = Ext.create('App.view.products.panelinfo',{
+        var panel = Ext.create('App.view.products.panelinfo', {
             storeHistory: storeHistory,
-            title : title,
-            closable:true,
-            iconCls:'home',
-            prodId: id,
-            prodName : name,
-            stockStore: stockStore,
-            record: record
-        });
-        me.open_new_tab(title,panel);
-//        log(record);
-    },
-    cntNewRecord: 1,
-    addRecordProduct: function () {
-        log('New Product execute');
-        /*var me = this, cnt = me.cntNewRecord,
-            panel = Ext.create('App.view.products.panelinfo', {
-            new: true,
-            title : 'New Product ' + cnt,
-//            storeHistory:
-        });*/
-    },
-   /* messageErrorBox: function () {
-        msgError('Failure Creation Product , Please Try Again');
-    },*/
-/*    add_product_detail: function (panel, tab, id, detail) {
-        var me = this, mdldetail = Ext.create('App.model.product.detail', detail);
-
-        mdldetail.save({
-            success: function (d) {
-                log('Product detail ' + d.get('id') + 'Success Added');
-                Ext.Msg.show({
-                    title: 'Success Added with id ' + id,
-                    icon: Ext.MessageBox.INFO,
-                    msg: 'Thanks',
-                    buttons: Ext.MessageBox.OK
-                });
-                tab.remove(panel);
-            },
-            failure: function () {
-                me.messageErrorBox();
-            }
-        });
-    },*/
-/*    add_new_product: function () {
-        var me = this, title = 'New Product ';
-        var component = Ext.create('App.view.products.formProduct',
-            {
-                title: title
-            }
-        );
-        if (isDebug()) {
-            var model = Ext.create('App.model.product.product', {
-                name: randomText(10),
-                cat_id: randomInt(22, 6),
-                contruction: randomText(3),
-                nodesign: randomText(5),
-                type_id: randomInt(22),
-                weight: randomInt(10),
-                unitweight_id: randomInt(10),
-                width: randomInt(100),
-                unitwidth_id: randomInt(22)
-            });
-            *//**
-             * Setup Value Detail
-             *//*
-            component.down('[name=det_color_id]').setValue(4);
-            component.down('[name=det_unit_id]').setValue(randomInt(10));
-            component.down('[name=det_grade_id]').setValue(randomInt(8));
-            component.down('[name=det_salesprice]').setValue(randomInt(10000));
-            component.down('[name=det_currsp_id]').setValue(randomInt(5));
-            component.down('[name=det_salespricemin]').setValue(randomInt(9999));
-            component.down('[name=det_currspm_id]').setValue(randomInt(5));
-            component.getForm().loadRecord(model);
-        }
-        this.open_new_tab(title, component);
-    },*/
-    /*open_new_tab_product_info: function (record) {
-        var title = 'Product ' + record.get('name');
-        var component = Ext.create('App.view.products.panelinfo', {
-            prodId: record.get('id'),
             title: title,
-            autoScroll: true,
-            iconCls: 'home',
             closable: true,
-            record: record,
-            stockStore: Ext.create('App.store.product.pstocks')
+            iconCls: 'home',
+            prodId: id,
+            prodName: name,
+            stockStore: stockStore,
+            storeStockHistory: storeStockHistory,
+            record: recordProduct
         });
 
-        component.down('form#detail').setTitle('Information Of ' + record.get('name'));
-        component.down('form#detail').loadRecord(record);
+        me.loadRecordToFormBasic(recordProduct, panel);
+        var recordDetail = recordProduct.getDetail();
+        me.loadRecordToFormDetail(recordDetail, panel);
+        me.open_new_tab(title, panel);
+    },
+    /**
+     * Load Record Product
+     * @param id
+     */
+    loadRecordProduct: function (id) {
+        var me = this;
+        App.model.product.product.load(id, {
+            scope: this,
+            failure: function (record, operation) {
+                msgError('Cannot Load Record Product ');
+            },
+            success: function (record, operation) {
+                me.createPanelInfo(record);
 
-        var pStock = component.down('#panelStock');
-        var gridstock = component.down('gridProductStocks#gridStocks'),
-            pg1 = component.down('gridProductStocks#gridStocks #pgstockStore1');
-
-        pStock.setTitle('Stock Product ' + record.get('name'));
-        gridstock.reconfigure(component.stockStore);
-        pg1.bindStore(component.stockStore);
-        gridstock.getStore().getProxy().setExtraParam('product_id', record.get('id'));
-        gridstock.getStore().load();
-        this.open_new_tab(title, component)
-    },*/
+            }
+        });
+    },
+    /**
+     * Load Record ke Form Basic Info
+     * @param record
+     * @param panel
+     */
+    loadRecordToFormBasic: function (record, panel) {
+        panel.down('#formbasicinfo').getForm().loadRecord(record);
+    },
+    /**
+     * Load Record ke Form Detail
+     * @param record
+     * @param panel
+     */
+    loadRecordToFormDetail: function (record, panel) {
+        panel.down('#formdetail').getForm().loadRecord(record);
+    },
+    /**
+     * Counter New record
+     */
+    cntNewRecord: 1,
+    /**
+     * Open New Tab
+     * @param title
+     * @param component
+     */
     open_new_tab: function (title, component) {
         var tabs = this.getTab();
         var newTab = tabs.items.findBy(
@@ -370,25 +389,156 @@ Ext.define('App.controller.master.ctlProducts', {
         }
         tabs.setActiveTab(newTab);
     }
-    /*show_page_addstock: function (productid) {
-        var pid = productid || randomInt(90);
-        var pageStock;
-        if (!pageStock) {
-            *//*
-             * Buat Stock Model
-             * *//*
-            var mdlstock = Ext.create('App.model.product.Stock', {
-                product_id: pid
-            });
-            *//*
-             Buat Page Stock
-             * *//*
-            var title = 'Add Stock For Product ID ' + pid;
-
-            pageStock = Ext.create('App.view.products.add.stock', {
-                title: title, closable: true
-            });
-        }
-        this.open_new_tab(title, pageStock);
-    }*/
 });
+
+/* messageErrorBox: function () {
+ msgError('Failure Creation Product , Please Try Again');
+ },*/
+/*    add_product_detail: function (panel, tab, id, detail) {
+ var me = this, mdldetail = Ext.create('App.model.product.detail', detail);
+
+ mdldetail.save({
+ success: function (d) {
+ log('Product detail ' + d.get('id') + 'Success Added');
+ Ext.Msg.show({
+ title: 'Success Added with id ' + id,
+ icon: Ext.MessageBox.INFO,
+ msg: 'Thanks',
+ buttons: Ext.MessageBox.OK
+ });
+ tab.remove(panel);
+ },
+ failure: function () {
+ me.messageErrorBox();
+ }
+ });
+ },*/
+/*    add_new_product: function () {
+ var me = this, title = 'New Product ';
+ var component = Ext.create('App.view.products.formProduct',
+ {
+ title: title
+ }
+ );
+ if (isDebug()) {
+ var model = Ext.create('App.model.product.product', {
+ name: randomText(10),
+ cat_id: randomInt(22, 6),
+ contruction: randomText(3),
+ nodesign: randomText(5),
+ type_id: randomInt(22),
+ weight: randomInt(10),
+ unitweight_id: randomInt(10),
+ width: randomInt(100),
+ unitwidth_id: randomInt(22)
+ });
+ *//**
+ * Setup Value Detail
+ *//*
+ component.down('[name=det_color_id]').setValue(4);
+ component.down('[name=det_unit_id]').setValue(randomInt(10));
+ component.down('[name=det_grade_id]').setValue(randomInt(8));
+ component.down('[name=det_salesprice]').setValue(randomInt(10000));
+ component.down('[name=det_currsp_id]').setValue(randomInt(5));
+ component.down('[name=det_salespricemin]').setValue(randomInt(9999));
+ component.down('[name=det_currspm_id]').setValue(randomInt(5));
+ component.getForm().loadRecord(model);
+ }
+ this.open_new_tab(title, component);
+ },*/
+/*open_new_tab_product_info: function (record) {
+ var title = 'Product ' + record.get('name');
+ var component = Ext.create('App.view.products.panelinfo', {
+ prodId: record.get('id'),
+ title: title,
+ autoScroll: true,
+ iconCls: 'home',
+ closable: true,
+ record: record,
+ stockStore: Ext.create('App.store.product.pstocks')
+ });
+
+ component.down('form#detail').setTitle('Information Of ' + record.get('name'));
+ component.down('form#detail').loadRecord(record);
+
+ var pStock = component.down('#panelStock');
+ var gridstock = component.down('gridProductStocks#gridStocks'),
+ pg1 = component.down('gridProductStocks#gridStocks #pgstockStore1');
+
+ pStock.setTitle('Stock Product ' + record.get('name'));
+ gridstock.reconfigure(component.stockStore);
+ pg1.bindStore(component.stockStore);
+ gridstock.getStore().getProxy().setExtraParam('product_id', record.get('id'));
+ gridstock.getStore().load();
+ this.open_new_tab(title, component)
+ },*/
+
+
+
+/*show_page_addstock: function (productid) {
+ var pid = productid || randomInt(90);
+ var pageStock;
+ if (!pageStock) {
+ *//*
+ * Buat Stock Model
+ * *//*
+ var mdlstock = Ext.create('App.model.product.Stock', {
+ product_id: pid
+ });
+ *//*
+ Buat Page Stock
+ * *//*
+ var title = 'Add Stock For Product ID ' + pid;
+
+ pageStock = Ext.create('App.view.products.add.stock', {
+ title: title, closable: true
+ });
+ }
+ this.open_new_tab(title, pageStock);
+ }*/
+
+
+
+/*click: function (btn) {
+ var me = this;
+ var panel = btn.up('productform');
+ var f = btn.up('form').getForm();
+ var v = f.getValues();
+ if (!f.isValid()) return msgError('Please Validate Form');
+ if (v.salesprice < v.salespricemin)
+ return msgError('Sales Price Mustbe Higher than Sales Price Minimal');
+
+ var product = Ext.create('App.model.product.product', {
+ name: v.name,
+ nodesign: v.nodesign,
+ contruction: v.contruction,
+ cat_id: v.cat_id,
+ type_id: v.type_id,
+ weight: v.weight,
+ unitweight_id: v.unitweight_id,
+ width: v.width,
+ unitwidth_id: v.unitwidth_id
+ });
+ var tab = me.getTab();
+ product.save({
+ success: function (p) {
+ var pid = p.get('id');
+ log(p);
+ me.saved = true;
+ var detail = {
+ product_id: pid,
+ color_id: v.det_color_id,
+ unit_id: v.det_unit_id,
+ grade_id: v.det_grade_id,
+ salesprice: v.det_salesprice,
+ salespricemin: v.det_salespricemin,
+ currsp_id: v.det_currsp_id,
+ currspm_id: v.det_currspm_id
+ };
+ me.add_product_detail(panel, tab, pid, detail);
+ },
+ failure: function (p) {
+ me.messageErrorBox();
+ }
+ });
+ }*/

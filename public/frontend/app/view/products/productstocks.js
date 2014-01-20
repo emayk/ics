@@ -21,9 +21,12 @@ Ext.define('App.view.products.productstocks', {
     alias: 'widget.productgridstocks',
     requires: [
         'App.view.products.productstock',
-        'App.view.products.gridProductStockHistory'
+        'App.view.products.gridProductStockHistory',
+        'App.form.combobox.cbUnits'
     ],
     stockStore: null,
+//    stockHistoryStore: null,
+    storeStockHistory: null,
     record: null,
     prodName: null,
     prodId: null,
@@ -53,6 +56,7 @@ Ext.define('App.view.products.productstocks', {
                 },
                 {
                     xtype: 'container',
+                    itemId: 'containerHistoryForm',
                     layout: { type: 'hbox', align: 'stretch'},
                     flex: .5,
                     items: [
@@ -63,7 +67,7 @@ Ext.define('App.view.products.productstocks', {
                             xtype: 'gridProductStockHistory',
                             flex: .5,
                             title: 'History ' + this.prodName,
-                            stockHistoryStore: null,
+                            storeStockHistory: this.storeStockHistory,
                             itemId: 'gridStockHistory',
                             margin: '0 5 0 0'
                         },
@@ -75,23 +79,33 @@ Ext.define('App.view.products.productstocks', {
                             margin: '0 0 0 5',
                             bodyPadding: 10,
                             frame: true,
+                            defaults:{
+                                anchor : '95%'
+                            },
                             title: 'Add New Stock Product ' + this.prodName,
                             flex: .5,
                             items: [
                                 { xtype: "displayfield", fieldLabel: "Product", name: "prodName", value: this.prodId + ' / ' + this.prodName},
-                                { xtype: "textfield", fieldLabel: "id", name: "id"},
-                                { xtype: "textfield", fieldLabel: "product_id", name: "product_id", value: this.prodId, readOnly: true },
-                                { xtype : "textfield",fieldLabel : "wh_id", name: "wh_id"},
-                                { xtype : "textfield",fieldLabel : "lengthfabric", name: "lengthfabric"},
-                                { xtype : "textfield",fieldLabel : "onday", name: "onday"},
-                                { xtype : "textfield",fieldLabel : "unit_id", name: "unit_id"}
+                                { xtype: "hiddenfield", fieldLabel: "id", name: "id"},
+                                { xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.prodId},
+                                { xtype : "cbwarehouse",fieldLabel : "Warehouse", name: "wh_id"},
+                                { xtype : "numberfield",fieldLabel : "lengthfabric", name: "lengthfabric"},
+                                {
+                                    fieldLabel : "Delivery At",
+                                    name: "onday",
+                                    xtype: 'datefield',
+//                                    anchor: '100%',
+                                    format: 'd.m.Y',
+                                    submitFormat: 'Y-m-d'
+                                },
+                                { xtype : "cbunits",fieldLabel : "Units", name: "unit_id"}
                             ],
                             buttons: [
                                 {
-                                    text: 'save', iconCls: 'save', itemId: 'addstock'
+                                    text: 'Add New', iconCls: 'add', itemId: 'addstock'
                                 },
                                 {
-                                    text: 'Reset', iconCls: 'refresh', itemId: 'reset'
+                                    text: 'Reset', iconCls: 'refresh', itemId: 'resetstock'
                                 }
                             ]
                         }

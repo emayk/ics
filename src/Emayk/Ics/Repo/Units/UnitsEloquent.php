@@ -52,6 +52,17 @@ class UnitsEloquent implements UnitsInterface{
         $page = \Input::get('page');
 			 $limit = \Input::get('limit',1);
 			 $start = \Input::get('start',1);
+
+        if (Input::has('selected'))
+        {
+            $id = Input::get('selected');
+            $record = $this->units->findOrFail($id);
+            return Response::json([
+                'success' => true, 'error' => false,
+                'results' => $record->toArray()
+            ]);
+        }
+
         $units = $this->units
             ->orderBy('id','DESC')
             ->skip($start)

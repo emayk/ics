@@ -33,13 +33,13 @@ Ext.define('App.view.products.productstock', {
             columns: [
                 { header: 'id', dataIndex: 'id'},
                 { header: 'total', dataIndex: 'total'},
-                {
-                    header: translations.field.warehouse,
-                    dataIndex: 'catwh_id',
-                    renderer: function (v, m, rec) {
-                        return rec.getCatwh().get('name');
-                    }
-                },
+//                {
+//                    header: translations.field.warehouse,
+//                    dataIndex: 'wh_id',
+//                    renderer: function (v, m, rec) {
+//                        return rec.getCatwh().get('name');
+//                    }
+//                },
                 {
                     header: translations.field.length,
                     dataIndex: 'lengthfabric'
@@ -50,11 +50,11 @@ Ext.define('App.view.products.productstock', {
                 },
                 { header: 'product_id', dataIndex: 'product_id'
                 },
-                { header: 'wh_id', dataIndex: 'wh_id',
-                    renderer: function (v, m, rec) {
-                        return rec.getWh().get('name');
-                    }
-                },
+//                { header: 'wh_id', dataIndex: 'wh_id',
+//                    renderer: function (v, m, rec) {
+//                        return rec.getWh().get('name');
+//                    }
+//                },
                 { header: 'unit_id', dataIndex: 'unit_id'
                 },
                 { header: 'uuid', dataIndex: 'uuid'

@@ -48,6 +48,7 @@ class Productcategory extends Model
 	 * @var string
 	 */
 	protected $table = 'master_category_product';
+    protected $hidden = array('parent_id','parent_type');
 	/**
 	 * @var array
 	 */

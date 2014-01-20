@@ -65,7 +65,7 @@ class Locations extends Model
      * @var array
      */
     public static $rules = array();
-
+    public $hidden = array('parent_type','parent_id');
 
     /**
      * List Countries

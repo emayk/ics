@@ -17,12 +17,11 @@ Ext.define('App.view.products.panelinfo', {
     prodName : null,
     stockStore: null,
     storeHistory:null,
+    storeStockHistory: null,
     record: null,
     new: false,
     debug: false,
     title : 'Info',
-//    storeHistory:'App.store.product.history',
-
     extend: 'Ext.tab.Panel',
     cls: 'item-ct',
     flex: 2,
@@ -54,7 +53,9 @@ Ext.define('App.view.products.panelinfo', {
                 },
                 {
                     xtype: 'productgridstocks',
+                    itemId: 'panelGridStock',
                     stockStore: me.stockStore,
+                    storeStockHistory: me.storeStockHistory,
                     record: me.record,
                     prodName : me.prodName,
                     prodId : me.prodId,
@@ -63,6 +64,7 @@ Ext.define('App.view.products.panelinfo', {
                 {
                     xtype: 'productshistory',
                     title: 'history',
+                    itemId: 'gridHistoryProduct',
                     storeHistory: me.storeHistory,
                     prodId : me.prodId,
                     html: 'History Product ' + me.prodName

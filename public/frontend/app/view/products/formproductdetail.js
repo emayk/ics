@@ -21,6 +21,16 @@ Ext.define('App.view.products.formproductdetail', {
     extend: 'Ext.form.Panel',
     alias: 'widget.formproductdetail',
     frame: true,
+    requires:[
+        'App.form.combobox.cbUnitWeight',
+        'App.form.combobox.cbUnitWidth',
+        'App.form.combobox.cbColor',
+        'App.form.combobox.cbUnits',
+        'App.form.combobox.cbGradeKain',
+        'App.form.combobox.cbcurrsp',
+        'App.form.combobox.cbcurrspm',
+//        'App.form.combobox.cbCurrencies'
+    ],
     record: null,
     prodId: null,
     prodName: null,
@@ -50,17 +60,39 @@ Ext.define('App.view.products.formproductdetail', {
                 {
                     xtype: 'fieldset',
                     title : 'Form Detail Product ' + this.prodName,
+                    defaults:{
+                        anchor : '95%'
+                    },
                     items: [
                         { xtype: "displayfield", fieldLabel: "Name", name: "prodname", value: this.prodName},
-                        { xtype: "textfield", fieldLabel: "id", name: "id", hidden: true},
-                        { xtype: "textfield", fieldLabel: "product_id", name: "product_id", value: this.prodId},
-                        { xtype: "textfield", fieldLabel: "color_id", name: "color_id"},
-                        { xtype: "textfield", fieldLabel: "unit_id", name: "unit_id"},
-                        { xtype: "textfield", fieldLabel: "grade_id", name: "grade_id"},
-                        { xtype: "textfield", fieldLabel: "salesprice", name: "salesprice"},
-                        { xtype: "textfield", fieldLabel: "salespricemin", name: "salespricemin"},
-                        { xtype: "textfield", fieldLabel: "currsp_id", name: "currsp_id"},
-                        { xtype: "textfield", fieldLabel: "currspm_id", name: "currspm_id"},
+                        { xtype: "hiddenfield", fieldLabel: "id", name: "id", hidden: true},
+                        { xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.prodId},
+
+                        { xtype: "cbcolor", fieldLabel: "Color", name: "color_id"},
+                        { xtype: "cbunits", fieldLabel: "Unit", name: "unit_id"},
+                        { xtype: "cbgradekain", fieldLabel: "Grade", name: "grade_id"},
+                        {
+                            xtype:'fieldcontainer',
+                            fieldLabel:'Sales Price',
+                            hiddenField: true,
+                            layout: 'hbox', anchor: '95%',
+                            items : [
+                                { xtype: "textfield", fieldLabel: "", name: "salesprice", flex: .3 },
+                                { xtype : 'splitter' },
+                                { xtype: "cbcurrsp", fieldLabel: "", name: "currsp_id", flex: .6 }
+                            ]
+                        },
+
+                        {
+                            xtype:'fieldcontainer',
+                            fieldLabel:'Sales Price Min ',
+                            layout: 'hbox', anchor: '95%',
+                            items : [
+                                { xtype: "textfield", fieldLabel: "", name: "salespricemin", flex: .3 },
+                                { xtype : 'splitter' },
+                                { xtype: "cbcurrspm", fieldLabel: "", name: "currspm_id", flex: .6 }
+                            ]
+                        },
                         { xtype: "textfield", fieldLabel: "parent_id", name: "parent_id", value: this.prodId,hidden:true },
                         { xtype: "textfield", fieldLabel: "parent_type", name: "parent_type", value: 'product',hidden:true }
                     ]

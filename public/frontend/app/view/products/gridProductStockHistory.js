@@ -21,23 +21,30 @@
 Ext.define('App.view.products.gridProductStockHistory', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.gridProductStockHistory',
-    stockHistoryStore: null,
+    storeStockHistory: null,
     initComponent: function () {
         Ext.apply(this, {
-            store: this.stockHistoryStore,
+            store: this.storeStockHistory,
             columns: [
                 {
                     xtype: 'rownumberer'
                 },
-                {
-                    text: 'Id',
-                    dataIndex: 'id'
-                }
+//                { text : "id",dataIndex : "id" },
+//                { text : "stock_id",dataIndex : "stock_id" },
+                { text : "refdoc",dataIndex : "refdoc" },
+                { text : "noroll",dataIndex : "noroll" },
+                { text : "qty_in",dataIndex : "qty_in" },
+                { text : "qty_out",dataIndex : "qty_out" },
+                { text : "qty_balance",dataIndex : "qty_balance" }
+//                { text : "createby_id",dataIndex : "createby_id" },
+//                { text : "lastupdateby_id",dataIndex : "lastupdateby_id" },
+//                { text : "created_at",dataIndex : "created_at" },
+//                { text : "updated_at",dataIndex : "updated_at" }
             ],
             dockedItems: [
                 {
                     xtype: 'pagingtoolbar',
-                    store: this.stockHistoryStore,
+                    store: this.storeStockHistory,
                     itemId: 'pgStockHistory',
                     dock: 'bottom'
                 }

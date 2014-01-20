@@ -182,10 +182,11 @@ Ext.application({
             me.collapseMode();
         }
     },
+    /**
+     * Launch Application
+     */
     launch: function () {
         this.app_launch();
-        log('launche.....');
-
     },
     /*Collapse Menu dan Header*/
     collapseMode: function () {

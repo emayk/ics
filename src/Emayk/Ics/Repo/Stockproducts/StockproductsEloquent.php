@@ -52,17 +52,53 @@ class StockproductsEloquent implements StockproductsInterface{
         $page = \Input::get('page');
 			 $limit = \Input::get('limit',1);
 			 $start = \Input::get('start',1);
+
+//
+//        if (Input::has('filter')){
+//          $filter = Input::get('filter');
+//            $json = json_decode($filter);
+//            $property =$json[0]->property;
+//            $productId = ($property == 'app.model.product.product_id') ? $json[0]->value : 0 ;
+//            $stockproducts = $this->stockproducts->whereProductId($productId);
+//            $total = $stockproducts->count();
+//            $stockproducts1 = $stockproducts->get()->toArray();
+//            foreach ($stockproducts->get() as $stock) {
+//                $stocks[] = array(
+//                    'id' => $stock->id,
+//                    'app.model.product.product_id' => $productId,
+//                    "createby_id" => $stock->createby_id,
+//                    "created_at" => $stock->created_at,
+//                    "lastupdateby_id" => $stock->lastupdateby_id,
+//                    "lengthfabric" => $stock->lengthfabric,
+//                    "onday" => $stock->onday,
+//                    "product_id" => $stock->product_id,
+//                    "total" => $stock->total,
+//                    "unit_id" => $stock->unit_id,
+//                    "updated_at" => $stock->updated_at,
+//                    "uuid" => $stock->uuid,
+//                    "wh_id" => $stock->wh_id,
+//                );
+//            }
+//
+//            return Response::json(
+//                [
+//                    'success' => true,
+//                    'results' => $stockproducts1,
+//                    'total' => $total
+//                ]
+//            );
+//        };
+
         $stockproducts = $this->stockproducts
-									 ->with(
-						'product',
-						'categorywarehouse',
-						 'warehouse',
-						'createby',
-						'updateby'
-				 )
+        ->with(
+            'product',
+            'categorywarehouse',
+            'warehouse',
+            'createby',
+            'updateby'
+        )
 
-					->orderBy('id','DESC');
-
+        ->orderBy('id','DESC');
 			 if (Input::has('product_id'))
 			 {
 					$pid = Input::get('product_id');

@@ -52,19 +52,21 @@ class WarehousecategoryEloquent implements WarehousecategoryInterface{
 
         $page = \Input::get('page');
 			  $limit = \Input::get('limit',1);
-			  $start = \Input::get('start',1);
-        $warehousecategory = $this->warehousecategory
+			  $start = \Input::get('start',0);
+        $warehousecategory = $this->warehousecategory;
+
+        $total = $warehousecategory->count();
+
+        $warehousecategory = $warehousecategory
             ->orderBy('id','DESC')
             ->skip($start)
             ->take($limit);
+
         if ( (Input::has('cb')) and (Input::get('cb') == 'true') ){
             $warehousecategory = $this->combobox();
         }else {
             $warehousecategory = $warehousecategory->get()->toArray();
         }
-
-        $total = $this->warehousecategory
-            ->all()->count();
 
         $warehousecategorys = array(
             'success' => true,
@@ -94,13 +96,13 @@ class WarehousecategoryEloquent implements WarehousecategoryInterface{
                         ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->warehousecategory->name = Input::get('name');
-        // $this->warehousecategory->info = Input::get('info');
-        // $this->warehousecategory->uuid = uniqid('New_');
-        // $this->warehousecategory->createby_id = \Auth::user()->id;
-        // $this->warehousecategory->lastupdateby_id = \Auth::user()->id;
-        // $this->warehousecategory->created_at = new Carbon();
-        // $this->warehousecategory->updated_at = new Carbon();
+         $this->warehousecategory->name = Input::get('name');
+         $this->warehousecategory->info = Input::get('info');
+         $this->warehousecategory->uuid = uniqid('New_');
+         $this->warehousecategory->createby_id = \Auth::user()->id;
+         $this->warehousecategory->lastupdateby_id = \Auth::user()->id;
+         $this->warehousecategory->created_at = new Carbon();
+         $this->warehousecategory->updated_at = new Carbon();
         $saved = $this->warehousecategory->save() ? true : false ;
         return Response::json(array(
             'success' => $saved,
@@ -185,6 +187,7 @@ class WarehousecategoryEloquent implements WarehousecategoryInterface{
      */
    public function show($id)
     {
+
 			 $db = $this->warehousecategory->find($id);
 			 return (!$db)
 				 ? \Icsoutput::msgError(array('reason' => 'Cannot Found'))

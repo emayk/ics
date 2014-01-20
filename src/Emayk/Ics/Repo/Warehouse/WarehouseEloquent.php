@@ -52,6 +52,17 @@ class WarehouseEloquent implements WarehouseInterface{
         $page = \Input::get('page');
 			 $limit = \Input::get('limit',1);
 			 $start = \Input::get('start',1);
+
+        if (Input::has('selected'))
+        {
+            $id = Input::get('selected');
+            $record = $this->warehouse->findOrFail($id);
+            return Response::json([
+                'success' => true, 'error' => false,
+                'results' => $record->toArray()
+            ]);
+        }
+
         $warehouse = $this->warehouse
             ->with('city','category')
             ->orderBy('id','DESC')

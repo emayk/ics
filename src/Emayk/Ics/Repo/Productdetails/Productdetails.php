@@ -45,6 +45,7 @@ use Illuminate\Database\Eloquent\Model;
 class Productdetails extends Model {
 	protected $guarded = array();
 	protected $table = 'master_product_details';
+    protected  $hidden = array('parent_id', 'parent_type');
 	public static $rules = array();
 
     public function product()

@@ -54,6 +54,10 @@ class Stockproducthistory extends Model
 	 * @var string
 	 */
 	protected $table = 'stock_card_product_history';
+    /**
+     * @var array
+     */
+    protected $hidden = array('authenticate_text');
 	/**
 	 * @var array
 	 */
@@ -168,4 +172,15 @@ class Stockproducthistory extends Model
 	{
 		return new Stockproducts();
 	}
+
+
+    /**
+     * Mendapatkan History dari Stock ID
+     * @param $query
+     * @param $idStock
+     * @return mixed
+     */
+    public function scopeOfStocks($query,$idStock){
+        return $query->whereStockId($idStock);
+    }
 }

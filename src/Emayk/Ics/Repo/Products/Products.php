@@ -75,19 +75,20 @@ class Products extends Model
     protected $guarded = array();
     protected $table = 'master_products';
     public static $rules = array();
-    protected $appends = array();
-    protected $hidden = array();
+    protected $appends = array('totalstocks','catname','typename','widthname','weightname');
+    protected $hidden = array('parent_id','parent_type');
     protected $with = array(
-        'type',
-        'category',
-        'image',
-        'unitweight',
-        'unitwidth',
-        'createby',
-        'detail',
-        'updateby',
-        'stocks',
-        'countStocks'
+//        'count',
+//        'type',
+//        'category',
+//        'image',
+//        'unitweight',
+//        'unitwidth',
+//        'createby',
+//        'detail',
+//        'updateby',
+//        'stocks',
+//        'countStocks'
     );
 
     /**
@@ -98,6 +99,22 @@ class Products extends Model
     public function category()
     {
         return $this->belongsTo('Emayk\Ics\Repo\Productcategory\Productcategory', 'cat_id');
+    }
+    public function getCatnameAttribute()
+    {
+        return $this->attributes['catname'] = $this->category()->pluck('name');
+    }
+    public function getWidthnameAttribute()
+    {
+        return $this->attributes['widthname'] = $this->unitwidth()->pluck('name');
+    }
+    public function getWeightnameAttribute()
+    {
+        return $this->attributes['weightname'] = $this->unitweight()->pluck('name');
+    }
+  public function getTypenameAttribute()
+    {
+        return $this->attributes['typename'] = $this->type()->pluck('name');
     }
 
     /**
@@ -214,13 +231,9 @@ class Products extends Model
         return $this->hasOne('Emayk\Ics\Repo\Statsproduct\Statsproduct', 'product_id');
     }
 
-//	 public function getHasStocksAttribute(){
-//				return $this->attributes["hasStocks"] = true;
-//	 }
-////
-//	 public function getTotalStocksAttribute(){
-//				return $this->attributes["totalStocks"] = rand(1,200);
-//	 }
+	 public function getTotalstocksAttribute(){
+				return $this->attributes["totalstocks"] = $this->stocks()->pluck('total');
+	 }
 
 //
 //	 protected function getTotalStock(){

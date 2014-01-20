@@ -30,6 +30,10 @@ Ext.define('App.view.products.formbasicinfo', {
         type: 'hbox',
         align: 'stretch'
     },
+    requires:[
+        'App.form.combobox.cbTypeProduct',
+        'App.form.combobox.cbCatproduct'
+    ],
     record: null,
     prodId : null,
     prodName : null,
@@ -48,19 +52,19 @@ Ext.define('App.view.products.formbasicinfo', {
                     bodyPadding: 2,
                     flex: .6,
                     items: [
-                        { xtype: 'textfield', fieldLabel: 'id', name: 'id', anchor: '95%',readOnly: true,value : this.prodId },
+                        { xtype: 'hiddenfield', fieldLabel: 'id', name: 'id', anchor: '95%',readOnly: true,value : this.prodId },
                         { xtype: 'textfield', fieldLabel: 'name', name: 'name', anchor: '95%' },
-                        { xtype: 'textfield', fieldLabel: 'Category', name: 'cat_id', anchor: '95%' },
+                        { xtype: 'cbcatproduct', fieldLabel: 'Category', name: 'cat_id', anchor: '95%' },
                         { xtype: 'textfield', fieldLabel: 'contruction', name: 'contruction', anchor: '95%' },
                         { xtype: 'textfield', fieldLabel: 'nodesign', name: 'nodesign', anchor: '95%' },
-                        { xtype: 'textfield', fieldLabel: 'type_id', name: 'type_id', anchor: '95%' },
+                        { xtype: 'cbTypeProduct', fieldLabel: 'type_id', name: 'type_id', anchor: '95%' },
                         { xtype: 'fieldcontainer', fieldLabel: 'Weight', layout: 'hbox', anchor: '95%',
                             items: [
-                                { xtype: 'textfield', fieldLabel: '', name: 'unitweight_id', flex: .3 },
+                                { xtype: 'textfield', fieldLabel: '', name: 'weight', flex: .3 },
                                 {
                                     xtype: 'splitter'
                                 },
-                                { xtype: 'cbUnitWeight', fieldLabel: '', name: 'weight', flex: .6}
+                                { xtype: 'cbUnitWeight', fieldLabel: '', name: 'unitweight_id', flex: .6}
                             ]
                         },
 
@@ -90,14 +94,14 @@ Ext.define('App.view.products.formbasicinfo', {
 
     buttons: [
         {
-            text: 'Help', iconCls: 'help', itemId: 'help'
+            text: 'Help', iconCls: 'help', itemId: 'help',action: 'help'
         },
         '->',
         {
-            text: 'Save', iconCls: 'save', itemId: 'save'
+            text: 'Save', iconCls: 'save', itemId: 'save',action: 'save'
         },
         {
-            text: 'Close', iconCls: 'close', itemId: 'close'
+            text: 'Close', iconCls: 'close', itemId: 'close',action: 'close'
         }
     ]
 });

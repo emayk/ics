@@ -60,7 +60,6 @@ Ext.define('App.controller.master.Color', {
              */
             'colorGridList > toolbar > button[action=add]': {
                 click: function (button) {
-                    log('Add Color');
                     var grid = this.getGrid(),
                     rowEditing = grid.getPlugin('cellEditorColor'),
                     cnt = me.newRecordCount,

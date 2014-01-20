@@ -20,11 +20,13 @@ Ext.define('App.view.products.history', {
     storeHistory: null,
     record: null,
     alias: 'widget.productshistory',
+    padding: 10,
+    frame: true,
     prodId: null,
     initComponent: function () {
         var me = this;
         Ext.apply(this, {
-            store: this.storeHistory,
+            store: me.storeHistory,
             columns: [
                 {
                     text: 'No',
@@ -38,7 +40,7 @@ Ext.define('App.view.products.history', {
                 }
             ],
             dockedItems: [
-                { xtype: 'pagingtoolbar', store: this.storeHistory, displayInfo: true, dock: 'bottom'}
+                { xtype: 'pagingtoolbar', store: me.storeHistory, displayInfo: true, dock: 'bottom'}
             ]
         });
         this.callParent(arguments);

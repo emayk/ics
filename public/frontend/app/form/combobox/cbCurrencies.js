@@ -24,8 +24,5 @@ Ext.define('App.form.combobox.cbCurrencies', {
 
     initComponent : function(){
     	this.callParent(arguments);
-    },
-
-
-
+    }
 });
