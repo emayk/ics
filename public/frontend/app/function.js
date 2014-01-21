@@ -740,6 +740,10 @@ function msgError(msg, title) {
     Ext.MessageBox.show({ title: title || 'Error !', msg: msg, buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.ERROR });
 }
 
+function msgInfo(msg, title) {
+	Ext.MessageBox.show({ title: title || 'Information', msg: msg || 'Info Message', buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.INFO });
+}
+
 /**
  *
  * Menampilkan Error Belum di implementasikan

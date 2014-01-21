@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Emayk\Ics\Repo\Countries\Countries $country
+ * @property-read \Emayk\Ics\Repo\Locations\Locations $country
  */
 class Currencies extends Model
 {

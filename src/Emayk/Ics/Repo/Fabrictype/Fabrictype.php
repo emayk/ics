@@ -34,6 +34,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Emayk\Ics\Repo\Users\Users $creator
+ * @property-read \Emayk\Ics\Repo\Users\Users $updater
+ * @property-read mixed $createby
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Producttype\Producttype[] $productType
  */
 class Fabrictype extends Model
 {

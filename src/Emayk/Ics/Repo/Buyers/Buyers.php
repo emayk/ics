@@ -57,6 +57,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $codeinternal
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property string $note
  * @property-read \Emayk\Ics\Repo\Status\Status $status
  * @property-read \Emayk\Ics\Repo\Legality\Legality $legality
  * @property-read \Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers $type

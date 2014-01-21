@@ -38,18 +38,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static Emayk\Ics\Repo\Locations\Locations name($name)
- * @method static Emayk\Ics\Repo\Locations\Locations provinces($countryId)
- * @method static Emayk\Ics\Repo\Locations\Locations cities($provinceId)
- * @method static Emayk\Ics\Repo\Locations\Locations ofLevel($level)
- * @method static Emayk\Ics\Repo\Locations\Locations ofParentId($parentId)
- * @method static Emayk\Ics\Repo\Locations\Locations country()
- * @method static Emayk\Ics\Repo\Locations\Locations province()
- * @method static Emayk\Ics\Repo\Locations\Locations city()
- * @method static Emayk\Ics\Repo\Locations\Locations defaultCountry()
- * @method static Emayk\Ics\Repo\Locations\Locations defaultProvince()
- * @method static Emayk\Ics\Repo\Locations\Locations defaultCity()
- * @method static Emayk\Ics\Repo\Locations\Locations parentId($parenId)
+ * @method static Emayk\Ics\Repo\Locations\Locations name($name) 
+ * @method static Emayk\Ics\Repo\Locations\Locations provinces($countryId) 
+ * @method static Emayk\Ics\Repo\Locations\Locations cities($provinceId) 
+ * @method static Emayk\Ics\Repo\Locations\Locations ofLevel($level) 
+ * @method static Emayk\Ics\Repo\Locations\Locations ofParentId($parentId) 
+ * @method static Emayk\Ics\Repo\Locations\Locations country() 
+ * @method static Emayk\Ics\Repo\Locations\Locations province() 
+ * @method static Emayk\Ics\Repo\Locations\Locations city() 
+ * @method static Emayk\Ics\Repo\Locations\Locations defaultCountry() 
+ * @method static Emayk\Ics\Repo\Locations\Locations defaultProvince() 
+ * @method static Emayk\Ics\Repo\Locations\Locations defaultCity() 
+ * @method static Emayk\Ics\Repo\Locations\Locations parentId($parenId) 
  */
 class Locations extends Model
 {

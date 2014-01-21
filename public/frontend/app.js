@@ -38,6 +38,7 @@ if (fromLocal()) {
         'ctypeproduct',
         'cfabrictype',
         'ctypeAccountBank',
+        'master.ctlProducts',
     /**
      * Versi Baru
      * penamamaan Controller
@@ -45,7 +46,9 @@ if (fromLocal()) {
         'cBuyers',
         'cSuppliers',
         'ctaxtype',
-        'master.ctlProducts'
+        /*Sale Product*/
+        'csaleProduct',
+        'creceiveProduct'
 //        Lewat----
 //        'master.Headoffice',
 //        'master.ctlUnit',

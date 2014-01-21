@@ -43,6 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \ $stock
+ * @method static Emayk\Ics\Repo\Stockproducthistory\Stockproducthistory ofStocks($idStock) 
  */
 class Stockproducthistory extends Model
 {

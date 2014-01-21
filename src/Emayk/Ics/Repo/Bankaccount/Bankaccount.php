@@ -41,8 +41,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read mixed $bankname
+ * @property-read mixed $banktype
+ * @property-read mixed $has_stocks
  * @property-read \Emayk\Ics\Repo\Bank\Bank $bank
  * @property-read \Emayk\Ics\Repo\Bankaccounttype\Bankaccounttype $type
+ * @method static Emayk\Ics\Repo\Bankaccount\Bankaccount suppliers($id) 
+ * @method static Emayk\Ics\Repo\Bankaccount\Bankaccount buyers($id) 
  */
 class Bankaccount extends Model
 {

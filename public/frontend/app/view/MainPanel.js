@@ -5,6 +5,8 @@ if (fromLocal()) {
 //    if (typeof m !=='undefined') m.toggleCollapse();
 //    log('Im From Local Just Create for Development Only');
     itemsMainPanel = [
+        { xtype : 'appsaleProductvsaleProduct', title: 'Sale Product', iconCls:'home', closable:false},
+//        { xtype : 'appreceiveProductvreceiveProduct', title: 'Receive Product', iconCls:'home', closable:false},
         { xtype : 'apptypeAccountBankvtypeAccountBank', title: 'Type Account Bank', iconCls:'home', closable:false},
         { xtype : 'appfabrictypevfabrictype', title: 'Type Fabric', iconCls:'home', closable:false},
         { xtype : 'apptypeproductvtypeproduct', title: 'Type Product', iconCls:'home', closable:false},

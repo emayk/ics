@@ -110,3 +110,7 @@ Route::resource('transpaymentdpfabric', 'Emayk\Ics\Repo\Transpaymentdpfabric\Tra
 Route::resource('statsproduct', 'Emayk\Ics\Repo\Statsproduct\StatsproductController');
 /*==========  Register Resource Login  ==========*/
 Route::resource('login', 'Emayk\Ics\Repo\Login\LoginController');
+/*==========  Register Resource Saleproduct  ==========*/
+Route::resource('saleproduct', 'Emayk\Ics\Repo\Saleproduct\SaleproductController');
+/*==========  Register Resource Transsale  ==========*/
+Route::resource('transsale', 'Emayk\Ics\Repo\Transsale\TranssaleController');

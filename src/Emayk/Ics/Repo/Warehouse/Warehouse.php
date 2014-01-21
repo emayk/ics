@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $lastupdateby_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property-read \Emayk\Ics\Repo\Countries\Countries $city
+ * @property-read \Emayk\Ics\Repo\Locations\Locations $city
  * @property-read \Emayk\Ics\Repo\Warehousecategory\Warehousecategory $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Stockproducts\Stockproducts[] $stocks
  * @method static Emayk\Ics\Repo\Warehouse\Warehouse name($name) 

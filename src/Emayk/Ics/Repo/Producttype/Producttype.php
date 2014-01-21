@@ -36,6 +36,11 @@ use \Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Products\Products[] $products
+ * @property-read \Emayk\Ics\Repo\Fabrictype\Fabrictype $fabrictype
+ * @property-read \Emayk\Ics\Repo\Users\Users $creator
+ * @property-read \Emayk\Ics\Repo\Users\Users $updater
+ * @property-read mixed $createby
+ * @property-read mixed $typefabric
  */
 class Producttype extends Model
 {

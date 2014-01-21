@@ -374,3 +374,17 @@ App::bindIf('Emayk\Ics\Repo\Login\LoginInterface',function(){
 	return new Repo\Login\LoginEloquent(new Repo\Login\Login() );
 });
 
+
+/*==========  Register Interface Saleproduct  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Saleproduct\SaleproductInterface',function(){
+	return new Repo\Saleproduct\SaleproductEloquent(new Repo\Saleproduct\Saleproduct() );
+});
+
+
+/*==========  Register Interface Transsale  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Transsale\TranssaleInterface',function(){
+	return new Repo\Transsale\TranssaleEloquent(new Repo\Transsale\Transsale() );
+});
+
