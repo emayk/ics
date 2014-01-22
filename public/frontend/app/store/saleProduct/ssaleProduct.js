@@ -24,7 +24,6 @@
 Ext.define('App.store.saleProduct.ssaleProduct',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.saleProduct.msaleProduct',
-
 	proxy: {
 		type: 'rest',
 		url: getApiUrl() +'/saleproduct',
@@ -32,15 +31,6 @@ Ext.define('App.store.saleProduct.ssaleProduct',{
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},
-
-//	/*Simulasi Only*/
-//	proxy: {
-//		type: 'memory',
-//		reader: {
-//			type: 'json',
-//			root: 'results'
-//		}
-//	}
-})
+		}
+	}
+});

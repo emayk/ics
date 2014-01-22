@@ -24,10 +24,12 @@ Ext.define('App.controller.csaleProduct', {
 	extend: 'Ext.app.Controller',
 	views: [
 		'App.view.saleProduct.vsaleProduct',
-		'App.form.combobox.cbBuyer'
+		'App.form.combobox.cbBuyer',
+		'App.view.saleProduct.quickaddbuyer'
 	],
 	models: [
 		'App.model.saleProduct.msale',
+		'App.model.saleProduct.buyer',
 		'App.model.saleProduct.msaleProduct'
 	],
 	stores: [
@@ -36,7 +38,9 @@ Ext.define('App.controller.csaleProduct', {
 		'App.store.combo.cbBuyer'
 	],
 	refs: [
-		{ ref: 'panel', selector: 'appsaleProductvsaleProduct'}
+		{ ref: 'tabindex', selector: 'mainpanel'},
+		{ ref: 'panel', selector: 'appsaleProductvsaleProduct'},
+		{ ref: 'winBuyer', selector: 'appsaleProductvsaleProductAddbuyer'}
 	],
 	modeloadrecord: false,
 	saleid: null,
@@ -81,7 +85,6 @@ Ext.define('App.controller.csaleProduct', {
 								msgError('Failure response');
 							}
 						});
-
 					} else {
 						record.set(values);
 						record.save();
@@ -111,49 +114,20 @@ Ext.define('App.controller.csaleProduct', {
 					msgInfo(recordDelete.get('productname') + " Sudah dihapus");
 					store.sync();
 					store.load();
-					me.setupCounterSubTotal(store,panel);
+					me.setupCounterSubTotal(store, panel);
 				}
 			},
 			/*Add Record*/
 			'appsaleProductvsaleProduct grid#gridItemsale > toolbar #addproduct': {
-				click: function (btn) {
-					log('add record');
-					var me = this;
-					if (me.saleid == null) {
-						msgError("Silahkan tekan Get Code terlebih dahulu");
-						return false;
-					}
-
-					var grid = btn.up('grid#gridItemsale'),
-						editor = grid.getPlugin('cellEditorSaleProduct');
-
-					var model = Ext.create('App.model.saleProduct.msaleProduct', {
-						product_id: 0,
-						saleid: me.saleid,
-						/**
-						 * @todo Harusnya diambil dari harga beli product
-						 *
-						 * Idenya :
-						 * saat pemilihan combo product, price diset value sesuai dengan harga
-						 * product yang dipilih.
-						 *
-						 * */
-						price: 0,
-						qty: 0,
-						desc: '-'
-					});
-
-					grid.getStore().insert(0, model);
-					editor.startEdit(0, 0);
-				}
+				click: me.addProductToSale
 			},
 
-			'appsaleProductvsaleProduct button#save' :{
-				click : function(btn){
+			'appsaleProductvsaleProduct button#save': {
+				click: function (btn) {
 					var me = this,
 						panel = btn.up('appsaleProductvsaleProduct'),
 						form = panel.down('form').getForm();
-					if (!me.saleid){
+					if (!me.saleid) {
 						msgError('Sepertinya anda belum melakukan set Document');
 						return false;
 					}
@@ -165,25 +139,99 @@ Ext.define('App.controller.csaleProduct', {
 					var values = form.getValues();
 					var record = form.getRecord();
 
-					msgInfo(record.get('ref') + " Sudah Selesai disimpan");
+					record.set('totalprice',me.totalprice);
+					record.set('totalitem',me.totalitem);
 
+					record.set(values);
+
+					record.save({
+						success: function(record,ops){
+							msgInfo(record.get('ref') + " Sudah Selesai disimpan");
+						},
+						failure: function(){
+							msgError('Cannot Update ');
+						}
+					});
+me.getTabindex().remove(panel);
+//					panel.remove();
 				}
 			},
-			'appsaleProductvsaleProduct #addbuyer' : {
-				click : function(btn){
+			'appsaleProductvsaleProduct #addbuyer': {
+				click: function (btn) {
 					/*@todo: tambah buyer*/
-					belumImplement();
+					var win;
+					if (!win){
+						win = Ext.create('App.view.saleProduct.quickaddbuyer');
+						win.show();
+					}
 				}
 			},
-			'appsaleProductvsaleProduct #cancel' : {
-				click : function(btn){
+			'appsaleProductvsaleProduct #cancel': {
+				click: function (btn) {
 					/*@todo Cancel*/
 					belumImplement();
 				}
 			},
+			'appsaleProductvsaleProductAddbuyer #formbuyer button#add' :{
+				click: function(btn){
+					var me = this, win = btn.up('window'),form = win.down('form').getForm();
+					if (!form.isValid()) {
+						msgError('Ada Error, Silahkan Perbaiki');
+						return false;
+					}
+
+					var values = form.getValues(),
+					model = Ext.create('App.model.saleProduct.buyer',values);
+
+					model.save({
+						success: function(rec,ops){
+							win.close();
+							msgInfo(rec.get('name') + " berhasil ditambahkan");
+							me.getPanel().down('[name=buyer_id]').setValue(rec.get('id'));
+						},
+						failure: function(rec,ops){
+							msgError('Add Error saat simpan ke server, silahkan coba lagi');
+							return false;
+						}
+					})
+				}
+			}
+
 		});
 	},
 
+	addProductToSale: function (btn) {
+		log('add record');
+		var me = this;
+		if (me.saleid == null) {
+			msgError("Silahkan tekan Get Code terlebih dahulu");
+			return false;
+		}
+
+//		var grid = btn.up('grid#gridItemsale'),
+		var grid = me.getPanel().down('grid#gridItemsale'),
+			editor = grid.getPlugin('cellEditorSaleProduct');
+
+		var model = Ext.create('App.model.saleProduct.msaleProduct', {
+			product_id: 0,
+			saleid: me.saleid,
+			/**
+			 * @todo Harusnya diambil dari harga beli product
+			 *
+			 * Idenya :
+			 * saat pemilihan combo product, price diset value sesuai dengan harga
+			 * product yang dipilih.
+			 *
+			 * */
+			price: 0,
+			qty: 0,
+			desc: '-'
+		});
+
+		grid.getStore().insert(0, model);
+		editor.startEdit(0, 0);
+
+	},
 	setupGridSale: function (id, panel) {
 		var me = this;
 		log(id);
@@ -195,23 +243,24 @@ Ext.define('App.controller.csaleProduct', {
 		var store = grid.getStore();
 		store.getProxy().setExtraParam('saleid', id);
 		store.load();
-
-//		me.setupCounterTotalItem(store.getCount(), panel);
-
 	},
 	setupCounterTotalItem: function (count, panel) {
 		var count = (count > 0 ) ? count : ' Empty';
 		panel.down('#gridFooter [name=totalItem]').setValue(count);
 
 	},
+	totalprice: 0,
+	totalitem : 0,
 	setupCounterSubTotal: function (store, panel) {
 		var me = this;
-		var total = 0,count = 0;
+		var total = 0, count = 0;
 		Ext.each(store.data.items, function (rec) {
 			total += me.getSubTotal(rec);
 			count++;
 		});
-		var value =  Ext.util.Format.currency(total, 'Rp ', 2);
+		me.totalprice = total;
+		me.totalitem = count;
+		var value = Ext.util.Format.currency(total, 'Rp ', 2);
 
 		panel.down('#gridFooter [name=sumtotal]').setValue(value);
 		panel.down('#gridFooter [name=totalItem]').setValue(count);
@@ -224,29 +273,37 @@ Ext.define('App.controller.csaleProduct', {
 	processSaveRecordSaleItems: function (editor, object) {
 		var me = this , record = object.record;
 
-		if (record.get('product_id') == 0) {
+		var prodId = record.get('product_id');
+		if (prodId == 0) {
 			msgError('Silahkan Pilih Product Terlebih dahulu');
 			return false;
 		}
 		var grid = object.grid;
 		var panel = grid.up('appsaleProductvsaleProduct');
 		var store = object.store;
-		var is_exist = false;
+		var is_exist = 0;
 
+		Ext.each(store.data.items, function (rec) {
+			if (rec.get('product_id') == prodId) is_exist++;
+		});
 
-		if (is_exist) {
+		if (is_exist > 1) {
 			msgError('Product Sudah dimasukan');
 			return false;
 		}
+
 		/*Save to Store , jika belum ada */
 		object.store.sync();
-		var count = store.getCount();
-
-		me.setupCounterTotalItem(count, panel);
 		// @todo : change too , harusnya menggunakan sesuai dengan currrency yang dipakai
-
 		me.setupCounterSubTotal(store, panel);
 
+
+		/*Set Focus to add button*/
+//		me.getPanel().down('[action=addproduct]').focus();
+//		Add Lagi ?
+		Ext.MessageBox.confirm('Add Product ','Apakah akan menambahkan lagi product ? ',function(btn){
+			if(btn=='yes') me.addProductToSale();
+		});
 
 	}
 });

@@ -17,23 +17,22 @@
  **/
 
 
-Ext.define('App.model.saleProduct.msale', {
+Ext.define('App.model.saleProduct.buyer', {
 	extend: 'Ext.data.Model',
 	fields: [
 		'id',
-		{name: 'saledate', type: 'date'},
-		{name: 'saleid', type: 'int'},
-		{name: 'buyer_id', type: 'int'},
-		{name: 'totalitem', type: 'int'},
-		'totalprice',
-		{name: 'created_at', type: 'date'},
-		{name: 'updated_at', type: 'date'},
-		{name: 'ref', type: 'string'}
+		{name: 'name', type: 'string'},
+		{name: 'quickadd', type: 'boolean'},
+		{name: 'phone',type: 'string'},
+		{name: 'address', type: 'string'}
 	],
 
+	validations:[
+		{type: 'length',    field: 'name',     min: 2}
+	],
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() + '/transsale',
+		url: getApiUrl() + '/buyers',
 		reader: {
 			type: 'json',
 			root: 'results',

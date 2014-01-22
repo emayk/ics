@@ -150,7 +150,8 @@ class TranssaleEloquent implements TranssaleInterface
 		/*==========  Sesuaikan  ==========*/
 		 $db->buyer_id = Input::get('buyer_id');
 		 $db->saledate = Input::get('saledate');
-		 $db->totalitem = Input::get('totalitem');
+		 $db->totalitem = Input::get('totalitem',0);
+		 $db->totalprice = Input::get('totalprice',0);
 		 $db->updated_at = Carbon::create();
 		return ( $db->save() )
 			? \Icsoutput::msgSuccess($db->toArray())

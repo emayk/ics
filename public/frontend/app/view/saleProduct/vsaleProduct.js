@@ -153,6 +153,9 @@ Ext.define('App.view.saleProduct.vsaleProduct', {
 											dataIndex: 'qty',
 											editor: {
 												allowblank: false
+											},
+											renderer: function(v){
+												return Ext.util.Format.number(v,'0,0');
 											}
 										},
 										{
