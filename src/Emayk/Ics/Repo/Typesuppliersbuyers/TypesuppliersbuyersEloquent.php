@@ -116,12 +116,16 @@ class TypesuppliersbuyersEloquent implements TypesuppliersbuyersInterface
 		))->setCallback();
 	}
 
-	protected function checkName($name)
+	protected function checkName($name,$update = false)
 	{
-		if (empty( $name )) throw new \Exception( 'Need Name' );
+		if (!$update)
+		{
+			if (empty( $name )) throw new \Exception( 'Need Name' );
+			$exist = ( $this->typesuppliersbuyers->whereName($name)->count() > 0 );
+			if ($exist) throw new \Exception( 'Name Already Exists' );
+		}
 
-		$exist = ( $this->typesuppliersbuyers->whereName($name)->count() > 0 );
-		if ($exist) throw new \Exception( 'Name Already Exists' );
+		
 	}
 
 	/**
@@ -163,7 +167,7 @@ class TypesuppliersbuyersEloquent implements TypesuppliersbuyersInterface
 	public function update($id)
 	{
 		$name = Input::get('name');
-		$this->checkName($name);
+		$this->checkName($name,true);
 
 		$db       = $this->typesuppliersbuyers->find($id);
 		$db->name = Input::get('name');
