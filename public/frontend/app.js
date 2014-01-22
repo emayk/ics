@@ -37,6 +37,7 @@ if (fromLocal()) {
         'master.Legalitas',
         'ctypeproduct',
         'cfabrictype',
+	    'ctypesupbuy',
         'ctypeAccountBank',
         'master.ctlProducts',
     /**

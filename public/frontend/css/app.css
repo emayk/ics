@@ -4,14 +4,12 @@
 }
 
 /*​.add {*/
-    /*background-image: url("../images/add.png");*/
-    /*background-image: url("../icons/add__Icon_16x16.png");*/
-    /*background-position: center !important;*/
-    /*width: auto !important;*/
-    /*background-repeat: no-repeat;*/
+/*background-image: url("../images/add.png");*/
+/*background-image: url("../icons/add__Icon_16x16.png");*/
+/*background-position: center !important;*/
+/*width: auto !important;*/
+/*background-repeat: no-repeat;*/
 /*}*/
-
-
 
 ​.export {
     /*background-image: url("../icons/export16.png");*/
@@ -31,7 +29,6 @@
     /*width: auto !important;*/
     /*background-repeat: no-repeat;*/
 }
-
 
 .logout {
     background-image: url("../icons/logout.png");
