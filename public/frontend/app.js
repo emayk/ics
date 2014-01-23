@@ -39,9 +39,11 @@ if (fromLocal()) {
         'ctypeproduct',
         'cfabrictype',
 	    'ctypesupbuy',
+	    'ccatprod',
         'ctypeAccountBank',
         'master.ctlProducts',
 	    'ctypepayment',
+	    'cunittype',
 	    'cposition',
     /**
      * Versi Baru

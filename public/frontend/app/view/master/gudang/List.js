@@ -49,11 +49,11 @@ Ext.define('App.view.master.gudang.List', {
                 pageSize: 10
             }
         },
-        {
-            header: 'UUID',
-            dataIndex: 'uuid',
-            flex: 2
-        },
+//        {
+//            header: 'UUID',
+//            dataIndex: 'uuid',
+//            flex: 2
+//        },
         {
             header: 'Action',
             xtype: 'actioncolumn',

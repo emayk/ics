@@ -1,5 +1,5 @@
 /**
- * Model position
+ * Store unittype
  *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -19,16 +19,19 @@
  *
  *
  **/
-Ext.define('App.model.position.mposition', {
-    extend: 'Ext.data.Model',
-    fields: [ 'id', 'name','info' ],
+
+Ext.define('App.store.unittype.sunittype',{
+	extend : 'Ext.data.Store',
+	model : 'App.model.unittype.munittype',
+
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/positions',
+		url: getApiUrl() +'/unittypes',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
 		}
 	}
-});
+
+})

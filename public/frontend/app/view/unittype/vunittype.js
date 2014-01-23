@@ -1,5 +1,5 @@
 /**
- * View typeproduct
+ * View unittype
  *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -19,53 +19,46 @@
  *
  *
  **/
-Ext.define('App.view.typeproduct.vtypeproduct', {
-	extend: 'Ext.panel.Panel',
-	alias: 'widget.apptypeproductvtypeproduct',
-	requires: [
-		'App.form.combobox.cbFabricType'
-	],
-	store: 'App.store.typeproduct.stypeproduct',
-	initComponent: function () {
-		Ext.apply(this, {
-			layout: { type: 'fit', align: 'stretch'},
+Ext.define('App.view.unittype.vunittype', {
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.appunittypevunittype',
+	layout: { type: 'vbox', align: 'stretch'},
+	storegrid : 'App.store.unittype.sunittype',
+	initComponent: function(){
+		Ext.apply(this,{
 			items: [
 				{
 					xtype: 'grid',
-					itemId: 'gridType',
-					padding: 10,
-					frame: true,
+					itemId: 'type',
 					flex: 1,
-					store: this.store,
+					store: this.storegrid,
 					columns: [
 						{
-							xtype: 'rownumberer',
-							text: '#'
+							xtype: 'rownumberer'
 						},
-						{text: "Name", dataIndex: "name",
-							flex: 2,
+						{
+							header: 'Name',
+							dataIndex: 'name',
+							flex: 1,
+							editor: { allowBlank: false }
+						},
+						{
+							header: 'Description ',
+							dataIndex: 'info',
+							flex: 1,
 							editor: {
-								allowBlank: false
+								allowBlank: true
 							}
 						},
-						{text: "Fabric Name", dataIndex: "fabrictype_id",
-							renderer: function (v, m, r) {
-								return r.get('typefabric');
-							},
-							editor: {
-								xtype: 'cbFabricType',
-								fieldLabel: ''
-							},
-							flex: 2 },
-//						{text: "Uuid", dataIndex: "uuid", flex: 2 },
-//						{text: "Create By", dataIndex: "createby", flex: 1 },
-//						{text: "Last Update", dataIndex: "updater", flex: 1 },
-//						{text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-//						{text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
+//						{
+//							header: 'UUID',
+//							flex: 1,
+//							dataIndex: 'uuid'
+//						},
 						{
 							header: 'Action',
 							xtype: 'actioncolumn',
-							flex: .4,
+							width: 40,
 							items: [
 								{
 									iconCls: 'delete',
@@ -90,50 +83,52 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 					plugins: [
 						Ext.create('Ext.grid.plugin.RowEditing', {
 							clicksToEdit: !1,
-							pluginId: 'cellEditorTypeProduct',
+							pluginId: 'cellEditor',
 							clicksToMoveEditor: 1
 						})
 					],
+					/*==========  DockedItems  ==========*/
 					dockedItems: [
 						{
 							xtype: 'toolbar',
 							items: [
 								{
-									text: 'Add',
-									iconCls: 'add',
+									action: 'add',
 									itemId: 'add',
-									action: 'add'
+									iconCls: 'add',
+									text: 'Add'
 								},
 								{
-									text: 'Remove',
-									iconCls: 'delete',
-									itemId: 'remove',
 									action: 'remove',
+									text: 'Remove',
+									itemId: 'remove',
+									iconCls: 'delete',
 									disabled: true
 								},
 								'->',
 								{
+
 									text: 'Import',
-									iconCls: 'excel',
 									itemId: 'import',
+									iconCls: 'excel',
 									handler: function () {
-										belumImplement();
+										belumImplement()
 									}
 								},
 								{
 									text: 'Export',
-									iconCls: 'excel',
 									itemId: 'export',
+									iconCls: 'excel',
 									handler: function () {
-										belumImplement();
+										belumImplement()
 									}
 								},
 								{
 									text: 'Help',
-									iconCls: 'help',
 									itemId: 'help',
+									iconCls: 'help',
 									handler: function () {
-										belumImplement();
+										belumImplement()
 									}
 								}
 							]
@@ -141,15 +136,14 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 						{
 							xtype: 'pagingtoolbar',
 							dock: 'bottom',
-							store: this.store,
+							store: this.storegrid,
 							displayInfo: true
-
 						}
 					]
 				}
 			]
-
 		});
 		this.callParent(arguments);
 	}
+
 });

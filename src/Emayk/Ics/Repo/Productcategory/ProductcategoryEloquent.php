@@ -55,7 +55,7 @@ class ProductcategoryEloquent implements ProductcategoryInterface
     {
         $page = \Input::get('page');
         $limit = \Input::get('limit', 1);
-        $start = \Input::get('start', 1);
+        $start = \Input::get('start', 0);
 
         if (Input::has('selected'))
         {
@@ -103,13 +103,15 @@ class ProductcategoryEloquent implements ProductcategoryInterface
                 ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->productcategory->name = Input::get('name');
-        // $this->productcategory->info = Input::get('info');
-        // $this->productcategory->uuid = uniqid('New_');
-        // $this->productcategory->createby_id = \Auth::user()->id;
-        // $this->productcategory->lastupdateby_id = \Auth::user()->id;
-        // $this->productcategory->created_at = new Carbon();
-        // $this->productcategory->updated_at = new Carbon();
+         $this->productcategory->name = Input::get('name');
+         $this->productcategory->info = Input::get('info');
+         $this->productcategory->uuid = uniqid('New_');
+         $this->productcategory->parent_type = '\Emayk\Ics\Repo\Productcategory\Productcategory';
+         $this->productcategory->kodeinternal = uniqid();
+         $this->productcategory->createby_id = \Auth::user()->id;
+         $this->productcategory->lastupdateby_id = \Auth::user()->id;
+         $this->productcategory->created_at = new Carbon();
+         $this->productcategory->updated_at = new Carbon();
         $saved = $this->productcategory->save() ? true : false;
         return Response::json(array(
             'success' => $saved,
@@ -155,7 +157,7 @@ class ProductcategoryEloquent implements ProductcategoryInterface
         $db = $this->productcategory->find($id);
         /*==========  Sesuaikan  ==========*/
         // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
+         $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save())
             ? \Icsoutput::msgSuccess($db->toArray())

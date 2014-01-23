@@ -169,18 +169,19 @@ class LocationsEloquent implements LocationsInterface
 	 *
 	 * Proses Simpan Locations
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
 	{
-//        if (!$this->hasAccess()) {
-//            return Response::json(
-//                array(
-//                    'success' => false,
-//                    'reason' => 'Action Need Login First',
-//                    'results' => null
-//                ))->setCallback();
-//        }
+        if (!$this->hasAccess()) {
+            return Response::json(
+                array(
+                    'success' => false,
+                    'reason' => 'Action Need Login First',
+                    'results' => null
+                ))->setCallback();
+        }
 
 
 //        return Input::all();
@@ -306,9 +307,9 @@ class LocationsEloquent implements LocationsInterface
 		 */
 		$db = $this->locations->find($id);
 		/*==========  Sesuaikan  ==========*/
-		$db->name      = Input::get('name');
+//		$db->name      = Input::get('name');
 		$db->info      = Input::get('info');
-		$db->parent_id = Input::get('parent_id');
+//		$db->parent_id = Input::get('parent_id');
 		$db->uuid      = uniqid('Update_');
 		$saved         = $db->save();
 		return ( $saved )

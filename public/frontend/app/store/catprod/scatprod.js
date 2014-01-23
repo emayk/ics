@@ -1,5 +1,5 @@
 /**
- * Model position
+ * Store catprod
  *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -19,16 +19,19 @@
  *
  *
  **/
-Ext.define('App.model.position.mposition', {
-    extend: 'Ext.data.Model',
-    fields: [ 'id', 'name','info' ],
+
+Ext.define('App.store.catprod.scatprod',{
+	extend : 'Ext.data.Store',
+	model : 'App.model.catprod.mcatprod',
+
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/positions',
+		url: getApiUrl() +'/productcategory',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
 		}
 	}
-});
+
+})

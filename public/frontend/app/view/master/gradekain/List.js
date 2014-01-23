@@ -21,11 +21,11 @@ Ext.define('App.view.master.gradekain.List', {
                 allowBlank: true
             }
         },
-        {
-            header: 'UUID',
-            flex: 1,
-            dataIndex: 'uuid'
-        },
+//        {
+//            header: 'UUID',
+//            flex: 1,
+//            dataIndex: 'uuid'
+//        },
         {
             header: 'Action',
             xtype: 'actioncolumn',

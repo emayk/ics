@@ -23,7 +23,7 @@ Ext.define('App.controller.master.ctlUnit', {
 	],
 
 	init: function () {
-		log(' Unit Controller Init');
+
 		var me = this;
 		me.control({
 			'gridAllunit': {

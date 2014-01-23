@@ -20,13 +20,88 @@
  *
  **/
 
-Ext.define('App.controller.cposition',{
+Ext.define('App.controller.cposition', {
 	extend: 'Ext.app.Controller',
 	views: ['App.view.position.vposition'],
-	models:['App.model.position.mposition'],
-	stores:['App.store.position.sposition'],
-	init: function(){
-		log('Controller cposition Loaded');
+	models: ['App.model.position.mposition'],
+	stores: ['App.store.position.sposition'],
+	refs: [
+		{
+			ref: 'grid',
+			selector: 'apppositionvposition'
+		}
+	],
+	/**
+	 * Initialisasi Count Record Baru
+	 */
+	newRecordCount: 1,
+	init: function () {
+
+		var me = this;
+		me.control({
+
+			'apppositionvposition grid#positionlist': {
+				/**
+				 * Proses Edit Record
+				 * @param editor
+				 * @param object
+				 */
+				edit: function (editor, object) {
+					object.store.sync();
+					me.doRefresh();
+				},
+				/**
+				 * Saat Render Grid
+				 */
+				render: function (grid) {
+					grid.getStore().load();
+				},
+				/**
+				 * Saat Record pilih berubah
+				 * @param current
+				 * @param selections
+				 */
+				selectionchange: function (current, selections) {
+					this.getGrid().down('button[action=remove]').setDisabled(selections.length == 0);
+				}
+			},
+
+			/**
+			 * Tombol Proses Tambah record
+			 */
+			'apppositionvposition  toolbar > button[action=add]': {
+				click: function (btn) {
+					var grid = btn.up('apppositionvposition').down('grid#positionlist'),
+						rowEditing = grid.getPlugin('cellEditorPosition'),
+						record = Ext.create('App.model.position.mposition', {
+							name: ' '
+						});
+
+					grid.getStore().insert(0, record);
+					rowEditing.startEdit(0, 0);
+				}
+			},
+
+			/**
+			 * Proses Delete
+			 */
+			'apppositionvposition toolbar > button[action=remove]': {
+				click: function (btn) {
+					var grid = btn.up('apppositionvposition').down('grid#positionlist');
+					var selection = grid.getSelectionModel();
+					var store = grid.getStore();
+					Ext.each(selection.selected.items, function (dept) {
+						store.remove(dept);
+					});
+
+					store.sync();
+					this.doRefresh();
+				}
+			}
+		});
+	},
+	doRefresh: function () {
+		this.getGrid().getStore().reload();
 	}
 });
 

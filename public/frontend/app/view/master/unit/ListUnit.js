@@ -62,7 +62,7 @@ Ext.define('App.view.master.unit.ListUnit', {
 										var rec = grid.getStore().getAt(rowIndex);
 										grid.getStore().remove(rec);
 										grid.getStore().sync();
-										grid.getStore().load();
+//										grid.getStore().load();
 									}
 								});
 							}

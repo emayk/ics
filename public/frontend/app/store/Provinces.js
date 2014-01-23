@@ -1,7 +1,7 @@
 Ext.define('App.store.Provinces', {
     extend: 'Ext.data.Store',
     model: 'App.model.Province',
-    pageSize: 10,
+	pageSize: 30,
     autoSync: true,
     proxy: {
         type: 'rest',

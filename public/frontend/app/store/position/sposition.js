@@ -24,14 +24,14 @@ Ext.define('App.store.position.sposition',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.position.mposition',
 
-/*	proxy: {
+	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/position',
+		url: getApiUrl() +'/positions',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},*/
+		}
+	}
 
 })

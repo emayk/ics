@@ -46,11 +46,11 @@ Ext.define('App.view.typeAccountBank.vtypeAccountBank', {
                             allowBlank: true
                         }},
 
-                        {text: "Uuid", dataIndex: "uuid", flex: 2 },
-                        {text: "Create By", dataIndex: "createby", flex: 1 },
-                        {text: "Last Update", dataIndex: "updater", flex: 1 },
-                        {text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-                        {text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
+//                        {text: "Uuid", dataIndex: "uuid", flex: 2 },
+//                        {text: "Create By", dataIndex: "createby", flex: 1 },
+//                        {text: "Last Update", dataIndex: "updater", flex: 1 },
+//                        {text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
+//                        {text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
                         {
                             header: 'Action',
                             xtype: 'actioncolumn',

@@ -46,8 +46,8 @@ Ext.define('App.view.Suppliers.Lists', {
         {header: "plafon", dataIndex: "plafon"},
         {header: "kredit", dataIndex: "kredit"},
         {header: "address", dataIndex: "address"},
-        {header: "rt", dataIndex: "rt"},
-        {header: "rw", dataIndex: "rw"},
+//        {header: "rt", dataIndex: "rt"},
+//        {header: "rw", dataIndex: "rw"},
     ],
     dockedItems: [
         {

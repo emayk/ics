@@ -500,10 +500,12 @@ Ext.define('App.controller.master.Countries', {
          */
         var me = this,
             gridProvince = me.getGridProvince(),
-            idCountry = record.get('id');
+            idCountry = record.get('id'),
+            name = record.get('name');
 
         /*Setup Grid Province to param idCountry*/
         var storeProvince = gridProvince.getStore(), provincerecords;
+	    gridProvince.setTitle(name);
         storeProvince.clearFilter();
         storeProvince.clearData();
         storeProvince.getProxy().setExtraParam('parentId', idCountry);

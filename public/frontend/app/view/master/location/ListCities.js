@@ -16,11 +16,13 @@ Ext.define('App.view.master.location.ListCities', {
             header: 'Name',
             flex: 1,
             dataIndex: 'name',
-            editor: { allowBlank: true }
+            editor: { allowBlank: false }
         },
         {
-            header: 'Province', flex: 1,
+            hidden: true,
+	        header: 'Province', flex: 1,
             dataIndex: 'parent_id',
+
             renderer: function (a, c, rec) {
                 return rec.get('parent_name');
             },
@@ -37,32 +39,37 @@ Ext.define('App.view.master.location.ListCities', {
                 allowBlank: true
             }
         },
+	    {
+		    hidden: true,
+		    header: 'Province', flex: 1,
+		    dataIndex: 'parent_id'
+	    }
 
-        {
-            header: 'UUID', flex: 1,
-            dataIndex: 'uuid'
-
-        },
-        {
-            header: 'Action',
-            xtype: 'actioncolumn',
-            flex: .4,
-            items: [
-                {
-                    iconCls: 'delete',
-                    handler: function (grid, rowIndex, colIndex) {
-                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
-                            if (btn == 'yes') {
-                                var rec = grid.getStore().getAt(rowIndex);
-                                grid.getStore().remove(rec);
-                                grid.getStore().sync();
-                                grid.getStore().load();
-                            }
-                        });
-                    }
-                }
-            ]
-        }
+//        {
+//            header: 'UUID', flex: 1,
+//            dataIndex: 'uuid'
+//
+//        },
+//        {
+//            header: 'Action',
+//            xtype: 'actioncolumn',
+//            flex: .4,
+//            items: [
+//                {
+//                    iconCls: 'delete',
+//                    handler: function (grid, rowIndex, colIndex) {
+//                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
+//                            if (btn == 'yes') {
+//                                var rec = grid.getStore().getAt(rowIndex);
+//                                grid.getStore().remove(rec);
+//                                grid.getStore().sync();
+//                                grid.getStore().load();
+//                            }
+//                        });
+//                    }
+//                }
+//            ]
+//        }
     ],
     columnLines: true,
     selModel: 'rowmodel',

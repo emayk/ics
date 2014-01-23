@@ -22,11 +22,11 @@ Ext.define('App.view.master.legalitas.List', {
                 allowBlank: true
             }
         },
-        {
-            header: 'UUID',
-            flex: 1,
-            dataIndex: 'uuid'
-        },
+//        {
+//            header: 'UUID',
+//            flex: 1,
+//            dataIndex: 'uuid'
+//        },
         {
             header: 'Action',
             xtype: 'actioncolumn',

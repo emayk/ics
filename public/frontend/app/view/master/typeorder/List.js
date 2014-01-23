@@ -24,10 +24,10 @@ Ext.define('App.view.master.typeorder.List', {
                 allowBlank: true
             }
         },
-        {
-            header: 'UUID',
-            dataIndex: 'uuid'
-        },
+//        {
+//            header: 'UUID',
+//            dataIndex: 'uuid'
+//        },
         {
             header: 'Action',
             xtype: 'actioncolumn',

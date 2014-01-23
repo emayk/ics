@@ -18,6 +18,7 @@ Ext.define('App.view.master.location.ListProvinces', {
             editor: { allowBlank: true }
         },
         {
+	        hidden: true,
             header: 'Country', flex: 1,
             dataIndex: 'parent_id',
             renderer: function(a,c,rec){
@@ -36,31 +37,31 @@ Ext.define('App.view.master.location.ListProvinces', {
             }
         },
 
-        {
-            header: 'UUID', flex: 1,
-            dataIndex: 'uuid'
-        },
-        {
-            header: 'Action',
-            xtype: 'actioncolumn',
-            flex: .4,
-            items: [
-                {
-                    iconCls: 'delete',
-                    tooltip: 'Delete',
-                    handler: function (grid, rowIndex, colIndex) {
-                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
-                            if (btn == 'yes') {
-                                var rec = grid.getStore().getAt(rowIndex);
-                                grid.getStore().remove(rec);
-                                grid.getStore().sync();
-                                grid.getStore().load();
-                            }
-                        });
-                    }
-                }
-            ]
-        }
+//        {
+//            header: 'UUID', flex: 1,
+//            dataIndex: 'uuid'
+//        },
+//        {
+//            header: 'Action',
+//            xtype: 'actioncolumn',
+//            flex: .4,
+//            items: [
+//                {
+//                    iconCls: 'delete',
+//                    tooltip: 'Delete',
+//                    handler: function (grid, rowIndex, colIndex) {
+//                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
+//                            if (btn == 'yes') {
+//                                var rec = grid.getStore().getAt(rowIndex);
+//                                grid.getStore().remove(rec);
+//                                grid.getStore().sync();
+//                                grid.getStore().load();
+//                            }
+//                        });
+//                    }
+//                }
+//            ]
+//        }
     ],
     columnLines: true,
     selModel: 'rowmodel',

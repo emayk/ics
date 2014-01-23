@@ -158,7 +158,7 @@ class WarehouseEloquent implements WarehouseInterface{
         $db->cat_id = Input::get('cat_id');
         $db->city_id = Input::get('city_id');
         $db->lastupdateby_id = \Auth::user()->id;
-        $db->name = Input::get('name');
+//        $db->name = Input::get('name');
         $db->updated_at = new Carbon();
         $db->uuid = uniqid('Update_');
         return ($db->save()) ?

@@ -1,5 +1,5 @@
 /**
- * Model position
+ * Model catprod
  *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,12 @@
  *
  *
  **/
-Ext.define('App.model.position.mposition', {
+Ext.define('App.model.catprod.mcatprod', {
     extend: 'Ext.data.Model',
-    fields: [ 'id', 'name','info' ],
+    fields: [ 'id', 'name','info','parent_id' ],
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/positions',
+		url: getApiUrl() +'/productcategory',
 		reader: {
 			type: 'json',
 			root: 'results',

@@ -40,11 +40,11 @@ Ext.define('App.view.master.currency.List', {
             }
 
         },
-        {
-            header: 'UUID',
-            dataIndex: 'uuid',
-            flex: 1
-        },
+//        {
+//            header: 'UUID',
+//            dataIndex: 'uuid',
+//            flex: 1
+//        },
         {
             header: 'Action',
             xtype: 'actioncolumn',

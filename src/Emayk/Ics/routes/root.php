@@ -37,4 +37,5 @@ Route::group(array('prefix' => \Config::get('ics::path.baseUrl') ),function(){
 	/*==========  Routing Home  ==========*/
 	require __DIR__.'/test.php';
 	/*==========  Routing Home  ==========*/
+	require __DIR__.'/generate.php';
 });
