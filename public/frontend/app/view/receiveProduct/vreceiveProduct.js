@@ -35,53 +35,107 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 	alias: 'widget.appreceiveProductvreceiveProduct',
 	padding: 10,
 	frame: true,
-	layout: { type: 'vbox', align: 'stretch'},
-	store: 'App.store.receiveProduct.sreceiveProduct',
+	layout: { type: 'fit', align: 'stretch'},
+	store: 'App.store.receiveProduct.sreceiveProductItem',
+	requires: [
+		'App.form.combobox.cbSupplier'
+	],
 	initComponent: function () {
 		var me = this;
 		Ext.apply(me, {
+			buttons: [
+				{ text: 'Help', iconCls: 'help', action: 'help'},
+				'->',
+				{ text: 'Save & Close', iconCls: 'save', action: 'save'},
+				{ text: 'Cancel', iconCls: 'close', action: 'cancel'}
+			],
 			items: [
 				{
-					xtype: 'form',
-					bodyPadding: 10,
-					defaults: {
-						anchor: '95%'
+					xtype: 'container',
+					layout: {
+						type: 'vbox', align: 'stretch'
 					},
-					itemId: 'formreceive',
 					items: [
-						/*Surat Jalan*/
 						{
-							xtype: 'fieldcontainer',
-							fieldLabel: 'Document Permit',
-							layout: { type: 'hbox', align: 'stretch'},
+							xtype: 'form',
+							bodyPadding: 10,
+							defaults: {
+								anchor: '95%'
+							},
+							itemId: 'formreceive',
 							items: [
-								{ xtype: 'textfield', fieldLabel: '', name: 'nosj', flex: 0.8, readOnly: true },
-								{ xtype: 'button', text: 'set', flex: 0.2, margin: '0 0 0 10' }
+								{
+									/**
+									 * Menampilkan No Order Yang Masih Open
+									 */
+									xtype: 'fieldcontainer',
+									fieldLabel: 'Order No ',
+									tooltip: 'Order No status Open',
+									layout: { type: 'hbox', align: 'stretch'},
+									items: [
+										{ xtype: 'textfield', fieldLabel: '', name: 'orderno', flex: 0.8, readOnly: true },
+										{ xtype: 'hiddenfield', fieldLabel: '', name: 'orderid', flex: 0.8, readOnly: true },
+										{ xtype: 'button', itemId: 'selectorderid', text: 'Select', flex: 0.2, margin: '0 0 0 10' }
+									]
+								},
+								{
+									xtype: 'fieldset',
+									title: 'Document From Supplier',
+									items: [
+										{
+											/*Surat Jalan*/
+											xtype: 'fieldcontainer',
+											fieldLabel: 'Document Permit',
+											tooltip: 'Surat Jalan dari Supplier',
+											layout: { type: 'hbox', align: 'stretch'},
+											items: [
+												{ xtype: 'textfield', fieldLabel: '', name: 'sjno', flex: 0.8, readOnly: false },
+												{ xtype: 'button', itemId: 'getdoc', text: 'Get', flex: 0.2, margin: '0 0 0 10' }
+											]
+										},
+										{
+											xtype: 'datefield',
+											fieldLabel: 'Permit Date',
+											name: 'sjdate',
+											value: new Date(),
+											maxValue: new Date()
+										}
+									]
+								},
+								{
+									xtype: 'datefield',
+									fieldLabel: 'Receive Date',
+									name: 'receivedate',
+									value: new Date(),
+									maxValue: new Date()
+								},
+								{
+									xtype: 'fieldcontainer',
+									anchor: '95%',
+									layout: 'hbox',
+									items: [
+										{ xtype: 'cbSupplier', fieldLabel: 'Supplier', name: 'supplier_id', flex: .8},
+										{
+											xtype: 'button',
+											margin: '0 0 0 10',
+											text: '',
+											iconCls: 'add',
+											action: 'quickaddsupplier'
+										}
+									]
+								}
+
 							]
 						},
-
+//						{
+//							xtype: 'splitter'
+//						},
 						{
-							xtype: 'datefield',
-							fieldLabel: 'Date',
-							name: 'datereceive',
-							minValue: new Date()
-						},
-						{ xtype: 'textfield', fieldLabel: 'Document Permit', name: 'nosj'},
-						{ xtype: 'textfield', fieldLabel: 'Document Permit', name: 'nosj'},
-						{ xtype: 'textfield', fieldLabel: 'Document Permit', name: 'nosj'}
-					]
-				},
-				{
-					xtype: 'splitter'
-				},
-				{
-					xtype: 'container',
-					itemId: 'panelbody',
-					layout: { type: 'vbox', align: 'stretch'},
-					items: [
-						{
+							margin: '5 0 5 0',
 							xtype: 'container',
+							layout: 'fit',
 							flex: 1,
+							emptyText: 'Empty Item',
 							items: [
 								{
 									/**
@@ -93,9 +147,28 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 									columns: [
 										{
 											xtype: 'rownumberer'
-										}
+										},
+//										{ dataIndex: "id", text: "id", flex: 1},
+										{ dataIndex: "receiveid", text: "receiveid", flex: 1},
+										{ dataIndex: "product_id", text: "Product", flex: 1},
+										{ dataIndex: "qty", text: "Qty", flex: 1},
+//										{ dataIndex: "price", text: "Price", flex: 1},
+										{ dataIndex: "desc", text: "Description", flex: 1},
+//										{ dataIndex: "subtotal", text: "subtotal", flex: 1}
+//										{ dataIndex: "created_at", text: "created_at", flex: 1},
+//										{ dataIndex: "updated_at", text: "updated_at", flex: 1}
 									],
 									dockedItems: [
+										{
+											xtype: 'toolbar',
+											dock: 'top',
+											items: [
+												{ text: 'Add', iconCls: 'add', action: 'additem'},
+												{ text: 'Remove', iconCls: 'delete', action: 'removeitem'}
+//												'->',
+//												{ text: 'Help', iconCls: 'excel', action: 'helpitem'}
+											]
+										},
 										{
 											xtype: 'pagingtoolbar',
 											store: me.store,
@@ -106,15 +179,22 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 								}
 							]
 						},
+//						{
+//							xtype: 'splitter'
+//						},
 						{
 							xtype: 'container',
-							flex: 0.2,
+							flex: .3,
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
 								{
 									xtype: 'container',
 									flex: 0.5,
-									html: 'Aturan Penerimaan barang'
+									html: '<b>Note : (sample) </b>' +
+										'<ul>' +
+										'<li>Aturan 1 : </li>' +
+										'<li>Aturan 2 : </li>' +
+										'</ul>'
 								},
 								{
 									xtype: 'container',

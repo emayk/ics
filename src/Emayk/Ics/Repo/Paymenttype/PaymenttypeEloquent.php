@@ -51,9 +51,9 @@ class PaymenttypeEloquent implements PaymenttypeInterface{
     {
         $page = \Input::get('page');
 			 $limit = \Input::get('limit',1);
-			 $start = \Input::get('start',1);
+			 $start = \Input::get('start',0);
         $paymenttype = $this->paymenttype
-            ->orderBy('id','DESC')
+//            ->orderBy('id','DESC')
             ->skip($start)
             ->take($limit)
             ->get()->toArray();
@@ -88,13 +88,13 @@ class PaymenttypeEloquent implements PaymenttypeInterface{
                         ))->setCallback();
         }
         /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->paymenttype->name = Input::get('name');
-        // $this->paymenttype->info = Input::get('info');
-        // $this->paymenttype->uuid = uniqid('New_');
-        // $this->paymenttype->createby_id = \Auth::user()->id;
-        // $this->paymenttype->lastupdateby_id = \Auth::user()->id;
-        // $this->paymenttype->created_at = new Carbon();
-        // $this->paymenttype->updated_at = new Carbon();
+         $this->paymenttype->name = Input::get('name');
+         $this->paymenttype->info = Input::get('info');
+         $this->paymenttype->uuid = uniqid('New_');
+         $this->paymenttype->createby_id = \Auth::user()->id;
+         $this->paymenttype->lastupdateby_id = \Auth::user()->id;
+         $this->paymenttype->created_at = new Carbon();
+         $this->paymenttype->updated_at = new Carbon();
         $saved = $this->paymenttype->save() ? true : false ;
         return Response::json(array(
             'success' => $saved,
@@ -140,8 +140,8 @@ class PaymenttypeEloquent implements PaymenttypeInterface{
     {
         $db = $this->paymenttype->find($id);
         /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
+//         $db->name = Input::get('name');
+         $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save())
             ? \Icsoutput::msgSuccess( $db->toArray() )

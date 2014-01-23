@@ -8,7 +8,7 @@ Ext.define('App.store.combo.cbTypeTax',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'rest',
-		url: api_url +'/type_tax',
+		url: getApiUrl() +'/taxtype',
 		reader: {
 			type: 'json',
 			root: 'results',
@@ -16,6 +16,6 @@ Ext.define('App.store.combo.cbTypeTax',{
 		},
 		extraParams: {
 			'cbreq' : true
-		},
+		}
 	}
 });

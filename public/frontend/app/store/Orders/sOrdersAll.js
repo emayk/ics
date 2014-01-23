@@ -19,14 +19,14 @@ Ext.define('App.store.Orders.sOrdersAll',{
 
 	proxy: {
 		type: 'rest',
-		url: api_url +'/orders',
+		url: getApiUrl() +'/transorders',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
 		},
-	extraParams: { status : 'all' },
-	},
+	extraParams: { status : 'all' }
+	}
 
 	// listeners: {
  //        load: function(store, records, successful) {

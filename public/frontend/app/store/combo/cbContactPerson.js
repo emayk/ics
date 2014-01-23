@@ -1,13 +1,9 @@
-// cbreq
-
-// listcity
 Ext.define('App.store.combo.cbContactPerson',{
 	extend: 'Ext.data.Store',
 	fields: [ 'id','name' ],
-	pageSize : 5,
     proxy: {
 		type: 'ajax',
-		url: api_url +'/contact',
+		url: getApiUrl() +'/contactperson',
 		reader: {
 			type: 'json',
 			root: 'results',
@@ -15,6 +11,6 @@ Ext.define('App.store.combo.cbContactPerson',{
 		},
 		extraParams: {
 			'cbreq' : true
-		},
+		}
 	}
 });

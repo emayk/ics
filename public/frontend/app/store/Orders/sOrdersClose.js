@@ -15,7 +15,7 @@ Ext.define('App.store.Orders.sOrdersClose',{
 
 	proxy: {
 		type: 'rest',
-		url: api_url +'/orders',
+		url: getApiUrl() +'/transorders',
 		reader: {
 			type: 'json',
 			root: 'results',

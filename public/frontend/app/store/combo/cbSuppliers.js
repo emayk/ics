@@ -3,7 +3,7 @@ Ext.define('App.store.combo.cbSuppliers',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'rest',
-		url: api_url +'/suppliers',
+		url: getApiUrl() +'/suppliers',
 		reader: {
 			type: 'json',
 			root: 'results',

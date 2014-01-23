@@ -9,6 +9,7 @@ Ext.define('App.form.combobox.cbSupplier', {
 	extend: 'Ext.form.ComboBox',
 	fieldLabel : 'Supplier Name',
 	allowBlank: false ,
+	pageSize: 20,
 	displayField : 'name',
 	valueField: 'id',
 	queryMode: 'remote',

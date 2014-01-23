@@ -11,16 +11,15 @@
 Ext.define('App.store.Orders.sOrderItems',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.Orders.mItems',
-     // data : App.util.dummy.data_order,
-	pageSize: 7,
+	pageSize: 10,
 	proxy: {
 		type: 'rest',
-		url: api_url +'/orderitems',
+		url: getApiUrl() +'/transorderdetails',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},
+		}
+	}
 
 })

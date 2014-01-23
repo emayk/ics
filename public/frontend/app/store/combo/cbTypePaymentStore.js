@@ -9,7 +9,7 @@ Ext.define('App.store.combo.cbTypePaymentStore',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'rest',
-		url: api_url +'/paymenttype',
+		url: getApiUrl() +'/paymenttype',
 		reader: {
 			type: 'json',
 			root: 'results',

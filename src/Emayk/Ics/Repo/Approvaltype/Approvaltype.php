@@ -48,7 +48,7 @@ class Approvaltype extends Model {
      */
     public function orders()
 	 {
-			return $this->hasMany('','');
+			return $this->hasMany('\Emayk\Ics\Repo\Transorderapproval\Transorderapproval','type_id');
 	 }
 
 

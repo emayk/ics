@@ -20,133 +20,136 @@
  *
  **/
 Ext.define('App.view.typeproduct.vtypeproduct', {
-    extend: 'Ext.panel.Panel',
-    alias: 'widget.apptypeproductvtypeproduct',
-    requires:[
-        'App.form.combobox.cbFabricType'
-    ],
-    store: 'App.store.typeproduct.stypeproduct',
-    initComponent: function () {
-        Ext.apply(this, {
-            layout: { type: 'fit', align: 'stretch'},
-            items: [
-                {
-                    xtype: 'grid',
-                    itemId: 'gridType',
-                    padding: 10,
-                    frame: true,
-                    flex: 1,
-                    store: this.store,
-                    columns: [
-                        {
-                            xtype: 'rownumberer',
-                            text: '#'
-                        },
-                        {text: "Name", dataIndex: "name", flex: 2  , editor: {
-                            allowBlank: false
-                        }},
-                        {text: "Fabric Name", dataIndex: "fabrictype_id",
-                            renderer: function (v, m, r) {
-                                return r.get('typefabric');
-                            },
-                            editor: {
-                                xtype: 'cbFabricType',
-                                fieldLabel: ''
-                            },
-                            flex: 2 },
-                        {text: "Uuid", dataIndex: "uuid", flex: 2 },
-                        {text: "Create By", dataIndex: "createby", flex: 1 },
-                        {text: "Last Update", dataIndex: "updater", flex: 1 },
-                        {text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-                        {text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-                        {
-                            header: 'Action',
-                            xtype: 'actioncolumn',
-                            flex: .4,
-                            items: [
-                                {
-                                    iconCls: 'delete',
-                                    tooltip: 'Delete',
-                                    handler: function (grid, rowIndex, colIndex) {
-                                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
-                                            if (btn == 'yes') {
-                                                var rec = grid.getStore().getAt(rowIndex);
-                                                grid.getStore().remove(rec);
-                                                grid.getStore().sync();
-                                                grid.getStore().load();
-                                            }
-                                        });
-                                    }
-                                }
-                            ]
-                        }
-                    ],
-                    columnLines: true,
-                    selModel: 'rowmodel',
-                    /*==========  Plugins  ==========*/
-                    plugins: [
-                        Ext.create('Ext.grid.plugin.RowEditing', {
-                            clicksToEdit: !1,
-                            pluginId: 'cellEditorTypeProduct',
-                            clicksToMoveEditor: 1
-                        })
-                    ],
-                    dockedItems: [
-                        {
-                            xtype: 'toolbar',
-                            items: [
-                                {
-                                    text: 'Add',
-                                    iconCls: 'add',
-                                    itemId: 'add',
-                                    action: 'add'
-                                },
-                                {
-                                    text: 'Remove',
-                                    iconCls: 'delete',
-                                    itemId: 'remove',
-                                    action: 'remove',
-                                    disabled: true
-                                },
-                                '->',
-                                {
-                                    text: 'Import',
-                                    iconCls: 'excel',
-                                    itemId: 'import',
-                                    handler: function () {
-                                        belumImplement();
-                                    }
-                                },
-                                {
-                                    text: 'Export',
-                                    iconCls: 'excel',
-                                    itemId: 'export',
-                                    handler: function () {
-                                        belumImplement();
-                                    }
-                                },
-                                {
-                                    text: 'Help',
-                                    iconCls: 'help',
-                                    itemId: 'help',
-                                    handler: function () {
-                                        belumImplement();
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'pagingtoolbar',
-                            dock: 'bottom',
-                            store: this.store,
-                            displayInfo: true
+	extend: 'Ext.panel.Panel',
+	alias: 'widget.apptypeproductvtypeproduct',
+	requires: [
+		'App.form.combobox.cbFabricType'
+	],
+	store: 'App.store.typeproduct.stypeproduct',
+	initComponent: function () {
+		Ext.apply(this, {
+			layout: { type: 'fit', align: 'stretch'},
+			items: [
+				{
+					xtype: 'grid',
+					itemId: 'gridType',
+					padding: 10,
+					frame: true,
+					flex: 1,
+					store: this.store,
+					columns: [
+						{
+							xtype: 'rownumberer',
+							text: '#'
+						},
+						{text: "Name", dataIndex: "name",
+							flex: 2,
+							editor: {
+								allowBlank: false
+							}
+						},
+						{text: "Fabric Name", dataIndex: "fabrictype_id",
+							renderer: function (v, m, r) {
+								return r.get('typefabric');
+							},
+							editor: {
+								xtype: 'cbFabricType',
+								fieldLabel: ''
+							},
+							flex: 2 },
+						{text: "Uuid", dataIndex: "uuid", flex: 2 },
+						{text: "Create By", dataIndex: "createby", flex: 1 },
+						{text: "Last Update", dataIndex: "updater", flex: 1 },
+						{text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
+						{text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
+						{
+							header: 'Action',
+							xtype: 'actioncolumn',
+							flex: .4,
+							items: [
+								{
+									iconCls: 'delete',
+									tooltip: 'Delete',
+									handler: function (grid, rowIndex, colIndex) {
+										Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
+											if (btn == 'yes') {
+												var rec = grid.getStore().getAt(rowIndex);
+												grid.getStore().remove(rec);
+												grid.getStore().sync();
+												grid.getStore().load();
+											}
+										});
+									}
+								}
+							]
+						}
+					],
+					columnLines: true,
+					selModel: 'rowmodel',
+					/*==========  Plugins  ==========*/
+					plugins: [
+						Ext.create('Ext.grid.plugin.RowEditing', {
+							clicksToEdit: !1,
+							pluginId: 'cellEditorTypeProduct',
+							clicksToMoveEditor: 1
+						})
+					],
+					dockedItems: [
+						{
+							xtype: 'toolbar',
+							items: [
+								{
+									text: 'Add',
+									iconCls: 'add',
+									itemId: 'add',
+									action: 'add'
+								},
+								{
+									text: 'Remove',
+									iconCls: 'delete',
+									itemId: 'remove',
+									action: 'remove',
+									disabled: true
+								},
+								'->',
+								{
+									text: 'Import',
+									iconCls: 'excel',
+									itemId: 'import',
+									handler: function () {
+										belumImplement();
+									}
+								},
+								{
+									text: 'Export',
+									iconCls: 'excel',
+									itemId: 'export',
+									handler: function () {
+										belumImplement();
+									}
+								},
+								{
+									text: 'Help',
+									iconCls: 'help',
+									itemId: 'help',
+									handler: function () {
+										belumImplement();
+									}
+								}
+							]
+						},
+						{
+							xtype: 'pagingtoolbar',
+							dock: 'bottom',
+							store: this.store,
+							displayInfo: true
 
-                        }
-                    ]
-                }
-            ]
+						}
+					]
+				}
+			]
 
-        });
-        this.callParent(arguments);
-    }
+		});
+		this.callParent(arguments);
+	}
 });

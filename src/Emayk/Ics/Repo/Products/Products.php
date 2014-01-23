@@ -95,6 +95,12 @@ class Products extends Model
 //        'countStocks'
 	);
 
+
+	public function orderItem()
+	{
+		return $this->hasMany('\Emayk\Ics\Repo\Transorderdetails\Transorderdetails','product_id');
+	}
+
 	public function sale()
 	{
 		return $this->hasMany('\Emayk\Ics\Repo\Saleproduct\Saleproduct', 'product_id');

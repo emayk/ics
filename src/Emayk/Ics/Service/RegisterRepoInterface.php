@@ -388,3 +388,17 @@ App::bindIf('Emayk\Ics\Repo\Transsale\TranssaleInterface',function(){
 	return new Repo\Transsale\TranssaleEloquent(new Repo\Transsale\Transsale() );
 });
 
+
+/*==========  Register Interface Transreceiveproduct  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Transreceiveproduct\TransreceiveproductInterface',function(){
+	return new Repo\Transreceiveproduct\TransreceiveproductEloquent(new Repo\Transreceiveproduct\Transreceiveproduct() );
+});
+
+
+/*==========  Register Interface Transreceiveproductitem  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Transreceiveproductitem\TransreceiveproductitemInterface',function(){
+	return new Repo\Transreceiveproductitem\TransreceiveproductitemEloquent(new Repo\Transreceiveproductitem\Transreceiveproductitem() );
+});
+

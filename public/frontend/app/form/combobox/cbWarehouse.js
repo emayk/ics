@@ -11,6 +11,7 @@ Ext.define('App.form.combobox.cbWarehouse', {
     queryMode: 'remote',
     fieldLabel : 'Choose Warehouse',
     allowBlank: false ,
+	pageSize: 20,
     // anchor : '-10',
     anchor:'95%',
     displayField : 'name',

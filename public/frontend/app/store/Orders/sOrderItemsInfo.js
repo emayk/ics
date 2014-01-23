@@ -13,14 +13,13 @@ Ext.define('App.store.Orders.sOrderItemsInfo',{
 	model : 'App.model.Orders.mItems',
 	proxy: {
 		type: 'rest',
-		url: api_url +'/orderitems',
+		url: getApiUrl() +'/transorderdetails',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},
-
+		}
+	}
 });
 
 

@@ -22,9 +22,21 @@
 
 Ext.define('App.controller.creceiveProduct',{
 	extend: 'Ext.app.Controller',
-	views: ['App.view.receiveProduct.vreceiveProduct'],
-	models:['App.model.receiveProduct.mreceiveProduct'],
-	stores:['App.store.receiveProduct.sreceiveProduct'],
+	views: [
+		'App.view.receiveProduct.vreceiveProduct',
+		'App.form.combobox.cbSupplier'
+	],
+	models:[
+		'App.model.receiveProduct.mreceiveProduct',
+		'App.model.receiveProduct.mreceiveProductItem'
+	],
+	stores:[
+		'App.store.receiveProduct.sreceiveProduct',
+		'App.store.receiveProduct.sreceiveProductItem',
+		'App.store.receiveProduct.sOrder',
+		'App.store.combo.cbSuppliers'
+
+	],
 	init: function(){
 		log('Controller creceiveProduct Loaded');
 	}

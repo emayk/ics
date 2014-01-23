@@ -34,4 +34,9 @@ class Transorderapproval extends Model {
 	protected $guarded = array();
 	protected $table = 'trans_order_approval';
 	public static $rules = array();
+
+	public function type()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Approvaltype\Approvaltype','type_id');
+	}
 }

@@ -14,15 +14,15 @@ Ext.define('App.store.Orders.sStockProducts',{
 	pageSize: 7,
 	proxy: {
 		type: 'rest',
-		url: api_url +'/stockprod',
+		url: getApiUrl() +'/stockproducts',
 		// url: api_url +'/product',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
+		}
 		// extraParams: { status : 'open' },
-	},
+	}
 
 
 })

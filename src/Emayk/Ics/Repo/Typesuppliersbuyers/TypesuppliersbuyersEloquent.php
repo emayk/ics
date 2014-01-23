@@ -125,7 +125,7 @@ class TypesuppliersbuyersEloquent implements TypesuppliersbuyersInterface
 			if ($exist) throw new \Exception( 'Name Already Exists' );
 		}
 
-		
+
 	}
 
 	/**
@@ -170,7 +170,7 @@ class TypesuppliersbuyersEloquent implements TypesuppliersbuyersInterface
 		$this->checkName($name,true);
 
 		$db       = $this->typesuppliersbuyers->find($id);
-		$db->name = Input::get('name');
+//		$db->name = Input::get('name');
 		$db->info = Input::get('info');
 		$db->uuid = uniqid('Update_');
 		return ( $db->save() )

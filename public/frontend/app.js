@@ -40,6 +40,7 @@ if (fromLocal()) {
 	    'ctypesupbuy',
         'ctypeAccountBank',
         'master.ctlProducts',
+	    'ctypepayment',
     /**
      * Versi Baru
      * penamamaan Controller
@@ -48,6 +49,7 @@ if (fromLocal()) {
         'cSuppliers',
         'ctaxtype',
         /*Sale Product*/
+        'cOrders',
         'csaleProduct',
         'creceiveProduct'
 //        Lewat----
@@ -56,7 +58,6 @@ if (fromLocal()) {
     /**
      * Order
      */
-//        'cOrders',
 //        'wizard.Order',
 
 //        'transaction.ctransaction', //*cl2-0*//*

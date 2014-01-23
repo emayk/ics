@@ -51,9 +51,9 @@ class OrdertypeEloquent implements OrdertypeInterface{
     {
         $page = \Input::get('page');
 			 $limit = \Input::get('limit',1);
-			 $start = \Input::get('start',1);
+			 $start = \Input::get('start',0);
         $ordertype = $this->ordertype
-            ->orderBy('id','DESC')
+//            ->orderBy('id','DESC')
             ->skip($start)
             ->take($limit)
             ->get()->toArray();

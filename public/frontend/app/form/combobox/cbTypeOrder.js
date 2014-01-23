@@ -14,6 +14,7 @@ Ext.define('App.form.combobox.cbTypeOrder', {
     allowBlank: false,
     anchor: '-10',
     displayField: 'name',
+	pageSize: 20,
     valueField: 'id',
     // triggerAction: 'all',
     // forceSelection : true,

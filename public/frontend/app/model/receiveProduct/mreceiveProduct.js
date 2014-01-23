@@ -19,7 +19,27 @@
  *
  *
  **/
+
 Ext.define('App.model.receiveProduct.mreceiveProduct', {
     extend: 'Ext.data.Model',
-    fields: [ 'id', 'name' ]
+    fields: [
+	    "id",
+	    "totalitem",
+	    "totalprice",
+	    "sjno",
+	    "ref",
+	    "supplier_id",
+	    "receivedate",
+	    "created_at",
+	    "updated_at"
+    ],
+	proxy: {
+		type: 'rest',
+		url: getApiUrl() +'/receiveproduct',
+		reader: {
+			type: 'json',
+			root: 'results',
+			totalProperty: 'total'
+		}
+	}
 });

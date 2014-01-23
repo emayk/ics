@@ -39,4 +39,28 @@ class Transorderdetails extends Model {
 	protected $guarded = array();
 	protected $table = 'trans_order_details';
 	public static $rules = array();
+	public $hidden = ['price'];
+	public $appends = [
+		'productimg','productname'
+	];
+
+	public function product()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Products\Products','product_id');
+	}
+
+
+	public function getProductnameAttribute()
+	{
+		return $this->attributes[ "productname" ] = $this->product()->pluck('name');
+	}
+
+	public function getProductimgAttribute()
+	{
+		/**
+		 * @todo : url image
+		 */
+		return $this->attributes[ "productimg" ] = 'http://';
+	}
+
 }

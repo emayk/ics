@@ -25,6 +25,7 @@ Ext.define('App.form.combobox.cbFabricType', {
     allowBlank: false,
     anchor: '-10',
     displayField: 'name',
+	pageSize: 10,
     valueField: 'id',
     emptyText: 'Select Fabric Type',
     store: 'App.store.combo.cbFabricType',

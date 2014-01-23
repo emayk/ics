@@ -87,7 +87,7 @@ Ext.define('App.view.Buyers.Edit', {
                             defaultType: 'textfield',
                             items: [
                                 {
-                                    fieldLabel: 'kredit',
+                                    fieldLabel: 'credit',
                                     afterLabelTextTpl: required,
                                     allowBlank: false,
                                     name: 'kredit',
@@ -136,18 +136,20 @@ Ext.define('App.view.Buyers.Edit', {
                                 {
                                     fieldLabel: 'Type',
                                     name: 'tipe_id',
-                                    xtype: 'cbTypeSupBuy'
+                                    xtype: 'cbTypeSupBuy',
+	                                allowBlank:true
                                 },
                                 {
                                     fieldLabel: 'Legality',
                                     name: 'legality_id',
-                                    xtype: 'cbLegalitas'
-                                },
-                                {
-                                    fieldLabel: 'Buy Type Product',
-                                    name: 'typeprod_id',
-                                    xtype: 'cbTypeProduct'
+                                    xtype: 'cbLegalitas',
+	                                allowBlank:true
                                 }
+//                                {
+//                                    fieldLabel: 'Buy Type Product',
+//                                    name: 'typeprod_id',
+//                                    xtype: 'cbTypeProduct'
+//                                }
 
                             ]
                         },
@@ -193,22 +195,22 @@ Ext.define('App.view.Buyers.Edit', {
                                             xtype: 'cbCountries',
                                             name: 'country_id',
                                             fieldLabel: 'Country',
-                                            afterLabelTextTpl: required,
-                                            allowBlank: false
+//                                            afterLabelTextTpl: required,
+                                            allowBlank: true
                                         },
                                         {
                                             xtype: 'cbProvinces',
                                             name: 'province_id',
                                             fieldLabel: 'Province',
-                                            afterLabelTextTpl: required,
-                                            allowBlank: false
+//                                            afterLabelTextTpl: required,
+                                            allowBlank: true
                                         },
                                         {
                                             xtype: 'cbCities',
                                             name: 'city_id',
                                             fieldLabel: 'City',
-                                            afterLabelTextTpl: required,
-                                            allowBlank: false
+//                                            afterLabelTextTpl: required,
+                                            allowBlank: true
                                         }
                                     ]
                                 },
@@ -222,8 +224,8 @@ Ext.define('App.view.Buyers.Edit', {
                                             fieldLabel: 'Address',
                                             xtype: 'textareafield',
                                             flex: 1,
-                                            afterLabelTextTpl: required,
-                                            allowBlank: false,
+//                                            afterLabelTextTpl: required,
+                                            allowBlank: true,
                                             anchor: '95%'
                                         },
                                         {

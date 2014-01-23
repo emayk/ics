@@ -21,7 +21,8 @@ Ext.define('App.controller.cOrders',{
 	'App.view.Orders.vOrderListOpen',
 	'App.view.Orders.vOrderItemsList',
 	'App.view.Orders.vOrderWinInfo',
-	'App.view.Orders.vOrderWin',
+//	'App.view.Orders.vOrderWin',
+	'App.view.Orders.vOrderProcess',
 	'App.view.Orders.vOrderFormAdd',
 	'App.view.Orders.vOrderItemAddForm',
 	'App.view.Orders.vOrderNewItemsList',
@@ -180,13 +181,13 @@ Ext.define('App.controller.cOrders',{
 			log('Ubah Store Combo Contact ');
 			var storeContactsSupplier = me.getCbContacts().getStore();
 			storeContactsSupplier.clearFilter();
-			storeContactsSupplier.getProxy().setExtraParam('parent_type','Supplier');
+			storeContactsSupplier.getProxy().setExtraParam('parent_type','Suppliers');
 			storeContactsSupplier.getProxy().setExtraParam('parent_id',newValue);
 			storeContactsSupplier.load();
 		}
 	},
 	onBtnAdd_OrderItem : function(btn){
-		var me = this, form = btn.up('form');
+		var me = this, form = btn.up('form'),
 		valid = form.getForm().isValid();
 		if (!valid){msgError('Please Corrected'); return;
 		}else{
@@ -196,7 +197,7 @@ Ext.define('App.controller.cOrders',{
 
 			// sent to server
 			form.submit({
-						url: api_url + '/orderitems',
+						url: getApiUrl() + '/transorderdetails',
 						waitMsg : 'Please Wait...Sending to Server.',
 						params : { cmd: 'saveform', _token : gettoken() },
 						method : 'POST',
@@ -218,6 +219,7 @@ Ext.define('App.controller.cOrders',{
 								buttons: Ext.Msg.OK
 							}); }
 								/*End success function*/
+						    form.reset();
 							},
            		failure: function(conn, response, options, eOpts) {
            			var respon = conn.responseText;
@@ -283,7 +285,8 @@ Ext.define('App.controller.cOrders',{
 		var selected = ( sels.length > 0);
 	},
 	onButtonAdd : function(btn){
-		Ext.create('App.view.Orders.vOrderWin').show();
+		Ext.create('App.view.Orders.vOrderProcess').show();
+//		Ext.create('App.view.Orders.vOrderWin').show();
 	},
 	onButtonMultiAdd:  function(btn){
 			var win;
@@ -361,6 +364,7 @@ Ext.define('App.controller.cOrders',{
  		store.clearFilter(); store.getProxy().setExtraParam(key,value); store.load();
  	},
  	onCloseWindowOrder: function(btn){
+	    /*@todo : Jika store item kosong , maka confirm akan didelete no order tersebut */
  		/*Reload All Grid*/
  		Ext.ComponentQuery.query('vOrders > vOrderTabs #all')[0].getStore().reload();
  		Ext.ComponentQuery.query('vOrders > vOrderTabs #close')[0].getStore().reload();

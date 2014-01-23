@@ -7,6 +7,19 @@
  **/
 Route::group(array('prefix' => 'test'), function () {
 
+	Route::get('count',function(){
+		$a = new \Emayk\Ics\Repo\Transorders\Transorders();
+		$dt = new \Carbon\Carbon();
+
+//		$str = "2014-01-23T07:00:00";
+
+//		$str = \Carbon\Carbon::create($str);
+//	$da =	date_format($str,'Y-m-d');
+//		return $da;
+		$deliverycount = $a->where('delivery_at','2014-01-23')->count();
+
+		return $deliverycount + 1;
+	});
     Route::get('/', function () {
         return 'page testing Only';
     });

@@ -1,219 +1,248 @@
 <?php
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-*
-* Bussiness Logic Producttype
-*
-**/
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ * Bussiness Logic Producttype
+ *
+ **/
 
 namespace Emayk\Ics\Repo\Producttype;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
 
-class ProducttypeEloquent implements ProducttypeInterface{
-    protected $producttype;
-    function __construct(Producttype $producttype)
-    {
-        $this->producttype = $producttype;
-    }
+class ProducttypeEloquent implements ProducttypeInterface
+{
+	protected $producttype;
 
-    /**
-    *
-    * Mendapatkan Record Producttype berdasarkan ID yang diberikan
-    * @param  int $id ID Record
-    * @return Model Record Producttype
-    **/
+	function __construct(Producttype $producttype)
+	{
+		$this->producttype = $producttype;
+	}
 
-    public function find($id){
-        return $this->producttype->find($id);
-    }
+	/**
+	 *
+	 * Mendapatkan Record Producttype berdasarkan ID yang diberikan
+	 *
+	 * @param  int $id ID Record
+	 *
+	 * @return Model Record Producttype
+	 **/
 
-    /**
-     * Mendapatkan Semua Producttype
-     * @return mixed
-     */
-    public function all()
-    {
-        $page = \Input::get('page');
-			 $limit = \Input::get('limit',1);
-			 $start = \Input::get('start',1);
+	public function find($id)
+	{
+		return $this->producttype->find($id);
+	}
 
-        if (Input::has('selected'))
-        {
-            $id = Input::get('selected');
-            $record = $this->producttype->findOrFail($id);
-            return Response::json([
-                'success' => true, 'error' => false,
-                'results' => $record->toArray()
-            ]);
-        }
+	/**
+	 * Mendapatkan Semua Producttype
+	 *
+	 * @return mixed
+	 */
+	public function all()
+	{
+		$page  = \Input::get('page');
+		$limit = \Input::get('limit', 1);
+		$start = \Input::get('start', 1);
 
-        $producttype = $this->producttype
-            ->orderBy('id','DESC')
-            ->skip($start)
-            ->take($limit)
-            ->get()->toArray();
-        $total = $this->producttype
-            ->all()->count();
+		if (Input::has('selected')) {
+			$id     = Input::get('selected');
+			$record = $this->producttype->findOrFail($id);
+			return Response::json([
+				'success' => true, 'error' => false,
+				'results' => $record->toArray()
+			]);
+		}
 
-        $producttypes = array(
-            'success' => true,
-            'results' => $producttype,
-            'total' => $total
-        );
+		$producttype = $this->producttype
+			->orderBy('id', 'DESC')
+			->skip($start)
+			->take($limit)
+			->get()->toArray();
+		$total       = $this->producttype
+			->all()->count();
 
-        return Response::json($producttypes)
-            ->setCallback(\Input::get('callback'));
+		$producttypes = array(
+			'success' => true,
+			'results' => $producttype,
+			'total'   => $total
+		);
 
-    }
+		return Response::json($producttypes)
+			->setCallback(\Input::get('callback'));
 
-    /**
-     *
-     * Proses Simpan Producttype
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        if (!$this->hasAccess()) {
-            return Response::json(
-                      array(
-                        'success' => false,
-                        'reason'  => 'Action Need Login First',
-                        'results' => null
-                        ))->setCallback();
-        }
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-         $this->producttype->name = Input::get('name');
-         $this->producttype->fabrictype_id = Input::get('fabrictype_id');
-         $this->producttype->uuid = uniqid('New_');
-         $this->producttype->createby_id = \Auth::user()->id;
-         $this->producttype->lastupdateby_id = \Auth::user()->id;
-         $this->producttype->created_at = new Carbon();
-         $this->producttype->updated_at = new Carbon();
-        $saved = $this->producttype->save() ? true : false ;
-        return Response::json(array(
-            'success' => $saved,
-            'results' => $this->producttype->toArray()
-        ))->setCallback();
-    }
+	}
 
-    /**
-     * Menghapus Producttype
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
+	/**
+	 *
+	 * Proses Simpan Producttype
+	 *
+	 * @return mixed
+	 */
+	public function store()
+	{
+//		if (!$this->hasAccess()) {
+//			return Response::json(
+//				array(
+//					'success' => false,
+//					'reason'  => 'Action Need Login First',
+//					'results' => null
+//				))->setCallback();
+//		}
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		$name = Input::get('name');
+		$fabricId = Input::get('fabrictype_id');
+		$existName = ($this->producttype->whereName($name));
+		$count = $existName->count();
 
-        if ($this->hasAccess())
-        {
-            $deleted = $this->producttype
-                ->find($id)
-                ->delete();
+			/*Jika Nama Sudah Ada*/
+		if ($count > 0)
+		{
+			/**
+			 * Jika type fabric tidak sama boleh disave,
+			 * jika sama maka throw
+			 */
+			$record = $existName->get()->first();
+			$namedb = $record->name;
+			$fabricdb = $record->fabrictype_id;
+			if ($fabricdb == $fabricId)
+				throw new \Exception("Karena {$namedb} sudah ada , maka fabric name harus unique ");
+		}
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ),$deleted);
+		$this->producttype->name            = $name;
+		$this->producttype->fabrictype_id   = $fabricId;
+		$this->producttype->uuid            = uniqid('New_');
+		$this->producttype->createby_id     = \Auth::user()->id;
+		$this->producttype->lastupdateby_id = \Auth::user()->id;
+		$this->producttype->created_at      = new Carbon();
+		$this->producttype->updated_at      = new Carbon();
+		$saved                              = $this->producttype->save() ? true : false;
+		return Response::json(array(
+			'success' => $saved,
+			'results' => $this->producttype->toArray()
+		))->setCallback();
+	}
 
-        }else{
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ),false);
-        }
-    }
+	/**
+	 * Menghapus Producttype
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function delete($id)
+	{
 
-    /**
-     * Update Informasi [[cName]]
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $db = $this->producttype->find($id);
-        /*==========  Sesuaikan  ==========*/
-         $db->name = Input::get('name');
-         $db->fabrictype_id = Input::get('fabrictype_id');
-        $db->uuid = uniqid('Update_');
-        return ($db->save())
-            ? \Icsoutput::msgSuccess( $db->toArray() )
-            : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
-    }
+		if ($this->hasAccess()) {
+			$deleted = $this->producttype
+				->find($id)
+				->delete();
 
-    /**
-    *
-    * Apakah Sudah Login
-    *
-    * @return boolean
-    *
-    **/
-    protected function  hasAccess()
-    {
-        return (!Auth::guest());
-    }
+			return \Icsoutput::toJson(array(
+				'results' => $deleted
+			), $deleted);
 
-    /**
-    *
-    * Menampilkan Page Create data Producttype
-    *
-    **/
+		} else {
+			return \Icsoutput::toJson(array(
+				'results' => false,
+				'reason'  => 'Dont Have Access to Delete '
+			), false);
+		}
+	}
 
-   public function create()
-    {
-        // TODO: Implement create() method.
-    }
+	/**
+	 * Update Informasi [[cName]]
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function update($id)
+	{
+		$db = $this->producttype->find($id);
+		/*==========  Sesuaikan  ==========*/
+//         $db->name = Input::get('name');
+		$db->fabrictype_id = Input::get('fabrictype_id');
+		$db->uuid          = uniqid('Update_');
+		return ( $db->save() )
+			? \Icsoutput::msgSuccess($db->toArray())
+			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
+	}
 
-    /**
-     * Menampilkan Resource
-     *
-     * @param  int  $id
-     * @return Response
-     */
-   public function show($id)
-    {
-        // TODO: Implement show() method.
-    }
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
+	/**
+	 *
+	 * Apakah Sudah Login
+	 *
+	 * @return boolean
+	 *
+	 **/
+	protected function  hasAccess()
+	{
+		return ( !Auth::guest() );
+	}
 
-    /**
-     * Remove Storage
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        return $this->delete($id);
-    }
+	/**
+	 *
+	 * Menampilkan Page Create data Producttype
+	 *
+	 **/
 
+	public function create()
+	{
+		// TODO: Implement create() method.
+	}
+
+	/**
+	 * Menampilkan Resource
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		// TODO: Implement show() method.
+	}
+
+	/**
+	 * Menampilkan Data Untuk di edit
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// TODO: Implement edit() method.
+	}
+
+	/**
+	 * Remove Storage
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->delete($id);
+	}
 
 
 }
