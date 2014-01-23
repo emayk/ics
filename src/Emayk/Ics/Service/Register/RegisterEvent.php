@@ -26,8 +26,9 @@ Event::listen('product.refresh', function ($product) {
 	if ($total == $cache_total) {
 		\Cache::remember('products' . $page, 10, function () use ($product) {
 				$product = $product
+					->orderBy('updated_at', 'DESC')
 					->take(Input::get('limit', 1))
-					->skip(Input::get('start', 1))->get();
+					->skip(Input::get('start', 0))->get();
 				return $product;
 			});
 

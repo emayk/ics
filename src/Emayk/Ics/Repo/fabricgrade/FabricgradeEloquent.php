@@ -69,7 +69,7 @@ class FabricgradeEloquent implements FabricgradeInterface
         }
 
         $fabricgrade = $this->fabricgrade
-            ->orderBy('id', 'DESC');
+            ->orderBy('updated_at', 'DESC');
         $total = $fabricgrade->count();
         $fabricgrade = $fabricgrade
             ->skip($start)
@@ -156,7 +156,7 @@ class FabricgradeEloquent implements FabricgradeInterface
     {
         $db = $this->fabricgrade->find($id);
         /*==========  Sesuaikan  ==========*/
-        $db->name = Input::get('name');
+//        $db->name = Input::get('name');
         $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save()) ?

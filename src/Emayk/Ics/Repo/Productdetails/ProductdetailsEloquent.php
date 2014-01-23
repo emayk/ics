@@ -58,7 +58,7 @@ class ProductdetailsEloquent implements ProductdetailsInterface{
         $limit = \Input::get('limit',1);
         $start = \Input::get('start',1);
         $productdetails = $this->productdetails
-            ->orderBy('id','DESC')
+//            ->orderBy('id','DESC')
             ->skip($start)
             ->take($limit)
             ->get()->toArray();

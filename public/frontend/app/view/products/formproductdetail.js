@@ -59,6 +59,7 @@ Ext.define('App.view.products.formproductdetail', {
             items: [
                 {
                     xtype: 'fieldset',
+	                itemId : 'fieldsetdetail',
                     title : 'Form Detail Product ' + this.prodName,
                     defaults:{
                         anchor : '95%'

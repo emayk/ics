@@ -33,10 +33,16 @@ Ext.define('App.view.master.location.tabs', {
             xtype: 'listcountriesGP', itemId: 'countries',flex:.3,
             title: 'Locations Countries', iconCls: 'home', closable: false
         },
+	    {
+		    xtype: 'splitter'
+	    },
         {
             xtype: 'listprovincesGP', itemId: 'provinces',flex:.3,
             title: 'Locations Province', iconCls: 'home', closable: false
         },
+	    {
+		    xtype: 'splitter'
+	    },
         {
             xtype: 'listcitiesGP', itemId: 'cities',flex:.4,
             title: 'Locations Cities', iconCls: 'home', closable: false

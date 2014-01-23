@@ -587,6 +587,7 @@ Route::group(array('prefix' => 'test'), function () {
      *
      */
     Route::group(array('prefix' => 'generate'), function () {
+
         $fake = \Faker\Factory::create();
         Route::get('/', function () {
             return Response::stream(function () {
@@ -838,8 +839,7 @@ Route::group(array('prefix' => 'test'), function () {
         });
 
         Route::get('useradmin', function () {
-            $user = \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
-            return ($user) ? "Done {$user->username}" : "Failed";
+            return \Emayk\Ics\Repo\Users\Users::generateUserAdmin();
         });
 
         Route::get('users', function () {

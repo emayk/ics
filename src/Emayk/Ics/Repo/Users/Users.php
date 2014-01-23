@@ -382,7 +382,7 @@ class Users extends Model implements UserInterface, RemindableInterface
 		$useradmin = self::Username($username);
 
 		if ($useradmin->count()) {
-			$msg = 'User Admin Sudah Dibuat';
+			$msg = '[Error] User Admin Sudah Dibuat sebelumnya';
 		} else {
 			$posId       = Positions::getIdDefaultPositionOrCreate();
 			$deptId      = Dept::getIdDefaultDepartementOrCreate();

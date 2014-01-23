@@ -46,6 +46,7 @@ Ext.define('App.view.products.formbasicinfo', {
             items: [
                 {
                     xtype: 'fieldset',
+	                itemId : 'fieldsetbasicinfo',
                     autoScroll: true,
                     title: 'Basic Info ' + this.prodName,
                     margins: '0 10 0 0',
@@ -60,7 +61,7 @@ Ext.define('App.view.products.formbasicinfo', {
                         { xtype: 'cbTypeProduct', fieldLabel: 'type_id', name: 'type_id', anchor: '95%' },
                         { xtype: 'fieldcontainer', fieldLabel: 'Weight', layout: 'hbox', anchor: '95%',
                             items: [
-                                { xtype: 'textfield', fieldLabel: '', name: 'weight', flex: .3 },
+                                { xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3 },
                                 {
                                     xtype: 'splitter'
                                 },
@@ -70,7 +71,7 @@ Ext.define('App.view.products.formbasicinfo', {
 
                         { xtype: 'fieldcontainer', fieldLabel: 'Width', layout: 'hbox', anchor: '95%',
                             items: [
-                                { xtype: 'textfield', fieldLabel: '', name: 'width', flex: .3},
+                                { xtype: 'numberfield', fieldLabel: '', name: 'width', flex: .3},
                                 {
                                     xtype: 'splitter'
                                 },

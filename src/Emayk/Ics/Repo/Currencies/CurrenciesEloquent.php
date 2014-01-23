@@ -70,7 +70,7 @@ class CurrenciesEloquent implements CurrenciesInterface
 
         $currencies = $this->currencies
             ->with('country')
-            ->orderBy('id', 'DESC')
+            ->orderBy('updated_at', 'DESC')
             ->skip($start)
             ->take($limit)
             ->get()->toArray();

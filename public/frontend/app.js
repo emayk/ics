@@ -41,6 +41,7 @@ if (fromLocal()) {
         'ctypeAccountBank',
         'master.ctlProducts',
 	    'ctypepayment',
+	    'cposition',
     /**
      * Versi Baru
      * penamamaan Controller

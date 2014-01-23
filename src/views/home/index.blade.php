@@ -1,7 +1,10 @@
 <html>
 <head>
 	<title>Development {{ time() }} </title>
-	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/'.$selectedtheme.'.css') }}">
+<!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all.css') }}">-->
+<!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all-neptune.css') }}">-->
+<!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all-gray.css') }}">-->
 
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('ux/css/TabScrollerMenu.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/uxs.css') }}">

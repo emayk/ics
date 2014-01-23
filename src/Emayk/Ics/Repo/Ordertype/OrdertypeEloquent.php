@@ -141,7 +141,7 @@ class OrdertypeEloquent implements OrdertypeInterface{
     {
         $db = $this->ordertype->find($id);
         /*==========  Sesuaikan  ==========*/
-         $db->name = Input::get('name');
+//         $db->name = Input::get('name');
          $db->info = Input::get('info');
         $db->uuid = uniqid('Update_');
         return ($db->save())

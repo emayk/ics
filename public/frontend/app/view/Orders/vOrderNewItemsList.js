@@ -32,8 +32,8 @@ Ext.define('App.view.Orders.vOrderNewItemsList', {
 				{
 					iconCls: 'delete',
 					tooltip: 'Delete',
-					handler: function (grid, rowIndex, colIndex) {
-						Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
+					handler: function (grid, rowIndex) {
+						Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn) {
 							if (btn == 'yes') {
 								var rec = grid.getStore().getAt(rowIndex);
 								grid.getStore().remove(rec);
@@ -47,7 +47,7 @@ Ext.define('App.view.Orders.vOrderNewItemsList', {
 		}
 	],
 	selType: 'rowmodel',
-	plugins: [Ext.create('Ext.grid.plugin.RowEditing', {clicksToEdit: 1, triggerEvent: 'celldblclick' }) ],
+	plugins: [Ext.create('Ext.grid.plugin.RowEditing', { clicksToEdit: 1, triggerEvent: 'celldblclick' }) ],
 	dockedItems: [
 		{xtype: 'pagingtoolbar', dock: 'bottom', store: 'App.store.Orders.sNewOrderItems'}
 	]
