@@ -47,10 +47,24 @@ class Units extends Model
 	 * @var string
 	 */
 	protected $table = 'master_units';
+	public $appends = [
+		'typename'
+	];
 	/**
 	 * @var array
 	 */
 	public static $rules = array();
+
+
+	public function types()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Unittypes\Unittypes', 'type_id');
+	}
+
+	public function getTypenameAttribute()
+	{
+		return $this->attributes[ 'typename' ] = $this->types()->pluck('name');
+	}
 
 
 	/**

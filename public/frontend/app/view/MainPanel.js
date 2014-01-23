@@ -1,5 +1,6 @@
 if (fromLocal()) {
 	itemsMainPanel = [
+		{ xtype: 'gridAllunit', title: 'Master Unit', iconCls: 'home', closable: false},
 //		{ xtype: 'apppositionvposition', title: 'Master Position', iconCls: 'home', closable: false},
 //		{ xtype: 'vOrders', title: 'Orders', iconCls: 'home', closable: false},
 //        { xtype : 'appreceiveProductvreceiveProduct', title: 'Receive Product', iconCls:'home', closable:false},

@@ -35,6 +35,7 @@ if (fromLocal()) {
         'master.Gudang',
         'master.TypeOrder',
         'master.Legalitas',
+	    'master.ctlUnit',
         'ctypeproduct',
         'cfabrictype',
 	    'ctypesupbuy',

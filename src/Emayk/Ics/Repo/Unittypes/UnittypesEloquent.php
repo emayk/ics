@@ -1,208 +1,219 @@
 <?php
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-*
-* Bussiness Logic Unittypes
-*
-**/
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ * Bussiness Logic Unittypes
+ *
+ **/
 
 namespace Emayk\Ics\Repo\Unittypes;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
 
-class UnittypesEloquent implements UnittypesInterface{
-    protected $unittypes;
-    function __construct(Unittypes $unittypes)
-    {
-        $this->unittypes = $unittypes;
-    }
+class UnittypesEloquent implements UnittypesInterface
+{
+	protected $unittypes;
 
-    /**
-    *
-    * Mendapatkan Record Unittypes berdasarkan ID yang diberikan
-    * @param  int $id ID Record
-    * @return Model Record Unittypes
-    **/
+	function __construct(Unittypes $unittypes)
+	{
+		$this->unittypes = $unittypes;
+	}
 
-    public function find($id){
-        return $this->unittypes->find($id);
-    }
+	/**
+	 *
+	 * Mendapatkan Record Unittypes berdasarkan ID yang diberikan
+	 *
+	 * @param  int $id ID Record
+	 *
+	 * @return Model Record Unittypes
+	 **/
 
-    /**
-     * Mendapatkan Semua Unittypes
-     * @return mixed
-     */
-    public function all()
-    {
-        $page = \Input::get('page');
-			 $limit = \Input::get('limit',1);
-			 $start = \Input::get('start',1);
-        $unittypes = $this->unittypes
-            ->orderBy('id','DESC')
-            ->skip($start)
-            ->take($limit)
-            ->get()->toArray();
-        $total = $this->unittypes
-            ->all()->count();
+	public function find($id)
+	{
+		return $this->unittypes->find($id);
+	}
 
-        $unittypess = array(
-            'success' => true,
-            'results' => $unittypes,
-            'total' => $total
-        );
+	/**
+	 * Mendapatkan Semua Unittypes
+	 *
+	 * @return mixed
+	 */
+	public function all()
+	{
+		$page      = \Input::get('page');
+		$limit     = \Input::get('limit', 1);
+		$start     = \Input::get('start', 0);
+		$unittypes = $this->unittypes
+			->orderBy('updated_at', 'DESC')
+			->skip($start)
+			->take($limit)
+			->get()->toArray();
+		$total     = $this->unittypes
+			->all()->count();
 
-        return Response::json($unittypess)
-            ->setCallback(\Input::get('callback'));
+		$unittypess = array(
+			'success' => true,
+			'results' => $unittypes,
+			'total'   => $total
+		);
 
-    }
+		return Response::json($unittypess)
+			->setCallback(\Input::get('callback'));
 
-    /**
-     *
-     * Proses Simpan Unittypes
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        if (!$this->hasAccess()) {
-            return Response::json(
-                      array(
-                        'success' => false,
-                        'reason'  => 'Action Need Login First',
-                        'results' => null
-                        ))->setCallback();
-        }
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-        // $this->unittypes->name = Input::get('name');
-        // $this->unittypes->info = Input::get('info');
-        // $this->unittypes->uuid = uniqid('New_');
-        // $this->unittypes->createby_id = \Auth::user()->id;
-        // $this->unittypes->lastupdateby_id = \Auth::user()->id;
-        // $this->unittypes->created_at = new Carbon();
-        // $this->unittypes->updated_at = new Carbon();
-        $saved = $this->unittypes->save() ? true : false ;
-        return Response::json(array(
-            'success' => $saved,
-            'results' => $this->unittypes->toArray()
-        ))->setCallback();
-    }
+	}
 
-    /**
-     * Menghapus Unittypes
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
+	/**
+	 *
+	 * Proses Simpan Unittypes
+	 *
+	 * @return mixed
+	 */
+	public function store()
+	{
+		if (!$this->hasAccess()) {
+			return Response::json(
+				array(
+					'success' => false,
+					'reason'  => 'Action Need Login First',
+					'results' => null
+				))->setCallback();
+		}
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		 $this->unittypes->name = Input::get('name');
+		 $this->unittypes->info = Input::get('info');
+		 $this->unittypes->uuid = uniqid('New_');
+		 $this->unittypes->createby_id = \Auth::user()->id;
+		 $this->unittypes->lastupdateby_id = \Auth::user()->id;
+		 $this->unittypes->created_at = new Carbon();
+		 $this->unittypes->updated_at = new Carbon();
+		$saved = $this->unittypes->save() ? true : false;
+		return Response::json(array(
+			'success' => $saved,
+			'results' => $this->unittypes->toArray()
+		))->setCallback();
+	}
 
-        if ($this->hasAccess())
-        {
-            $deleted = $this->unittypes
-                ->find($id)
-                ->delete();
+	/**
+	 * Menghapus Unittypes
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function delete($id)
+	{
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ),$deleted);
+		if ($this->hasAccess()) {
+			$deleted = $this->unittypes
+				->find($id)
+				->delete();
 
-        }else{
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ),false);
-        }
-    }
+			return \Icsoutput::toJson(array(
+				'results' => $deleted
+			), $deleted);
 
-    /**
-     * Update Informasi [[cName]]
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $db = $this->unittypes->find($id);
-        /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
-        $db->uuid = uniqid('Update_');
-        return ($db->save())
-            ? \Icsoutput::msgSuccess( $db->toArray() )
-            : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
-    }
+		} else {
+			return \Icsoutput::toJson(array(
+				'results' => false,
+				'reason'  => 'Dont Have Access to Delete '
+			), false);
+		}
+	}
 
-    /**
-    *
-    * Apakah Sudah Login
-    *
-    * @return boolean
-    *
-    **/
-    protected function  hasAccess()
-    {
-        return (!Auth::guest());
-    }
+	/**
+	 * Update Informasi [[cName]]
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function update($id)
+	{
+		$db = $this->unittypes->find($id);
+		/*==========  Sesuaikan  ==========*/
+		// $db->name = Input::get('name');
+		 $db->info = Input::get('info');
+		$db->uuid = uniqid('Update_');
+		return ( $db->save() )
+			? \Icsoutput::msgSuccess($db->toArray())
+			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
+	}
 
-    /**
-    *
-    * Menampilkan Page Create data Unittypes
-    *
-    **/
+	/**
+	 *
+	 * Apakah Sudah Login
+	 *
+	 * @return boolean
+	 *
+	 **/
+	protected function  hasAccess()
+	{
+		return ( !Auth::guest() );
+	}
 
-   public function create()
-    {
-        // TODO: Implement create() method.
-    }
+	/**
+	 *
+	 * Menampilkan Page Create data Unittypes
+	 *
+	 **/
 
-    /**
-     * Menampilkan Resource
-     *
-     * @param  int  $id
-     * @return Response
-     */
-   public function show($id)
-    {
-        // TODO: Implement show() method.
-    }
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
+	public function create()
+	{
+		// TODO: Implement create() method.
+	}
 
-    /**
-     * Remove Storage
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        return $this->delete($id);
-    }
+	/**
+	 * Menampilkan Resource
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		// TODO: Implement show() method.
+	}
 
+	/**
+	 * Menampilkan Data Untuk di edit
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// TODO: Implement edit() method.
+	}
+
+	/**
+	 * Remove Storage
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->delete($id);
+	}
 
 
 }

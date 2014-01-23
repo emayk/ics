@@ -1,23 +1,23 @@
 /**
-*
-* Store Combox Box Category Product
-*
-**/
+ *
+ * Store Combox Box Type Unit
+ *
+ **/
 
-Ext.define('App.store.combo.cbUnitType',{
+Ext.define('App.store.combo.cbUnitType', {
 	extend: 'Ext.data.Store',
-	fields: [ 'id','name' ],
-	
-    proxy: {
+	fields: [ 'id', 'name' ],
+
+	proxy: {
 		type: 'rest',
-		url: api_url +'/unittype',
+		url: getApiUrl() + '/unittypes',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
 		},
 		extraParams: {
-			'cbreq' : true
-		},		
+			'cbreq': true
+		}
 	}
 });
