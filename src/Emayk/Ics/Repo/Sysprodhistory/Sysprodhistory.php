@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -14,23 +15,33 @@
  *
  * @author Emay Komarudin
  *
+ * Model Structure Eloquent
+ *
  **/
+namespace Emayk\Ics\Repo\Sysprodhistory;
 
-Ext.define('App.store.product.history',{
-    extend: 'Ext.data.Store',
-	model: 'App.model.product.history',
-//    fields:['id','msg'],
-    pageSize: 25,
-    proxy: {
-//        type: 'ajax',
-//        url: getApiUrl() +'/history/product',
-	    type: 'rest',
-        url: getApiUrl() +'/sysprodhistory',
-        reader: {
-            type: 'json',
-            root: 'results',
-            totalProperty: 'total'
-        }
-    }
-});
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
+class Sysprodhistory extends Model
+{
+	protected $guarded = array();
+	protected $table = 'sys_product_histories';
+	public static $rules = array();
+
+
+	public static function createlog(array $messages, $userid, $productid)
+	{
+		$msg = $messages[ 0 ];
+
+		return static::create(
+			[
+				"msg"        => $msg,
+				"product_id" => $productid,
+				"user_id"    => $userid,
+				"created_at" => new Carbon(),
+				"updated_at" => new Carbon()
+			]
+		);
+	}
+}

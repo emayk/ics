@@ -47,7 +47,8 @@ Ext.define('App.controller.master.ctlProducts', {
 		'App.model.product.stockhistory',
 		'App.model.warehouse.category',
 		'App.model.warehouse.warehouse',
-		'App.model.product.updater'
+		'App.model.product.updater',
+		'App.model.product.history'
 	],
 	stores: [
 		'App.store.product.Product',
@@ -156,10 +157,21 @@ Ext.define('App.controller.master.ctlProducts', {
 			 */
 			'formproductbasicinfo button#close': {
 				click: function (btn) {
-					btn.up('productinfo').remove();
+					/*Check apakah New or exist*/
+					var panel = btn.up('productinfo'),
+						newrecord = panel.new;
+//					if (newrecord) Ext.MessageBox.confirm('Konfirmasi Keluar', 'Anda yakin akan menutup ?', function (btn) {
+						panel.close();
+//					});
+
 				}
 			},
+
 			'formproductbasicinfo button#save': {
+				/**
+				 * Proses Simpan
+				 * @param btn Button fire
+				 */
 				click: function (btn) {
 
 					var panel = btn.up('productinfo'),
@@ -186,6 +198,7 @@ Ext.define('App.controller.master.ctlProducts', {
 								var fieldsetdetail = panel.down('formproductdetail #fieldsetdetail');
 								fieldsetdetail.setTitle('Form Detail Product ' + name);
 								panel.down('formproductdetail [name=prodname]').setValue(name);
+								panel.down('formproductdetail [name=product_id]').setValue(prodId);
 
 								/*Buat model detail*/
 								var modeldetail = Ext.create('App.model.product.detail', {
@@ -198,11 +211,11 @@ Ext.define('App.controller.master.ctlProducts', {
 								var formdetail = panel.down('formproductdetail').getForm();
 								formdetail.loadRecord(modeldetail);
 								panel.setActiveTab('formdetail');
+//								newrecord = false;
 							}
 						},
 						failure: function (rec, ops) {
 							msgError('Terjadi Error Saat Simpan ke server');
-
 						}
 					});
 				}
@@ -223,21 +236,47 @@ Ext.define('App.controller.master.ctlProducts', {
 						/*Untuk Currencies hanya salah satu saja*/
 						form.down('[name=currsp_id]').getStore().load({ params: { selected: record.get('currsp_id')  } });
 						form.down('[name=currspm_id]').getStore().load({ params: { selected: record.get('currspm_id')  } });
-					}
-				}
+
+					};
+//					else{
+//						var id = form.up('productinfo').down('formproductbasicinfo [name=id]').getValue();
+//						form.down['[name=product_id]'].setValue(id);
+//					}
+				},
+//				beforeactivate: function( form ){
+//					var id = form.up('productinfo').down('formproductbasicinfo [name=id]').getValue();
+////					log(id);
+//					form.prodId = id;
+////					log(form.prodId);
+//					form.down('[name=product_id]').setValue(id);
+////					/*Boleh aktif kalau bukan new record */
+////					/*Jika Panel Product belum diisi*/
+////					var newrecord = panel.up('productinfo').new;
+////					return !newrecord;
+//				}
 			},
-			/**
-			 * Save Informasi Detail
-			 */
+
 			'formproductdetail button#save': {
+				/**
+				 * Save Informasi Detail
+				 */
 				click: function (btn) {
 
 					var form = btn.up('form').getForm(),
 						record = form.getRecord(),
 						values = form.getValues();
-//					log('fire Btn' + btn.text);
+
 					var newrecord = btn.up('productinfo').new;
 					log(record);
+					/*check sales harus > sales min*/
+					var sp = values.salesprice;
+					var spm = values.salespricemin;
+
+					if (parseFloat(spm) > parseFloat(sp) ){
+						msgError('Maaf, Sales Price Minimal tidak boleh lebih besar dari Sales Price');
+						return false;
+					};
+
 					record.set(values);
 					record.save({
 						success: function (rec, ops) {
@@ -249,13 +288,13 @@ Ext.define('App.controller.master.ctlProducts', {
 					});
 
 
-					if (newrecord) {
-						log('record Baru');
-					} else {
-						log('Bukan Record Baru');
-					}
-					;
-					log(values);
+//					if (newrecord) {
+//						log('record Baru');
+//					} else {
+//						log('Bukan Record Baru');
+//					}
+//					;
+//					log(values);
 				}
 			},
 			/**
@@ -265,11 +304,12 @@ Ext.define('App.controller.master.ctlProducts', {
 				click: function (btn) {
 					log('Product Add Button fire!');
 					/*Cek apakah requirement data terpenuhi ?*/
+					var title = 'New Product';
 					var panel = Ext.create('App.view.products.panelinfo', {
-						new: true
+						new: true,closable: true, iconCls: 'home',title :  title
 					});
 
-					this.open_new_tab('New Product', panel);
+					this.open_new_tab(title, panel);
 				}
 			},
 
@@ -298,6 +338,18 @@ Ext.define('App.controller.master.ctlProducts', {
 				 */
 				click: function (btn) {
 					log('click add stock', btn.text);
+				}
+			},
+
+			'productinfo productshistory' : {
+				render : function(panel){
+					var mp = panel.up('productinfo');
+					var id = mp.down('formproductbasicinfo [name=id]').getValue();
+					var grid = mp.down('#gridHistoryProduct');
+					var store = grid.getStore();
+					store.clearFilter();
+					store.getProxy().setExtraParam('product_id',id);
+					store.load();
 				}
 			}
 		});

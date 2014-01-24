@@ -78,7 +78,7 @@ Ext.define('App.view.products.formproductdetail', {
                             hiddenField: true,
                             layout: 'hbox', anchor: '95%',
                             items : [
-                                { xtype: "textfield", fieldLabel: "", name: "salesprice", flex: .3 },
+                                { xtype: "numberfield", fieldLabel: "", name: "salesprice", flex: .3 },
                                 { xtype : 'splitter' },
                                 { xtype: "cbcurrsp", fieldLabel: "", name: "currsp_id", flex: .6 }
                             ]
@@ -89,7 +89,7 @@ Ext.define('App.view.products.formproductdetail', {
                             fieldLabel:'Sales Price Min ',
                             layout: 'hbox', anchor: '95%',
                             items : [
-                                { xtype: "textfield", fieldLabel: "", name: "salespricemin", flex: .3 },
+                                { xtype: "numberfield", fieldLabel: "", name: "salespricemin", flex: .3 },
                                 { xtype : 'splitter' },
                                 { xtype: "cbcurrspm", fieldLabel: "", name: "currspm_id", flex: .6 }
                             ]

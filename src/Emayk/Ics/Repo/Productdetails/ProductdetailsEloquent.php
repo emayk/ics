@@ -1,232 +1,263 @@
 <?php
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-*
-* Bussiness Logic Productdetails
-*
-**/
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ * Bussiness Logic Productdetails
+ *
+ **/
 
 namespace Emayk\Ics\Repo\Productdetails;
+
 use Carbon\Carbon;
+use Emayk\Ics\Repo\Sysprodhistory\Sysprodhistory;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
 
-class ProductdetailsEloquent implements ProductdetailsInterface{
-    /**
-     * @var array
-     */
+class ProductdetailsEloquent implements ProductdetailsInterface
+{
+	/**
+	 * @var array
+	 */
 
-    protected $productdetails;
-    function __construct(Productdetails $productdetails)
-    {
-        $this->productdetails = $productdetails;
-    }
+	protected $productdetails;
 
-    /**
-    *
-    * Mendapatkan Record Productdetails berdasarkan ID yang diberikan
-    * @param  int $id ID Record
-    * @return Model Record Productdetails
-    **/
+	function __construct(Productdetails $productdetails)
+	{
+		$this->productdetails = $productdetails;
+	}
 
-    public function find($id){
-        return $this->productdetails->find($id);
-    }
+	/**
+	 *
+	 * Mendapatkan Record Productdetails berdasarkan ID yang diberikan
+	 *
+	 * @param  int $id ID Record
+	 *
+	 * @return Model Record Productdetails
+	 **/
 
-    /**
-     * Mendapatkan Semua Productdetails
-     * @return mixed
-     */
-    public function all()
-    {
+	public function find($id)
+	{
+		return $this->productdetails->find($id);
+	}
+
+	/**
+	 * Mendapatkan Semua Productdetails
+	 *
+	 * @return mixed
+	 */
+	public function all()
+	{
 //			 return $this->productdetails->all();
-        $page = \Input::get('page');
-        $limit = \Input::get('limit',1);
-        $start = \Input::get('start',1);
-        $productdetails = $this->productdetails
+		$page           = \Input::get('page');
+		$limit          = \Input::get('limit', 1);
+		$start          = \Input::get('start', 1);
+		$productdetails = $this->productdetails
 //            ->orderBy('id','DESC')
-            ->skip($start)
-            ->take($limit)
-            ->get()->toArray();
-        $total = $this->productdetails
-            ->all()->count();
+			->skip($start)
+			->take($limit)
+			->get()->toArray();
+		$total          = $this->productdetails
+			->all()->count();
 
-        $productdetailss = array(
-            'success' => true,
-            'results' => $productdetails,
-            'total' => $total
-        );
+		$productdetailss = array(
+			'success' => true,
+			'results' => $productdetails,
+			'total'   => $total
+		);
 
-        return Response::json($productdetailss)
-            ->setCallback(\Input::get('callback'));
+		return Response::json($productdetailss)
+			->setCallback(\Input::get('callback'));
 
-    }
+	}
 
-    /**
-     *
-     * Proses Simpan Productdetails
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        if (!$this->hasAccess()) {
-            return Response::json(
-                      array(
-                        'success' => false,
-                        'reason'  => 'Action Need Login First',
-                        'results' => null
-                        ))->setCallback();
-        }
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-         $this->productdetails->product_id = Input::get('product_id');
-         $this->productdetails->color_id = Input::get('color_id');
-         $this->productdetails->unit_id = Input::get('unit_id');
-         $this->productdetails->grade_id = Input::get('grade_id');
-         $this->productdetails->salesprice = Input::get('salesprice');
-         $this->productdetails->salespricemin = Input::get('salespricemin');
-         $this->productdetails->currsp_id = Input::get('currsp_id');
-         $this->productdetails->currspm_id = Input::get('currspm_id');
-         $this->productdetails->uuid = uniqid('New_');
-         $this->productdetails->createby_id = \Auth::user()->id;
-         $this->productdetails->lastupdateby_id = \Auth::user()->id;
-         $this->productdetails->created_at = new Carbon();
-         $this->productdetails->updated_at = new Carbon();
-        $saved = $this->productdetails->save() ? true : false ;
-        return Response::json(array(
-            'success' => $saved,
-            'results' => $this->productdetails->toArray()
-        ))->setCallback();
-    }
+	/**
+	 *
+	 * Proses Simpan Productdetails
+	 *
+	 * @return mixed
+	 */
+	public function store()
+	{
+		if (!$this->hasAccess()) {
+			return Response::json(
+				array(
+					'success' => false,
+					'reason'  => 'Action Need Login First',
+					'results' => null
+				))->setCallback();
+		}
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		$userId                                = \Auth::user()->id;
+		$prodId                                = Input::get('product_id');
+		$this->productdetails->product_id      = $prodId;
+		$this->productdetails->color_id        = Input::get('color_id');
+		$this->productdetails->unit_id         = Input::get('unit_id');
+		$this->productdetails->grade_id        = Input::get('grade_id');
+		$this->productdetails->salesprice      = Input::get('salesprice');
+		$this->productdetails->salespricemin   = Input::get('salespricemin');
+		$this->productdetails->currsp_id       = Input::get('currsp_id');
+		$this->productdetails->currspm_id      = Input::get('currspm_id');
+		$this->productdetails->uuid            = uniqid('New_');
+		$this->productdetails->createby_id     = $userId;
+		$this->productdetails->lastupdateby_id = $userId;
+		$this->productdetails->created_at      = new Carbon();
+		$this->productdetails->updated_at      = new Carbon();
+		$saved                                 = $this->productdetails->save() ? true : false;
+		if ($saved) {
+			Sysprodhistory::createlog(
+				["Product Detail berhasil dibuat "], $userId, $prodId
+			);
+		};
+		return Response::json(array(
+			'success' => $saved,
+			'results' => $this->productdetails->toArray()
+		))->setCallback();
+	}
 
-    /**
-     * Menghapus Productdetails
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
+	/**
+	 * Menghapus Productdetails
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function delete($id)
+	{
 
-        if ($this->hasAccess())
-        {
-            $deleted = $this->productdetails
-                ->find($id)
-                ->delete();
+		if ($this->hasAccess()) {
+			$deleted = $this->productdetails
+				->find($id)
+				->delete();
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ),$deleted);
+			return \Icsoutput::toJson(array(
+				'results' => $deleted
+			), $deleted);
 
-        }else{
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ),false);
-        }
-    }
+		} else {
+			return \Icsoutput::toJson(array(
+				'results' => false,
+				'reason'  => 'Dont Have Access to Delete '
+			), false);
+		}
+	}
 
-    /**
-     * Update Informasi [[cName]]
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $db = $this->productdetails->find($id);
-        /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
-        $db->uuid = uniqid('Update_');
-        return ($db->save())
-            ? \Icsoutput::msgSuccess( $db->toArray() )
-            : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
-    }
+	/**
+	 * Update Informasi [[cName]]
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function update($id)
+	{
+		$db = $this->productdetails->find($id);
+		/*==========  Sesuaikan  ==========*/
+		$db->color_id        = Input::get("color_id");
+		$db->currsp_id       = Input::get("currsp_id");
+		$db->currspm_id      = Input::get("currspm_id");
+		$db->grade_id        = Input::get("grade_id");
+		$db->lastupdateby_id = Auth::user()->id;
+//	    $db->parent_id = Input::get("parent_id");
+//	    $db->parent_type = Input::get("parent_type");
+		$db->product_id    = Input::get("product_id");
+		$db->salesprice    = Input::get("salesprice");
+		$db->salespricemin = Input::get("salespricemin");
+		$db->unit_id       = Input::get("unit_id");
+		$db->updated_at    = Carbon::create();
 
-    /**
-    *
-    * Apakah Sudah Login
-    *
-    * @return boolean
-    *
-    **/
-    protected function  hasAccess()
-    {
-        return (!Auth::guest());
-    }
+		$db->uuid = uniqid('Update_');
+		return ( $db->save() )
+			? \Icsoutput::msgSuccess($db->toArray())
+			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
+	}
 
-    /**
-    *
-    * Menampilkan Page Create data Productdetails
-    *
-    **/
+	/**
+	 *
+	 * Apakah Sudah Login
+	 *
+	 * @return boolean
+	 *
+	 **/
+	protected function  hasAccess()
+	{
+		return ( !Auth::guest() );
+	}
 
-   public function create()
-    {
-        // TODO: Implement create() method.
-    }
+	/**
+	 *
+	 * Menampilkan Page Create data Productdetails
+	 *
+	 **/
 
-    /**
-     * Menampilkan Resource
-     *
-     * @param  int  $id
-     * @return Response
-     */
-   public function show($id)
-    {
-        $record = $this->productdetails->findOrFail($id);
-        return ($record) ?
-            Response::json(
-                [ 'success' => true, 'error' => false,
-                  'reason' => 'Cannot Find',
-                    'results' => $record->toArray()
-                    ]
-            )
-            : Response::json(
-              [
-                  'success' => true, 'error' => true,
-                  'reason' => 'Cannot Find'
-              ],404
-            );
-    }
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
+	public function create()
+	{
+		// TODO: Implement create() method.
+	}
 
-    /**
-     * Remove Storage
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        return $this->delete($id);
-    }
+	/**
+	 * Menampilkan Resource
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$record = $this->productdetails->findOrFail($id);
+		return ( $record ) ?
+			Response::json(
+				[
+					'success' => true, 'error' => false,
+					'reason'  => 'Cannot Find',
+					'results' => $record->toArray()
+				]
+			)
+			: Response::json(
+				[
+					'success' => true, 'error' => true,
+					'reason'  => 'Cannot Find'
+				], 404
+			);
+	}
 
+	/**
+	 * Menampilkan Data Untuk di edit
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// TODO: Implement edit() method.
+	}
+
+	/**
+	 * Remove Storage
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->delete($id);
+	}
 
 
 }

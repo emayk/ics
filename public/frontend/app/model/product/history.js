@@ -16,21 +16,17 @@
  *
  **/
 
-Ext.define('App.store.product.history',{
-    extend: 'Ext.data.Store',
-	model: 'App.model.product.history',
-//    fields:['id','msg'],
-    pageSize: 25,
-    proxy: {
-//        type: 'ajax',
-//        url: getApiUrl() +'/history/product',
-	    type: 'rest',
-        url: getApiUrl() +'/sysprodhistory',
-        reader: {
-            type: 'json',
-            root: 'results',
-            totalProperty: 'total'
-        }
-    }
-});
 
+Ext.define('App.model.product.history', {
+	extend: 'Ext.data.Model',
+	fields : ['id','name','msg'],
+	proxy: {
+		type: 'rest',
+		url: getApiUrl() +'/sysprodhistory',
+		reader: {
+			type: 'json',
+			root: 'results',
+			totalProperty: 'total'
+		}
+	}
+});

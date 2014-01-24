@@ -23,6 +23,7 @@ namespace Emayk\Ics\Repo\Products;
 
 use Aws\CloudFront\Exception\Exception;
 use Carbon\Carbon;
+use Emayk\Ics\Repo\Sysprodhistory\Sysprodhistory;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
@@ -32,275 +33,288 @@ use \Cache;
 
 class ProductsEloquent implements ProductsInterface
 {
-    protected $products;
+	protected $products;
 
-    function __construct(Products $products)
-    {
-        $this->products = $products;
-    }
+	function __construct(Products $products)
+	{
+		$this->products = $products;
+	}
 
-    /**
-     *
-     * Mendapatkan Record Products berdasarkan ID yang diberikan
-     * @param  int $id ID Record
-     * @return Model Record Products
-     **/
+	/**
+	 *
+	 * Mendapatkan Record Products berdasarkan ID yang diberikan
+	 *
+	 * @param  int $id ID Record
+	 *
+	 * @return Model Record Products
+	 **/
 
-    public function find($id)
-    {
-        return $this->products->find($id);
-    }
+	public function find($id)
+	{
+		return $this->products->find($id);
+	}
 
-    /**
-     * Mendapatkan Semua Products
-     * @return mixed
-     */
-    public function all()
-    {
-        $page = \Input::get('page');
-        $product = $this->products;
-        \Event::fire('product.refresh', array($product));
-        $products = \Cache::get('products' . $page);
-        $total = \Cache::get('count_products');
-        $productss = array('success' => true, 'results' => $products->toArray(), 'total' => $total);
+	/**
+	 * Mendapatkan Semua Products
+	 *
+	 * @return mixed
+	 */
+	public function all()
+	{
+		$page    = \Input::get('page');
+		$product = $this->products;
+		\Event::fire('product.refresh', array($product));
+		$products  = \Cache::get('products' . $page);
+		$total     = \Cache::get('count_products');
+		$productss = array('success' => true, 'results' => $products->toArray(), 'total' => $total);
 
-        return Response::json($productss)->setCallback(\Input::get('callback'));
+		return Response::json($productss)->setCallback(\Input::get('callback'));
 
-    }
+	}
 
 
-    /**
-     * @throws \Exception
-     */
-    public function store_2()
-    {
-        $product = $this->products;
-        $userId = \Auth::user()->id;
-        DB::beginTransaction();
+	/**
+	 * @throws \Exception
+	 */
+	public function store_2()
+	{
+		$product = $this->products;
+		$userId  = \Auth::user()->id;
+		DB::beginTransaction();
 
-        try {
-            $product = $product::create(
-                array(
-                    'name' => Input::get('name'),
-                    'cat_id' => Input::get('cat_id'),
-                    'contruction' => Input::get('contruction'),
-                    'nodesign' => Input::get('nodesign'),
-                    'type_id' => Input::get('type_id'),
-                    'weight' => Input::get('weight'),
-                    'unitweight_id' => Input::get('unitweight_id'),
-                    'width' => Input::get('width'),
-                    'unitwidth_id' => Input::get('unitwidth_id'),
-                    'codeinternal' => uniqid('Prd_'),
-                    'parent_id' => Input::get('parent_id'),
-                    'parent_type' => Input::get('parent_type'),
-                    'uuid' => uniqid('Prd_'),
-                    'createby_id' => $userId,
-                    'lastupdateby_id' => $userId,
-                    'created_at' => new \Datetime(),
-                    'updated_at' => new \Datetime()
-                )
-            );
+		try {
+			$product = $product::create(
+				array(
+					'name'            => Input::get('name'),
+					'cat_id'          => Input::get('cat_id'),
+					'contruction'     => Input::get('contruction'),
+					'nodesign'        => Input::get('nodesign'),
+					'type_id'         => Input::get('type_id'),
+					'weight'          => Input::get('weight'),
+					'unitweight_id'   => Input::get('unitweight_id'),
+					'width'           => Input::get('width'),
+					'unitwidth_id'    => Input::get('unitwidth_id'),
+					'codeinternal'    => uniqid('Prd_'),
+					'parent_id'       => Input::get('parent_id'),
+					'parent_type'     => Input::get('parent_type'),
+					'uuid'            => uniqid('Prd_'),
+					'createby_id'     => $userId,
+					'lastupdateby_id' => $userId,
+					'created_at'      => new \Datetime(),
+					'updated_at'      => new \Datetime()
+				)
+			);
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+		} catch (\Exception $e) {
+			DB::rollBack();
+			throw $e;
+		}
 
 //			 Proses Detail
-        try {
-            // proses Product detail
+		try {
+			// proses Product detail
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+		} catch (\Exception $e) {
+			DB::rollBack();
+			throw $e;
+		}
 
-        DB::commit();
+		DB::commit();
 
-        return Response::json(array(
-            'success' => true,
-            'results' => $product->toArray()
-        ))->setCallback();
+		return Response::json(array(
+			'success' => true,
+			'results' => $product->toArray()
+		))->setCallback();
 
-    }
+	}
 
-    /**
-     *
-     * Proses Simpan Products
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        if (!$this->hasAccess()) {
-            return Response::json(
-                array(
-                    'success' => false,
-                    'reason' => 'Action Need Login First',
-                    'results' => null
-                ))->setCallback();
-        }
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-        $userId = \Auth::user()->id;
-        $this->products->name = Input::get('name');
-        $catId = Input::get('cat_id',1);
-        $this->products->cat_id = $catId;
-        $this->products->contruction = Input::get('contruction');
-        $this->products->nodesign = Input::get('nodesign');
-        $this->products->type_id = Input::get('type_id');
-        $this->products->weight = Input::get('weight');
-        $this->products->parent_id = $catId;
-        $this->products->parent_type = '\Emayk\Ics\Repo\Productcategory\Productcategory';
-        $this->products->unitweight_id = Input::get('unitweight_id');
-        $this->products->width = Input::get('width');
-        $this->products->unitwidth_id = Input::get('unitwidth_id');
-        $this->products->codeinternal = uniqid('Prd_');
+	/**
+	 *
+	 * Proses Simpan Products
+	 *
+	 * @return mixed
+	 */
+	public function store()
+	{
+		if (!$this->hasAccess()) {
+			return Response::json(
+				array(
+					'success' => false,
+					'reason'  => 'Action Need Login First',
+					'results' => null
+				))->setCallback();
+		}
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		$userId                        = \Auth::user()->id;
+		$name                          = Input::get('name');
+		$this->products->name          = $name;
+		$catId                         = Input::get('cat_id', 1);
+		$this->products->cat_id        = $catId;
+		$this->products->contruction   = Input::get('contruction');
+		$this->products->nodesign      = Input::get('nodesign');
+		$this->products->type_id       = Input::get('type_id');
+		$this->products->weight        = Input::get('weight');
+		$this->products->parent_id     = $catId;
+		$this->products->parent_type   = '\Emayk\Ics\Repo\Productcategory\Productcategory';
+		$this->products->unitweight_id = Input::get('unitweight_id');
+		$this->products->width         = Input::get('width');
+		$this->products->unitwidth_id  = Input::get('unitwidth_id');
+		$this->products->codeinternal  = uniqid('Prd_');
 
-        $this->products->uuid = uniqid('Prd_');
-        $this->products->createby_id = $userId;
-        $this->products->lastupdateby_id = $userId;
-        $this->products->created_at = new \Datetime();
-        $this->products->updated_at = new \Datetime();
-        $saved = $this->products->save() ? true : false;
+		$this->products->uuid            = uniqid('Prd_');
+		$this->products->createby_id     = $userId;
+		$this->products->lastupdateby_id = $userId;
+		$this->products->created_at      = new \Datetime();
+		$this->products->updated_at      = new \Datetime();
+		$saved                           = $this->products->save() ? true : false;
 
-        return Response::json(array(
-            'success' => $saved,
-            'results' => ($saved) ? $this->products->toArray() : null,
-            'reason' => ($saved) ? 'Created Successfully' : 'Fail Create',
-        ))->setCallback();
-    }
+		if ($saved) {
+			Sysprodhistory::createlog(["Product {$name} berhasil dibuat "], $userId, $this->products->id);
+		};
+		return Response::json(array(
+			'success' => $saved,
+			'results' => ( $saved ) ? $this->products->toArray() : null,
+			'reason'  => ( $saved ) ? 'Created Successfully' : 'Fail Create',
+		))->setCallback();
+	}
 
-    /**
-     * Menghapus Products
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
+	/**
+	 * Menghapus Products
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function delete($id)
+	{
 
-        if ($this->hasAccess()) {
-            $deleted = $this->products
-                ->find($id)
-                ->delete();
+		if ($this->hasAccess()) {
+			$deleted = $this->products
+				->find($id)
+				->delete();
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ), $deleted);
+			return \Icsoutput::toJson(array(
+				'results' => $deleted
+			), $deleted);
 
-        } else {
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ), false);
-        }
-    }
+		} else {
+			return \Icsoutput::toJson(array(
+				'results' => false,
+				'reason'  => 'Dont Have Access to Delete '
+			), false);
+		}
+	}
 
-    /**
-     * Update Informasi [[cName]]
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $db = $this->products->find($id);
-        /*==========  Sesuaikan  ==========*/
-        $db->name = Input::get('name');
-        $catId = Input::get('cat_id',1);
-        $uid = Auth::user()->id;
-        $db->cat_id = $catId;
-        $db->contruction = Input::get('contruction');
-        $db->nodesign = Input::get('nodesign');
-        $db->type_id = Input::get('type_id');
-        $db->weight = Input::get('weight');
-        $db->parent_id = $catId;
+	/**
+	 * Update Informasi [[cName]]
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function update($id)
+	{
+		$db = $this->products->find($id);
+		/*==========  Sesuaikan  ==========*/
+		$db->name        = Input::get('name');
+		$catId           = Input::get('cat_id', 1);
+		$uid             = Auth::user()->id;
+		$db->cat_id      = $catId;
+		$db->contruction = Input::get('contruction');
+		$db->nodesign    = Input::get('nodesign');
+		$db->type_id     = Input::get('type_id');
+		$db->weight      = Input::get('weight');
+		$db->parent_id   = $catId;
 
-        $db->unitweight_id = Input::get('unitweight_id');
-        $db->width = Input::get('width');
-        $db->unitwidth_id = Input::get('unitwidth_id');
-        $db->codeinternal = uniqid('Prd_');
+		$db->unitweight_id = Input::get('unitweight_id');
+		$db->width         = Input::get('width');
+		$db->unitwidth_id  = Input::get('unitwidth_id');
+		$db->codeinternal  = uniqid('Prd_');
 
-        $db->uuid = uniqid('Prd_');
-        $db->lastupdateby_id = $uid;
-        $db->updated_at = new Carbon();
-        $db->uuid = uniqid('Update_');
-        return ($db->save())
-            ? \Icsoutput::msgSuccess($db->toArray())
-            : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
-    }
+		$db->uuid            = uniqid('Prd_');
+		$db->lastupdateby_id = $uid;
+		$db->updated_at      = new Carbon();
+		$db->uuid            = uniqid('Update_');
+		return ( $db->save() )
+			? \Icsoutput::msgSuccess($db->toArray())
+			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
+	}
 
-    /**
-     *
-     * Apakah Sudah Login
-     *
-     * @return boolean
-     *
-     **/
-    protected function  hasAccess()
-    {
-        return (!Auth::guest());
-    }
+	/**
+	 *
+	 * Apakah Sudah Login
+	 *
+	 * @return boolean
+	 *
+	 **/
+	protected function  hasAccess()
+	{
+		return ( !Auth::guest() );
+	}
 
-    /**
-     *
-     * Menampilkan Page Create data Products
-     *
-     **/
+	/**
+	 *
+	 * Menampilkan Page Create data Products
+	 *
+	 **/
 
-    public function create()
-    {
-        // TODO: Implement create() method.
-    }
+	public function create()
+	{
+		// TODO: Implement create() method.
+	}
 
-    /**
-     * Menampilkan Resource
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        $record = $this->products->whereId($id);
+	/**
+	 * Menampilkan Resource
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$record = $this->products->whereId($id);
 
-        return ($record->count() ) ?
-            Response::json(
-                [ 'success' => true, 'error' => false,
-                    'results' => $record
-                            ->with('type','detail','stocks')
-                            ->get()->toArray()
-                ]
-            )
-            : Response::json(
-                [
-                    'success' => true, 'error' => true,
-                    'reason' => 'Cannot Find'
-                ],404
-            );
-    }
+		return ( $record->count() ) ?
+			Response::json(
+				[
+					'success' => true, 'error' => false,
+					'results' => $record
+							->with('type', 'detail', 'stocks')
+							->get()->toArray()
+				]
+			)
+			: Response::json(
+				[
+					'success' => true, 'error' => true,
+					'reason'  => 'Cannot Find'
+				], 404
+			);
+	}
 
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
+	/**
+	 * Menampilkan Data Untuk di edit
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// TODO: Implement edit() method.
+	}
 
-    /**
-     * Remove Storage
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        return $this->delete($id);
-    }
+	/**
+	 * Remove Storage
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->delete($id);
+	}
 
 
 }

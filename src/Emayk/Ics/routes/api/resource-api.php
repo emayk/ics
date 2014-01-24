@@ -118,3 +118,5 @@ Route::resource('transsale', 'Emayk\Ics\Repo\Transsale\TranssaleController');
 Route::resource('receiveproduct', 'Emayk\Ics\Repo\Transreceiveproduct\TransreceiveproductController');
 /*==========  Register Resource Transreceiveproductitem  ==========*/
 Route::resource('receiveproductitem', 'Emayk\Ics\Repo\Transreceiveproductitem\TransreceiveproductitemController');
+/*==========  Register Resource Sysprodhistory  ==========*/
+Route::resource('sysprodhistory', 'Emayk\Ics\Repo\Sysprodhistory\SysprodhistoryController');

@@ -402,3 +402,10 @@ App::bindIf('Emayk\Ics\Repo\Transreceiveproductitem\TransreceiveproductitemInter
 	return new Repo\Transreceiveproductitem\TransreceiveproductitemEloquent(new Repo\Transreceiveproductitem\Transreceiveproductitem() );
 });
 
+
+/*==========  Register Interface Sysprodhistory  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Sysprodhistory\SysprodhistoryInterface',function(){
+	return new Repo\Sysprodhistory\SysprodhistoryEloquent(new Repo\Sysprodhistory\Sysprodhistory() );
+});
+
