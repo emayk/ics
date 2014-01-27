@@ -1,34 +1,25 @@
 Ext.define('App.model.ContactPerson',{
 	extend: 'Ext.data.Model',
 	fields: [
-	{
-		name: 'id',
-		type: 'int',
-		defaultValue: 0,
-	},
+	'id',
 	'name',
 	{
 		name : 'deptname',
 		type: 'string',
-		mapping : 'dept.name',
-		// convert: function(v,record){
-		// 		return record.get('departement_id') + '::' + v;
-		// }
+		mapping : 'dept.name'
 	},
 
-	// 'positionnname' ,
 	{
 		name : 'positionnname',
 		mapping: 'position.name',
 	},
 	{
 		name : 'nohp',
-		mapping: 'phone',
+		mapping: 'phone'
 	},
 
 	'jabatan_id',
 	'departement_id',
-	// 'nohp',
 	'email',
 	'fax',
 	'info',

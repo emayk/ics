@@ -5,22 +5,22 @@
  *
  */
 Ext.define('App.form.combobox.cbProvinces', {
-	alias : 'widget.cbProvinces',
+	alias: 'widget.cbProvinces',
 	extend: 'Ext.form.ComboBox',
-    fieldLabel: 'Choose Provinces',
-    store: 'App.store.combo.cbProvinces',
-    queryMode: 'remote',
-    pageSize: 20,
-    displayField: 'name',
-    valueField: 'id',
-//    emptyText : 'Province Not Found',
-    forceSelection: false,
-    allowBlank : false,
-    tpl: App.util.Form.combobox_tpl ,
-    displayTpl: App.util.Form.combobox_displayTpl,
-    initComponent : function(){
-    	this.callParent(arguments);
-    }
+	fieldLabel: 'Choose Provinces',
+	store: 'App.store.combo.cbProvinces',
+	queryMode: 'remote',
+	pageSize: 20,
+	displayField: 'name',
+	valueField: 'id',
+    emptyText : 'Select Province',
+	forceSelection: false,
+	allowBlank: false,
+	tpl: App.util.Form.combobox_tpl,
+	displayTpl: App.util.Form.combobox_displayTpl,
+	initComponent: function () {
+		this.callParent(arguments);
+	}
 });
 
 

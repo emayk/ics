@@ -21,17 +21,20 @@
  **/
 Ext.define('App.view.catprod.vcatprod', {
     extend: 'Ext.panel.Panel',
+//    extend: 'Ext.tab.Panel',
     alias: 'widget.appcatprodvcatprod',
 	padding: 10,
 	frame: true,
 	layout: { type : 'fit', align: 'stretch'},
-	store: 'App.store.catprod.scatprod',
+	config: {
+		store: 'App.store.catprod.scatprod'
+	},
 	initComponent: function () {
 		Ext.apply(this, {
 			items: [
 				{xtype: 'grid',
 					itemId: 'gridcatprod',
-					store: this.store,
+					store: this.getStore(),
 					plugins: [
 						Ext.create('Ext.grid.plugin.RowEditing', {
 							clicksToEdit: !1,

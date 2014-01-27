@@ -70,35 +70,35 @@ class LocationsEloquent implements LocationsInterface
 	{
 		$page  = \Input::get('page');
 		$limit = \Input::get('limit', 1);
-		$start = \Input::get('start', 1);
+		$start = \Input::get('start', 0);
 
-		/**
-		 *
-		 * Request dari Combo box
-		 *
-		 */
-		if (Input::has('cbreq')) {
-			$req  = Input::get('cbreq');
-			$data = $this->locations;
-			if (Input::has('level')) {
-				$level = Input::get('level');
-				$data  = $data->where('level', $level);
-			}
-			$total    = $data->count();
-			$response = $data
-				->skip($start)
-				->take($limit)
-				->get(array('id', 'name'))
-				->toArray();
-
-			return Response::json(
-				array(
-					'results' => $response,
-					'success' => true,
-					'total'   => $total
-				)
-			);
+		$data = $this->locations;
+		if (Input::has('level')) {
+			$level = Input::get('level');
+			$data  = $data->where('level', $level);
 		}
+
+		if (Input::has('parent_id')) {
+			$parentId = Input::get('parent_id');
+			$data     = $data->whereParentId($parentId);
+		}
+
+		$total    = $data->count();
+
+		$response = $data
+			->skip($start)
+			->take($limit)
+			->get()
+			->toArray();
+
+		return Response::json(
+			array(
+				'results' => $response,
+				'success' => true,
+				'total'   => $total
+			)
+		);
+
 		/**
 		 * Request dari Grid
 		 */
@@ -149,16 +149,16 @@ class LocationsEloquent implements LocationsInterface
 	{
 		if ($type == 'country') {
 			$level = 1; /*Menangani Country*/
-		}else{
-		if ($type == 'province') {
-			$level = 2; /*Menangani Province*/
-		}else{
-			if ($type == 'city') {
-				$level = 3; /*Menangani City*/
-			} else{
-				$level = 3;
+		} else {
+			if ($type == 'province') {
+				$level = 2; /*Menangani Province*/
+			} else {
+				if ($type == 'city') {
+					$level = 3; /*Menangani City*/
+				} else {
+					$level = 3;
+				}
 			}
-		}
 
 		}
 
@@ -174,19 +174,19 @@ class LocationsEloquent implements LocationsInterface
 	 */
 	public function store()
 	{
-        if (!$this->hasAccess()) {
-            return Response::json(
-                array(
-                    'success' => false,
-                    'reason' => 'Action Need Login First',
-                    'results' => null
-                ))->setCallback();
-        }
+		if (!$this->hasAccess()) {
+			return Response::json(
+				array(
+					'success' => false,
+					'reason'  => 'Action Need Login First',
+					'results' => null
+				))->setCallback();
+		}
 
 
 //        return Input::all();
 		if (!Input::has('type')) {
-			throw new \Exception('No Type Parameter');
+			throw new \Exception( 'No Type Parameter' );
 		};
 		$type  = Input::get('type');
 		$level = $this->convertTypeToLevel($type);
@@ -201,7 +201,7 @@ class LocationsEloquent implements LocationsInterface
 			/*Nama Negara Tidak Boleh Sama */
 
 			$exist = $this->locations->whereName($name)->count();
-			if ($exist>0) {
+			if ($exist > 0) {
 				return Response::json(
 					array(
 						'success' => true,
@@ -308,10 +308,10 @@ class LocationsEloquent implements LocationsInterface
 		$db = $this->locations->find($id);
 		/*==========  Sesuaikan  ==========*/
 //		$db->name      = Input::get('name');
-		$db->info      = Input::get('info');
+		$db->info = Input::get('info');
 //		$db->parent_id = Input::get('parent_id');
-		$db->uuid      = uniqid('Update_');
-		$saved         = $db->save();
+		$db->uuid = uniqid('Update_');
+		$saved    = $db->save();
 		return ( $saved )
 			? Response::json(array_merge(
 				$db->toArray(),

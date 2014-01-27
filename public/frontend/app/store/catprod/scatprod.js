@@ -34,4 +34,4 @@ Ext.define('App.store.catprod.scatprod',{
 		}
 	}
 
-})
+});

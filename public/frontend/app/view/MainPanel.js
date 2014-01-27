@@ -1,5 +1,9 @@
 if (fromLocal()) {
 	itemsMainPanel = [
+
+        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
+		{ xtype: 'appofficesvoffices', title: 'Office', iconCls: 'home', closable: false},
+//		{ xtype: 'appcatprodtreegrid', title: 'Master Category Product Tree', iconCls: 'home', closable: false},
 //		{ xtype: 'appcatprodvcatprod', title: 'Master Category Product', iconCls: 'home', closable: false},
 //		{ xtype: 'appunittypevunittype', title: 'Master Unit Type ', iconCls: 'home', closable: false},
 //		{ xtype: 'gridAllunit', title: 'Master Unit', iconCls: 'home', closable: false},
@@ -13,8 +17,7 @@ if (fromLocal()) {
 //        { xtype : 'appfabrictypevfabrictype', title: 'Type Fabric', iconCls:'home', closable:false},
 //        { xtype : 'apptypeproductvtypeproduct', title: 'Type Product', iconCls:'home', closable:false},
 //        { xtype : 'masterlegalitasGridList', title: 'Legalitas', iconCls:'home', closable:false},
-        { xtype : 'productstab', title: 'Products', iconCls:'home', closable:false},
-//        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
+//        { xtype : 'productstab', title: 'Products', iconCls:'home', closable:false},
 //        { xtype : 'apptaxtypevtaxtype', title: 'Tax Type', iconCls:'home', closable:false},
 //        { xtype : 'appBuyersvBuyers', title: 'Buyer', iconCls:'home', closable:false},
 //        { xtype : 'typeorderGridList', title: 'Type Order', iconCls:'home', closable:false},

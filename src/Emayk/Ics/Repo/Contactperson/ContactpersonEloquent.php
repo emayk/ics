@@ -60,17 +60,13 @@ class ContactpersonEloquent implements ContactpersonInterface
 		$limit         = \Input::get('limit', 1);
 		$start         = \Input::get('start', 1);
 		$contactperson = $this->contactperson;
-//            ->orderBy('id','DESC')
 
-		if (Input::has('parent_id')) {
+		if (( Input::has('parent_id') ) and ( Input::has('parenttype') )) {
 			$parentId      = Input::get('parent_id');
-			$contactperson = $contactperson->where('parent_id', $parentId);
-		}
-
-		if (Input::has('parent_type')) {
-			$parentType    = ucfirst(Input::get('parent_type'));
-			$parentType    = '\Emayk\Ics\Repo\\' . $parentType . '\\' . $parentType;
-			$contactperson = $contactperson->where('parent_type', $parentType);
+			$parentType    = Input::get('parenttype');
+			$parentType    = $this->contactperson->getOwnerType($parentType);
+			$contactperson = $contactperson->whereParentId($parentId)
+				->whereParentType($parentType);
 		}
 
 		$total         = $contactperson->count();
@@ -94,6 +90,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 	 *
 	 * Proses Simpan Contactperson
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
@@ -116,18 +113,37 @@ class ContactpersonEloquent implements ContactpersonInterface
 		 */
 
 		/*==========  Sesuaikan dengan Field di table  ==========*/
-		// $this->contactperson->name = Input::get('name');
-		// $this->contactperson->info = Input::get('info');
-		// $this->contactperson->uuid = uniqid('New_');
-		// $this->contactperson->createby_id = \Auth::user()->id;
-		// $this->contactperson->lastupdateby_id = \Auth::user()->id;
-		// $this->contactperson->created_at = new Carbon();
-		// $this->contactperson->updated_at = new Carbon();
-		$saved = $this->contactperson->save() ? true : false;
-		return Response::json(array(
-			'success' => $saved,
-			'results' => $this->contactperson->toArray()
-		))->setCallback();
+		if (!Input::has('parent_id')) throw new \Exception( 'Butuh Parameter Parent' );
+		if (!Input::has('parenttype')) throw new \Exception( 'Butuh Parameter Parent Type' );
+
+		$type  = Input::get('parenttype');
+		$types = ['supplier', 'office', 'buyer'];
+
+		if (!in_array($type, $types)) throw new \Exception( 'Parent Type salah' );
+
+		$uid                                  = Auth::user()->id;
+		$this->contactperson->parent_id       = Input::get('parent_id');
+		$this->contactperson->parent_type     = $this->contactperson->getOwnerType($type);
+		$this->contactperson->name            = Input::get("name");
+		$this->contactperson->info            = Input::get("info");
+		$this->contactperson->pos_id          = Input::get("pos_id");
+		$this->contactperson->dept_id         = Input::get("dept_id");
+		$this->contactperson->phone           = Input::get("phone");
+		$this->contactperson->email           = Input::get("email");
+		$this->contactperson->fax             = Input::get("fax");
+		$this->contactperson->uuid            = uniqid('New_');
+		$this->contactperson->createby_id     = $uid;
+		$this->contactperson->lastupdateby_id = $uid;
+		$this->contactperson->created_at      = new Carbon();
+		$this->contactperson->updated_at      = new Carbon();
+		$saved                                = $this->contactperson->save() ? true : false;
+
+		return Response::json([
+				'success' => $saved,
+				'results' => $this->contactperson->toArray()
+			]
+		)->setCallback();
+
 	}
 
 	/**
@@ -169,8 +185,16 @@ class ContactpersonEloquent implements ContactpersonInterface
 	{
 		$db = $this->contactperson->find($id);
 		/*==========  Sesuaikan  ==========*/
-		// $db->name = Input::get('name');
-		// $db->info = Input::get('info');
+		$uid                                  = Auth::user()->id;
+		$db->name            = Input::get("name");
+		$db->info            = Input::get("info");
+		$db->pos_id          = Input::get("pos_id");
+		$db->dept_id         = Input::get("dept_id");
+		$db->phone           = Input::get("phone");
+		$db->email           = Input::get("email");
+		$db->fax             = Input::get("fax");
+		$db->lastupdateby_id = $uid;
+		$db->updated_at      = new Carbon();
 		$db->uuid = uniqid('Update_');
 		return ( $db->save() )
 			? \Icsoutput::msgSuccess($db->toArray())

@@ -22,7 +22,10 @@
 
 Ext.define('App.controller.ctypesupbuy', {
 	extend: 'Ext.app.Controller',
-	views: ['App.view.typesupbuy.vtypesupbuy'],
+	views: [
+		'App.view.typesupbuy.vtypesupbuy',
+		'App.view.typesupbuy.wintype'
+	],
 	models: ['App.model.typesupbuy.mtypesupbuy'],
 	stores: ['App.store.typesupbuy.stypesupbuy'],
 	refs: [
@@ -53,6 +56,44 @@ Ext.define('App.controller.ctypesupbuy', {
 			'apptypesupbuyvtypesupbuy button[action=help]': {
 				/*Tampilkan Bantuan*/
 				click: me.help
+			},
+			/**
+			 * Window
+			 */
+			'apptypesupbuywintype [action=help]': {
+				click: me.help
+			},
+
+			'apptypesupbuywintype [action=save]': {
+				/*Process Simpan Record */
+				click: me.saveRecord
+			}
+
+		});
+	},
+	saveRecord: function (btn) {
+		var win = btn.up('apptypesupbuywintype'),
+			form = win.down('form').getForm(),
+			values = form.getValues(),
+			record = form.getRecord();
+
+		if (!form.isValid()){
+			App.util.box.error('Silahkan Perbaiki Masukan Form');
+			return false;
+		};
+
+		if (!record){
+			record = Ext.create('App.model.typesupbuy.mtypesupbuy',values);
+		}else{
+			record.set(values);
+		}
+		record.save({
+			success: function(rec,opts){
+				App.util.box.info(rec.get('name') + ' Berhasil ditambahkan');
+				win.close();
+			},
+			failure : function(rec,opts){
+				App.util.box.error('Gagal menambahkan');
 			}
 		});
 	},
@@ -89,8 +130,8 @@ Ext.define('App.controller.ctypesupbuy', {
 //		var cnt = me.cntNewRecord;
 		var editor = grid.getPlugin('cellEditorType');
 		var model = Ext.create('App.model.typesupbuy.mtypesupbuy', {
-			 name : '',
-			info : ''
+			name: '',
+			info: ''
 		});
 		store.insert(0, model);
 		editor.startEdit(0, 0);

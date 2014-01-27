@@ -9,7 +9,7 @@ Ext.define('App.store.combo.cbPosition',{
 	fields: [ 'id','name' ],
     proxy: {
 		type: 'ajax',
-		url: api_url +'/position',
+		url: getApiUrl() +'/positions',
 		reader: {
 			type: 'json',
 			root: 'results',
@@ -17,6 +17,6 @@ Ext.define('App.store.combo.cbPosition',{
 		},
 		extraParams: {
 			'cbreq' : true
-		},
+		}
 	}
 });

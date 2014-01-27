@@ -22,12 +22,22 @@
 
 Ext.define('App.controller.ccatprod',{
 	extend: 'Ext.app.Controller',
-	views: ['App.view.catprod.vcatprod'],
-	models:['App.model.catprod.mcatprod'],
-	stores:['App.store.catprod.scatprod'],
+	views: [
+		'App.view.catprod.vcatprod',
+		'App.view.catprod.treegrid'
+	],
+	models:[
+		'App.model.catprod.mcatprod',
+		'App.model.catprod.treegrid'
+	],
+	stores:[
+		'App.store.catprod.scatprod',
+		'App.store.catprod.treegrid'
+	],
 	refs: [
 		{ ref: 'grid', selector: 'appcatprodvcatprod grid#gridcatprod'}
 	],
+
 	init: function () {
 		var me = this;
 		me.control({

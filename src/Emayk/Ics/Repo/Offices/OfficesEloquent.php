@@ -28,206 +28,276 @@ use \Input;
 
 class OfficesEloquent implements OfficesInterface
 {
-    protected $offices;
+	protected $offices;
 
-    function __construct(Offices $offices)
-    {
-        $this->offices = $offices;
-    }
+	function __construct(Offices $offices)
+	{
+		$this->offices = $offices;
+	}
 
-    /**
-     *
-     * Mendapatkan Record Offices berdasarkan ID yang diberikan
-     * @param  int $id ID Record
-     * @return Model Record Offices
-     **/
+	/**
+	 *
+	 * Mendapatkan Record Offices berdasarkan ID yang diberikan
+	 *
+	 * @param  int $id ID Record
+	 *
+	 * @return Model Record Offices
+	 **/
 
-    public function find($id)
-    {
-        return $this->offices->find($id);
-    }
+	public function find($id)
+	{
+		return $this->offices->find($id);
+	}
 
-    /**
-     * Mendapatkan Semua Offices
-     * @return mixed
-     */
-    public function all()
-    {
-        $page = \Input::get('page');
-        $limit = \Input::get('limit', 1);
-        $start = \Input::get('start', 1);
-        $offices = $this->offices
-            ->orderBy('id', 'DESC')
-            ->skip($start)
-            ->take($limit)
-            ->get()->toArray();
-        $total = $this->offices
-            ->all()->count();
 
-        $officess = array(
-            'success' => true,
-            'results' => $offices,
-            'total' => $total
-        );
+	/**
+	 * Mendapatkan Semua Offices
+	 *
+	 * @return mixed
+	 */
+	public function all()
+	{
+		$page    = \Input::get('page');
+		$limit   = \Input::get('limit', 1);
+		$start   = \Input::get('start', 0);
+		$offices = $this->offices;
 
-        return Response::json($officess)
-            ->setCallback(\Input::get('callback'));
+		if (Input::has('parenttype')) {
+			$owner   = Input::get('parenttype');
+			$type    = $offices->getOwnerType($owner);
+			$idowner = Input::get('parent_id');
+			$offices = $offices->OfParent($type, $idowner);
 
-    }
+			$total   = $offices->count();
+			$offices = $offices
+				->orderBy('updated_at', 'DESC')
+				->skip($start)
+				->take($limit)
+				->get()->toArray();
 
-    /**
-     *
-     * Proses Simpan Offices
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        if (!$this->hasAccess()) {
-            return Response::json(
-                array(
-                    'success' => false,
-                    'reason' => 'Action Need Login First',
-                    'results' => null
-                ))->setCallback();
-        }
+			$officess = array(
+				'success' => true,
+				'results' => $offices,
+				'total'   => $total
+			);
 
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-        $this->offices->address = Input::get('address');
-        $this->offices->city_id = Input::get('city_id');
-        $this->offices->country_id = Input::get('country_id');
-        $this->offices->province_id = Input::get('province_id');
-        $this->offices->mainoffice =  Input::get('mainoffice',0);
-        $this->offices->postcode = Input::get('postcode');
+			return Response::json($officess)
+				->setCallback(\Input::get('callback'));
 
-        $type = Input::get('type');
-        if ($type == 1) {
-            /*Supplier*/
-            $parentId = 1;
-            $parentType = '\Emayk\Ics\Repo\Suppliers\Suppliers';
-        } else {
-            /*Buyer*/
-            $parentId = 1;
-            $parentType = '\Emayk\Ics\Repo\Buyers\Buyers';
-        }
-        $this->offices->parent_id = $parentId;
-        $this->offices->parent_type = $parentType;
+		} else {
+			return Response::json(['success' => true, 'error' => true, 'reason' => 'Need Parameter Type and Id'], 200)
+				->setCallback(\Input::get('callback'));
 
-        $this->offices->type = $type;
-        $this->offices->codeinternal = uniqid('New_');
+		}
 
-        $this->offices->uuid = uniqid('New_');
-        $this->offices->createby_id = \Auth::user()->id;
-        $this->offices->lastupdateby_id = \Auth::user()->id;
-        $this->offices->created_at = new Carbon();
-        $this->offices->updated_at = new Carbon();
-        $saved = $this->offices->save() ? true : false;
-        return Response::json(array(
-            'success' => $saved,
-            'results' => $this->offices->toArray()
-        ))->setCallback();
-    }
 
-    /**
-     * Menghapus Offices
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
+	}
 
-        if ($this->hasAccess()) {
-            $deleted = $this->offices
-                ->find($id)
-                ->delete();
+	/**
+	 *
+	 * Proses Simpan Offices
+	 *
+	 * @throws \Exception
+	 * @return mixed
+	 */
+	public function store()
+	{
+		if (!$this->hasAccess()) {
+			return Response::json(
+				array(
+					'success' => false,
+					'reason'  => 'Action Need Login First',
+					'results' => null
+				))->setCallback();
+		}
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ), $deleted);
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		$address = Input::get('address');
+		if (empty($address)) {
+			throw new \Exception('Alamat Kantor diperlukan');
+		}
+		$this->offices->address     = $address;
+		$this->offices->city_id     = Input::get('city_id');
+		$this->offices->country_id  = Input::get('country_id');
+		$this->offices->province_id = Input::get('province_id');
+		$mainoffice                 = Input::get('mainoffice');
+		$mainoffice                 = ( empty( $mainoffice ) ) ? 0 : 1;
 
-        } else {
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ), false);
-        }
-    }
+		$this->offices->postcode = Input::get('postcode');
+		if (Input::has('parenttype')) {
+			$owner = Input::get('parenttype');
+			$type  = $this->offices->getOwnerType($owner);
+		};
+		/**
+		 * Check Apakah main office sudah ada ?
+		 * Jika ada maka mainoffice == 0
+		 */
+		$parentId = Input::get('parent_id');
+		if ($mainoffice == 1) {
+			$countmainoffice = $this->offices->whereParentId($parentId)->whereParentType($type)->whereMainoffice($mainoffice)->count();
+			$mainoffice = ($countmainoffice > 0 ) ? 0 : 1;
+		}
 
-    /**
-     * Update Informasi [[cName]]
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $db = $this->offices->find($id);
-        /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-        // $db->info = Input::get('info');
-        $db->uuid = uniqid('Update_');
-        return ($db->save())
-            ? \Icsoutput::msgSuccess($db->toArray())
-            : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
-    }
+		$this->offices->mainoffice = $mainoffice;
 
-    /**
-     *
-     * Apakah Sudah Login
-     *
-     * @return boolean
-     *
-     **/
-    protected function  hasAccess()
-    {
-        return (!Auth::guest());
-    }
+		$this->offices->parent_id   = $parentId;
+		$this->offices->parent_type = $type;
 
-    /**
-     *
-     * Menampilkan Page Create data Offices
-     *
-     **/
+		$this->offices->type         = $type;
+		$this->offices->codeinternal = uniqid('New_');
 
-    public function create()
-    {
-        // TODO: Implement create() method.
-    }
+		$this->offices->uuid            = uniqid('New_');
+		$this->offices->createby_id     = \Auth::user()->id;
+		$this->offices->lastupdateby_id = \Auth::user()->id;
+		$this->offices->created_at      = new Carbon();
+		$this->offices->updated_at      = new Carbon();
+		$saved                          = $this->offices->save() ? true : false;
+		return Response::json(array(
+			'success' => $saved,
+			'results' => $this->offices->toArray()
+		))->setCallback();
+	}
 
-    /**
-     * Menampilkan Resource
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        // TODO: Implement show() method.
-    }
+	/**
+	 * Menghapus Offices
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function delete($id)
+	{
 
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
+		if ($this->hasAccess()) {
+			$deleted = $this->offices
+				->find($id)
+				->delete();
 
-    /**
-     * Remove Storage
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        return $this->delete($id);
-    }
+			return \Icsoutput::toJson(array(
+				'results' => $deleted
+			), $deleted);
+
+		} else {
+			return \Icsoutput::toJson(array(
+				'results' => false,
+				'reason'  => 'Dont Have Access to Delete '
+			), false);
+		}
+	}
+
+	/**
+	 * Update Informasi [[cName]]
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function update($id)
+	{
+		$db = $this->offices->find($id);
+		/*==========  Sesuaikan  ==========*/
+		$db->address     = Input::get('address');
+		$db->city_id     = Input::get('city_id');
+		$db->country_id  = Input::get('country_id');
+		$db->province_id = Input::get('province_id');
+		$mainoffice                 = Input::get('mainoffice');
+		$mainoffice                 = ( empty( $mainoffice ) ) ? 0 : 1;
+
+		$db->postcode = Input::get('postcode');
+		if (Input::has('parenttype')) {
+			$owner = Input::get('parenttype');
+			$type  = $db->getOwnerType($owner);
+		};
+		/**
+		 * Check Apakah main office sudah ada ?
+		 * Jika ada maka mainoffice == 0
+		 */
+		$parentId = Input::get('parent_id');
+		if ($mainoffice == 1) {
+			$countmainoffice = $this->offices
+				->whereParentId($parentId)
+				->whereParentType($type)
+				->whereMainoffice('\Emayk\Ics\Repo\Offices\Offices')->count();
+			$mainoffice = ($countmainoffice > 0 ) ? 0 : $mainoffice;
+		}
+
+		$db->mainoffice = $mainoffice;
+
+		$db->parent_id   = $parentId;
+		$db->parent_type = $type;
+
+		$db->type         = $type;
+		$db->codeinternal = uniqid('New_');
+
+		$db->uuid            = uniqid('New_');
+		$db->lastupdateby_id = \Auth::user()->id;
+		$db->updated_at      = new Carbon();
+		$db->uuid = uniqid('Update_');
+		return ( $db->save() )
+			? Response::json(['success'=>true,'error'=> false,'results'=> $db->toArray(),'total' => 1 ])
+			: Response::json(['success'=>true,'error'=> true, 'results'=> array(),'total' => 0,'reason'=> 'Cannot Update' ]);
+
+	}
+
+	/**
+	 *
+	 * Apakah Sudah Login
+	 *
+	 * @return boolean
+	 *
+	 **/
+	protected function  hasAccess()
+	{
+		return ( !Auth::guest() );
+	}
+
+	/**
+	 *
+	 * Menampilkan Page Create data Offices
+	 *
+	 **/
+
+	public function create()
+	{
+		// TODO: Implement create() method.
+	}
+
+	/**
+	 * Menampilkan Resource
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		// TODO: Implement show() method.
+	}
+
+	/**
+	 * Menampilkan Data Untuk di edit
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// TODO: Implement edit() method.
+	}
+
+	/**
+	 * Remove Storage
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->delete($id);
+	}
 
 
 }

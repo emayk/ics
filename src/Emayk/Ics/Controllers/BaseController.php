@@ -9,7 +9,7 @@ use Input;
  */
 class BaseController extends Controller
 {
-	function __construct()
+/*	function __construct()
 	{
 		$this->beforeFilter(function () {
 			Event::fire('clockwork.controller.start');
@@ -19,7 +19,7 @@ class BaseController extends Controller
 			Event::fire('clockwork.controller.end');
 		});
 
-	}
+	}*/
 
 	/**
 	 * Setup the layout used by the controller.

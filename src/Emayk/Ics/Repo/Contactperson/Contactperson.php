@@ -31,23 +31,23 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Contactperson\Contactperson'
  *
- * @property integer $id
- * @property string $name
- * @property string $info
- * @property integer $pos_id
- * @property integer $dept_id
- * @property string $phone
- * @property string $email
- * @property string $fax
- * @property integer $parent_id
- * @property string $parent_type
- * @property string $uuid
- * @property integer $createby_id
- * @property integer $lastupdateby_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property integer                                  $id
+ * @property string                                   $name
+ * @property string                                   $info
+ * @property integer                                  $pos_id
+ * @property integer                                  $dept_id
+ * @property string                                   $phone
+ * @property string                                   $email
+ * @property string                                   $fax
+ * @property integer                                  $parent_id
+ * @property string                                   $parent_type
+ * @property string                                   $uuid
+ * @property integer                                  $createby_id
+ * @property integer                                  $lastupdateby_id
+ * @property \Carbon\Carbon                           $created_at
+ * @property \Carbon\Carbon                           $updated_at
  * @property-read \Emayk\Ics\Repo\Positions\Positions $position
- * @property-read \Emayk\Ics\Repo\Dept\Dept $departement
+ * @property-read \Emayk\Ics\Repo\Dept\Dept           $departement
  */
 class Contactperson extends Model
 {
@@ -111,9 +111,7 @@ class Contactperson extends Model
 			$newrecord    = static::create($record);
 			$contacts [ ] = $newrecord->id;
 		}
-
 		return ( $resultIds ) ? $contacts : 'Generate Contact Person with ' . count($contacts) . ' records';
-
 	}
 
 	protected static function pickOne(array $list)
@@ -125,4 +123,56 @@ class Contactperson extends Model
 	{
 		return new AbstractGenerate();
 	}
+
+
+	public function getOwnerTypeInverse($type)
+	{
+		$allowOwner = [
+			'\Emayk\Ics\Repo\Buyers\Buyers',
+			'\Emayk\Ics\Repo\Suppliers\Suppliers',
+			'\Emayk\Ics\Repo\Contactperson\Contactperson'
+
+		];
+		if (!in_array($type, $allowOwner))
+			$type = '\Emayk\Ics\Repo\Suppliers\Suppliers';
+
+		switch ($type) {
+			case '\Emayk\Ics\Repo\Buyers\Buyers' :
+				$owner = 'buyer';
+				break;
+			case '\Emayk\Ics\Repo\Suppliers\Suppliers' :
+				$owner = 'supplier';
+				break;
+			case '\Emayk\Ics\Repo\Contactperson\Contactperson' :
+				$owner = 'contact';
+				break;
+			case '\Emayk\Ics\Repo\Offices\Offices':
+				$owner = 'office';
+				break;
+		};
+		return $owner;
+	}
+
+
+	public function getOwnerType($owner)
+	{
+		$allowOwner = ['supplier', 'buyer', 'contact', 'office'];
+		if (!in_array($owner, $allowOwner)) $owner = 'supplier';
+		switch ($owner) {
+			case 'buyer' :
+				$type = '\Emayk\Ics\Repo\Buyers\Buyers';
+				break;
+			case 'supplier' :
+				$type = '\Emayk\Ics\Repo\Suppliers\Suppliers';
+				break;
+			case 'contact' :
+				$type = '\Emayk\Ics\Repo\Contactperson\Contactperson';
+				break;
+			case 'office' :
+				$type = '\Emayk\Ics\Repo\Offices\Offices';
+				break;
+		};
+		return $type;
+	}
+
 }

@@ -741,7 +741,8 @@ function msgError(msg, title) {
 }
 
 function msgInfo(msg, title) {
-	Ext.MessageBox.show({ title: title || 'Information', msg: msg || 'Info Message', buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.INFO });
+//	Ext.MessageBox.show({ title: title || 'Information', msg: msg || 'Info Message', buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.INFO });
+	App.util.box.info(msg,title || 'Informasi');
 }
 
 /**
@@ -750,8 +751,7 @@ function msgInfo(msg, title) {
  *
  **/
 function belumImplement(msg) {
-    var msg = msg || "Belum Implementasi";
-    msgError(msg, 'Not Implementasi');
+    App.util.box.error(msg || "Belum Implementasi", 'Not Implementasi');
 }
 function noimplement(msg) {
     belumImplement(msg);
