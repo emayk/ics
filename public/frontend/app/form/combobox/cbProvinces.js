@@ -20,7 +20,11 @@ Ext.define('App.form.combobox.cbProvinces', {
 	displayTpl: App.util.Form.combobox_displayTpl,
 	initComponent: function () {
 		this.callParent(arguments);
-	}
+	},
+//	typeAhead: true,
+//	triggerAction: 'all',
+//	emptyText: 'Kosong ...',
+//	selectOnFocus: true,
 });
 
 

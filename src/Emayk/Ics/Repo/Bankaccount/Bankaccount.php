@@ -66,7 +66,7 @@ class Bankaccount extends Model
     /**
      * @var array
      */
-    public $appends = array('bankname','banktype');
+    public $appends = array('bankname','taxname');
 
     /**
      * @return string
@@ -81,9 +81,19 @@ class Bankaccount extends Model
      */
     public function getBanktypeAttribute()
     {
-        return $this->attributes['banktype'] = $this->type->name;
+        return $this->attributes['banktype'] = null;
+
     }
 
+    public function getTaxnameAttribute()
+    {
+        return $this->attributes['taxname'] = $this->tax()->pluck('name');
+
+    }
+
+	public function tax(){
+		return $this->belongsTo('\Emayk\Ics\Repo\Taxtype\Taxtype','tax_id');
+	}
     /**
      * @return bool
      */

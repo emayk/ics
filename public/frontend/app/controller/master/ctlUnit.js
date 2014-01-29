@@ -32,8 +32,6 @@ Ext.define('App.controller.master.ctlUnit', {
 				},
 				edit: function (editor, object) {
 					object.store.save();
-					// this.getUnitAllunitStore().load();
-//					me.refresh();
 					log('Save Process and refresh grid/store');
 					object.store.load();
 				},

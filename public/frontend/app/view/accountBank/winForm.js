@@ -16,3 +16,28 @@
  *
  **/
 
+
+
+Ext.define('App.view.accountBank.WinForm', {
+	extend: 'Ext.window.Window',
+	alias: 'widget.appaccountBankWinForm',
+	frame: true,
+	requires:[
+		'App.view.accountBank.form'
+	],
+	width: 500,
+	initComponent: function(){
+		var me = this;
+		Ext.apply(me,{
+			items:[
+				{ xtype: 'appaccountBankform' }
+			]
+		});
+		me.callParent(arguments);
+	}
+
+});
+
+//
+//appSuppliersvSuppliersEdit #accountbank appaccountBankvaccountBankList
+//appSuppliersvSuppliersEdit #accountbank appaccountBankform

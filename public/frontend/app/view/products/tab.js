@@ -1,16 +1,28 @@
 Ext.define('App.view.products.tab', {
     extend: 'Ext.tab.Panel',
     requires: [
-        'App.view.products.ListPrd'
+        'App.view.products.ListPrd',
+	    'App.view.typeproduct.vtypeproduct',
+	    'App.view.catprod.vcatprod'
+
     ],
     alias: 'widget.productstab',
-    activeTab: 1,
+    activeTab: 0,
     items: [
         {
+	        /*Product*/
             xtype: 'productList',
             iconCls: 'home',
-            title: 'Products'
-        }
+            title: 'Daftar Produk'
+        },{
+		    /*Kategori*/
+		    title : 'Kategori',
+		    xtype: 'appcatprodvcatprod'
+	    },{
+		    /*tipe*/
+		    title : 'Tipe',
+		    xtype: 'apptypeproductvtypeproduct'
+	    }
     ],
     plugins: [
         {

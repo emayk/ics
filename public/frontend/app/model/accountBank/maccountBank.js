@@ -30,7 +30,9 @@ Ext.define('App.model.accountBank.maccountBank', {
         'owner_type',
         'type_id',
         'bankname',
-        'banktype'
+        'banktype',
+	    'currency_id',
+	    'tax_id'
 //        { name : 'bankname',mapping : 'bank.name'},
 //        { name : 'banktype',mapping : 'type.name'}
     ],

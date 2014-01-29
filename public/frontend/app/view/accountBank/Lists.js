@@ -17,57 +17,87 @@
  **/
 
 Ext.define('App.view.accountBank.Lists', {
-    extend: 'Ext.grid.Panel',
-    alias: 'widget.appaccountBankvaccountBankList',
-    itemId: 'gridaccountbank',
-    frame: true,
-    margin: '0 5 0 0',
-    storeAccount : null,
-    columns: [
-        {
-            xtype: 'rownumberer',
-            width: 50
-        },
-        {
-            header: 'owner id',
-            dataIndex: 'owner_id',
-            flex: 2
-        },   {
-            header: 'Name',
-            dataIndex: 'name',
-            flex: 2
-        },
-        {
-            header: 'Number',
-            dataIndex: 'number',
-            flex: 1
-        },
-        {
-            header: 'Bank Name',
-            dataIndex: 'bankname',
-            flex: 2
-        },
-        {
-            header: 'Bank Type',
-            dataIndex: 'banktype',
-            flex: 2
-        }
-    ],
-    store: 'App.store.accountBank.saccountBank',
+	extend: 'Ext.grid.Panel',
+	alias: 'widget.appaccountBankvaccountBankList',
+	store: 'App.store.accountBank.saccountBank',
+	initComponent: function () {
+		var me = this;
+		Ext.apply(me, {
+			frame: true,
+			columns: [
+				{
+					xtype: 'rownumberer',
+					text: '#'
+				},
+				{
+					header: translations.accountbank.header.name,
+					dataIndex: 'name',
+					flex: 2
+				},
+				{
+					header: translations.accountbank.header.number,
+					dataIndex: 'number',
+					flex: 1
+				},
+				{
+					header: translations.accountbank.header.bankname,
+					dataIndex: 'bankname',
+					flex: 2
+				}
+			],
 
-    initComponent: function(){
-        Ext.apply(this,{
-          store: this.storeAccount,
-            dockedItems: [
-                {
-                    xtype: 'pagingtoolbar',
-                    dock: 'bottom',
-                    itemId: 'pgAccountBank',
-                    store: this.storeAccount,
-                    displayInfo: true
-                }
-            ]
-        });
-        this.callParent(arguments);
-    }
+
+			dockedItems: [
+				{
+					xtype: 'toolbar',
+					dock: 'top',
+					items: [
+						{
+							text: translations.add,
+							iconCls: 'add',
+							action: 'add',
+							itemId: 'add'
+						},
+						{
+							text: translations.remove,
+							iconCls: 'delete',
+							action: 'remove',
+							itemId: 'remove'
+						},
+						'->',
+						{
+							xtype: 'tbtext',
+							text: 'Aksi Edit: Klik Dua Kali pada record'
+						},
+						{
+							text: translations.import,
+							iconCls: 'excel',
+							action: 'import',
+							itemId: 'import'
+						},
+						{
+							text: translations.export,
+							iconCls: 'excel',
+							action: 'export',
+							itemId: 'export'
+						},
+						{
+							text: translations.help,
+							iconCls: 'help',
+							action: 'help',
+							itemId: 'help'
+						}
+					]
+				},
+				{
+					xtype: 'pagingtoolbar',
+					dock: 'bottom',
+					itemId: 'pgAccountBank',
+					store: this.store,
+					displayInfo: true
+				}
+			]
+		});
+		me.callParent(arguments);
+	}
 });

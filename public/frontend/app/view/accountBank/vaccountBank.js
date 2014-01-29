@@ -28,6 +28,7 @@ Ext.define('App.view.accountBank.vaccountBank', {
         'App.view.accountBank.form'
     ],
     bodyPadding: 2,
+	autoScroll: true,
     layout: { type: 'hbox', align: 'stretch'},
     storeAccount: null,
     setStore: function (store) {
@@ -38,13 +39,13 @@ Ext.define('App.view.accountBank.vaccountBank', {
             items: [
                 {
                     xtype: 'appaccountBankvaccountBankList',
-                    flex: .7,
+                    flex: .6,
                     emptyText: 'Empty Account Bank',
                     storeAccount: this.storeAccount
                 },
                 {
                     xtype: 'appaccountBankform',
-                    flex: .3,
+                    flex: .4,
                     itemId: 'formAccountBank'
                 }
             ]

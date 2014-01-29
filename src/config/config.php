@@ -1,9 +1,9 @@
 <?php
 
 return Array(
-	'appName' => 'Ics',
+	'appName' => 'BA',
 	'programmer' => 'Emay Komarudin',
-	'version' => '',
+	'version' => '1.0',
 	/**
 	*
 	* Menggunakan Type Message apa

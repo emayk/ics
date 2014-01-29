@@ -7,7 +7,9 @@ Ext.define('App.controller.master.Banks', {
     views: [
         'App.view.master.bank.List', //bankListGrid
         'App.view.master.bank.AddForm', //masterbankwindowedit
-        'App.view.master.bank.addWindow' //bankAddWindow
+        'App.view.master.bank.addWindow', //bankAddWindow
+        'App.view.master.bank.tab'
+
     ],
     models: ['App.model.Bank'],
     stores: ['App.store.Banks'],

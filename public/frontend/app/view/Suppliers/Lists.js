@@ -36,36 +36,34 @@ Ext.define('App.view.Suppliers.Lists', {
             }
             return '<span font-color="'+color+'">'+text+'</span>';
         }},
-        {header: "name", dataIndex: "name"},
-        {header: "id", dataIndex: "id"},
-        {header: "codepos", dataIndex: "codepos"},
-        {header: "npwp", dataIndex: "npwp"},
-        {header: "phone", dataIndex: "phone"},
-        {header: "email", dataIndex: "email"},
-        {header: "fax", dataIndex: "fax"},
-        {header: "plafon", dataIndex: "plafon"},
-        {header: "kredit", dataIndex: "kredit"},
-        {header: "address", dataIndex: "address"},
-//        {header: "rt", dataIndex: "rt"},
-//        {header: "rw", dataIndex: "rw"},
+        {header:translations.fields.name, dataIndex: "name"},
+//	    {header:translations.fields.id, dataIndex: "id"},
+        {header: translations.postcode, dataIndex: "codepos"},
+        {header: translations.npwp, dataIndex: "npwp"},
+        {header: translations.phonenumber, dataIndex: "phone"},
+        {header: translations.email, dataIndex: "email"},
+        {header: translations.fax, dataIndex: "fax"},
+        {header: translations.supplier.plafon, dataIndex: "plafon"},
+        {header: translations.supplier.credit, dataIndex: "kredit"},
+        {header: translations.address, dataIndex: "address",flex: 2}
     ],
     dockedItems: [
         {
             xtype: 'toolbar',
             items: [
                 {
-                    text: 'Add',
+                    text: translations.add,
                     action: 'add',
                     iconCls: 'add'
                 },
                 {
-                    text: 'Remove',
+                    text: translations.remove,
                     action: 'remove',
                     iconCls: 'delete'
                 },
                 '->',
                 {
-                    text: 'Import',
+                    text: translations.import,
                     action: 'import',
                     iconCls: 'excel',
                     handler: function () {
@@ -73,7 +71,7 @@ Ext.define('App.view.Suppliers.Lists', {
                     }
                 },
                 {
-                    text: 'Export',
+                    text: translations.export,
                     action: 'export',
                     iconCls: 'excel',
                     handler: function () {
@@ -81,7 +79,7 @@ Ext.define('App.view.Suppliers.Lists', {
                     }
                 },
                 {
-                    text: 'Help',
+                    text: translations.help,
                     action: 'help',
                     iconCls: 'help',
                     handler: function () {

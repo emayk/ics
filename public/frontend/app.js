@@ -25,29 +25,29 @@ if (fromLocal()) {
 	 * Master
 	 *
 	 */
-		/*
-		 'master.Departement',
-		 'master.Legalitas',
-		 'master.Banks',
-		 'master.Color',
-		 'master.Countries',
-		 'master.Currency',
-		 'master.Gradekain',
-		 'master.Gudang',
-		 'master.TypeOrder',
 
-		 'master.ctlUnit',
-		 'ctypeproduct',
-		 'cfabrictype',
-
-		 'ctypeAccountBank',
-		 'master.ctlProducts',
-		 'ctypepayment',
-		 'cunittype',
-		 'cposition',
-		 */
-		'cphones',
+		'master.Departement',
 		'master.Legalitas',
+		'master.Banks',
+		'master.Color',
+		'master.Countries',
+		'master.Currency',
+		'master.Gradekain',
+		'master.Gudang',
+		'master.TypeOrder',
+
+		'cunittype',
+		'master.ctlUnit',
+
+		'ctypeproduct',
+		'cfabrictype',
+
+		'ctypeAccountBank',
+		'master.ctlProducts',
+		'ctypepayment',
+		'cposition',
+		'caccountBank',
+		'cphones',
 		'ctypesupbuy',
 		'ccontacts',
 		'coffices',
@@ -55,12 +55,12 @@ if (fromLocal()) {
 		'cBuyers',
 		'cSuppliers',
 		'ctaxtype',
+		'ccatprod',
+		'creceiveProduct',
 		/*Sale Product*/
 		/*'cOrders',
 		 'csaleProduct',*/
 //
-//	    'ccatprod',
-//        'creceiveProduct',
 //
 	/**
 	 * Versi Baru

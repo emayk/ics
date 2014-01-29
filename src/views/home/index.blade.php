@@ -58,7 +58,6 @@
         as: "{{ (Auth::check()) ? Auth::user()->username : 'Anonymous' }}",
         fn: "{{ (Auth::check()) ? Auth::user()->fullname : 'Anonymous' }}"
     };
-    window.stats = {};
 </script>
 
 <!--	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-debug-w-comments.js') }} "></script>-->

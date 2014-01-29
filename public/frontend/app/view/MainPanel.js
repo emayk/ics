@@ -1,8 +1,10 @@
 if (fromLocal()) {
 	itemsMainPanel = [
 
-        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
-		{ xtype: 'appofficesvoffices', title: 'Office', iconCls: 'home', closable: false},
+//        { xtype : 'tabscolor', title: 'Warna', iconCls:'home', closable:false},
+//        { xtype : 'tabbank', title: 'Bank', iconCls:'home', closable:false},
+//        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
+//		{ xtype: 'appofficesvoffices', title: 'Office', iconCls: 'home', closable: false},
 //		{ xtype: 'appcatprodtreegrid', title: 'Master Category Product Tree', iconCls: 'home', closable: false},
 //		{ xtype: 'appcatprodvcatprod', title: 'Master Category Product', iconCls: 'home', closable: false},
 //		{ xtype: 'appunittypevunittype', title: 'Master Unit Type ', iconCls: 'home', closable: false},

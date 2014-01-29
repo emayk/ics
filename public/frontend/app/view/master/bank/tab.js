@@ -16,3 +16,16 @@
  *
  **/
 
+Ext.define('App.view.master.bank.tab',{
+	extend: 'Ext.tab.Panel',
+	alias: 'widget.tabbank',
+	requires:[
+		'App.view.master.bank.List',
+		'App.view.typeAccountBank.vtypeAccountBank'
+	],
+	items: [
+		{xtype: 'bankListGrid', title : 'Daftar',padding: 10,
+			frame: true},
+		{xtype: 'apptypeAccountBankvtypeAccountBank', title : 'Tipe'}
+	]
+});

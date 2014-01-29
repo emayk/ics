@@ -15,4 +15,82 @@
  * @author Emay Komarudin
  *
  **/
+Ext.define('App.form.combobox.location', {
+	extend: 'Ext.panel.Panel',
+	alias : 'widget.cblocation',
+	frame: true,
+	defaults: {
+		anchor: '95%'
+	},
+	initComponent: function () {
+		var me = this;
+		var cbCountry = Ext.create('App.store.combo.cbCountries');
+		var cbProvince = Ext.create('App.store.combo.cbProvinces');
+		var cbCity = Ext.create('App.store.combo.cbCities');
+		Ext.apply(me, {
+			items: [
+				{
+					store: cbCountry,
+					name: 'country_id',
+					xtype: 'combo',
+					fieldLabel: translations.country,
+//					emptyText: 'Pilih Negara',
+					editable: false,
+					allowBlank: false,
+					forceSelection: true,
+					valueField: 'id',
+					displayField: 'name',
+					triggerAction: 'all',
+					queryMode: 'remote',
+					pageSize: 10,
+					listeners: {
+						'select': function (field, nval, oval) {
+							cbProvince.load({
+								params: {'id': nval.data.value }
+							});
+						}
+					}
+				},
+				{
+					store: cbProvince,
+					name: 'country_id',
+					xtype: 'combo',
+					fieldLabel: translations.province,
+					emptyText: 'Pilih Provinsi',
+					editable: false,
+					allowBlank: false,
+					forceSelection: true,
+					valueField: 'id',
+					displayField: 'name',
+					triggerAction: 'all',
+					queryMode: 'remote',
+					pageSize: 10,
+					listeners: {
+						'select': function (field, nval, oval) {
+							cbCity.load({
+								params: {'id': nval.data.value }
+							});
+						}
+					}
+				},
+				{
+					store: cbCity,
+					name: 'city_id',
+					xtype: 'combo',
+					fieldLabel: translations.city,
+					emptyText: 'Pilih Kota',
+					editable: false,
+					allowBlank: false,
+					forceSelection: true,
+					valueField: 'id',
+					displayField: 'name',
+					triggerAction: 'all',
+					queryMode: 'remote'
+				}
+			]
+		});
+		me.callParent(arguments);
+	}
 
+
+});

@@ -33,22 +33,21 @@ Ext.define('App.view.phones.List', {
 					xtype: 'rownumberer', text: '#'
 				},
 				{
-					text: 'Nomor',
+					text: translations.phonenumber,
 					flex: 1,
 					dataIndex: 'number'
 				},{
-					text: 'Keterangan',
+					text: translations.field.info,
 					dataIndex: 'info',
 					flex: 2
-				},
-//				{
-//					text: 'Parent',
-//					dataIndex: 'parenttype'
-//				},
-//				{
-//					text: 'Parent ID',
-//					dataIndex: 'parent_id'
-//				}
+				},{
+					text: translations.type,
+					dataIndex: 'type',
+					flex: 2,
+					renderer: function(v){
+						return (v == 0 ) ? translations.typephone : translations.typefax ;
+					}
+				}
 			],
 			dockedItems: [
 				{
@@ -56,20 +55,20 @@ Ext.define('App.view.phones.List', {
 					dock: 'top',
 					items: [
 						{
-							text: 'Add', iconCls: 'add', action: 'add'
+							text: translations.add, iconCls: 'add', action: 'add'
 						},
 						{
-							text: 'Remove', iconCls: 'delete', action: 'remove'
+							text: translations.remove, iconCls: 'delete', action: 'remove'
 						},
 						'->',
 						{
-							text: 'Import', iconCls: 'excel', action: 'import'
+							text: translations.import, iconCls: 'excel', action: 'import'
 						},
 						{
-							text: 'Export', iconCls: 'excel', action: 'export'
+							text: translations.export, iconCls: 'excel', action: 'export'
 						},
 						{
-							text: 'Bantuan', iconCls: 'help', action: 'help'
+							text: translations.help, iconCls: 'help', action: 'help'
 						}
 					]
 				},

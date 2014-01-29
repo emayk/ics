@@ -29,7 +29,10 @@ Ext.define('App.controller.cphones', {
 
 	],
 	models: ['App.model.phones.mphones'],
-	stores: ['App.store.phones.sphones'],
+	stores: [
+		'App.store.phones.sphones',
+		'App.store.phones.typephone'
+	],
 	init: function () {
 		var me = this;
 		me.control({

@@ -72,32 +72,35 @@ class LocationsEloquent implements LocationsInterface
 		$limit = \Input::get('limit', 1);
 		$start = \Input::get('start', 0);
 
-		$data = $this->locations;
-		if (Input::has('level')) {
-			$level = Input::get('level');
-			$data  = $data->where('level', $level);
+		if (Input::has('cbreq')) {
+			$data = $this->locations;
+			if (Input::has('level')) {
+				$level = Input::get('level');
+				$data  = $data->where('level', $level);
+			}
+
+			if (Input::has('parent_id')) {
+				$parentId = Input::get('parent_id');
+				$data     = $data->whereParentId($parentId);
+			}
+
+			$total = $data->count();
+
+			$response = $data
+				->skip($start)
+				->take($limit)
+				->get()
+				->toArray();
+
+			return Response::json(
+				array(
+					'results' => $response,
+					'success' => true,
+					'total'   => $total
+				)
+			);
 		}
 
-		if (Input::has('parent_id')) {
-			$parentId = Input::get('parent_id');
-			$data     = $data->whereParentId($parentId);
-		}
-
-		$total    = $data->count();
-
-		$response = $data
-			->skip($start)
-			->take($limit)
-			->get()
-			->toArray();
-
-		return Response::json(
-			array(
-				'results' => $response,
-				'success' => true,
-				'total'   => $total
-			)
-		);
 
 		/**
 		 * Request dari Grid

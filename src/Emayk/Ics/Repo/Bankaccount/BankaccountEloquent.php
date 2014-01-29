@@ -85,7 +85,7 @@ class BankaccountEloquent implements BankaccountInterface
             return $this->processAccountType();
         }
         $bankaccount = $this->bankaccount
-            ->orderBy('id', 'DESC')
+            ->orderBy('updated_at', 'DESC')
             ->skip($start)
             ->take($limit)
             ->get()->toArray();
@@ -166,7 +166,9 @@ class BankaccountEloquent implements BankaccountInterface
         $this->bankaccount->createby_id = $this->getUid();
         $this->bankaccount->created_at = Carbon::create();
 
-        $this->bankaccount->type_id = Input::get('type_id');
+        $this->bankaccount->currency_id = Input::get('currency_id');
+        $this->bankaccount->tax_id = Input::get('tax_id');
+//        $this->bankaccount->type_id = Input::get('type_id');
         $this->bankaccount->bank_id = Input::get('bank_id');
         $this->bankaccount->uuid = uniqid('New_');
         $this->bankaccount->lastupdateby_id = $this->getUid();
@@ -231,7 +233,8 @@ class BankaccountEloquent implements BankaccountInterface
 
         $db = $this->bankaccount->find($id);
         /*Field yang bisa diupdate */
-        $db->type_id = Input::get('type_id');
+//        $db->type_id = Input::get('type_id');
+	    $this->bankaccount->currency_id = Input::get('currency_id');
         $db->name = Input::get('name');
         $db->number = Input::get('number');
         $db->bank_id = Input::get('bank_id');

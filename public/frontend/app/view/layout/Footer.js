@@ -13,7 +13,7 @@ Ext.define('App.view.layout.Footer', {
     text: 'Ready',
     iconCls: 'ready-icon',
     items: [
-        'Login as : ' + loginas() , '-',
+        'Login sebagai : ' + loginas() , '-',
         { xtype: 'tbtext', text : licence_to(),itemId: 'license' }, '-',
         getFullVersion(), '->',
         getTanggal(), '-',

@@ -9,7 +9,10 @@
 
 Ext.define('App.controller.master.Color', {
     extend: 'Ext.app.Controller',
-    views: ['App.view.master.color.List'],
+    views: [
+	    'App.view.master.color.List',
+	    'App.view.master.unit.tabunit'
+    ],
     models: ['App.model.Color'],
     stores: ['App.store.Colors'],
     refs: [

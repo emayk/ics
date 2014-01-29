@@ -16,3 +16,23 @@
  *
  **/
 
+var datatypephone = {
+	results: [
+		{ id : 0, name : 'Telp'},
+		{ id : 1, name : 'Fax'}
+	]
+};
+
+Ext.define('App.store.phones.typephone',{
+	extend : 'Ext.data.Store',
+	fields: ['id', 'name'],
+	data: datatypephone,
+	proxy: {
+		type: 'memory',
+		reader: {
+			type: 'json',
+			root: 'results'
+		}
+	}
+
+})

@@ -37,7 +37,11 @@ Ext.define('App.controller.cSuppliers', {
 		'App.form.combobox.cbBank',
 		'App.form.combobox.cbTypeBank',
 		/*Account Bank*/
-		'App.view.accountBank.vaccountBank',
+//		'App.view.accountBank.vaccountBank',
+//		'App.view.accountBank.WinForm',
+//		'App.view.accountBank.Lists',
+
+		'App.form.combobox.location'
 //        'App.view.accountBank.Lists',
 //        'App.view.accountBank.form'
 		/*Window Tambah Legalitas*/
@@ -59,7 +63,9 @@ Ext.define('App.controller.cSuppliers', {
 		'App.store.combo.cbBank',
 		'App.store.combo.cbTypeBank',
 		/*Account Bank*/
-		'App.store.accountBank.saccountBank'
+		'App.store.accountBank.saccountBank',
+		'App.store.combo.cbTypeTax',
+		'App.store.combo.cbCurrency'
 	],
 	refs: [
 		{
@@ -88,16 +94,16 @@ Ext.define('App.controller.cSuppliers', {
 			ref: 'btnRemoveAccountBank',
 			selector: 'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #formaccount #remove'
 		},
-		{
-			/*Grid Account bank*/
-			ref: 'gridAccountBank',
-			selector: 'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankvaccountBankList'
-		},
-		{
-			/*Form Account Bank */
-			ref: 'formAccountBank',
-			selector: 'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform'
-		}
+//		{
+//			/*Grid Account bank*/
+//			ref: 'gridAccountBank',
+//			selector: 'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankvaccountBankList'
+//		},
+//		{
+//			/*Form Account Bank */
+//			ref: 'formAccountBank',
+//			selector: 'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform'
+//		}
 	],
 	init: function () {
 		var me = this;
@@ -146,6 +152,7 @@ Ext.define('App.controller.cSuppliers', {
 			 */
 			'appSuppliersvSuppliersEdit #formsupplier #help': {
 				click: function (btn) {
+					log(btn);
 					belumImplement();
 				}
 			},
@@ -167,41 +174,55 @@ Ext.define('App.controller.cSuppliers', {
 			},
 
 			/**
-			 *
 			 * Section Account Bank
 			 *
 			 */
-
+			'form#formsupplier appaccountBankvaccountBankList': {
+				render: me.taboAccountBankRender
+			},
+			'appaccountBankvaccountBankList [action=addaccountBank]': {
+				click : function(btn){
+					log(btn.text);
+				}
+			} ,
+//			'appaccountBankvaccountBankList [action=remove]': {
+//				click : function(btn){
+//					log(btn.text);
+//				}
+//			},
 			/**
 			 * Grid Account Bank
 			 */
-			'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #gridlist': {
-				itemclick: me.showInfoAccountBank
-			},
-			'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #formaccount': {
+//
+//			'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #gridlist': {
+//				itemclick: me.showInfoAccountBank
+//			},
+//			'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #formaccount': {
+//
+//			},
+//
+//			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform #addnew': {
+//				/*Add Bank Account*/
+//				click: me.addRecordAccountBank
+//			},
+//			'appSuppliersvSuppliersEdit #accountbank appaccountBankform #saverecord': {
+//				/*Add Bank Account*/
+//				click: me.saveRecordAccountBank
+//			},
+//
+//			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform #remove': {
+//				/*remove Bank Account*/
+//				click: me.removeRecordAccountBank
+//			},
 
-			},
-
-			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform #addnew': {
-				/*Add Bank Account*/
-				click: me.addRecordAccountBank
-			},
-			'appSuppliersvSuppliersEdit #accountbank appaccountBankform #saverecord': {
-				/*Add Bank Account*/
-				click: me.saveRecordAccountBank
-			},
-
-			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform #remove': {
-				/*remove Bank Account*/
-				click: me.removeRecordAccountBank
-			},
 			/**
 			 * Grid Record Account Bank
 			 */
-			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankvaccountBankList': {
-				itemclick: me.showRecordAccountBank,
-				selectionchange: me.showInfoAccountBank
-			},
+//			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankvaccountBankList': {
+//				itemclick: me.showRecordAccountBank,
+//				selectionchange: me.showInfoAccountBank
+//			},
+
 			/**
 			 * Office
 			 */
@@ -214,18 +235,50 @@ Ext.define('App.controller.cSuppliers', {
 				click: me.addLegalitas
 			},
 
-			'appphonesgrid#gridphone' : {
+			'appphonesgrid#gridphone': {
 				itemdblclick: me.showOrEditRecordPhone
 			},
 
 			'appphonesgrid#gridphone [action=add]': {
 				click: me.addRecordPhoneFromGrid
+			},
+
+			/**
+			 * Locations
+			 */
+
+			'form#formsupplier #tablocations': {
+				render: me.tablocationRender
+			},
+			/**
+			 * Tab Office
+			 */
+			'form#formsupplier #taboffice': {
+				render: me.tabofficeRender
 			}
 			/*End Control*/
 		});
 		/*@todo: setup store phone dan account bank */
 	},
-	showOrEditRecordPhone: function(grid,record){
+	taboAccountBankRender: function (tab) {
+		var record = tab.up('form').getForm().getRecord(),
+			grid = tab,
+			store = grid.getStore(),
+			proxy = store.getProxy();
+		proxy.setExtraParam('parent_id',record.get('id'));
+		proxy.setExtraParam('parenttype','supplier');
+		store.load();
+	},
+	tabofficeRender: function (tab) {
+		tab.down('cbTypeSupBuy').getStore().load();
+		tab.down('cbLegalitas').getStore().load();
+	},
+	tablocationRender: function (tab) {
+		tab.down('cbCountries').getStore().load();
+		tab.down('cbProvinces').getStore().load();
+		tab.down('cbCities').getStore().load();
+	},
+	showOrEditRecordPhone: function (grid, record) {
 		var win;
 		/*parentId */
 		/*parentType == supplier */
@@ -236,7 +289,8 @@ Ext.define('App.controller.cSuppliers', {
 			win = Ext.create('App.view.phones.winPhone', {
 				parentId: parentId,
 				parentType: 'supplier',
-				title: 'Tambah Nomor Telp Penyalur'
+				title: translations.update_record_phone_number + ' ' +
+					translations.supplier
 			});
 			var form = win.down('form').getForm();
 			form.loadRecord(record);
@@ -255,7 +309,8 @@ Ext.define('App.controller.cSuppliers', {
 			win = Ext.create('App.view.phones.winPhone', {
 				parentId: parentId,
 				parentType: 'supplier',
-				title: 'Tambah Nomor Telp Penyalur'
+				title: translations.add_record_phone_number + ' ' +
+					translations.supplier
 			});
 			win.show();
 		}
@@ -318,6 +373,10 @@ Ext.define('App.controller.cSuppliers', {
 			grid = me.getGridAccountBank(),
 			store = grid.getStore();
 
+		if (!form.isValid()) {
+			App.util.box.error('Silahkan Perbaiki Masukan');
+			return false;
+		}
 		if (record) {
 			record.set(values);
 			record.save();
@@ -332,23 +391,36 @@ Ext.define('App.controller.cSuppliers', {
 	 * @param btn
 	 */
 	addRecordAccountBank: function (btn) {
-		var me = this, form = btn.up('form');
-		form.getForm().reset();
-		var record = Ext.create('App.model.accountBank.maccountBank', {
-			owner_id: me.currentRecordSupplier,
-			owner_type: 'supplier'
-		});
-		var name = form.down('[name=name]'),
-			number = form.down('[name=number]'),
-			bankid = form.down('[name=bank_id]'),
-			typeid = form.down('[name=type_id]');
+		var win;
+		if (!win) {
+			win = Ext.create('App.view.accountBank.WinForm', {
+				title: 'Add New Account Bank',
+				modal: true
+			});
+//			var record =
+//			win.down('form').loadRecord(record);
+			win.show();
+		}
 
-		me.setComponentEnabled(name);
-		me.setComponentEnabled(number);
-		me.setComponentEnabled(bankid);
-		me.setComponentEnabled(typeid);
-
-		form.getForm().loadRecord(record);
+//		var me = this, form = btn.up('form');
+//		form.getForm().reset();
+//		var record = Ext.create('App.model.accountBank.maccountBank', {
+//			owner_id: me.currentRecordSupplier,
+//			owner_type: 'supplier'
+//		});
+//		var name = form.down('[name=name]'),
+//			number = form.down('[name=number]'),
+//			bankid = form.down('[name=bank_id]'),
+//			currencyid = form.down('[name=currency_id]'),
+//			typeid = form.down('[name=tax_id]');
+//
+//		me.setComponentEnabled(name);
+//		me.setComponentEnabled(number);
+//		me.setComponentEnabled(bankid);
+//		me.setComponentEnabled(currencyid);
+//		me.setComponentEnabled(typeid);
+//
+//		form.getForm().loadRecord(record);
 	},
 	setComponentEnabled: function (component) {
 		if (component.isDisabled()) component.setDisabled(false);
@@ -389,7 +461,8 @@ Ext.define('App.controller.cSuppliers', {
 	 * @param record
 	 */
 	showInfo: function (grid, record) {
-		var me = this, id = record.get('id'), title = '[ ' + id + ' ] Information Supplier ' + record.get('name'),
+		var me = this, id = record.get('id'),
+			title = '[ ' + id + ' ] ' + translations.information + ' Supplier ' + record.get('name'),
 			tabinfo = Ext.create('App.view.Suppliers.Edit', {
 				title: title,
 				closable: true,
@@ -397,8 +470,10 @@ Ext.define('App.controller.cSuppliers', {
 				mode: 'edit'
 			});
 		tabinfo.down('#formsupplier').getForm().loadRecord(record);
-		var storeAccountBank = Ext.create('App.store.accountBank.saccountBank');
-		tabinfo.down('#accountbank').setStore(storeAccountBank);
+
+//		var storeAccountBank = Ext.create('App.store.accountBank.saccountBank');
+//		tabinfo.down('#accountbank').setStore(storeAccountBank);
+
 		var storeGridPhone = tabinfo.down('appphonesgrid#gridphone').getStore();
 		storeGridPhone.getProxy().setExtraParam('parent_id', id);
 		storeGridPhone.getProxy().setExtraParam('parenttype', 'supplier');
@@ -414,7 +489,8 @@ Ext.define('App.controller.cSuppliers', {
 //        storeAccountBank.getProxy().setExtraParam('typeid',id);
 //        storeAccountBank.load();
 
-		me.setupAccountBank(id, storeAccountBank, gridAccount, pgAccount);
+//		me.setupAccountBank(id, storeAccountBank, gridAccount, pgAccount);
+
 		me.currentRecordSupplier = id;
 		me.openNewTab(title, tabinfo);
 	},

@@ -29,7 +29,7 @@ Ext.define('App.view.Suppliers.vSuppliers', {
     items: [
         {
             xtype: 'appSuppliersvSuppliersLists',
-            title : 'Lists'
+            title :translations.list
         }
     ]
 });

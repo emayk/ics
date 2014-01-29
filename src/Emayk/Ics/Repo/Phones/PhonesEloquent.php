@@ -71,12 +71,11 @@ class PhonesEloquent implements PhonesInterface
 
 		$phones = $phones->whereParentId($parentId)->whereParentType($parenttype);
 		$total  = $phones->count();
-		$phones = $phones->orderBy('id', 'DESC')
+		$phones = $phones->orderBy('updated_at', 'DESC')
 			->skip($start)
 			->take($limit)
 			->get()->toArray();
-//		$total  = $this->phones
-//			->all()->count();
+
 
 		$phoness = array(
 			'success' => true,
@@ -127,6 +126,7 @@ class PhonesEloquent implements PhonesInterface
 		$this->phones->number          = Input::get('number');
 		$this->phones->parent_id       = $idparent;
 		$this->phones->parent_type     = $parentType;
+		$this->phones->type            = $this->setupType( Input::get('type') );
 		$this->phones->uuid            = uniqid('New_');
 		$this->phones->createby_id     = $uid;
 		$this->phones->created_at      = new Carbon();
@@ -179,7 +179,8 @@ class PhonesEloquent implements PhonesInterface
 		$this->checkAuth();
 		$db                  = $this->phones->find($id);
 		$uid                 = Auth::user()->id;
-		$db->number          = Input::get('number');
+		$db->type            = $this->setupType( Input::get('type') );
+		$db->number          = Input::get('number') ;
 		$db->info            = Input::get('info');
 		$db->lastupdateby_id = $uid;
 		$db->updated_at      = new Carbon();
@@ -189,6 +190,9 @@ class PhonesEloquent implements PhonesInterface
 			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
 	}
 
+	protected function setupType($idtype){
+		return intval($idtype);
+	}
 	/**
 	 *
 	 * Apakah Sudah Login

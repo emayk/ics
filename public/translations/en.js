@@ -111,5 +111,70 @@ menu_example : '[Debug] Menu Example',
 
         warehouse : 'Gudang',
         length : 'Length',
-    }
+	    info : 'Keterangan'
+    },
+
+
+	supplier: {
+		name: 'Company Name',
+		credit: 'Credit',
+		plafon: 'Plafon'
+	},
+
+
+	office: 'Office',
+	type: 'Type',
+	add: 'Add',
+	phonenumber: 'Phone Number',
+	accountbank : 'Account Bank',
+	location: 'Location',
+	country: 'Country',
+	province: 'Province',
+	city: 'City',
+	address: 'Address',
+	postcode: 'Post code',
+	rt: 'Rt',
+	rw: 'Rw',
+	note: 'Note',
+	setup_as_active: 'Set Activated ? ',
+	help : 'Help',
+	save: 'Save',
+	cancel : 'Cancel',
+	close: 'Close',
+	history: 'History',
+	product: 'Product',
+	chart: 'Chart',
+	information : 'Informasi',
+
+	remove : 'Remove',
+	import: 'Import',
+	export: 'Export',
+	fax: 'Fax Number',
+	npwp : 'Npwp',
+	list: 'List',
+	fields: {
+		name :'Name',
+		id: 'Id'
+	},
+	legality: 'Legality',
+	typephone: 'Phone',
+	typefax : 'Fax',
+	currency: 'Currency',
+	accountbank: {
+		title : 'Account Bank',
+		header: {
+			name : 'Name',
+			number : 'Number',
+			bankname: 'Bank'
+		},
+		name: 'Name Account',
+		bankname: 'Bank Account',
+		number: 'Number Account'
+	},
+	add_record_phone_number : 'Add Phone Number',
+	update_record_phone_number : 'Update Phone Number',
+
+	supplier : 'Supplier',
+	typetax: 'Type Tax',
+	typebussiness: 'Type Bussiness'
 }

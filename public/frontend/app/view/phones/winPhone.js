@@ -24,8 +24,6 @@
 Ext.define('App.view.phones.winPhone', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.appphoneswinphone',
-//	height: 250,
-//	width: 400,
 	padding: 10,
 	layout: { type: 'fit', align: 'stretch'},
 	config: {
@@ -43,8 +41,22 @@ Ext.define('App.view.phones.winPhone', {
 						anchor: '95%'
 					},
 					items: [
-						{ xtype: 'textfield', name: 'number', fieldLabel: 'Number', allowblank: false},
-						{ xtype: 'textfield', name: 'info', fieldLabel: 'Keterangan'},
+						{ xtype: 'textfield', name: 'number', fieldLabel: translations.phonenumber, allowblank: false},
+						{ xtype: 'textfield', name: 'info', fieldLabel: translations.field.info},
+						{
+							xtype: 'combo',
+							fieldLabel: translations.type,
+							name : 'type',
+							store: 'App.store.phones.typephone',
+							queryMode: 'local',
+							displayField: 'name',
+							valueField: 'id',
+							editable: false,
+							forceSelection: false,
+							tpl: App.util.Form.combobox_tpl,
+							displayTpl: App.util.Form.combobox_displayTpl,
+							allowblank:false
+						},
 						{ xtype: 'hiddenfield', name: 'parent_id', value: me.getParentId() },
 						{ xtype: 'hiddenfield', name: 'parenttype', value: me.getParentType() }
 					],

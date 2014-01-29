@@ -16,3 +16,15 @@
  *
  **/
 
+Ext.define('App.view.master.unit.tabunit',{
+	extend: 'Ext.tab.Panel',
+	alias: 'widget.tabunit',
+	requires: [
+		'App.view.master.unit.ListUnit',
+		'App.view.unittype.vunittype'
+	],
+	items: [
+		{xtype: 'gridAllunit', title: translations.list + ' Satuan' },
+		{xtype: 'appunittypevunittype', title: 'Tipe Satuan' }
+	]
+})

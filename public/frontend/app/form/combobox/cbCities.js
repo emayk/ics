@@ -10,4 +10,8 @@ Ext.define('App.form.combobox.cbCities', {
 	forceSelection: false,
 	tpl: App.util.Form.combobox_tpl,
 	displayTpl: App.util.Form.combobox_displayTpl
+//	typeAhead: true,
+//	triggerAction: 'all',
+//	emptyText: 'Kosong ...',
+//	selectOnFocus: true,
 });

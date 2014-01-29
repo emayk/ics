@@ -21,68 +21,231 @@
  **/
 
 Ext.define('App.controller.caccountBank', {
-    extend: 'Ext.app.Controller',
-    views: ['App.view.accountBank.vaccountBank'],
-    models: ['App.model.accountBank.maccountBank'],
-    stores: ['App.store.accountBank.saccountBank'],
-    refs: [
-        {
-            ref: 'panel',
-            selector: 'appaccountBankvaccountBank'
-        },
-        {
-            ref: 'grid',
-            selector: 'appaccountBankvaccountBank #gridlist'
-        },
-        {
-            ref: 'formAccount',
-            selector: 'appaccountBankvaccountBank #formaccount'
-        }
-    ],
-    init: function () {
-        var me = this;
-        me.control({
-            /*Panel*/
-            "appaccountBankvaccountBank": {
+	extend: 'Ext.app.Controller',
+	views: [
+		'App.view.accountBank.vaccountBank',
+		'App.view.accountBank.WinForm',
+		'App.view.accountBank.form',
+		'App.view.accountBank.Lists'
+	],
+	models: [
+		'App.model.accountBank.maccountBank'
+	],
+	stores: [
+		'App.store.accountBank.saccountBank',
+		'App.store.combo.cbCurrency'
+	],
+	refs: [
+		{
+			ref: 'panel',
+			selector: 'appaccountBankvaccountBank'
+		},
+		{
+			ref: 'grid',
+			selector: 'appaccountBankvaccountBankList'
+		},
+		{
+			ref: 'formAccount',
+			selector: 'appaccountBankform'
+		}
+	],
+	init: function () {
+		var me = this;
+		me.control({
+			/*Panel*/
+//			"appaccountBankvaccountBank": {
+//
+//			},
+			/*Grid*/
+//            'appaccountBankvaccountBank #gridlist': {
+//                itemclick: me.showInfo
+//            },
+			/*Form*/
+//			'appaccountBankvaccountBank #formaccount': {
+//
+//			},
+//			'appaccountBankvaccountBank #formaccount': {
+//
+//			},
+//			'appaccountBankvaccountBank #formaccount #add': {
+//				click: me.saveRecord
+//			},
+//			'appaccountBankvaccountBank #formaccount #remove': {
+//				click: me.removeRecord
+//			},
 
-            },
-            /*Grid*/
-            'appaccountBankvaccountBank #gridlist': {
-                itemclick: me.showInfo
-            },
-            /*Form*/
-            'appaccountBankvaccountBank #formaccount': {
+			/**
+			 * Grid
+			 */
+			'appaccountBankvaccountBankList': {
+//		        itemclick: me.showInfo
+				itemdblclick: me.loadrecordOnWindow
+			},
+			'appaccountBankvaccountBankList > toolbar [action=add]': {
+				click: me.addRecordBankFromGrid
+			},
+			'appaccountBankvaccountBankList > toolbar [action=remove]': {
+				click: me.removedBankFromGrid
+			},
+			'appaccountBankvaccountBankList > toolbar [action=import]': {
+				click: me.importRecord
+			},
+			'appaccountBankvaccountBankList > toolbar [action=export]': {
+				click: me.exportRecord
+			},
+			'appaccountBankvaccountBankList > toolbar [action=help]': {
+				click: me.helpRecordGrid
+			},
+			/**
+			 * Form
+			 */
+//			'appaccountBankform': {
+//
+//			},
+			'appaccountBankform [action=addbank]': {
+				click: me.addRecordBank
+			},
+			'appaccountBankform [action=addcurrency]': {
+				click: me.addRecordCurrency
+			},
+			'appaccountBankform [action=addtax]': {
+				click: me.addRecordTax
+			},
+			'appaccountBankWinForm [action=addtax]': {
+				click: me.addRecordTax
+			},
+			'appaccountBankform > toolbar [action=save]': {
+				click : me.saveRecord
+			},
+			'appaccountBankform > toolbar [action=close]': {
+				click : me.closewindow
+			},
+			'appaccountBankform > toolbar [action=help]': {
+				click : me.helpwindow
+			}
+		});
+	},
+	importRecord: function(btn){
+		belumImplement()
+	},
+	exportRecord: function(btn){
+		belumImplement()
+	},
+	helpRecordGrid: function(btn){
+		belumImplement()
+	},
 
-            },
-            'appaccountBankvaccountBank #formaccount': {
+	loadrecordOnWindow: function(grid,record){
+	var win;
+		if (!win){
+			win = Ext.create('App.view.accountBank.WinForm',{
+				title: 'Tambah Record Rekening Bank',
+				modal : true
+			});
+			win.down('form').getForm().loadRecord(record);
+			win.show();
+		}
+	},
+	closewindow: function(btn){
+		btn.up('window').close();
+	},
 
-            },
-            'appaccountBankvaccountBank #formaccount #add': {
-                click: me.saveRecord
-            },
-            'appaccountBankvaccountBank #formaccount #remove': {
-                click: me.removeRecord
-            }
-        });
-    },
-    showInfo: function (grid, record) {
-        var me = this;
-        me.getFormAccount().getForm().loadRecord(record);
-    },
-    removeRecord: function (btn) {
-        var me = this, grid = me.getGrid(),
-            store = grid.getStore(),
-            selection = grid.getSelectionModel();
+	helpwindow: function(btn){
+		belumImplement();
+	},
 
-        Ext.each(selection.selected.items, function (record) {
-            store.remove(record);
-        });
-        store.sync();
+	removedBankFromGrid: function(btn){
+		var grid = btn.up('grid');
+		this.removerecordFromStore(grid);
+	},
+	addRecordBankFromGrid: function (btn) {
+		var me = this,
+			grid = btn.up('grid'),
+			store = grid.getStore(),
+			params = store.getProxy().extraParams,
+			id = params.parent_id,
+			type = params.parenttype,
+			win;
+		if (!id){ me.msgError('Cannot Found Id'); }
+		if (!type) { me.msgError('Cannot Found Parent Type');}
+		log(id);
+		log(type);
+		if (!win) {
+			win = Ext.create('App.view.accountBank.WinForm',{
+				title: 'Tambah Record Rekening Bank',
+				modal : true
+			});
+			var record = Ext.create('App.model.accountBank.maccountBank',{
+				owner_type: type,
+				owner_id : id
+			});
 
-    },
-    saveRecord: function (btn) {
-        log(btn.text);
-    },
-    type: 'Buyers'
+			win.down('form').getForm().loadRecord(record);
+			win.show();
+		}
+	},
+	msgError: function (text) {
+		App.util.box.error(text);
+		return false;
+	},
+	msgSuccess: function (text) {
+		App.util.box.info(text);
+	},
+	addRecordTax: function (btn) {
+		belumImplement();
+	},
+
+	addRecordCurrency: function (btn) {
+		belumImplement();
+	},
+
+	addRecordBank: function (btn) {
+		belumImplement();
+	},
+
+	showInfo: function (grid, record) {
+		var me = this;
+		me.getFormAccount().getForm().loadRecord(record);
+	},
+	removeRecord: function (btn) {
+		var me = this, grid = me.getGrid();
+		me.removerecordFromStore(grid);
+	},
+	removerecordFromStore:function(grid){
+		var store = grid.getStore(),
+			selection = grid.getSelectionModel();
+
+		Ext.each(selection.selected.items, function (record) {
+			store.remove(record);
+		});
+		store.sync();
+	},
+	saveRecord: function (btn) {
+		var me = this,
+			grid = me.getGrid(),
+			win = btn.up('window'),
+			form = btn.up('form').getForm(),
+			record = form.getRecord(),
+			values = form.getValues();
+		log(grid);
+		if(!record){
+			record = Ext.create('App.model.accountBank.maccountBank',values);
+		}else{
+			record.set(values);
+		}
+
+		record.save({
+			success: function(rec,opts){
+				App.util.box.info(rec.get('name') + ' berhasil disimpan');
+				grid.getStore().load();
+				win.close();
+			},failure:function(btn){
+				App.util.box.error('Gagal Tersimpan,Silahkan Coba lagi');
+			}
+		});
+
+
+	}
+//	type: 'Buyers'
 });
 

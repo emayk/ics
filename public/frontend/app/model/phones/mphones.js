@@ -21,7 +21,7 @@
  **/
 Ext.define('App.model.phones.mphones', {
     extend: 'Ext.data.Model',
-    fields: [ 'id', 'number','parent_id','info', 'parenttype' ],
+    fields: [ 'id', 'number','parent_id','info', 'parenttype','type' ],
 	proxy: {
 		type: 'rest',
 		url: getApiUrl() +'/phones',

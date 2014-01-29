@@ -7,11 +7,13 @@ use \Config as CoreConfig;
 class Config implements ConfigInterface
 {
 	/**
-	*
-	* Mendapatkan Config Aplikasi
-	* @param string $value Value yang dicari
-	*
-	**/
+	 *
+	 * Mendapatkan Config Aplikasi
+	 *
+	 * @param string $value Value yang dicari
+	 *
+	 **@return mixed
+	 */
 	public function get($value){
 		return CoreConfig::get('ics::'.$value);
 	}
