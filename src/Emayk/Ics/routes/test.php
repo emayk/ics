@@ -855,6 +855,10 @@ Route::group(array('prefix' => 'test'), function () {
             $response->header('Content-Type', 'application/javascript');
             return $response;
         });
+        Route::get('changelog',function(){
+            $changelog = Icsconfig::getChangeLog();
+            return $changelog;
+        });
 // End Genereate Section
     });
 

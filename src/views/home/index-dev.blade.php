@@ -1,11 +1,27 @@
+<?php
+/**
+* Copyright (C) 2013  Emay Komarudin
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+* @author Emay Komarudin
+*
+**/
+?>
+
 <html>
 <head>
-	<title>{{ $title }}</title>
+	<title>Development {{ time() }} </title>
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/'.$selectedtheme.'.css') }}">
-<!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all.css') }}">-->
-<!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all-neptune.css') }}">-->
-<!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all-gray.css') }}">-->
-
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('ux/css/TabScrollerMenu.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/uxs.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/overrides.css') }}">
@@ -22,7 +38,7 @@
     var extjsbase = "{{Icsview::extjsasset()}}";
     var app_session_Expire = ((typeof _session_Expire !== 'undefined') && (_session_Expire > 0 ) ) ? _session_Expire : 60;
     var ics = {
-        root: "{{ Icsview::linkBaseUrl()}}",
+	root: "{{ Icsview::linkBaseUrl()}}",
         appjs: "{{ Icsview::asset()}}",
         appname: "{{ Icsconfig::getAppName() }}",
         license: "{{ Icsconfig::getLicense() }}",
@@ -33,7 +49,7 @@
         app_session_Expire: app_session_Expire,
         token: '{{ csrf_token() }}',
         user: {
-            id: "{{ (Auth::check()) ? Auth::user()->id : 0 }}",
+		id: "{{ (Auth::check()) ? Auth::user()->id : 0 }}",
             as: "{{ (Auth::check()) ? Auth::user()->username : 'Anonymous' }}",
             fn: "{{ (Auth::check()) ? Auth::user()->fullname : 'Anonymous' }}"
         },
@@ -50,11 +66,11 @@
     var token = '{{ csrf_token() }}';
     var local = true;
     var fromLocal = function () {
-        return local;
-    };
+	return local;
+};
     var license_to = "{{ Icsconfig::getLicense() }}";
     var user = {
-        id: "{{ (Auth::check()) ? Auth::user()->id : 0 }}",
+	id: "{{ (Auth::check()) ? Auth::user()->id : 0 }}",
         as: "{{ (Auth::check()) ? Auth::user()->username : 'Anonymous' }}",
         fn: "{{ (Auth::check()) ? Auth::user()->fullname : 'Anonymous' }}"
     };
@@ -77,8 +93,7 @@
 
 <script type="text/javascript" src="{{Icsview::asset('frontend/app/function.js')}}"></script>
 <script type="text/javascript" src="{{Icsview::asset('frontend/config.js')}}"></script>
-<!--<script type="text/javascript" src="{{ Icsview::asset('frontend/app.js')}}"></script>-->
-<script type="text/javascript" src="{{ Icsview::asset('frontend/'.$devjs)}}"></script>
+<script type="text/javascript" src="{{ Icsview::asset('frontend/app.js')}}"></script>
 
 
 </body>

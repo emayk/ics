@@ -45,6 +45,36 @@ class Config implements ConfigInterface
 		return $this->get('versi.versi');
 	}
 
+public function getChangeLog()
+{
+list($version, $changes) = $this->getChangeVersion($this->getChangesArray());
+$out = [];
+		foreach ($changes as $change)
+		{
+			$out[] = $change;
+		}
+		return \Response::json(['results' => $out[0] ]);
+}
+
+protected function getChangesArray()
+{
+	return json_decode(file_get_contents(__DIR__.'/changeslog.json'), true);
+}
+protected function getChangeVersion(array $changes)
+	{
+
+		// if (is_null($version))
+		// {
+			// $latest = head(array_keys($changes));
+
+			// return array($latest, $changes[$latest]);
+
+		// }
+		// else
+		// {
+			return array('version', $changes);
+		// }
+	}
 
 }
 

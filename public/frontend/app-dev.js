@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ **/
+
 var fromLocal = function () {
 	return true;
 //    return ((window.location.protocol + '//' + window.location.host + '/') === 'http://localhost:9090');
@@ -11,7 +29,7 @@ var fromLocal = function () {
  **/
 
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-//var requires, controllers;
+
 if (fromLocal()) {
 //    requires = [];
 	controllers = [
@@ -26,114 +44,44 @@ if (fromLocal()) {
 	 *
 	 */
 
-		'master.Departement',
-		'master.Legalitas',
-		'master.Banks',
-		'master.Color',
-		'master.Countries',
-		'master.Currency',
-		'master.Gradekain',
-		'master.Gudang',
-		'master.TypeOrder',
-
-		'cunittype',
-		'master.ctlUnit',
-
-		'ctypeproduct',
-		'cfabrictype',
-
-		'ctypeAccountBank',
-		'master.ctlProducts',
-		'ctypepayment',
-		'cposition',
-		'caccountBank',
-		'cphones',
-		'ctypesupbuy',
-		'ccontacts',
-		'coffices',
-
-		'cBuyers',
-		'cSuppliers',
-		'ctaxtype',
-		'ccatprod',
-		'creceiveProduct',
+//		'master.Departement',
+//		'master.Legalitas',
+//		'master.Banks',
+//		'master.Color',
+//		'master.Countries',
+//		'master.Currency',
+//		'master.Gradekain',
+//		'master.Gudang',
+//		'master.TypeOrder',
+//
+//		'cunittype',
+//		'master.ctlUnit',
+//
+//		'ctypeproduct',
+//		'cfabrictype',
+//
+//		'ctypeAccountBank',
+//		'master.ctlProducts',
+//		'ctypepayment',
+//		'cposition',
+//		'caccountBank',
+//		'cphones',
+//		'ctypesupbuy',
+//		'ccontacts',
+//		'coffices',
+//
+//		'cBuyers',
+//		'cSuppliers',
+//		'ctaxtype',
+//		'ccatprod',
+//		'creceiveProduct',
 
 		'cPO'
-		/*Sale Product*/
-		/*'cOrders',
-		 'csaleProduct',*/
-//
-//
-	/**
-	 * Versi Baru
-	 * penamamaan Controller
-	 */
-//        Lewat----
-//        'master.Headoffice',
-//        'master.ctlUnit',
-	/**
-	 * Order
-	 */
-//        'wizard.Order',
-
-//        'transaction.ctransaction', //*cl2-0*//*
-		// 'cImport',
-		// 'master.ctlProducts',
-//        'master.ctlSupplier',
-//    'wizard.Supplier',
-
-
-//        'master.ctlProducts',
-//        'ctlSettingProgram'
-
-		/*Working ON Approval Order*/
 	];
 
 } else {
 	requires = [];
 	controllers = []
-//    controllers = [
-//        // 'cTrace',
-//        /*==========  Menu  ==========*/
-//        // 'ctlSetup',
-//        'security.Users',
-//        // 'ctlTest',
-//        'cMenu',
-//        'cLogin',
-//        'corderApproval',
-//        'TranslationManager',
-//        'wizard.Supplier',
-//        /*==========  Profiles Controller  ==========*/
-//        'Profiles',
-//        'master.Legalitas',
-//        // 'master.Users',
-//        'master.Banks',
-//        'master.ContactPerson',
-//        'master.Departement',
-//        'master.Gradekain',
-//        'master.Gudang',
-//        'master.Color',
-//        'master.Currency',
-//        'master.TypeOrder',
-//        'master.Countries',
-//        'master.Provinces',
-//        'master.Cities',
-//        'master.Headoffice',
-//        'master.ctlUnit',
-//        'master.ctlProducts',
-////        'master.ctlProducts_disable',
-//        // 'transaction.CtlOrders'
-//        'cOrders', //Done
-//        // 'ctlFile',
-//
-//        'master.ctlSupplier',
-//        'master.typePayment',
-////
-//        /*Working On Controller*/
-//        'cImport',
-//        'wizard.Order'
-//
-//    ];
 }
 
 Ext.application({

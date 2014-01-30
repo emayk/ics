@@ -40,9 +40,19 @@ class BaseController extends Controller
 		$theme = intval($theme);
 		$theme  = ( !is_int($theme) ) ? 0 : $theme;
 		$themes = array('ext-all', 'ext-all-gray');
+		$dev= Input::get('dev',false);
+
+		if ($dev)  {
+			$devjs = 'app-dev.js';
+			$title = 'Development';
+		}else{
+			$devjs = 'app.js';
+			$title = \Icsconfig::getAppName();
+		};
+
 		if ($theme > ( count($themes) - 1 )) $theme = 0;
 		$selectedtheme = $themes[ $theme ];
-		return \View::make('ics::home.index', compact('logged', 'selectedtheme'));
+		return \View::make('ics::home.index', compact('logged', 'selectedtheme','devjs','title'));
 	}
 
 	public function missingMethod($parameters = array())

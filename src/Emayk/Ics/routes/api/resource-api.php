@@ -111,6 +111,7 @@ Route::resource('statsproduct', 'Emayk\Ics\Repo\Statsproduct\StatsproductControl
 /*==========  Register Resource Login  ==========*/
 Route::resource('login', 'Emayk\Ics\Repo\Login\LoginController');
 /*==========  Register Resource Saleproduct  ==========*/
+/*==========  Register Resource Saleproduct  ==========*/
 Route::resource('saleproduct', 'Emayk\Ics\Repo\Saleproduct\SaleproductController');
 /*==========  Register Resource Transsale  ==========*/
 Route::resource('transsale', 'Emayk\Ics\Repo\Transsale\TranssaleController');
@@ -120,3 +121,5 @@ Route::resource('receiveproduct', 'Emayk\Ics\Repo\Transreceiveproduct\Transrecei
 Route::resource('receiveproductitem', 'Emayk\Ics\Repo\Transreceiveproductitem\TransreceiveproductitemController');
 /*==========  Register Resource Sysprodhistory  ==========*/
 Route::resource('sysprodhistory', 'Emayk\Ics\Repo\Sysprodhistory\SysprodhistoryController');
+/*==========  Register Resource Purchaseorder  ==========*/
+Route::resource('purchaseorder', 'Emayk\Ics\Repo\Purchaseorder\PurchaseorderController');

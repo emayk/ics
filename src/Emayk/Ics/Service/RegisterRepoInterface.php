@@ -409,3 +409,10 @@ App::bindIf('Emayk\Ics\Repo\Sysprodhistory\SysprodhistoryInterface',function(){
 	return new Repo\Sysprodhistory\SysprodhistoryEloquent(new Repo\Sysprodhistory\Sysprodhistory() );
 });
 
+
+/*==========  Register Interface Purchaseorder  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Purchaseorder\PurchaseorderInterface',function(){
+	return new Repo\Purchaseorder\PurchaseorderEloquent(new Repo\Purchaseorder\Purchaseorder() );
+});
+

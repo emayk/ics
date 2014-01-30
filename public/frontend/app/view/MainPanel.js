@@ -1,6 +1,7 @@
 if (fromLocal()) {
 	itemsMainPanel = [
 
+        { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:false},
 //        { xtype : 'tabscolor', title: 'Warna', iconCls:'home', closable:false},
 //        { xtype : 'tabbank', title: 'Bank', iconCls:'home', closable:false},
 //        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},

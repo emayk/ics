@@ -34,15 +34,48 @@ class Productsuppliers extends Model {
 	protected $table = 'master_product_suppliers';
 	public static $rules = array();
 	public  $timestamps = false;
+	public $hidden = ['master_supplier_id','master_product_id'];
+	protected $appends = [
+		'productname',
+		'suppliername',
+		'supplierid',
+		'productid',
+		'productstock'
+	];
 
     public function products()
     {
-        return $this->hasMany('Emayk\Ics\Repo\Products\Products','master_product_id');
+	    return $this->belongsTo('Emayk\Ics\Repo\Products\Products', 'master_product_id');
+//        return $this->hasMany('Emayk\Ics\Repo\Products\Products','master_product_id');
+//        return $this->hasMany('Emayk\Ics\Repo\Products\Products','id');
     }
 
     public function suppliers()
     {
+//        return $this->belongsTo('Emayk\Ics\Repo\Suppliers\Suppliers', 'id');
         return $this->belongsTo('Emayk\Ics\Repo\Suppliers\Suppliers', 'master_supplier_id');
     }
+
+	public function getProductnameAttribute()
+	{
+		return $this->attributes['productname'] = $this->products->name ;//$this->products()->pluck('name');
+	}
+	public function getSuppliernameAttribute()
+	{
+		return $this->attributes['suppliername'] = $this->suppliers->name;
+	}
+
+	public function getSupplieridAttribute()
+	{
+		return $this->attributes['supplierid'] = $this->suppliers->id;
+	}
+	public function getProductidAttribute()
+	{
+		return $this->attributes['productid'] = $this->products->id;
+	}
+	public function getProductstockAttribute()
+	{
+		return $this->attributes['productstock'] = $this->products->countStocks();
+	}
 
 }

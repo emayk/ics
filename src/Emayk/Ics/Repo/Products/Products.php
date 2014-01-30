@@ -222,8 +222,11 @@ class Products extends Model
 	 */
 	public function suppliers()
 	{
-		return $this->hasMany('Emayk\Ics\Repo\Productsuppliers\Productsuppliers', 'master_product_id');
+				return $this->belongsToMany('\Emayk\Ics\Repo\Suppliers\Suppliers', 'master_product_suppliers', 'master_product_id', 'master_supplier_id');
+//				return $this->belongsToMany('\Emayk\Ics\Repo\Suppliers\Suppliers', 'master_product_suppliers', 'master_product_id', 'master_supplier_id');
 	}
+
+
 
 	public function stats()
 	{

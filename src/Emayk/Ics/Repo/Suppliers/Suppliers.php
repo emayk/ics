@@ -31,39 +31,40 @@ use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Emayk\Ics\Support\Dummy\Faker\Suppliers as SuppliersFaker;
 use Illuminate\Database\Eloquent\Model;
 use Log;
+use Emayk\Ics\Repo\Suppliers\SampleData;
 
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Suppliers\Suppliers'
  *
- * @property integer $id
- * @property string $name
- * @property string $codepos
- * @property string $npwp
- * @property string $fax
- * @property string $email
- * @property float $plafon
- * @property integer $kredit
- * @property \Carbon\Carbon $deleted_at
- * @property string $address
- * @property string $rt
- * @property string $rw
- * @property string $phone
- * @property integer $status_id
- * @property integer $tipe_id
- * @property integer $legality_id
- * @property integer $typeprod_id
- * @property integer $country_id
- * @property integer $province_id
- * @property integer $city_id
- * @property string $uuid
- * @property integer $createby_id
- * @property integer $lastupdateby_id
- * @property string $codeinternal
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $note
+ * @property integer                                                                           $id
+ * @property string                                                                            $name
+ * @property string                                                                            $codepos
+ * @property string                                                                            $npwp
+ * @property string                                                                            $fax
+ * @property string                                                                            $email
+ * @property float                                                                             $plafon
+ * @property integer                                                                           $kredit
+ * @property \Carbon\Carbon                                                                    $deleted_at
+ * @property string                                                                            $address
+ * @property string                                                                            $rt
+ * @property string                                                                            $rw
+ * @property string                                                                            $phone
+ * @property integer                                                                           $status_id
+ * @property integer                                                                           $tipe_id
+ * @property integer                                                                           $legality_id
+ * @property integer                                                                           $typeprod_id
+ * @property integer                                                                           $country_id
+ * @property integer                                                                           $province_id
+ * @property integer                                                                           $city_id
+ * @property string                                                                            $uuid
+ * @property integer                                                                           $createby_id
+ * @property integer                                                                           $lastupdateby_id
+ * @property string                                                                            $codeinternal
+ * @property \Carbon\Carbon                                                                    $created_at
+ * @property \Carbon\Carbon                                                                    $updated_at
+ * @property string                                                                            $note
  * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Products\Products[] $products
- * @property-read \Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers $type
+ * @property-read \Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers                      $type
  */
 class Suppliers extends Model
 {
@@ -85,7 +86,7 @@ class Suppliers extends Model
 	 */
 	public function products()
 	{
-		return $this->hasMany('Emayk\Ics\Repo\Products\Products');
+		return $this->belongsToMany('\Emayk\Ics\Repo\Products\Products', 'master_product_suppliers', 'master_supplier_id', 'master_product_id');
 	}
 
 	/**
@@ -101,7 +102,8 @@ class Suppliers extends Model
 	 */
 	public static function getFake()
 	{
-		return new AbstractGenerate();
+		$sampledata = new SampleData();
+		return $sampledata->getFake();
 	}
 
 	/**
@@ -110,42 +112,9 @@ class Suppliers extends Model
 	 *
 	 * @return array|string
 	 */
-	public   static function generateMassiveDummy($resultsIds = false, $count = 100)
+	public static function generateMassiveDummy($resultsIds = false, $count = 100)
 	{
-		/** Buat Data fake Instance */
-		$fake = static::getFake()->getSupplier();
-
-		/** Cari Legalitas */
-		$listLegalitiesId = Legality::getIdsOrGenerateDummyData(100);
-		/** Status */
-
-		$listStatusId = Status::getIdsOrCreate();
-
-		/*Product Type*/
-		$typeProductIds = Producttype::getIdsOrCreateDummy(100);
-
-		/*Type Supplier*/
-		$typeIdsSupBuy =  Typesuppliersbuyers::generateDummyData(true);
-//		return $typeIdsSupBuy;
-		/** Locations */
-		$countryId = Locations::getIdsDefaultCountryOrCreate();
-
-		$provinceId = Locations::getIdsDefaultProvinceOrCreate($countryId);
-
-		$cityId = Locations::getIdsDefaultCityOrCreate($provinceId);
-
-		$suppliers = $fake->generateSuppliers(
-			$count, $typeIdsSupBuy, $typeProductIds, $listLegalitiesId,
-			$countryId, $provinceId, $cityId, $listStatusId);
-
-		foreach ($suppliers as $sup) {
-			$s          = static::create($sup);
-			$supIds [ ] = $s->id;
-		}
-
-
-		Log::debug('Supplier Masih Kosong , Sudah diisi ' . count($supIds));
-		return ( $resultsIds ) ? $supIds : "Generate " . count($supIds) . " records";
+		return SampleData::generateMassiveDummy($resultsIds,$count);
 	}
 
 	/**
@@ -154,9 +123,9 @@ class Suppliers extends Model
 	 *
 	 * @return array|string
 	 */
-	public  static function generateRecordsFromDummy($resultIds = false,$count = 100)
+	public static function generateRecordsFromDummy($resultIds = false, $count = 100)
 	{
-		return static::generateMassiveDummy($resultIds,$count);
+		return static::generateMassiveDummy($resultIds, $count);
 	}
 
 	/**
@@ -164,13 +133,12 @@ class Suppliers extends Model
 	 *
 	 * @return array|string
 	 */
-	public static  function getRecordIdsOrCreate($count = 10)
+	public static function getRecordIdsOrCreate($count = 10)
 	{
 		$recordIds = static::getListIds();
-		if (!count($recordIds))
-		{
+		if (!count($recordIds)) {
 			/*Create*/
-			$recordIds = static::generateMassiveDummy(true,$count);
+			$recordIds = static::generateMassiveDummy(true, $count);
 		};
 		return $recordIds;
 	}
@@ -184,8 +152,13 @@ class Suppliers extends Model
 		return static::lists('id');
 	}
 
-    public function accountbank()
-    {
-        return $this->morphMany('\Emayk\Ics\Repo\Bankaccount\Bankaccount','owner');
-    }
+	public function accountbank()
+	{
+		return $this->morphMany('\Emayk\Ics\Repo\Bankaccount\Bankaccount', 'owner');
+	}
+
+	public function offices()
+	{
+//		return $this->morphMany('','parent_id','parent_type');
+	}
 }
