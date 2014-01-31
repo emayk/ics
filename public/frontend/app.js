@@ -183,7 +183,6 @@ Ext.application({
 
 					if (!is_login()) {
 						Ext.widget('login');
-						log('im here 1' + new Date());
 					} else {
 						Ext.create('App.view.Viewport');
 						App.util.SessionMonitor.start();

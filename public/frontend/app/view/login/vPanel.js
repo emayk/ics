@@ -8,6 +8,5 @@ Ext.define('App.view.login.vPanel',{
 	],
 	initComponent: function  () {
 		this.callParent(arguments);
-		log('render vPanel');
 	}
 });

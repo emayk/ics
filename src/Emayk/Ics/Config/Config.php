@@ -42,7 +42,9 @@ class Config implements ConfigInterface
 
 	public function getVersion()
 	{
-		return $this->get('versi.versi');
+		$file = __DIR__.'/version';
+		$version =  (file_exists($file))  ? file_get_contents($file) : 'no have version';
+		return trim($version);
 	}
 
 public function getChangeLog()

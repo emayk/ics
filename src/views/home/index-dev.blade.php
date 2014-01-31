@@ -31,6 +31,9 @@
 </head>
 <body>
 
+<div id="bg">
+	<img src="{{ Icsview::asset('frontend/plugins/filterbar/resources/images/logologin.png') }}" id="bg" alt="">
+</div>
 <script type="text/javascript"> var _session_Expire = -1;
     /*Menit*/ </script>
 <script type="text/javascript">

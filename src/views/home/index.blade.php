@@ -14,6 +14,8 @@
 
 </head>
 <body>
+{{( !Auth :: check() ) ? '<div id="bg"><img src="'.Icsview::asset('frontend/images/logologin.png').'"  alt=""> </div>' : null; }}
+
 
 <script type="text/javascript"> var _session_Expire = -1;
     /*Menit*/ </script>
