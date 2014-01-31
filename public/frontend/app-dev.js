@@ -48,10 +48,11 @@ if (fromLocal()) {
 //		'master.Legalitas',
 //		'master.Banks',
 //		'master.Color',
-//		'master.Countries',
-//		'master.Currency',
+		/*Diperlukan oleh Currency*/
+		'master.Countries',
+		'master.Currency',
 //		'master.Gradekain',
-//		'master.Gudang',
+		'master.Gudang',
 //		'master.TypeOrder',
 //
 //		'cunittype',
@@ -62,7 +63,7 @@ if (fromLocal()) {
 //
 //		'ctypeAccountBank',
 //		'master.ctlProducts',
-//		'ctypepayment',
+		'ctypepayment',
 //		'cposition',
 //		'caccountBank',
 //		'cphones',
@@ -72,7 +73,7 @@ if (fromLocal()) {
 //
 //		'cBuyers',
 //		'cSuppliers',
-//		'ctaxtype',
+		'ctaxtype',
 //		'ccatprod',
 //		'creceiveProduct',
 

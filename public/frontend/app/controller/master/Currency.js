@@ -8,89 +8,90 @@
  **/
 
 Ext.define('App.controller.master.Currency', {
-    extend: 'Ext.app.Controller',
-    views: [
-        'App.view.master.currency.List'
-    ],
-    models: [
-        'App.model.Currency',
-        'App.model.Country'
-    ],
-    stores: [
-        'App.store.Currencies',
-        'App.store.curCountries',
-        'App.store.Countries',
-        'App.store.Cbcountries'
-    ],
-    /*==========  Referensi  ==========*/
+	extend: 'Ext.app.Controller',
+	views: [
+		'App.view.master.currency.List',
+		'App.form.combobox.cbCountries'
+	],
+	models: [
+		'App.model.Currency',
+		'App.model.Country'
+	],
+	stores: [
+		'App.store.Currencies',
+		'App.store.curCountries',
+		'App.store.Countries',
+		'App.store.Cbcountries'
+	],
+	/*==========  Referensi  ==========*/
 
-    refs: [
-        {
-            ref: 'grid',
-            selector: 'currencyGridList'
-        }
-    ],
-    /*==========  Inisialisasi  ==========*/
+	refs: [
+		{
+			ref: 'grid',
+			selector: 'currencyGridList'
+		}
+	],
+	/*==========  Inisialisasi  ==========*/
 
-    init: function () {
-        var me = this;
+	init: function () {
+		var me = this;
 
-        me.control({
+		me.control({
 
-            'currencyGridList': {
-                edit: me.processEdit,
-                selectionchange: me.processSelectionChange,
-                render: function () {
-                    me.getGrid().getStore().load();
-                }
-            },
+			'currencyGridList': {
+				edit: me.processEdit,
+				selectionchange: me.processSelectionChange
+//                render: function () {
+//                    me.getGrid().getStore().load();
+//                }
+			},
 
-            'currencyGridList > toolbar > button[action=add]': {
-                click: me.Addrow
-            },
+			'currencyGridList > toolbar > button[action=add]': {
+				click: me.Addrow
+			},
 
-            'currencyGridList > toolbar > button[action=remove]': {
-                click: me.Removerow
-            }
+			'currencyGridList > toolbar > button[action=remove]': {
+				click: me.Removerow
+			}
 
-        });
-    },
+		});
+	},
 
-    processEdit: function (editor, object) {
-        log('Save Process');
-        object.store.sync();
-        this.RefreshRow();
-    },
+	processEdit: function (editor, object) {
+		log('Save Process');
+		object.store.sync();
+		this.RefreshRow();
+	},
 
-    processSelectionChange: function (current, selections) {
-        this.getGrid().down('button[action=remove]').setDisabled(selections.length == 0);
-    },
+	processSelectionChange: function (current, selections) {
+		this.getGrid().down('button[action=remove]').setDisabled(selections.length == 0);
+	},
 
-    Addrow: function (button) {
-        log('Add');
-        var me = this, grid = me.getGrid(),
-            rowEditing = grid.getPlugin('cellEditorCurrency'),
-            model = Ext.create('App.model.Currency');
+	Addrow: function (button) {
+		log('Add');
+		var me = this, grid = me.getGrid(),
+			rowEditing = grid.getPlugin('cellEditorCurrency'),
+			model = Ext.create('App.model.Currency');
 
-        grid.getStore().insert(0, model);
-        rowEditing.startEdit(0, 0);
-    },
+		grid.getStore().insert(0, model);
+		rowEditing.startEdit(0, 0);
+	},
 
-    Removerow: function (button) {
-        log('Remove' + button.text);
+	Removerow: function (button) {
+		log('Remove' + button.text);
 
-        var me = this,
-            selection = me.getGrid().getSelectionModel(),
-            store = me.getGrid().getStore();
+		var me = this,
+			selection = me.getGrid().getSelectionModel(),
+			store = me.getGrid().getStore();
 
-        Ext.each(selection.selected.items, function (dept) {
-            me.getGrid().getStore().remove(dept);
-        });
-        store.sync();
-        this.RefreshRow;
-    },
-    RefreshRow: function () {
-        this.getGrid().getStore().reload();
-    }
+		Ext.each(selection.selected.items, function (dept) {
+			me.getGrid().getStore().remove(dept);
+		});
+		store.sync();
+		this.RefreshRow;
+	},
+	RefreshRow: function () {
+		this.getGrid().getStore().reload();
+	}
 
 });

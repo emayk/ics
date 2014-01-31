@@ -25,10 +25,11 @@ Ext.define('App.view.PO.tabNewOrderKain', {
 		'App.view.PO.formAddPoKain',
 		'App.view.PO.listItems'
 	],
+	autoScroll: true,
+	bodyPadding: 5,
 	initComponent: function () {
 		var me = this;
 		Ext.apply(me, {
-			autoScroll: true,
 			items: [
 				/*Form PO*/
 				{

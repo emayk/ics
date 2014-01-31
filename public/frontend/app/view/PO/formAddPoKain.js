@@ -26,7 +26,9 @@ Ext.define('App.view.PO.formAddPoKain', {
 		'App.form.combobox.cbWarehouse',
 		'App.form.combobox.cbCurrencies',
 		'App.form.combobox.cbTypeTax',
-		'App.form.combobox.cbTypePayment'
+		'App.form.combobox.cbTypePayment',
+
+		'App.view.PO.winPayment'
 	],
 	initComponent: function () {
 		var me = this;
@@ -88,7 +90,8 @@ Ext.define('App.view.PO.formAddPoKain', {
 							labelWidth: 100,
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
-								{ xtype: 'cbwarehouse', name: 'wh_id', fieldLabel: '', flex: 1, emptyText: 'Pilih Gudang'}
+								{ xtype: 'cbwarehouse', name: 'wh_id', fieldLabel: '', flex: 1, emptyText: 'Pilih Gudang'},
+								{ xtype: 'button', text: '', iconCls: 'add', action: 'quickaddwarehouse', margin: '0 5 0 5'}
 							]
 						}
 					]
@@ -108,8 +111,9 @@ Ext.define('App.view.PO.formAddPoKain', {
 
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
-								{ xtype: 'cbTypePayment', name: 'payment_id', fieldLabel: '',emptyText: 'Pilih Pembayaran',
+								{ xtype: 'cbTypePayment', name: 'payment_id', fieldLabel: '', emptyText: 'Pilih Pembayaran',
 									flex: .8},
+								{ xtype: 'button', text: '', iconCls: 'add', action: 'quickaddpayment', margin: '0 5 0 5'}
 							]
 						},
 						{
@@ -153,9 +157,29 @@ Ext.define('App.view.PO.formAddPoKain', {
 					layout: 'anchor',
 					items: [
 						{ xtype: 'datefield', name: 'deliverydate', fieldLabel: 'Tanggal Rencana Kirim', minValue: today, emptyText: 'Pilih Tanggal' },
-						{ xtype: 'cbtypetax', name: 'tax_id', fieldLabel: 'Jenis Pajak', emptyText: 'Pilih Jenis Pajak' },
-						/*@todo : Setiap perubahan pemilihan Mata Uang , Prefix mata DP berubah */
-						{ xtype: 'cbcurrencies', name: 'currency_id', fieldLabel: 'Mata Uang', emptyText: 'Pilih Mata Uang' }
+						{
+							xtype: 'fieldcontainer',
+							fieldLabel: 'Jenis Pajak',
+
+							layout: { type: 'hbox', align: 'stretch'},
+							items: [
+								{ xtype: 'cbtypetax', name: 'tax_id', fieldLabel: '', emptyText: 'Pilih Jenis Pajak',
+									flex: .8},
+								{ xtype: 'button', text: '', iconCls: 'add', action: 'quickaddtax', margin: '0 5 0 5'}
+							]
+						},
+						{
+							xtype: 'fieldcontainer',
+							fieldLabel: 'Mata Uang',
+
+							layout: { type: 'hbox', align: 'stretch'},
+							items: [
+								/*@todo : Setiap perubahan pemilihan Mata Uang , Prefix mata DP berubah */
+								{ xtype: 'cbcurrencies', name: 'currency_id', fieldLabel: '', emptyText: 'Pilih Mata Uang',
+									flex: .8},
+								{ xtype: 'button', text: '', iconCls: 'add', action: 'quickaddcurrency', margin: '0 5 0 5'}
+							]
+						}
 					]
 				}
 			],

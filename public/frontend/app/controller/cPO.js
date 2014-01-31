@@ -28,10 +28,14 @@ Ext.define('App.controller.cPO', {
 		'App.view.PO.listItems',
 		'App.view.PO.winContact',
 		'App.view.PO.winSupplier',
-		'App.view.PO.winProduct'
+		'App.view.PO.winProduct',
+
+		'App.view.PO.winWarehouse',
+		'App.view.PO.winCurrency'
 	],
 	models: [
-		'App.model.PO.mPO'
+		'App.model.PO.mPO',
+		'App.model.typepayment.mtypepayment'
 	],
 	stores: [
 		'App.store.PO.sPO',
@@ -42,7 +46,9 @@ Ext.define('App.controller.cPO', {
 		'App.store.combo.cbWarehouseStore',
 		'App.store.combo.cbCurrency',
 		'App.store.combo.cbTypeTax',
-		'App.store.combo.cbTypePaymentStore'
+		'App.store.combo.cbTypePaymentStore',
+		'App.store.typepayment.stypepayment',
+		'App.store.Currencies',
 	],
 	refs: [
 		{
@@ -71,6 +77,24 @@ Ext.define('App.controller.cPO', {
 			'formAddPoKain [action=selectproduct]': {
 				click: me.showWindowselectProductFromSupplier
 			},
+			/*Quick Add*/
+			/*Warehouse*/
+			'formAddPoKain [action=quickaddwarehouse]': {
+				click: me.showWindowQuickAddWarehouse
+			},
+			/*Payment*/
+			'formAddPoKain [action=quickaddpayment]': {
+				click: me.showWindowQuickAddPayment
+			},
+			/*Tax*/
+			'formAddPoKain [action=quickaddtax]': {
+				click: me.showWindowQuickAddTax
+			},
+			/*Currency*/
+			'formAddPoKain [action=quickaddcurrency]': {
+				click: me.showWindowQuickAddCurrency
+			},
+
 			/**
 			 * Supplier Window
 			 */
@@ -114,13 +138,56 @@ Ext.define('App.controller.cPO', {
 		});
 		me.callParent(arguments);
 	},
+	showWindowQuickAddWarehouse: function (btn) {
+		var win;
+		if (!win) {
+			win = Ext.create('App.view.PO.winWarehouse', {
+				title: 'Tambah Gudang',
+				modal: true
+			});
+			win.show();
+		}
+	},
+	showWindowQuickAddTax: function (btn) {
 
-	showQuickAddProductWindow: function(btn){
-	/*Menambahkan Product dengan cepat*/
+		var win;
+		if (!win) {
+			win = Ext.create('App.view.PO.winTaxtype', {
+				title: 'Tambah Tipe Pajak',
+				modal: true
+			});
+			win.show();
+		}
+	},
+	showWindowQuickAddPayment: function (btn) {
+		var win;
+		if (!win) {
+			win = Ext.create('App.view.PO.winPayment', {
+				title: 'Tambah Metoda Pembayaran',
+				modal: true
+			});
+			win.show();
+		}
+	},
+
+	showWindowQuickAddCurrency: function (btn) {
+
+		var win;
+		if (!win) {
+			win = Ext.create('App.view.PO.winCurrency', {
+				title: 'Tambah Mata Uang',
+				modal: true
+			});
+			win.show();
+		}
+	},
+
+	showQuickAddProductWindow: function (btn) {
+		/*Menambahkan Product dengan cepat*/
 		var supname = btn.up('window').getSupplierName();
 		var win;
-		if (!win){
-			win = Ext.create('Ext.window.Window',{
+		if (!win) {
+			win = Ext.create('Ext.window.Window', {
 				title: 'Tambah Product untuk Supplier ' + supname,
 				height: App.util.box.maxHeightwindow() - 200,
 				width: App.util.box.maxWidthWindow() - 100,
@@ -140,7 +207,7 @@ Ext.define('App.controller.cPO', {
 				store = grid.getStore(),
 				suppliername = field.getValue(),
 				proxy = store.getProxy();
-			proxy.setExtraParam('suppliername',suppliername);
+			proxy.setExtraParam('suppliername', suppliername);
 			store.load();
 		}
 	},
@@ -155,7 +222,7 @@ Ext.define('App.controller.cPO', {
 				store = grid.getStore(),
 				contactname = field.getValue(),
 				proxy = store.getProxy();
-			proxy.setExtraParam('contactname',contactname);
+			proxy.setExtraParam('contactname', contactname);
 			store.load();
 		}
 	},
@@ -175,7 +242,7 @@ Ext.define('App.controller.cPO', {
 				store = grid.getStore(),
 				productname = field.getValue(),
 				proxy = store.getProxy();
-			proxy.setExtraParam('productname',productname);
+			proxy.setExtraParam('productname', productname);
 			store.load();
 		}
 	},

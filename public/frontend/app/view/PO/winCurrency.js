@@ -1,6 +1,4 @@
 /**
- * Model typepayment
- *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +14,35 @@
  *
  * @author Emay Komarudin
  *
- *
- *
  **/
-Ext.define('App.model.typepayment.mtypepayment', {
-    extend: 'Ext.data.Model',
-    fields: [ 'id', 'name','info','uuid','createby_id','lastupdateby_id',
-	    {name: 'created_at', type: 'date'},
-	    {name: 'updated_at', type: 'date'}, ],
-	proxy: {
-		type: 'rest',
-		url: getApiUrl() +'/paymenttype',
-		reader: {
-			type: 'json',
-			root: 'results',
-			totalProperty: 'total'
-		}
+
+
+
+Ext.define('App.view.PO.winCurrency', {
+	extend: 'Ext.window.Window',
+	alias: 'widget.winCurrency',
+	requires:[
+		'App.view.master.currency.List'
+	],
+
+	layout: { type: 'fit', align: 'stretch'},
+	initComponent:function(btn){
+		var me = this;
+		Ext.apply(me,{
+			width: App.util.box.maxWidthWindow() - 100 ,
+			height: App.util.box.maxHeightwindow() - 100,
+			items: [
+				{xtype: 'currencyGridList',itemId:'gridcurrency'}
+			],
+			buttons: [
+				{ text: 'Tutup',iconCls: 'close',handler:function(btn){
+					btn.up('window').close();
+				} }
+			]
+		});
+		me.callParent(arguments);
 	}
+
 });
+
+
