@@ -54,7 +54,7 @@ Ext.define('App.view.PO.winProduct', {
 							items: [
 								{
 									xtype: 'textfield',
-									emptyText: 'Cari Contact',
+									emptyText: 'Cari Product',
 									minWidth: 250,
 									action: 'searchproduct'
 								},
@@ -83,11 +83,15 @@ Ext.define('App.view.PO.winProduct', {
 							belumImplement();
 						} },
 						'->',
+
+						{ text: 'Tambah', iconCls: 'add', action: 'quickaddproduct' },
 						{ text: 'Pilih', iconCls: 'add', action: 'selectandclose' }
 					]
 				}
 			]
 		});
 		me.callParent(arguments);
+		me.down('grid').getStore().getProxy().setExtraParam('supplierid',me.getSupplierId());
+		me.down('grid').getStore().load();
 	}
 });

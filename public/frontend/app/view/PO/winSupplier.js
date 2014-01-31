@@ -54,7 +54,8 @@ Ext.define('App.view.PO.winSupplier', {
 							items: [
 								{
 									xtype: 'textfield',minWidth: 250,
-									emptyText: 'Cari Supplier'
+									emptyText: 'Cari Supplier',
+									action: 'searchsupplier'
 								},
 								{
 									xtype: 'tbtext',

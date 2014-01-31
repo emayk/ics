@@ -75,16 +75,19 @@ class ProductsuppliersEloquent implements ProductsuppliersInterface
 			$sup        = $this->suppliers->findOrFail($supplierId);
 
 			$products = [];
-			$total    = $sup->products->count();
 			foreach ($sup->products as $product) {
-				$products [ ] =
-					[
-						'name'  => $product->name,
-						'stock' => $product->totalstocks,
-						'id'    => $product->id
-					];
+				if (Input::has('productname')) {
+					$productName = Input::get('productname');
+					if (preg_match("/{$productName}/i", $product->name)) {
+						$products [ ] = ['name' => $product->name, 'stock' => $product->totalstocks, 'id' => $product->id];
+					};
+				} else {
+					$products [ ] = ['name' => $product->name, 'stock' => $product->totalstocks, 'id' => $product->id];
+				}
 			}
 			$products = array_unique($products, SORT_REGULAR);
+			$total = count($products);
+
 			return [
 				'total'   => $total,
 				'success' => true,

@@ -67,6 +67,12 @@ class ContactpersonEloquent implements ContactpersonInterface
 			$parentType    = $this->contactperson->getOwnerType($parentType);
 			$contactperson = $contactperson->whereParentId($parentId)
 				->whereParentType($parentType);
+
+			if (Input::has('contactname')) {
+				$contactname   = Input::get('contactname');
+				$contactperson = $contactperson->where('name', 'LIKE', "%$contactname%");
+			}
+
 		}
 
 		$total         = $contactperson->count();

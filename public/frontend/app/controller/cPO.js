@@ -83,6 +83,9 @@ Ext.define('App.controller.cPO', {
 			'winPoSupplier > toolbar [action=selectandclose]': {
 				click: me.selectSupplierAndcloseWindow
 			},
+			'winPoSupplier [action=searchsupplier]': {
+				specialkey: me.typeAndSearchSupplier
+			},
 			/**
 			 * Contact Person
 			 */
@@ -92,11 +95,18 @@ Ext.define('App.controller.cPO', {
 			'winPoContact > toolbar [action=selectandclose]': {
 				click: me.toolbarselectContactAndcloseWindow
 			},
+
+			'winPoContact [action=searchcontact]': {
+				specialkey: me.typeAndSearchContact
+			},
 			/**
 			 * Product Window
 			 */
 			'winPoProduct grid': {
 				itemdblclick: me.selectProductAndCloseWindow
+			},
+			'winPoProduct > toolbar [action=quickaddproduct]': {
+				click: me.showQuickAddProductWindow
 			},
 			'winPoProduct [action=searchproduct]': {
 				specialkey: me.typeAndSearchProduct
@@ -104,18 +114,70 @@ Ext.define('App.controller.cPO', {
 		});
 		me.callParent(arguments);
 	},
+
+	showQuickAddProductWindow: function(btn){
+	/*Menambahkan Product dengan cepat*/
+		var supname = btn.up('window').getSupplierName();
+		var win;
+		if (!win){
+			win = Ext.create('Ext.window.Window',{
+				title: 'Tambah Product untuk Supplier ' + supname,
+				height: App.util.box.maxHeightwindow() - 200,
+				width: App.util.box.maxWidthWindow() - 100,
+				modal: true
+			});
+			win.show();
+		}
+	},
+	/**
+	 * Cari Supplier
+	 * @param field
+	 * @param e
+	 */
+	typeAndSearchSupplier: function (field, e) {
+		if (e.getKey() == e.ENTER) {
+			var grid = field.up('grid'),
+				store = grid.getStore(),
+				suppliername = field.getValue(),
+				proxy = store.getProxy();
+			proxy.setExtraParam('suppliername',suppliername);
+			store.load();
+		}
+	},
+	/**
+	 * Cari Contact
+	 * @param field
+	 * @param e
+	 */
+	typeAndSearchContact: function (field, e) {
+		if (e.getKey() == e.ENTER) {
+			var grid = field.up('grid'),
+				store = grid.getStore(),
+				contactname = field.getValue(),
+				proxy = store.getProxy();
+			proxy.setExtraParam('contactname',contactname);
+			store.load();
+		}
+	},
 	/**
 	 * Clear Contact Sebelum Window Tampil
 	 */
 	clearContactBeforeShowWinSupplier: function () {
 		var form = this.getFormAddKain();
 		/*Clear Combo Contact */
-		
+
 		form.down('[name=cp_id]').setValue('');
 		form.down('[name=cp_name]').setValue('');
 	},
-	typeAndSearchProduct: function () {
-		log('dsadsadsa');
+	typeAndSearchProduct: function (field, e) {
+		if (e.getKey() == e.ENTER) {
+			var grid = field.up('grid'),
+				store = grid.getStore(),
+				productname = field.getValue(),
+				proxy = store.getProxy();
+			proxy.setExtraParam('productname',productname);
+			store.load();
+		}
 	},
 	toolbarselectContactAndcloseWindow: function (btn) {
 		/*Dapatkan record yang dipilih*/
