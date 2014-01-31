@@ -34,6 +34,7 @@ Ext.define('App.view.fabrictype.vfabrictype', {
                     frame: true,
                     flex: 1,
                     store: this.store,
+	                selModel: App.util.box.createSelectionModel(),
                     columns: [
                         {
                             xtype: 'rownumberer',
@@ -45,12 +46,6 @@ Ext.define('App.view.fabrictype.vfabrictype', {
                         {text: "Description", dataIndex: "info", flex: 2, editor: {
                             allowBlank: true
                         }},
-
-//                        {text: "Uuid", dataIndex: "uuid", flex: 2 },
-//                        {text: "Create By", dataIndex: "createby", flex: 1 },
-//                        {text: "Last Update", dataIndex: "updater", flex: 1 },
-//                        {text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-//                        {text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
                         {
                             header: 'Action',
                             xtype: 'actioncolumn',
@@ -74,7 +69,6 @@ Ext.define('App.view.fabrictype.vfabrictype', {
                         }
                     ],
                     columnLines: true,
-                    selModel: 'rowmodel',
                     /*==========  Plugins  ==========*/
                     plugins: [
                         Ext.create('Ext.grid.plugin.RowEditing', {

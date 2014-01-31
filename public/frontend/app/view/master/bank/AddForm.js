@@ -39,20 +39,25 @@ Ext.define('App.view.master.bank.AddForm', {
                     {
                         xtype: 'textfield',
                         name: 'name',
-                        fieldLabel: 'Name '
+                        fieldLabel: translations.name
+                    },
+	                {
+                        xtype: 'textfield',
+                        name: 'shortname',
+                        fieldLabel: translations.abbr
                     },
                     {
                         xtype: 'textfield',
                         name: 'notelp',
                         allowBlank: false,
-                        fieldLabel: 'Phone '
+                        fieldLabel: translations.phonenumber
                     },
                     {
                         xtype: 'textareafield',
                         maxRows : 2,
                         name: 'address',
                         allowBlank: false,
-                        fieldLabel: 'Alamat '
+                        fieldLabel: translations.address
                     }
                 ]
             }

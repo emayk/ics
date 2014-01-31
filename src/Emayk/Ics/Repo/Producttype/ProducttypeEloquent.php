@@ -92,6 +92,7 @@ class ProducttypeEloquent implements ProducttypeInterface
 	 *
 	 * Proses Simpan Producttype
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
@@ -105,23 +106,22 @@ class ProducttypeEloquent implements ProducttypeInterface
 //				))->setCallback();
 //		}
 		/*==========  Sesuaikan dengan Field di table  ==========*/
-		$name = Input::get('name');
-		$fabricId = Input::get('fabrictype_id');
-		$existName = ($this->producttype->whereName($name));
-		$count = $existName->count();
+		$name      = Input::get('name');
+		$fabricId  = Input::get('fabrictype_id');
+		$existName = ( $this->producttype->whereName($name) );
+		$count     = $existName->count();
 
-			/*Jika Nama Sudah Ada*/
-		if ($count > 0)
-		{
+		/*Jika Nama Sudah Ada*/
+		if ($count > 0) {
 			/**
 			 * Jika type fabric tidak sama boleh disave,
 			 * jika sama maka throw
 			 */
-			$record = $existName->get()->first();
-			$namedb = $record->name;
+			$record   = $existName->get()->first();
+			$namedb   = $record->name;
 			$fabricdb = $record->fabrictype_id;
 			if ($fabricdb == $fabricId)
-				throw new \Exception("Karena {$namedb} sudah ada , maka fabric name harus unique ");
+				throw new \Exception( "Karena {$namedb} sudah ada , maka fabric name harus unique " );
 		}
 
 		$this->producttype->name            = $name;
@@ -150,20 +150,29 @@ class ProducttypeEloquent implements ProducttypeInterface
 	{
 
 		if ($this->hasAccess()) {
-			$deleted = $this->producttype
-				->find($id)
-				->delete();
+			$type = $this->producttype
+				->findOrFail($id);
 
-			return \Icsoutput::toJson(array(
-				'results' => $deleted
-			), $deleted);
 
-		} else {
-			return \Icsoutput::toJson(array(
-				'results' => false,
-				'reason'  => 'Dont Have Access to Delete '
-			), false);
+			return ( $type->delete() )
+				? Response::json([
+					/*Extjs untuk delete dan fire callback model.destroy() method di setup false */
+					'success' => false,
+					'error'   => false
+				])
+				: Response::json([
+					'success' => false,
+					'error'   => true,
+					'reason'  => 'Cannot Deleted'
+				], 500);
 		}
+
+		return Response::json([
+			'success' => false,
+			'error'   => true,
+			'reason'  => 'Not Authenticated'
+		], 500);
+
 	}
 
 	/**

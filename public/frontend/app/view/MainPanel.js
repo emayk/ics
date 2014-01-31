@@ -1,9 +1,12 @@
 if (fromLocal()) {
 	itemsMainPanel = [
-
-        { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:false},
-//        { xtype : 'tabscolor', title: 'Warna', iconCls:'home', closable:false},
+//		{ xtype : 'appcatprodvcatprod', title: 'Kategory Produk', iconCls:'home', closable:false},
+//		{ xtype : 'apptypeproductvtypeproduct', title: 'Type Product', iconCls:'home', closable:false},
+//		{ xtype : 'appfabrictypevfabrictype', title: 'Type Fabric', iconCls:'home', closable:false},
+//		{ xtype : 'apptypesupbuyvtypesupbuy', title: 'Type Supplier and Buyer', iconCls:'home', closable:false},
 //        { xtype : 'tabbank', title: 'Bank', iconCls:'home', closable:false},
+//        { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:false},
+//        { xtype : 'tabscolor', title: 'Warna', iconCls:'home', closable:false},
 //        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
 //		{ xtype: 'appofficesvoffices', title: 'Office', iconCls: 'home', closable: false},
 //		{ xtype: 'appcatprodtreegrid', title: 'Master Category Product Tree', iconCls: 'home', closable: false},
@@ -15,10 +18,10 @@ if (fromLocal()) {
 //        { xtype : 'appreceiveProductvreceiveProduct', title: 'Receive Product', iconCls:'home', closable:false},
 //        { xtype : 'appsaleProductvsaleProduct', title: 'Sale Product', iconCls:'home', closable:false},
 //        { xtype : 'apptypepaymentvtypepayment', title: 'Type Payment', iconCls:'home', closable:false},
-//        { xtype : 'apptypesupbuyvtypesupbuy', title: 'Type Supplier and Buyer', iconCls:'home', closable:false},
+
 //        { xtype : 'apptypeAccountBankvtypeAccountBank', title: 'Type Account Bank', iconCls:'home', closable:false},
-//        { xtype : 'appfabrictypevfabrictype', title: 'Type Fabric', iconCls:'home', closable:false},
-//        { xtype : 'apptypeproductvtypeproduct', title: 'Type Product', iconCls:'home', closable:false},
+
+
 //        { xtype : 'masterlegalitasGridList', title: 'Legalitas', iconCls:'home', closable:false},
 //        { xtype : 'productstab', title: 'Products', iconCls:'home', closable:false},
 //        { xtype : 'apptaxtypevtaxtype', title: 'Tax Type', iconCls:'home', closable:false},

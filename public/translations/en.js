@@ -176,5 +176,7 @@ menu_example : '[Debug] Menu Example',
 
 	supplier : 'Supplier',
 	typetax: 'Type Tax',
-	typebussiness: 'Type Bussiness'
+	typebussiness: 'Type Bussiness',
+	name : 'Name',
+	abbr : 'Abbr'
 }

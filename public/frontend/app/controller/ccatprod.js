@@ -115,24 +115,50 @@ Ext.define('App.controller.ccatprod',{
 	cntNewRecord: 1,
 
 	removeRecord: function (btn) {
-		log('Remove');
-		var me = this,
-			selection = me.getGrid().getSelectionModel(),
-			store = me.getGrid().getStore();
+		var grid = btn.up('appcatprodvcatprod').down('grid'),
+			selections = grid.getSelectionModel().getSelection(),
+			store = grid.getStore();
+		if (selections[0] === undefined) {
+			this.msgError('Pilih Record Kategori terlebih dahulu');
+			return false;
+		}
 
-		Ext.each(selection.selected.items, function (dept) {
-			store.remove(dept);
+		Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus semua Kategori yang dipilih ? ', function (btn) {
+			if (btn == 'yes') {
+				Ext.each(selections, function (rec, index, value) {
+					rec.destroy({
+						failure: function (rec, opts) {
+							App.util.box.error('Ada Record yang gagal dihapus');
+						}
+					});
+				});
+				store.load();
+			}
 		});
-		store.sync();
-		store.load();
+
+	},
+	msgError: function (text) {
+		App.util.box.error(text);
 	},
 	processSave: function (editor, object) {
-		var store = object.store;
-		var grid = object.grid;
-		/*Save*/
-		object.store.sync();
-		/*Refresh*/
-		grid.getView().refresh();
+		var me = this,
+			record = object.record,
+			name = record.get('name'),
+			grid = object.grid,
+			store = grid.getStore(),
+			fabrictype_id = record.get('fabrictype_id');
+
+		record.save({
+			success: function(rec,opts){
+				App.util.box.info(rec.get('name') + ' Berhasil disimpan');
+				store.load();
+			},
+			failure: function(rec,opts){
+				me.msgError('Ada Kesalahan , saat simpan '+ rec.get('name') +' Silahkan Ulangi Kembali');
+				store.load();
+				return false;
+			}
+		})
 	}
 
 });

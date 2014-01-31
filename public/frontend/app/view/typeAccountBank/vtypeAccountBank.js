@@ -74,7 +74,8 @@ Ext.define('App.view.typeAccountBank.vtypeAccountBank', {
                         }
                     ],
                     columnLines: true,
-                    selModel: 'rowmodel',
+//                    selModel: 'rowmodel',
+                    selModel: App.util.box.createSelectionModel(),
                     /*==========  Plugins  ==========*/
                     plugins: [
                         Ext.create('Ext.grid.plugin.RowEditing', {

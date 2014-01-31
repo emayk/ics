@@ -138,6 +138,10 @@ Ext.define('App.controller.cPO', {
 		});
 		me.callParent(arguments);
 	},
+	/**
+	 * Menampilkan Window Add Warehouse
+	 * @param btn
+	 */
 	showWindowQuickAddWarehouse: function (btn) {
 		var win;
 		if (!win) {
@@ -148,8 +152,11 @@ Ext.define('App.controller.cPO', {
 			win.show();
 		}
 	},
+	/**
+	 * Menampilkan window Add tax
+	 * @param btn
+	 */
 	showWindowQuickAddTax: function (btn) {
-
 		var win;
 		if (!win) {
 			win = Ext.create('App.view.PO.winTaxtype', {
@@ -159,6 +166,10 @@ Ext.define('App.controller.cPO', {
 			win.show();
 		}
 	},
+	/**
+	 * Menampilkan Window Add Payment
+	 * @param btn
+	 */
 	showWindowQuickAddPayment: function (btn) {
 		var win;
 		if (!win) {
@@ -169,7 +180,10 @@ Ext.define('App.controller.cPO', {
 			win.show();
 		}
 	},
-
+	/**
+	 * Menampilkan window Add payment
+	 * @param btn
+	 */
 	showWindowQuickAddCurrency: function (btn) {
 
 		var win;
@@ -181,7 +195,10 @@ Ext.define('App.controller.cPO', {
 			win.show();
 		}
 	},
-
+	/**
+	 * Menampilkan Window Add Product
+	 * @param btn
+	 */
 	showQuickAddProductWindow: function (btn) {
 		/*Menambahkan Product dengan cepat*/
 		var supname = btn.up('window').getSupplierName();

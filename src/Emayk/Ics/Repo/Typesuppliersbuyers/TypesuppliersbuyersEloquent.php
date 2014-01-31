@@ -138,7 +138,6 @@ class TypesuppliersbuyersEloquent implements TypesuppliersbuyersInterface
 	 */
 	public function delete($id)
 	{
-
 		if ($this->hasAccess()) {
 			$deleted = $this->typesuppliersbuyers
 				->find($id)

@@ -6,7 +6,7 @@
 Ext.define('App.model.Bank', {
     extend: 'Ext.data.Model',
     fields: [
-        'id', 'name', 'address', 'notelp', 'uuid' ],
+        'id', 'name', 'address', 'notelp', 'uuid','shortname' ],
     validations: [
         {
             type: 'length',

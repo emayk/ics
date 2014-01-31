@@ -85,6 +85,7 @@ class BankEloquent implements BankInterface
 		$saved = $this->bank->create(
 			array_merge(Input::except('uuid'), array(
 				'info'            => 'Info Bank ' . Input::get('name'),
+				'shortname'       => Input::get('shortname'),
 				'uuid'            => $fake->getFake()->uuid,
 				'createby_id'     => 1,
 				'lastupdateby_id' => 1,
@@ -142,10 +143,11 @@ class BankEloquent implements BankInterface
 	 */
 	public function update($id)
 	{
-		$db          = $this->bank->findOrFail($id);
-//		$db->name    = trim(Input::get('name'));
-		$db->notelp  = trim(Input::get('notelp'));
-		$db->address = trim(Input::get('address'));
+		$db            = $this->bank->findOrFail($id);
+		$db->name      = trim(Input::get('name'));
+		$db->shortname = Input::get('shortname');
+		$db->notelp    = trim(Input::get('notelp'));
+		$db->address   = trim(Input::get('address'));
 
 		$saved = $db->save();
 		return ( $saved )

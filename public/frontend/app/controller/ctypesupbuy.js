@@ -77,22 +77,23 @@ Ext.define('App.controller.ctypesupbuy', {
 			values = form.getValues(),
 			record = form.getRecord();
 
-		if (!form.isValid()){
+		if (!form.isValid()) {
 			App.util.box.error('Silahkan Perbaiki Masukan Form');
 			return false;
-		};
+		}
+		;
 
-		if (!record){
-			record = Ext.create('App.model.typesupbuy.mtypesupbuy',values);
-		}else{
+		if (!record) {
+			record = Ext.create('App.model.typesupbuy.mtypesupbuy', values);
+		} else {
 			record.set(values);
 		}
 		record.save({
-			success: function(rec,opts){
+			success: function (rec, opts) {
 				App.util.box.info(rec.get('name') + ' Berhasil ditambahkan');
 				win.close();
 			},
-			failure : function(rec,opts){
+			failure: function (rec, opts) {
 				App.util.box.error('Gagal menambahkan');
 			}
 		});
@@ -148,14 +149,32 @@ Ext.define('App.controller.ctypesupbuy', {
 	removeRecord: function (btn) {
 		log('Remove');
 		var me = this,
-			selection = me.getGrid().getSelectionModel(),
-			store = me.getGrid().getStore();
+			grid = btn.up('apptypesupbuyvtypesupbuy').down('grid'),
+			selection = grid.getSelectionModel().getSelection(),
+			store = grid.getStore(),
+			firstrecord = selection[0];
 
-		Ext.each(selection.selected.items, function (dept) {
-			store.remove(dept);
+		if (firstrecord === undefined) {
+			msgError('Pilih Record Tipe terlebih dahulu');
+			return false;
+		}
+
+		Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus semua Tipe yang dipilih ? ', function (btn) {
+
+			if (btn == 'yes') {
+				var records = grid.getSelectionModel().getSelection();
+				Ext.each(records, function (rec, index, value) {
+					rec.destroy({
+						failure: function (rec, opts) {
+							var name = rec.get('name');
+							App.util.box.error('Ada Record yang gagal dihapus');
+						}
+					});
+				});
+				store.load();
+			}
 		});
-		store.sync();
-		store.load();
+
 	},
 	processSave: function (editor, object) {
 		var store = object.store;

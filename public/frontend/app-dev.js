@@ -43,41 +43,41 @@ if (fromLocal()) {
 	 * Master
 	 *
 	 */
-
-//		'master.Departement',
+		'ccatprod',
 //		'master.Legalitas',
-//		'master.Banks',
-//		'master.Color',
-		/*Diperlukan oleh Currency*/
-		'master.Countries',
-		'master.Currency',
-//		'master.Gradekain',
-		'master.Gudang',
-//		'master.TypeOrder',
-//
-//		'cunittype',
-//		'master.ctlUnit',
-//
-//		'ctypeproduct',
 //		'cfabrictype',
+//		'ctypeproduct',
 //
+////		'master.Departement',
 //		'ctypeAccountBank',
-//		'master.ctlProducts',
-		'ctypepayment',
-//		'cposition',
-//		'caccountBank',
-//		'cphones',
+//		'master.Banks',
+////		'master.Color',
+//		/*Diperlukan oleh Currency*/
+//		'master.Countries',
+//		'master.Currency',
+////		'master.Gradekain',
+//		'master.Gudang',
+////		'master.TypeOrder',
+////
+////		'cunittype',
+////		'master.ctlUnit',
+////
+////
+////		'master.ctlProducts',
+//		'ctypepayment',
+////		'cposition',
+////		'caccountBank',
+////		'cphones',
 //		'ctypesupbuy',
-//		'ccontacts',
-//		'coffices',
+////		'ccontacts',
+////		'coffices',
+////
+////		'cBuyers',
+////		'cSuppliers',
+//		'ctaxtype',
+////		'creceiveProduct',
 //
-//		'cBuyers',
-//		'cSuppliers',
-		'ctaxtype',
-//		'ccatprod',
-//		'creceiveProduct',
-
-		'cPO'
+//		'cPO'
 	];
 
 } else {

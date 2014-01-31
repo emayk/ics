@@ -25,7 +25,6 @@ Ext.define('App.controller.master.Legalitas', {
 
 	init: function () {
 		var me = this;
-		log('Legalitas Controller Init');
 		this.control({
 			/**
 			 * Proses Pada Grid List Legalitas
@@ -81,27 +80,45 @@ Ext.define('App.controller.master.Legalitas', {
 		if (!form.isValid()) {
 			App.util.box.error('Silahkan Perbaiki Masukan ');
 			return false;
-		};
-			if (!record) {
-				record = Ext.create('App.model.Legality', values);
-			} else {
-				record.set(values);
+		}
+		;
+		if (!record) {
+			record = Ext.create('App.model.Legality', values);
+		} else {
+			record.set(values);
+		}
+		record.save({
+			success: function (rec, opts) {
+				App.util.box.info(rec.get('name') + ' Berhasil disimpan');
+				win.close();
+			},
+			failure: function (rec, opts) {
+				App.util.box.error('Tidak Bisa Simpan,Silahkan coba lagi');
 			}
-			record.save({
-				success: function (rec, opts) {
-					App.util.box.info(rec.get('name') + ' Berhasil disimpan');
-					win.close();
-				},
-				failure: function (rec, opts) {
-					App.util.box.error('Tidak Bisa Simpan,Silahkan coba lagi');
-				}
-			})
+		})
 
 	},
 	processEdit: function (editor, object) {
-		log('Save Process');
-		object.store.save();
-		object.store.load();
+		var me = this,
+			record = object.record,
+			name = record.get('name'),
+			grid = object.grid,
+			store = grid.getStore();
+
+		record.save({
+			success: function (rec, opts) {
+				App.util.box.info(rec.get('name') + ' Berhasil disimpan');
+				store.load();
+			},
+			failure: function (rec, opts) {
+				me.msgError('Ada Kesalahan , saat simpan ' + rec.get('name') + ' Silahkan Ulangi Kembali');
+				store.load();
+				return false;
+			}
+		})
+	},
+	msgError: function (text) {
+		App.util.box.error(text);
 	},
 	processSelectionChange: function (current, selections) {
 		log('selection change');
@@ -114,21 +131,37 @@ Ext.define('App.controller.master.Legalitas', {
 	 * @constructor
 	 */
 	Addrow: function (button) {
-		var me = this, grid = me.getGrid(),
+		var me = this, grid = button.up('grid'),
 			model = Ext.create('App.model.Legality'),
 			rowEditing = grid.getPlugin('cellEditorLegalitas');
 		grid.getStore().insert(0, model);
 		rowEditing.startEdit(0, 0);
 	},
 	Removerow: function (button) {
-		log('Remove');
-		var me = this, grid = me.getGrid(),
-			selection = grid.getSelectionModel();
-		Ext.each(selection.selected.items, function (dept) {
-			grid.getStore().remove(dept);
+		var grid = button.up('masterlegalitasGridList'),
+			selections = grid.getSelectionModel().getSelection(),
+			store = grid.getStore();
+		if (selections[0] === undefined) {
+			this.msgError('Pilih Record Badan Hukum terlebih dahulu');
+			return false;
+		}
+
+		Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus Badan Hukum yang dipilih ? ', function (btn) {
+			if (btn == 'yes') {
+				Ext.each(selections, function (rec, index, value) {
+					rec.destroy({
+						callback: function (records, ops, s) {
+							if (ops.error) {
+								App.util.box.error('Ada Record terpilih yang gagal dihapus');
+							} else {
+								App.util.box.info('Record terpilih berhasil dihapus');
+							}
+						}
+					});
+				});
+				store.load();
+			}
 		});
-		grid.getStore().sync();
-		grid.getStore().load();
 	},
 	renderGridList: function () {
 		var me = this;

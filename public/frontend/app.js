@@ -59,6 +59,7 @@ if (fromLocal()) {
 		'creceiveProduct',
 
 		'cPO'
+
 		/*Sale Product*/
 		/*'cOrders',
 		 'csaleProduct',*/

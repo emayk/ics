@@ -110,9 +110,24 @@ Ext.define('App.controller.master.Banks', {
             return false;
         }
 
-        store.remove(record);
-        store.sync();
-        log(store.count());
+	    Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus semua Bank yang dipilih ? ',function(btn){
+		    log(btn);
+		   if (btn == 'yes') {
+			   var records = grid.getSelectionModel().getSelection();
+//			   me.deleteRecords(records,store);
+			   Ext.each(grid.getSelectionModel().getSelection(), function(rec, index, value) {
+				   store.remove(rec);
+				   store.sync();
+			   });
+		   }
+	    });
+
+
+//	    log(ids);
+
+//        store.remove(record);
+        store.load();
+//        log(store.count());
         /**
          * Jika Jumlah Store Sudah 0 pada page saat delete record
          */
@@ -121,7 +136,12 @@ Ext.define('App.controller.master.Banks', {
         } else {
             store.load();
         }
-    }
+    },
+	deleteRecords: function(records,store){
+		Ext.each(records, function(record, index, value) {
+			store.remove(record);
+		});
+	}
 
 
 });

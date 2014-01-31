@@ -39,6 +39,7 @@ Ext.define('App.view.typesupbuy.vtypesupbuy', {
 							clicksToMoveEditor: 1
 						})
 					],
+					selModel: App.util.box.createSelectionModel(),
 					columns: [
 						{
 							text: '#',
@@ -59,6 +60,27 @@ Ext.define('App.view.typesupbuy.vtypesupbuy', {
 							editor: {
 								allowblank: true
 							}
+						},
+						{
+							header: 'Action',
+							xtype: 'actioncolumn',
+							flex: .4,
+							items: [
+								{
+									iconCls: 'delete',
+									tooltip: 'Delete',
+									handler: function (grid, rowIndex, colIndex) {
+										Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin Akan Menghapus Record ini ?', function (btn, text) {
+											if (btn == 'yes') {
+												var rec = grid.getStore().getAt(rowIndex);
+												grid.getStore().remove(rec);
+												grid.getStore().sync();
+												grid.getStore().load();
+											}
+										});
+									}
+								}
+							]
 						}
 					],
 					dockedItems: [

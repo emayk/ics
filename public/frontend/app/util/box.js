@@ -60,6 +60,38 @@ Ext.define('App.util.box', {
 			var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0];
 			var width =  w.innerWidth || e.clientWidth || g.clientWidth;
 			return width - 100;
+		},
+		createSelectionModel: function(config){
+			var config = config || { checkOnly:true };
+			var sm = Ext.create('Ext.selection.CheckboxModel',config);
+			return sm;
+		},
+		getSelectionModel: function(grid){
+			var records = grid.getSelectionModel().getSelection();
+			Ext.each(records, function(record, index, value) {
+//				ids = ids + row.data.id + ',';
+			});
+		},
+		deleteSingleRecordFromGrid : function (grid, rowIndex, colIndex) {
+			var store = grid.getStore();
+			Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan hapus Record ini ?', function (btn, text) {
+				if (btn == 'yes') {
+					var rec = store.getAt(rowIndex);
+					rec.destroy({
+						callback: function (records, ops, s) {
+							if (ops.error) {
+								/*Undefined artinya Success deleted*/
+								App.util.box.error('Record ' + records.get('name') + ' gagal dihapus');
+								store.load();
+								return false;
+							} else {
+								App.util.box.info('Record ' + records.get('name') + ' berhasil dihapus');
+								store.load();
+							}
+						}
+					});
+				}
+			});
 		}
 
 	}

@@ -24,8 +24,8 @@ Ext.define('App.view.master.bank.tab',{
 		'App.view.typeAccountBank.vtypeAccountBank'
 	],
 	items: [
-		{xtype: 'bankListGrid', title : 'Daftar',padding: 10,
+		{xtype: 'bankListGrid', title : 'Daftar Bank',padding: 10,
 			frame: true},
-		{xtype: 'apptypeAccountBankvtypeAccountBank', title : 'Tipe'}
+		{xtype: 'apptypeAccountBankvtypeAccountBank', title : 'Tipe Rekening'}
 	]
 });

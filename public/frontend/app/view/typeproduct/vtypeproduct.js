@@ -57,11 +57,6 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 								fieldLabel: ''
 							},
 							flex: 2 },
-//						{text: "Uuid", dataIndex: "uuid", flex: 2 },
-//						{text: "Create By", dataIndex: "createby", flex: 1 },
-//						{text: "Last Update", dataIndex: "updater", flex: 1 },
-//						{text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-//						{text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
 						{
 							header: 'Action',
 							xtype: 'actioncolumn',
@@ -71,12 +66,23 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 									iconCls: 'delete',
 									tooltip: 'Delete',
 									handler: function (grid, rowIndex, colIndex) {
+										var store = grid.getStore();
 										Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
 											if (btn == 'yes') {
-												var rec = grid.getStore().getAt(rowIndex);
-												grid.getStore().remove(rec);
-												grid.getStore().sync();
-												grid.getStore().load();
+												var rec = store.getAt(rowIndex);
+												rec.destroy({
+													callback: function (records, ops, s) {
+														if (ops.error) {
+															/*Undefined artinya Success deleted*/
+															App.util.box.error('Record ' + records.get('name') + ' gagal dihapus');
+															store.load();
+															return false;
+														} else {
+															App.util.box.info('Record ' + records.get('name') + ' berhasil dihapus');
+															store.load();
+														}
+													}
+												});
 											}
 										});
 									}
@@ -85,7 +91,7 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 						}
 					],
 					columnLines: true,
-					selModel: 'rowmodel',
+					selModel: App.util.box.createSelectionModel(),
 					/*==========  Plugins  ==========*/
 					plugins: [
 						Ext.create('Ext.grid.plugin.RowEditing', {

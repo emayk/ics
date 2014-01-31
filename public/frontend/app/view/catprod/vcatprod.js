@@ -62,6 +62,18 @@ Ext.define('App.view.catprod.vcatprod', {
 							editor: {
 								allowblank: true
 							}
+						},
+						{
+							header: 'Action',
+							xtype: 'actioncolumn',
+							flex: .4,
+							items: [
+								{
+									tooltip: 'Delete',
+									iconCls: 'delete',
+									handler: App.util.box.deleteSingleRecordFromGrid
+								}
+							]
 						}
 					],
 					dockedItems: [
@@ -83,7 +95,8 @@ Ext.define('App.view.catprod.vcatprod', {
 							store: this.store,
 							displayInfo: true
 						}
-					]
+					],
+					selModel:App.util.box.createSelectionModel()
 				}
 			]
 		});

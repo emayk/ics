@@ -11,6 +11,7 @@ Ext.define('App.view.master.bank.List', {
 	columns: [
 		{xtype: 'rownumberer'},
 		{header: 'Name', dataIndex: 'name', flex: 1},
+		{header: 'Singkatan', dataIndex: 'shortname', flex: 1},
 		{header: 'Alamat', dataIndex: 'address', flex: 1},
 		{header: 'Phone', dataIndex: 'notelp', flex: 1},
 		{
@@ -38,8 +39,10 @@ Ext.define('App.view.master.bank.List', {
 	autoScroll: true,
 	store: 'App.store.Banks',
 	initComponent: function () {
-		log('List Bank Loaded');
-		this.dockedItems = [
+		var me = this;
+		Ext.apply(me,{
+			selModel: App.util.box.createSelectionModel(),
+			dockedItems : [
 			{
 				xtype: 'toolbar',
 				items: [
@@ -91,7 +94,10 @@ Ext.define('App.view.master.bank.List', {
 				store: 'App.store.Banks',
 				displayInfo: true
 			}
-		];
-		this.callParent(arguments);
+		]
+		});
+		me.callParent(arguments);
+
+//		this.callParent(arguments);
 	}
 });

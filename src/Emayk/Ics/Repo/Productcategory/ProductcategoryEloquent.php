@@ -28,204 +28,218 @@ use \Input;
 
 class ProductcategoryEloquent implements ProductcategoryInterface
 {
-    protected $productcategory;
+	protected $productcategory;
 
-    function __construct(Productcategory $productcategory)
-    {
-        $this->productcategory = $productcategory;
-    }
+	function __construct(Productcategory $productcategory)
+	{
+		$this->productcategory = $productcategory;
+	}
 
-    /**
-     *
-     * Mendapatkan Record Productcategory berdasarkan ID yang diberikan
-     * @param  int $id ID Record
-     * @return Model Record Productcategory
-     **/
+	/**
+	 *
+	 * Mendapatkan Record Productcategory berdasarkan ID yang diberikan
+	 *
+	 * @param  int $id ID Record
+	 *
+	 * @return Model Record Productcategory
+	 **/
 
-    public function find($id)
-    {
-        return $this->productcategory->find($id);
-    }
+	public function find($id)
+	{
+		return $this->productcategory->find($id);
+	}
 
-    /**
-     * Mendapatkan Semua Productcategory
-     * @return mixed
-     */
-    public function all()
-    {
-        $page = \Input::get('page');
-        $limit = \Input::get('limit', 1);
-        $start = \Input::get('start', 0);
+	/**
+	 * Mendapatkan Semua Productcategory
+	 *
+	 * @return mixed
+	 */
+	public function all()
+	{
+		$page  = \Input::get('page');
+		$limit = \Input::get('limit', 1);
+		$start = \Input::get('start', 0);
 
-        if (Input::has('selected'))
-        {
-            $id = Input::get('selected');
-            $record = $this->productcategory->findOrFail($id);
-            return Response::json([
-                'success' => true, 'error' => false,
-                'results' => $record->toArray()
-            ]);
-        }
+		if (Input::has('selected')) {
+			$id     = Input::get('selected');
+			$record = $this->productcategory->findOrFail($id);
+			return Response::json([
+				'success' => true, 'error' => false,
+				'results' => $record->toArray()
+			]);
+		}
 
-        $productcategory = $this->productcategory
-            ->orderBy('id', 'DESC')
-            ->skip($start)
-            ->take($limit)
-            ->get()->toArray();
-        $total = $this->productcategory
-            ->all()->count();
+		$productcategory = $this->productcategory
+			->orderBy('id', 'DESC')
+			->skip($start)
+			->take($limit)
+			->get()->toArray();
+		$total           = $this->productcategory
+			->all()->count();
 
-        $productcategorys = array(
-            'success' => true,
-            'results' => $productcategory,
-            'total' => $total
-        );
+		$productcategorys = array(
+			'success' => true,
+			'results' => $productcategory,
+			'total'   => $total
+		);
 
-        return Response::json($productcategorys)
-            ->setCallback(\Input::get('callback'));
+		return Response::json($productcategorys)
+			->setCallback(\Input::get('callback'));
 
-    }
+	}
 
-    /**
-     *
-     * Proses Simpan Productcategory
-     *
-     * @return mixed
-     */
-    public function store()
-    {
-        if (!$this->hasAccess()) {
-            return Response::json(
-                array(
-                    'success' => false,
-                    'reason' => 'Action Need Login First',
-                    'results' => null
-                ))->setCallback();
-        }
-        /*==========  Sesuaikan dengan Field di table  ==========*/
-         $this->productcategory->name = Input::get('name');
-         $this->productcategory->info = Input::get('info');
-         $this->productcategory->uuid = uniqid('New_');
-         $this->productcategory->parent_type = '\Emayk\Ics\Repo\Productcategory\Productcategory';
-         $this->productcategory->kodeinternal = uniqid();
-         $this->productcategory->createby_id = \Auth::user()->id;
-         $this->productcategory->lastupdateby_id = \Auth::user()->id;
-         $this->productcategory->created_at = new Carbon();
-         $this->productcategory->updated_at = new Carbon();
-        $saved = $this->productcategory->save() ? true : false;
-        return Response::json(array(
-            'success' => $saved,
-            'results' => $this->productcategory->toArray()
-        ))->setCallback();
-    }
+	/**
+	 *
+	 * Proses Simpan Productcategory
+	 *
+	 * @return mixed
+	 */
+	public function store()
+	{
+		if (!$this->hasAccess()) {
+			return Response::json(
+				array(
+					'success' => false,
+					'reason'  => 'Action Need Login First',
+					'results' => null
+				))->setCallback();
+		}
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		$this->productcategory->name            = Input::get('name');
+		$this->productcategory->info            = Input::get('info');
+		$this->productcategory->uuid            = uniqid('New_');
+		$this->productcategory->parent_type     = '\Emayk\Ics\Repo\Productcategory\Productcategory';
+		$this->productcategory->kodeinternal    = uniqid();
+		$this->productcategory->createby_id     = \Auth::user()->id;
+		$this->productcategory->lastupdateby_id = \Auth::user()->id;
+		$this->productcategory->created_at      = new Carbon();
+		$this->productcategory->updated_at      = new Carbon();
+		$saved                                  = $this->productcategory->save() ? true : false;
+		return Response::json(array(
+			'success' => $saved,
+			'results' => $this->productcategory->toArray()
+		))->setCallback();
+	}
 
-    /**
-     * Menghapus Productcategory
-     *
-     * @param $id
-     * @return mixed
-     *
-     */
-    public function delete($id)
-    {
+	/**
+	 * Menghapus Productcategory
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 *
+	 */
+	public function delete($id)
+	{
 
-        if ($this->hasAccess()) {
-            $deleted = $this->productcategory
-                ->find($id)
-                ->delete();
+		if ($this->hasAccess()) {
+			$cat = $this->productcategory
+				->findOrFail($id);
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ), $deleted);
+			return ( $cat->delete() )
+				? Response::json([
+					/*Extjs untuk delete dan fire callback model.destroy() method di setup false */
+					'success' => false,
+					'error'   => false
+				])
+				: Response::json([
+					'success' => false,
+					'error'   => true,
+					'reason'  => 'Cannot Deleted'
+				], 500);
+		}
 
-        } else {
-            return \Icsoutput::toJson(array(
-                'results' => false,
-                'reason' => 'Dont Have Access to Delete '
-            ), false);
-        }
-    }
+		return Response::json([
+			'success' => false,
+			'error'   => true,
+			'reason'  => 'Not Authenticated'
+		], 500);
+	}
 
-    /**
-     * Update Informasi [[cName]]
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function update($id)
-    {
-        $db = $this->productcategory->find($id);
-        /*==========  Sesuaikan  ==========*/
-        // $db->name = Input::get('name');
-         $db->info = Input::get('info');
-        $db->uuid = uniqid('Update_');
-        return ($db->save())
-            ? \Icsoutput::msgSuccess($db->toArray())
-            : \Icsoutput::msgError(array('reason' => 'Cannot Update'));
-    }
+	/**
+	 * Update Informasi [[cName]]
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function update($id)
+	{
+		$db = $this->productcategory->find($id);
+		/*==========  Sesuaikan  ==========*/
+		// $db->name = Input::get('name');
+		$db->info = Input::get('info');
+		$db->uuid = uniqid('Update_');
+		return ( $db->save() )
+			? \Icsoutput::msgSuccess($db->toArray())
+			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
+	}
 
-    /**
-     *
-     * Apakah Sudah Login
-     *
-     * @return boolean
-     *
-     **/
-    protected function  hasAccess()
-    {
-        return (!Auth::guest());
-    }
+	/**
+	 *
+	 * Apakah Sudah Login
+	 *
+	 * @return boolean
+	 *
+	 **/
+	protected function  hasAccess()
+	{
+		return ( !Auth::guest() );
+	}
 
-    /**
-     *
-     * Menampilkan Page Create data Productcategory
-     *
-     **/
+	/**
+	 *
+	 * Menampilkan Page Create data Productcategory
+	 *
+	 **/
 
-    public function create()
-    {
-        // TODO: Implement create() method.
-    }
+	public function create()
+	{
+		// TODO: Implement create() method.
+	}
 
-    /**
-     * Menampilkan Resource
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        $record = $this->productcategory->findOrFail($id);
+	/**
+	 * Menampilkan Resource
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		$record = $this->productcategory->findOrFail($id);
 
-        return Response::json([
-            'success' => true, 'error' => false,
-            'results' => $record->toArray()
-        ]);
+		return Response::json([
+			'success' => true, 'error' => false,
+			'results' => $record->toArray()
+		]);
 
 
-    }
+	}
 
-    /**
-     * Menampilkan Data Untuk di edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        // TODO: Implement edit() method.
-    }
+	/**
+	 * Menampilkan Data Untuk di edit
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		// TODO: Implement edit() method.
+	}
 
-    /**
-     * Remove Storage
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        return $this->delete($id);
-    }
+	/**
+	 * Remove Storage
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->delete($id);
+	}
 
 
 }

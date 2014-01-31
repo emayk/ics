@@ -47,6 +47,7 @@ Ext.define('App.view.PO.winProduct', {
 						{ dataIndex: 'name', text: 'Nama Product',flex: 2 },
 						{ dataIndex: 'stock', text: 'Stock',flex: 1 }
 					],
+					selModel: App.util.box.createSelectionModel(),
 					dockedItems: [
 						{
 							xtype: 'toolbar',

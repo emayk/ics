@@ -166,6 +166,8 @@ translations = {
 
 	supplier : 'Pemasok',
 	typetax: 'Tipe Pajak',
-	typebussiness: 'Tipe Usaha'
+	typebussiness: 'Tipe Usaha',
+	name : 'Nama',
+	abbr : 'Singkatan'
 
 }
