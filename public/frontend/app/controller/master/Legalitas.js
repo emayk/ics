@@ -132,7 +132,7 @@ Ext.define('App.controller.master.Legalitas', {
 	 */
 	Addrow: function (button) {
 		var me = this, grid = button.up('grid'),
-			model = Ext.create('App.model.Legality'),
+			model = Ext.create('App.model.Legality',{name: ' '}),
 			rowEditing = grid.getPlugin('cellEditorLegalitas');
 		grid.getStore().insert(0, model);
 		rowEditing.startEdit(0, 0);
