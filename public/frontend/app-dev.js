@@ -43,7 +43,7 @@ if (fromLocal()) {
 	 * Master
 	 *
 	 */
-		'ccatprod',
+//		'ccatprod',
 //		'master.Legalitas',
 //		'cfabrictype',
 //		'ctypeproduct',
@@ -74,7 +74,7 @@ if (fromLocal()) {
 ////
 ////		'cBuyers',
 ////		'cSuppliers',
-//		'ctaxtype',
+		'ctaxtype',
 ////		'creceiveProduct',
 //
 //		'cPO'

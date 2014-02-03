@@ -20,56 +20,80 @@ Ext.define('App.view.taxtype.Lists', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.apptaxtypevtaxtypeLists',
     emptyText: 'Empty Tax Type',
-    columns:[
-        {
-            xtype:'rownumberer'
-        },
-        {
-            dataIndex: 'name',
-            header: 'Name',flex: 1
-        },{
-            dataIndex: 'info',
-            header: 'Description',flex: 2
-        }
-    ],
-    store: 'App.store.taxtype.staxtype',
-    dockedItems:[
-        {
-          xtype: 'toolbar',
-            dock: 'top',
-            items:[
-                {
-                    text: 'Add',
-                    iconCls: 'add',
-                    itemId: 'add'
-                },{
-                    text: 'Remove',
-                    iconCls: 'delete',
-                    itemId: 'remove'
-                },'->',
-                {
-                    text: 'Import',
-                    iconCls: 'excel',
-                    itemId: 'import',
-                    handler: function(){ belumImplement();}
-                },{
-                    text: 'Export',
-                    iconCls: 'excel',
-                    itemId: 'export',
-                    handler: function(){ belumImplement();}
-                },{
-                    text: 'Help',
-                    iconCls: 'help',
-                    itemId: 'help',
-                    handler: function(){ belumImplement();}
-                }
-            ]
-        },
-        {
-            xtype : 'pagingtoolbar',
-            dock: 'bottom',
-            displayInfo:true,
-            store: 'App.store.taxtype.staxtype'
-        }
-    ]
+	config:{
+		store: 'App.store.taxtype.staxtype'
+	},
+
+	initComponent: function(){
+		var me = this;
+		Ext.apply(me,{
+			selModel:App.util.box.createSelectionModel(),
+
+			columns:[
+				{
+					xtype:'rownumberer'
+				},
+				{
+					dataIndex: 'name',
+					header: 'Name',flex: 1
+				},{
+					dataIndex: 'info',
+					header: 'Description',flex: 2
+				},
+				{
+					header: 'Action',
+					xtype: 'actioncolumn',
+					flex: .4,
+					items: [
+						{
+							tooltip: 'Delete',
+							iconCls: 'delete',
+							handler: App.util.box.deleteSingleRecordFromGrid
+						}
+					]
+				}
+			],
+			dockedItems:[
+				{
+					xtype: 'toolbar',
+					dock: 'top',
+					items:[
+						{
+							text: 'Add',
+							iconCls: 'add',
+							itemId: 'add'
+						},{
+							text: 'Remove',
+							iconCls: 'delete',
+							itemId: 'remove'
+						},'->',
+						{
+							text: 'Import',
+							iconCls: 'excel',
+							itemId: 'import',
+							handler: function(){ belumImplement();}
+						},{
+							text: 'Export',
+							iconCls: 'excel',
+							itemId: 'export',
+							handler: function(){ belumImplement();}
+						},{
+							text: 'Help',
+							iconCls: 'help',
+							itemId: 'help',
+							handler: function(){ belumImplement();}
+						}
+					]
+				},
+				{
+					xtype : 'pagingtoolbar',
+					dock: 'bottom',
+					displayInfo:true,
+					store: me.getStore()
+				}
+			]
+		});
+		me.callParent(arguments);
+	}
+
 });
