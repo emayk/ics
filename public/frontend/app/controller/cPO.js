@@ -35,6 +35,7 @@ Ext.define('App.controller.cPO', {
 	],
 	models: [
 		'App.model.PO.mPO',
+		'App.model.PO.items',
 		'App.model.typepayment.mtypepayment'
 	],
 	stores: [
@@ -56,7 +57,13 @@ Ext.define('App.controller.cPO', {
 		},
 		{
 			ref: 'valSupplierId', selector: 'formAddPoKain [name=supplier_id]'
-		}
+		},
+		{
+			ref: 'gridNewOrderItem', selector: 'panelNewOrderKain > gridorderItems'
+		},
+		{
+			ref: 'panelNewOrderItemPo', selector: 'panelNewOrderKain'
+		},
 	],
 	init: function () {
 		var me = this;
@@ -93,6 +100,12 @@ Ext.define('App.controller.cPO', {
 			/*Currency*/
 			'formAddPoKain [action=quickaddcurrency]': {
 				click: me.showWindowQuickAddCurrency
+			},
+			/**
+			 * Form Combox Currency
+			 */
+			'formAddPoKain [name=currency_id]': {
+				change: me.selectCurrencyAndSetupSymbol
 			},
 
 			/**
@@ -134,9 +147,88 @@ Ext.define('App.controller.cPO', {
 			},
 			'winPoProduct [action=searchproduct]': {
 				specialkey: me.typeAndSearchProduct
+			},
+
+			'winPoProduct [action=selectandclose]': {
+				click: me.selectProductAndAddedToGrid
+			},
+
+			/**
+			 * Grid Order Items
+			 */
+			'panelNewOrderKain gridorderItems': {
+//				selectionchange: function(grid,selected,opts){
+//
+//				}
 			}
 		});
 		me.callParent(arguments);
+	},
+	selectCurrencyAndSetupSymbol : function( combo, newValue, oldValue, eOpts ){
+		/*Dapatkan Mata Uang dari Combo*/
+		var name =combo.displayTplData[0].name;
+		/*Setup ke combo discount*/
+		combo.up('panelNewOrderKain').down('[name=currency_name]').setValue(name);
+
+	},
+	calculatedTotalPrice: function () {
+		var panel = this.getPanelNewOrderItemPo();
+		var txtTotal = panel.down('[name=total]');
+		var thegrid = panel.down('gridorderItems');
+		var price = thegrid.getStore().sum('price');
+		var qty = thegrid.getStore().sum('qty');
+		var count = (price * qty);
+		txtTotal.setValue(count);
+	},
+	/**
+	 * Pilihan semua product dimasukan ke grid order item
+	 * @param btn
+	 */
+	selectProductAndAddedToGrid: function (btn) {
+		var me = this, win = btn.up('window'),
+		/*get grid order product*/
+			gridOrderItem = me.getGridNewOrderItem(),
+			storeItems = gridOrderItem.getStore(),
+
+		/*get product(s) selected */
+			gridProductSelected = win.down('grid'),
+			records = gridProductSelected.getSelectionModel().getSelection(),
+			productExist = false;
+
+		if (records[0] === undefined) {
+			App.util.box.error('Silahkan pilih produk terlebih dahulu');
+			return false;
+		}
+		Ext.each(records, function (rec, index, value) {
+			/*Check Apakah Product Sudah ada di Order Items ? */
+			var exist = storeItems.findBy(function (recor, id) {
+				return (rec.get('name') === recor.get('name'));
+			});
+			/*Jika Belum ada Tambahkan Pada Store*/
+			if (exist <= 0) {
+				var items = Ext.create('App.model.PO.items', {
+					'name': rec.get('name'),
+					'qty': rec.get('qty') || 0,
+					'price': rec.get('price') || 0 ,
+					'subtotal': 0
+				});
+				storeItems.add(items);
+			} else {
+				productExist = true;
+			}
+
+		});
+
+		if (productExist) {
+			App.util.box.error('Product Sudah terpilih dalam Item Order');
+			return false;
+		} else {
+			/*Tampilkan Konfirmasi Apakah Mau Menambahkan Lagi Product */
+			Ext.MessageBox.confirm('Konfirmasi', 'Apakah Akan Menambah Lagi Produk ? ', function (btn) {
+				/*Close Window*/
+				if (btn == 'no') win.close();
+			});
+		}
 	},
 	/**
 	 * Menampilkan Window Add Warehouse
@@ -253,6 +345,11 @@ Ext.define('App.controller.cPO', {
 		form.down('[name=cp_id]').setValue('');
 		form.down('[name=cp_name]').setValue('');
 	},
+	/**
+	 * Cari Product
+	 * @param field
+	 * @param e
+	 */
 	typeAndSearchProduct: function (field, e) {
 		if (e.getKey() == e.ENTER) {
 			var grid = field.up('grid'),
@@ -263,6 +360,11 @@ Ext.define('App.controller.cPO', {
 			store.load();
 		}
 	},
+	/**
+	 * Pilih Contact
+	 * @param btn
+	 * @returns {boolean}
+	 */
 	toolbarselectContactAndcloseWindow: function (btn) {
 		/*Dapatkan record yang dipilih*/
 		var win = btn.up('window'),
@@ -283,6 +385,11 @@ Ext.define('App.controller.cPO', {
 		win.close();
 
 	},
+	/**
+	 * Pilih Contact dalam Window
+	 * @param grid
+	 * @param record
+	 */
 	selectContactAndCloseWindow: function (grid, record) {
 		/*Select Record Contact*/
 		var win = grid.up('window'), me = this,
@@ -298,6 +405,11 @@ Ext.define('App.controller.cPO', {
 		win.close();
 
 	},
+	/**
+	 * Pilih Product dalam Window
+	 * @param grid
+	 * @param record
+	 */
 	selectProductAndCloseWindow: function (grid, record) {
 		/*Select Record*/
 		/*Added to Grid Order Item*/

@@ -77,7 +77,7 @@ if (fromLocal()) {
 		'ctaxtype',
 ////		'creceiveProduct',
 //
-//		'cPO'
+		'cPO'
 	];
 
 } else {

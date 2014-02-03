@@ -72,6 +72,7 @@ Ext.define('App.view.PO.tabNewOrderKain', {
 									flex: .3,
 									xtype: 'numberfield',
 									fieldLabel: 'Discount(%)',
+									name : 'discpercent',
 									emptyText: 'Discount (%)',
 									step: .1,
 									minValue: 0,

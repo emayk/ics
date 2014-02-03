@@ -24,39 +24,40 @@ Ext.define('App.view.PO.listItems',
 		initComponent: function () {
 
 			var data = [
-				{ id: 1, name: 'Product A', qty: 100 , price: 90000 },
-				{ id: 2, name: 'Product B', qty: 200,  price: 10000 },
-				{ id: 3, name: 'Product C', qty: 30 ,  price: 1000 },
-				{ id: 4, name: 'Product D', qty: 40,  price: 2000 }
+				{ id: 1, name: 'Product A', qty: 100, price: 90000 },
+				{ id: 2, name: 'Product B', qty: 200, price: 10000 },
+				{ id: 3, name: 'Product C', qty: 30, price: 1000 },
+				{ id: 4, name: 'Product D', qty: 40, price: 2000 }
 			];
 			var store = Ext.create('Ext.data.Store', {
-				fields: ['id', 'name','qty','subtotal','price'],
+//				fields: ['id', 'name','qty','subtotal','price'],
+				model: 'App.model.PO.items',
 				data: data,
-				proxy : {
+				proxy: {
 					type: 'memory'
 				}
 			});
 
 			var me = this;
 			Ext.apply(me, {
-				store : store,
+				store: store,
 				columns: [
 					{
 						xtype: 'rownumberer',
 						text: '#'
 					},
 					{
-						dataIndex: 'name',flex: 2,
+						dataIndex: 'name', flex: 2,
 						text: 'Nama Produk'
 					},
 					{
-						dataIndex: 'qty',flex: 1,
+						dataIndex: 'qty', flex: 1,
 						text: 'Qty'
 					},
 					{
-						dataIndex: 'price',flex: 2,
+						dataIndex: 'price', flex: 2,
 						text: 'Harga',
-						renderer : function(v,m,rec){
+						renderer: function (v, m, rec) {
 							return v;
 						}
 					},
@@ -64,7 +65,7 @@ Ext.define('App.view.PO.listItems',
 						dataIndex: 'subtotal',
 						flex: 2,
 						text: 'Sub Total',
-						renderer : function(v,meta,rec){
+						renderer: function (v, meta, rec) {
 							var price = rec.get('price');
 							var qty = rec.get('qty');
 							return parseFloat(price) * parseFloat(qty);
@@ -72,7 +73,7 @@ Ext.define('App.view.PO.listItems',
 					}
 				],
 				dockedItems: [
-					{xtype: 'pagingtoolbar',store: store,displayInfo:true,dock: 'bottom'}
+					{xtype: 'pagingtoolbar', store: store, displayInfo: true, dock: 'bottom'}
 				]
 			});
 			me.callParent(arguments);
