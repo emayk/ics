@@ -66,6 +66,16 @@ Ext.define('App.view.login.vLogin', {
 							text: translations.submit
 						}
 					]
+				},{
+					xtype: 'toolbar',
+					dock : 'top',
+					items:[
+						'->',
+						{
+							xtype: 'tbtext',
+							text: ics.appname + ' Version ' + ics.version
+						}
+					]
 				}
 			]
 

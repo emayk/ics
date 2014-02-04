@@ -31,7 +31,8 @@ Ext.define('App.view.Suppliers.Edit', {
 		'App.form.combobox.cbTypeSupBuy',
 		'App.form.combobox.cbLegalitas',
 		'App.form.combobox.cbTypeProduct',
-		'App.view.accountBank.vaccountBank'
+		'App.view.accountBank.vaccountBank',
+		'App.view.accountBank.Lists'
 
 	],
 	layout: { type: 'fit', align: 'stretch'},

@@ -52,6 +52,8 @@ class BaseController extends Controller
 
 		if ($theme > ( count($themes) - 1 )) $theme = 0;
 		$selectedtheme = $themes[ $theme ];
+
+		if (!$logged) return \View::make('ics::home.login', compact('logged', 'selectedtheme','devjs','title'));
 		return \View::make('ics::home.index', compact('logged', 'selectedtheme','devjs','title'));
 	}
 
