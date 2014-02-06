@@ -12,79 +12,81 @@ Ext.define('App.view.login.vLogin', {
 	title: translations.login,
 	closeAction: 'hide',
 	closable: false,
-	items: [
-		{
-			xtype: 'form',
-			frame: false,
-			bodyPadding: 15,
-			defaults: {
-				xtype: 'textfield',
-				anchor: '100%',
-				labelWidth: 90,
-				allowBlank: false,
-				vtype: 'alphanum',
-				minLength: 3,
-				msgTarget: 'under'
-			},
+	initComponent: function () {
+		var me = this;
+		Ext.apply(me, {
 			items: [
 				{
-					name: 'user',
-					fieldLabel: translations.user,
-					maxLength: 25,
-					value: isDebug() ? 'admin' : ''
-				},
-				{
-					inputType: 'password',
-					name: 'password',
-					fieldLabel: translations.password,
-					maxLength: 15,
-					value: isDebug() ? '123' : '',
-					enableKeyEvents: true,
-					id: 'formloginpassword'
-				}
-			],
-			dockedItems: [
-				{
-					xtype: 'toolbar', dock: 'bottom',
+					xtype: 'form',
+					frame: false,
+					bodyPadding: 15,
+					defaults: {
+						xtype: 'textfield',
+						anchor: '100%',
+						labelWidth: 90,
+						allowBlank: false,
+						vtype: 'alphanum',
+						minLength: 3,
+						msgTarget: 'under'
+					},
 					items: [
 						{
-							xtype: 'translation'
+							name: 'user',
+							fieldLabel: translations.user,
+							maxLength: 25,
+							value: isDebug() ? 'admin' : ''
 						},
 						{
-							xtype: 'tbfill'
+							inputType: 'password',
+							name: 'password',
+							fieldLabel: translations.password,
+							maxLength: 15,
+							value: isDebug() ? '123' : '',
+							enableKeyEvents: true,
+							id: 'formloginpassword'
+						}
+					],
+					dockedItems: [
+						{
+							xtype: 'toolbar', dock: 'bottom',
+							items: [
+								{
+									xtype: 'translation'
+								},
+								{
+									xtype: 'tbfill'
+								},
+								{
+									xtype: 'button',
+									itemId: 'cancel',
+									iconCls: 'cancel',
+									text: translations.cancel
+								},
+								{
+									itemId: 'submit',
+									formBind: true,
+									iconCls: 'key-go',
+									text: translations.submit
+								}
+							]
 						},
 						{
-							xtype: 'button',
-							itemId: 'cancel',
-							iconCls: 'cancel',
-							text: translations.cancel
-						},
-						{
-							itemId: 'submit',
-							formBind: true,
-							iconCls: 'key-go',
-							text: translations.submit
+							xtype: 'toolbar',
+							dock: 'top',
+							items: [
+								'->',
+								{
+									xtype: 'tbtext',
+									text: ics.appname + ' Version ' + ics.version
+								}
+							]
 						}
 					]
-				},{
-					xtype: 'toolbar',
-					dock : 'top',
-					items:[
-						'->',
-						{
-							xtype: 'tbtext',
-							text: ics.appname + ' Version ' + ics.version
-						}
-					]
+
 				}
 			]
-
-		}
-	],
-
-	initComponent: function () {
-
-		this.callParent();
+		});
+		me.callParent();
 	}
 
 

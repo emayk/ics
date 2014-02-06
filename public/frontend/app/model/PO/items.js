@@ -22,8 +22,42 @@ Ext.define('App.model.PO.items', {
 		'name',
 		'qty',
 		'price',
-		'subtotal'
-	]
+		'subtotal',
+		{ name: 'discount', type: 'integer'}
+	],
+	changetotalPrice: function () {
+		this.set('subtotal', this.total());
+	},
+	total: function () {
+		var me = this;
+		var price = me.get('price');
+		var qty = me.get('qty');
+		var total = parseFloat(price) * parseInt(qty);
+		return total;
+	},
+	changeDiscountAndTotal: function (disc) {
+		var me = this;
+		var price = me.get('price');
+		var qty = me.get('qty');
+		var discount;
+		var total = me.total();
+//		if (!isNumber(disc)) {
+//			discount = 0;
+//		} else {
+//			discount = (total - parseFloat(disc) / 100 );
+//		}
+//		log(discount);
+		if (disc > total){
+			disc = 0;
+		}
+
+		me.set('discount', disc);
+		var selisihtotal = me.total() - disc;
+		me.set('subtotal',selisihtotal);
+
+		log('Change Discount fire!! on Model');
+
+	}
 });
 
 

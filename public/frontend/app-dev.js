@@ -39,6 +39,13 @@ if (fromLocal()) {
 		'cLogin',
 		'TranslationManager',
 		'cMenu',
+		'master.Countries',
+		'master.Currency',
+		'ctaxtype',
+		'master.Gudang',
+		'cPO'
+
+
 	/**
 	 * Master
 	 *
@@ -53,10 +60,7 @@ if (fromLocal()) {
 //		'master.Banks',
 ////		'master.Color',
 //		/*Diperlukan oleh Currency*/
-//		'master.Countries',
-//		'master.Currency',
 ////		'master.Gradekain',
-//		'master.Gudang',
 ////		'master.TypeOrder',
 ////
 ////		'cunittype',
@@ -74,10 +78,10 @@ if (fromLocal()) {
 ////
 ////		'cBuyers',
 ////		'cSuppliers',
-		'ctaxtype',
 ////		'creceiveProduct',
 //
-		'cPO'
+
+
 	];
 
 } else {

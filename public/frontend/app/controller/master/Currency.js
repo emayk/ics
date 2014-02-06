@@ -40,10 +40,10 @@ Ext.define('App.controller.master.Currency', {
 
 			'currencyGridList': {
 				edit: me.processEdit,
-				selectionchange: me.processSelectionChange
-//                render: function () {
-//                    me.getGrid().getStore().load();
-//                }
+				selectionchange: me.processSelectionChange,
+                render: function (grid) {
+                    grid.getStore().load();
+                }
 			},
 
 			'currencyGridList > toolbar > button[action=add]': {
@@ -78,17 +78,43 @@ Ext.define('App.controller.master.Currency', {
 	},
 
 	Removerow: function (button) {
-		log('Remove' + button.text);
+//		log('Remove' + button.text);
+//
+//		var me = this,
+//			selection = me.getGrid().getSelectionModel(),
+//			store = me.getGrid().getStore();
+//
+//		Ext.each(selection.selected.items, function (dept) {
+//			me.getGrid().getStore().remove(dept);
+//		});
+//		store.sync();
+//		this.RefreshRow;
 
-		var me = this,
-			selection = me.getGrid().getSelectionModel(),
-			store = me.getGrid().getStore();
+		var grid = button.up('currencyGridList'),
+			selections = grid.getSelectionModel().getSelection(),
+			store = grid.getStore();
 
-		Ext.each(selection.selected.items, function (dept) {
-			me.getGrid().getStore().remove(dept);
+
+		if (selections[0] === undefined) {
+			msgError('Pilih Record terlebih dahulu');
+			return false;
+		}
+
+		Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus semua Record yang dipilih ? ', function (btn) {
+
+			if (btn == 'yes') {
+				Ext.each(selections, function (rec, index, value) {
+					rec.destroy({
+						failure: function (rec, opts) {
+							var name = rec.get('name');
+							App.util.box.error('Ada Record yang gagal dihapus');
+						}
+					});
+				});
+				store.load();
+			}
 		});
-		store.sync();
-		this.RefreshRow;
+
 	},
 	RefreshRow: function () {
 		this.getGrid().getStore().reload();

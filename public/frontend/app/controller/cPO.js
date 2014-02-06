@@ -153,32 +153,128 @@ Ext.define('App.controller.cPO', {
 				click: me.selectProductAndAddedToGrid
 			},
 
+			'panelNewOrderKain': {
+				afterrender: function(panel){
+				var grid = panel.down('grid');
+				this.calculatedTotalPriceAndDiscount(grid);
+				}
+			},
+			'panelNewOrderKain [name=total]': {
+				change: function (txtfield, newValue, oldValue, eOpts) {
+				}
+			},
+
+			'panelNewOrderKain [name=totaldiscount]': {
+				change: function (txtfield, newValue, oldValue, eOpts) {
+				}
+			},
+
+			'panelNewOrderKain [name=dp_amount]': {
+				change: me.calculateTotalAfterDptxtChange
+			},
+
 			/**
 			 * Grid Order Items
 			 */
 			'panelNewOrderKain gridorderItems': {
-//				selectionchange: function(grid,selected,opts){
-//
-//				}
+				/*Row Editing Event*/
+				edit: function (editor, obj) {
+					log('plugin row editing , edit process');
+					var grid = obj.grid;
+
+					/*calculasi total price dan discount */
+//					me.calculatedTotalPriceAndDiscount(store, txtTotal, txttotalDisc);
+					this.calculatedTotalPriceAndDiscount(grid);
+				},
+
+//				canceledit: function (editor, context, eOpts) {
+//					log('cancel edit');
+////					log('Object : ',editor,context,eOpts);
+//				},
+				validateedit: function (editor, obj, eOpts) {
+					log(obj);
+				}
 			}
 		});
 		me.callParent(arguments);
 	},
-	selectCurrencyAndSetupSymbol : function( combo, newValue, oldValue, eOpts ){
+
+	totalPrice: 0,
+	totaldiscount: 0,
+	totalafterdiscount: 0,
+	totalafterdp: 0,
+	totaldp: 0,
+	calculatedTotalPriceAndDiscountWhenRender:function(grid){
+log('render' + grid.getId());
+	},
+	calculateTotalAfterDptxtChange: function (field, value) {
+		var me = this;
+		var panel = field.up('panel');
+		var totalafterdp = panel.down('[name=totalafterdp]');
+		value = parseFloat(value);
+		me.totaldp = value;
+		field.setValue(value);
+		var afterdp = me.totalafterdiscount - field.getValue();
+		if (afterdp > 0) {
+			if (afterdp <= me.totalafterdiscount) {
+				me.totalafterdp = afterdp;
+				var formattedValue = Ext.util.Format.number(afterdp, '0,00');
+				totalafterdp.setValue(formattedValue);
+			}
+		}
+	},
+	selectCurrencyAndSetupSymbol: function (combo, newValue, oldValue, eOpts) {
 		/*Dapatkan Mata Uang dari Combo*/
-		var name =combo.displayTplData[0].name;
+		var name = combo.displayTplData[0].name;
 		/*Setup ke combo discount*/
 		combo.up('panelNewOrderKain').down('[name=currency_name]').setValue(name);
 
 	},
-	calculatedTotalPrice: function () {
-		var panel = this.getPanelNewOrderItemPo();
-		var txtTotal = panel.down('[name=total]');
-		var thegrid = panel.down('gridorderItems');
-		var price = thegrid.getStore().sum('price');
-		var qty = thegrid.getStore().sum('qty');
-		var count = (price * qty);
-		txtTotal.setValue(count);
+	/**
+	 * Menghitung Jumlah Total Price dan Total Discount
+	 * @param store
+	 * @param txtTotal
+	 * @param txttotalDisc
+	 */
+//	calculatedTotalPriceAndDiscount: function (store, txtTotal, txttotalDisc) {
+	calculatedTotalPriceAndDiscount: function (grid) {
+		var me = this,
+		store = grid.getStore(),
+			panel = grid.up('panelNewOrderKain'),
+			txtTotal = panel.down('[name=total]'),
+			txttotalDisc = panel.down('[name=totaldiscount]');
+		var subtotal = 0;
+		var totaldiscount = 0;
+		Ext.each(store.data.items, function (record, v) {
+			var price = record.get('price');
+			var qty = record.get('qty');
+			var discount = record.get('discount');
+			var total = parseFloat(price) * parseFloat(qty);
+
+			if (discount > 0) {
+				if (discount > total) {
+					discount = 0;
+					record.set('discount', 0);
+				}
+				total = total - discount;
+				totaldiscount = totaldiscount + parseFloat(discount);
+			}
+			subtotal = subtotal + total;
+		});
+		me.totalPrice = subtotal;
+		me.totaldiscount = totaldiscount;
+		var formattedValue = Ext.util.Format.number(subtotal, '0,00');
+		var formatdiscount = Ext.util.Format.number(totaldiscount, '0,00');
+		txtTotal.setValue(formattedValue);
+		txttotalDisc.setValue(formatdiscount);
+
+		var panel = txtTotal.up('panelNewOrderKain'),
+			afterdiscount = panel.down('[name=totalafterdisc]');
+		var totalafterdiscount = subtotal - totaldiscount;
+		me.totalafterdiscount = totalafterdiscount;
+		var formatafterdiscount = Ext.util.Format.number(totalafterdiscount, '0,00');
+		afterdiscount.setValue(formatafterdiscount);
+
 	},
 	/**
 	 * Pilihan semua product dimasukan ke grid order item
@@ -209,7 +305,7 @@ Ext.define('App.controller.cPO', {
 				var items = Ext.create('App.model.PO.items', {
 					'name': rec.get('name'),
 					'qty': rec.get('qty') || 0,
-					'price': rec.get('price') || 0 ,
+					'price': rec.get('price') || 0,
 					'subtotal': 0
 				});
 				storeItems.add(items);
@@ -519,6 +615,11 @@ Ext.define('App.controller.cPO', {
 	showWindowselectContactFromSupplier: function (btn) {
 		/*cari parameter supplier_id*/
 		var supplierId = this.getValSupplierId().getValue();
+		/*Jika Supplier belum dipilih*/
+		if (!supplierId) {
+			App.util.box.error('Silahkan Pilih Record Supplier terlebih dahulu');
+			return false;
+		}
 		var supplierName = this.getFormAddKain().down('[name=supplier_name]').getValue();
 		var storeContacts = Ext.create('App.store.PO.sContact');
 		var win;

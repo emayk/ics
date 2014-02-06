@@ -131,13 +131,12 @@ class CurrenciesEloquent implements CurrenciesInterface
     {
 
         if ($this->hasAccess()) {
-            $deleted = $this->currencies
-                ->find($id)
-                ->delete();
+            $currency = $this->currencies
+                ->find($id);
 
-            return \Icsoutput::toJson(array(
-                'results' => $deleted
-            ), $deleted);
+	        return ($currency->delete())
+		        ?  Response::json(['success' => false, 'error' => false])
+		        :   Response::json(['success' => false, 'error' => true]);
 
         } else {
             return \Icsoutput::toJson(array(

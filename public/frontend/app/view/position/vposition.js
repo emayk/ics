@@ -57,11 +57,6 @@ Ext.define('App.view.position.vposition', {
 									allowBlank: true
 								}
 							},
-//				{
-//					header: 'UUID',
-//					flex: 1,
-//					dataIndex: 'uuid'
-//				},
 							{
 								header: 'Action',
 								xtype: 'actioncolumn',
@@ -85,7 +80,7 @@ Ext.define('App.view.position.vposition', {
 							}
 						],
 						columnLines: true,
-						selModel: 'rowmodel',
+						selModel: App.util.box.createSelectionModel(),
 						/*==========  Plugins  ==========*/
 						plugins: [
 							Ext.create('Ext.grid.plugin.RowEditing', {

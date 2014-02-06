@@ -47,11 +47,6 @@ Ext.define('App.view.master.currency.List', {
 					}
 
 				},
-//        {
-//            header: 'UUID',
-//            dataIndex: 'uuid',
-//            flex: 1
-//        },
 				{
 					header: 'Action',
 					xtype: 'actioncolumn',
@@ -75,7 +70,8 @@ Ext.define('App.view.master.currency.List', {
 				}
 			],
 			columnLines: true,
-			selModel: 'rowmodel',
+			selModel: App.util.box.createSelectionModel(),
+//			selModel: 'rowmodel',
 			/*==========  Plugins  ==========*/
 			plugins: [
 				Ext.create('Ext.grid.plugin.RowEditing', {

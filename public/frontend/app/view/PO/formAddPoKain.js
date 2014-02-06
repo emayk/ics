@@ -21,6 +21,7 @@
 Ext.define('App.view.PO.formAddPoKain', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.formAddPoKain',
+	autoScroll: true,
 	requires: [
 		'App.form.combobox.cbSupplier',
 		'App.form.combobox.cbWarehouse',
@@ -37,7 +38,7 @@ Ext.define('App.view.PO.formAddPoKain', {
 			bodyPadding: 10,
 			frame: true,
 			defaults: {
-				widthLabel: 150,
+				labelWidth: 100,
 				flex: .3,
 				anchor: '95%',
 				labelAlign: 'left'
@@ -48,7 +49,7 @@ Ext.define('App.view.PO.formAddPoKain', {
 					xtype: 'container', flex: .3,
 					defaults: {
 						labelAlign: 'left',
-						labelWidth: 100,
+						labelWidth: 75,
 						anchor: '95%'
 					},
 					layout: 'anchor',
@@ -56,7 +57,7 @@ Ext.define('App.view.PO.formAddPoKain', {
 						/*Pilih Supplier*/
 						{
 							xtype: 'fieldcontainer',
-//													anchor: '100%',
+							labelWidth: 100,
 							fieldLabel: 'Nama Pemasok',
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
@@ -66,7 +67,6 @@ Ext.define('App.view.PO.formAddPoKain', {
 								{ xtype: 'button', text: '', iconCls: 'find', action: 'selectsupplier', margin: '0 5 0 5'}
 							]
 						},
-
 						/*Contact Person*/
 						/*
 						 * Contact person tergantung pada supplier
@@ -75,6 +75,7 @@ Ext.define('App.view.PO.formAddPoKain', {
 						{
 							xtype: 'fieldcontainer',
 							fieldLabel: 'Kontak Person',
+							labelWidth: 100,
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
 								{ xtype: 'hiddenfield', name: 'cp_id'},
@@ -96,29 +97,33 @@ Ext.define('App.view.PO.formAddPoKain', {
 						}
 					]
 				},
+
 				{
 					xtype: 'container', flex: .3,
 					defaults: {
 						labelAlign: 'left',
-						labelWidth: 150,
+						labelWidth: 100,
 						anchor: '95%'
 					},
 					layout: 'anchor',
 					items: [
 						{
 							xtype: 'fieldcontainer',
+							flex:.3,
 							fieldLabel: 'Metoda Pembayaran',
-
-							layout: { type: 'hbox', align: 'stretch'},
+							labelWidth: 90,
+							layout: { type: 'hbox', pack: 'center'},
 							items: [
 								{ xtype: 'cbTypePayment', name: 'payment_id', fieldLabel: '', emptyText: 'Pilih Pembayaran',
-									flex: .8},
-								{ xtype: 'button', text: '', iconCls: 'add', action: 'quickaddpayment', margin: '0 5 0 5'}
+									minWidth: 150,
+										flex:1},
+								{ xtype: 'button', text: '', iconCls: 'add', action: 'quickaddpayment', margin: '0 0 0 5'}
 							]
 						},
 						{
 							xtype: 'fieldcontainer',
-							fieldLabel: 'Kredit',
+							flex:.3,
+							fieldLabel: 'Kredit (hari)',
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
 								{ xtype: 'numberfield', name: 'kredit', fieldLabel: '', flex: .5,
@@ -134,6 +139,7 @@ Ext.define('App.view.PO.formAddPoKain', {
 							/*Selalu Default 1 */
 							xtype: 'fieldcontainer',
 							fieldLabel: 'Kurs',
+							flex:.3,
 							layout: { type: 'hbox', align: 'stretch'},
 							items: [
 								{ xtype: 'numberfield', name: 'rate', fieldLabel: '', flex: .5,
@@ -151,12 +157,12 @@ Ext.define('App.view.PO.formAddPoKain', {
 					xtype: 'container', flex: .3,
 					defaults: {
 						labelAlign: 'left',
-						labelWidth: 150,
+						labelWidth: 100,
 						anchor: '95%'
 					},
 					layout: 'anchor',
 					items: [
-						{ xtype: 'datefield', name: 'deliverydate', fieldLabel: 'Tanggal Rencana Kirim', minValue: today, emptyText: 'Pilih Tanggal' },
+						{ labelWidth: 100, xtype: 'datefield', name: 'deliverydate', fieldLabel: 'Tanggal Rencana Kirim', minValue: today, emptyText: 'Pilih Tanggal',flex:.95 },
 						{
 							xtype: 'fieldcontainer',
 							fieldLabel: 'Jenis Pajak',

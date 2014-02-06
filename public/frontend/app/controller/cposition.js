@@ -86,22 +86,48 @@ Ext.define('App.controller.cposition', {
 			 * Proses Delete
 			 */
 			'apppositionvposition toolbar > button[action=remove]': {
-				click: function (btn) {
-					var grid = btn.up('apppositionvposition').down('grid#positionlist');
-					var selection = grid.getSelectionModel();
-					var store = grid.getStore();
-					Ext.each(selection.selected.items, function (dept) {
-						store.remove(dept);
-					});
-
-					store.sync();
-					this.doRefresh();
-				}
+				click: me.removeRecordsPosition
 			}
 		});
 	},
 	doRefresh: function () {
 		this.getGrid().getStore().reload();
+	},
+	removeRecordsPosition: function(btn){
+//		var grid = btn.up('apppositionvposition').down('grid#positionlist');
+//		var selection = grid.getSelectionModel();
+//		var store = grid.getStore();
+//		Ext.each(selection.selected.items, function (dept) {
+//			store.remove(dept);
+//		});
+//
+//		store.sync();
+//		this.doRefresh();
+
+		var grid = btn.up('apppositionvposition').down('grid#positionlist'),
+			selections = grid.getSelectionModel().getSelection(),
+			store = grid.getStore();
+
+
+		if (selections[0] === undefined) {
+			msgError('Pilih Record terlebih dahulu');
+			return false;
+		}
+
+		Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus semua Record yang dipilih ? ', function (btn) {
+
+			if (btn == 'yes') {
+				Ext.each(selections, function (rec, index, value) {
+					rec.destroy({
+						failure: function (rec, opts) {
+//							var name = rec.get('name');
+							App.util.box.error('Ada Record yang gagal dihapus');
+						}
+					});
+				});
+				store.load();
+			}
+		});
 	}
 });
 

@@ -23,16 +23,22 @@ Ext.define('App.view.PO.listItems',
 		alias: 'widget.gridorderItems',
 		initComponent: function () {
 
-			var data = [
-				{ id: 1, name: 'Product A', qty: 100, price: 90000 },
-				{ id: 2, name: 'Product B', qty: 200, price: 10000 },
-				{ id: 3, name: 'Product C', qty: 30, price: 1000 },
-				{ id: 4, name: 'Product D', qty: 40, price: 2000 }
-			];
+			var data = [];
+			for (var i=1;i<201;i++){
+				var qty = randomInt(900);
+				var price = randomInt(900) * 100;
+				var total = parseFloat(qty) * parseFloat(price);
+				var disc = (total - qty )/ 100;
+				if (disc > total) disc = 0;
+				data.push(
+					{ id: i, name: 'Product '+ i , qty: qty, price: price, discount: disc }
+				)
+			}
+
 			var store = Ext.create('Ext.data.Store', {
-//				fields: ['id', 'name','qty','subtotal','price'],
 				model: 'App.model.PO.items',
 				data: data,
+				pageSize: 100,
 				proxy: {
 					type: 'memory'
 				}
@@ -52,13 +58,37 @@ Ext.define('App.view.PO.listItems',
 					},
 					{
 						dataIndex: 'qty', flex: 1,
-						text: 'Qty'
+						text: 'Qty',
+						editor: {
+							allowblank: false,
+							minValue: 0
+						},
+						renderer: function (v) {
+							return Ext.util.Format.number(v, '0,00');
+						}
 					},
 					{
 						dataIndex: 'price', flex: 2,
 						text: 'Harga',
-						renderer: function (v, m, rec) {
-							return v;
+						renderer: function (v) {
+							return Ext.util.Format.number(v, '0,00');
+						},
+						editor: {
+							allowblank: false,
+							minValue: 0
+						}
+					},
+					{
+						dataIndex: 'discount',
+						flex: 1,
+						text: 'Discount',
+						renderer: function (v) {
+							var val = (v == null) ? 0 : v;
+							return Ext.util.Format.number(val, '0,00');
+						},
+						editor: {
+							allowblank: true,
+							minValue: 0
 						}
 					},
 					{
@@ -68,12 +98,44 @@ Ext.define('App.view.PO.listItems',
 						renderer: function (v, meta, rec) {
 							var price = rec.get('price');
 							var qty = rec.get('qty');
-							return parseFloat(price) * parseFloat(qty);
+							var disc = rec.get('discount');
+							var total = parseFloat(price) * parseFloat(qty);
+							if (disc > 0) {
+								total = total - disc;
+							}
+							return Ext.util.Format.number(total, '0,00');
 						}
+					},
+					{
+						header: 'Action',
+						xtype: 'actioncolumn',
+						width: 40,
+						items: [
+							{
+								iconCls: 'delete',
+								tooltip: 'Delete',
+								handler: App.util.box.deleteSingleRecordFromGrid
+							}
+						]
 					}
 				],
+				columnLines: true,
+				selModel: App.util.box.createSelectionModel(),
+				/*==========  Plugins  ==========*/
+				plugins: [
+					Ext.create('Ext.grid.plugin.RowEditing', {
+						clicksToEdit: !1,
+						pluginId: 'cellEditorOrderItems',
+						clicksToMoveEditor: 1
+					})
+				],
 				dockedItems: [
-					{xtype: 'pagingtoolbar', store: store, displayInfo: true, dock: 'bottom'}
+					{
+						xtype: 'pagingtoolbar',
+						store: store,
+						displayInfo: true,
+						dock: 'bottom'
+					}
 				]
 			});
 			me.callParent(arguments);

@@ -61,53 +61,86 @@ Ext.define('App.view.PO.tabNewOrderKain', {
 							xtype: 'container',
 							layout: 'anchor',
 							items: [
-								/*Total*/
 								{
-									xtype: 'textfield', readOnly: true,
-									name: 'total', fieldLabel: 'Total', margin: '0 0 5 5',
-									anchor: '95%', value: 0
-								},
-								/*Discount*/
-								{
-									flex: .3,
-									xtype: 'numberfield',
-									fieldLabel: 'Discount(%)',
-									name : 'discpercent',
-									emptyText: 'Discount (%)',
-									step: .1,
-									minValue: 0,
-									maxValue: 100,
-									value: 0,
-									hideTrigger: true,
+									xtype: 'fieldcontainer',
+									fieldLabel: 'Total Harga',
 									anchor: '95%',
-									margin: '0 0 5 5'
+									defaults: {
+										labelWidth: 50
+									},
+									layout: { type: 'hbox', align: 'stretch'},
+									items: [
+										/*Total*/
+										{
+											flex: .5,
+											xtype: 'textfield', readOnly: true,
+											name: 'total', fieldLabel: '', margin: '0 0 5 5',
+											anchor: '95%', value: 0
+										},
+										/*Discount*/
+										{
+											flex: .5,
+											xtype: 'textfield',
+											readOnly: true,
+											fieldLabel: 'Discount',
+											name: 'totaldiscount',
+											emptyText: 'Empty Discount',
+											anchor: '95%',
+											margin: '0 0 5 5'
+										}
+									]
 								},
 								/*Uang Muka*/
 								{
 									xtype: 'fieldcontainer',
-									fieldLabel: 'Uang Muka',
+									fieldLabel: 'Total Bayar Stlh Discount',
 									anchor: '95%',
-									layout: { type: 'hbox', align: 'stretch'},
+									layout: { type: 'hbox', /*align: 'stretch'*/ pack: 'center'},
 									items: [
 										{
-											xtype: 'displayfield', name: 'currency_name', value: 'Rp ',
-											flex: .1
+											flex: .4,
+											xtype: 'textfield', readOnly: true,
+											name: 'totalafterdisc', fieldLabel: '', margin: '0 0 5 5',
+											anchor: '95%', value: 0
 										},
+
+
 										{
+											flex:.6,
 											margin: '0 5 0 5',
-											flex: .5,
-											xtype: 'numberfield',
-											name: 'dp_amount',
-											fieldLabel: '',
-											minValue: 0,
-											value: 0,
-											hideTrigger: true,
-//															anchor: '95%',
-											step: 1000,
-											keyNavEnabled: true,
-											mouseWheelEnabled: false
+											xtype: 'fieldcontainer',
+											labelWidth: 75,
+											fieldLabel: 'Uang Muka',
+											anchor: '100%',
+											layout: { type: 'hbox', /*align: 'stretch'*/ pack: 'center'},
+											items: [
+												{
+													margin: '0 0 0 2',
+													xtype: 'displayfield', name: 'currency_name', value: 'Rp ',
+													flex: .2
+												},
+												{
+													flex:.8,
+													margin: '0 1 0 0',
+													xtype: 'numberfield',
+													name: 'dp_amount',
+													fieldLabel: '',
+													anchor: '100%',
+													minValue: 0,
+													value: 0,
+													hideTrigger: true,
+													step: 1000,
+													keyNavEnabled: true,
+													mouseWheelEnabled: false
+												}
+											]
 										}
 									]
+								},
+								{
+									xtype: 'textfield', readOnly: true,
+									name: 'totalafterdp', fieldLabel: 'Total Bayar Stlh Uang Muka', margin: '0 0 5 5',
+									anchor: '95%', value: 0
 								}
 							]
 						}
