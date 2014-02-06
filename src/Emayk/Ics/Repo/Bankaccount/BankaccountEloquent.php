@@ -81,7 +81,7 @@ class BankaccountEloquent implements BankaccountInterface
         $limit = Input::get('limit', 1);
         $start = Input::get('start', 1);
 
-        if (Input::has('type')) {
+        if (Input::has('parenttype')) {
             return $this->processAccountType();
         }
         $bankaccount = $this->bankaccount
@@ -108,8 +108,8 @@ class BankaccountEloquent implements BankaccountInterface
      */
     protected function  processAccountType()
     {
-        $type = Input::get('type');
-        $id = Input::get('typeid');
+        $type = Input::get('parenttype');
+        $id = Input::get('parent_id');
         $data = [];
         if (strtolower($type) == 'supplier') {
             /*Supplier*/

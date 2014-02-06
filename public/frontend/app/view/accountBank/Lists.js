@@ -23,7 +23,6 @@ Ext.define('App.view.accountBank.Lists', {
 	initComponent: function () {
 		var me = this;
 		Ext.apply(me, {
-			frame: true,
 			columns: [
 				{
 					xtype: 'rownumberer',

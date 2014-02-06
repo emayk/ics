@@ -154,9 +154,9 @@ Ext.define('App.controller.cPO', {
 			},
 
 			'panelNewOrderKain': {
-				afterrender: function(panel){
-				var grid = panel.down('grid');
-				this.calculatedTotalPriceAndDiscount(grid);
+				afterrender: function (panel) {
+					var grid = panel.down('grid');
+					this.calculatedTotalPriceAndDiscount(grid);
 				}
 			},
 			'panelNewOrderKain [name=total]': {
@@ -204,8 +204,8 @@ Ext.define('App.controller.cPO', {
 	totalafterdiscount: 0,
 	totalafterdp: 0,
 	totaldp: 0,
-	calculatedTotalPriceAndDiscountWhenRender:function(grid){
-log('render' + grid.getId());
+	calculatedTotalPriceAndDiscountWhenRender: function (grid) {
+		log('render' + grid.getId());
 	},
 	calculateTotalAfterDptxtChange: function (field, value) {
 		var me = this;
@@ -239,7 +239,7 @@ log('render' + grid.getId());
 //	calculatedTotalPriceAndDiscount: function (store, txtTotal, txttotalDisc) {
 	calculatedTotalPriceAndDiscount: function (grid) {
 		var me = this,
-		store = grid.getStore(),
+			store = grid.getStore(),
 			panel = grid.up('panelNewOrderKain'),
 			txtTotal = panel.down('[name=total]'),
 			txttotalDisc = panel.down('[name=totaldiscount]');

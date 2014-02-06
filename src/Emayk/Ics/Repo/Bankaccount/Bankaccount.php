@@ -73,7 +73,10 @@ class Bankaccount extends Model
      */
     public function getBanknameAttribute()
     {
-        return $this->attributes['bankname'] = $this->bank->name;
+	    $bank = $this->bank;
+	    $bankname =  (!$bank) ? 'error retrieve bank name' : $bank->name;
+        return $this->attributes['bankname'] = $bankname;
+//        return $this->attributes['bankname'] = $this->bank->name;
     }
 
     /**

@@ -105,7 +105,7 @@ Ext.define('App.view.Suppliers.Edit', {
 											maxValue: 365
 										},
 										{
-											fieldLabel:'Batas Max Pembelian',
+											fieldLabel: 'Batas Max Pembelian',
 //												translations.supplier.plafon,
 											afterLabelTextTpl: required,
 											allowBlank: false,
@@ -120,10 +120,11 @@ Ext.define('App.view.Suppliers.Edit', {
 						},
 						{
 							xtype: 'tabpanel',
+							itemId: 'tabsupplierdetail',
 							plain: true,
 							activeTab: 0,
 							defaults: {
-								bodyPadding: 10
+//								bodyPadding: 10
 							},
 							layout: { type: 'fit', align: 'stretch'},
 							items: [
@@ -199,40 +200,6 @@ Ext.define('App.view.Suppliers.Edit', {
 										}
 									]
 								},
-								{
-									flex: 1,
-									title: translations.phonenumber,
-									xtype: 'container',
-									autoScroll: true,
-									height: 300,
-									bodyPadding: 10,
-									layout: { type: 'fit', align: 'stretch'},
-									items: [
-										{
-											flex: 1,
-											xtype: 'appphonesgrid',
-											itemId: 'gridphone'
-										}
-									]
-								},
-								/*Account Bank Supplier*/
-								{
-									flex: 1,
-									title: translations.accountbank.title,
-									xtype: 'container',
-									itemId: 'accountbank',
-									autoScroll: true,
-									height: 300,
-									bodyPadding: 10,
-									layout: { type: 'fit', align: 'stretch'},
-									items: [
-										{
-											flex: 1,
-											xtype: 'appaccountBankvaccountBankList'
-										}
-									]
-								},
-
 								/*Locations*/
 								{
 									title: translations.location,
@@ -249,9 +216,6 @@ Ext.define('App.view.Suppliers.Edit', {
 											flex: 1,
 											layout: 'anchor',
 											items: [
-//												{
-//													xtype: 'cblocation'
-//												},
 												{
 													xtype: 'cbCountries',
 													name: 'country_id',
@@ -339,12 +303,29 @@ Ext.define('App.view.Suppliers.Edit', {
 								{
 									cls: 'x-plain',
 									title: translations.note,
+									bodyPadding: 5,
 									frame: true,
 									layout: 'fit',
 									items: {
 										xtype: 'htmleditor',
 										name: 'note'
 									}
+								},
+								/*Phone Number*/
+								{
+									flex: 1,
+									height: 300,
+									title: translations.phonenumber,
+									xtype: 'appphonesgrid',
+									itemId: 'gridphone'
+								},
+								/*Account Bank Supplier*/
+								{
+									flex: 1,
+									height: 300,
+									itemId: 'accountbank',
+									title: translations.accountbank.title,
+									xtype: 'appaccountBankvaccountBankList'
 								}
 							]
 						},
@@ -397,7 +378,7 @@ Ext.define('App.view.Suppliers.Edit', {
 				},
 				{
 					xtype: 'container',
-					title : translations.product,
+					title: translations.product,
 					html: 'Product - Product Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
 				}
 			]

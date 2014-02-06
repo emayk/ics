@@ -166,10 +166,12 @@ Ext.define('App.controller.caccountBank', {
 			id = params.parent_id,
 			type = params.parenttype,
 			win;
-		if (!id){ me.msgError('Cannot Found Id'); }
-		if (!type) { me.msgError('Cannot Found Parent Type');}
-		log(id);
-		log(type);
+		if (!id || !type){
+			me.msgError('Error, tidak diketahui (parent not found)');
+			log(id,type);
+			return false;
+		}
+
 		if (!win) {
 			win = Ext.create('App.view.accountBank.WinForm',{
 				title: 'Tambah Record Rekening Bank',

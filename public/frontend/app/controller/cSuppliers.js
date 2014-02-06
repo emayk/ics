@@ -178,50 +178,24 @@ Ext.define('App.controller.cSuppliers', {
 			 *
 			 */
 			'form#formsupplier appaccountBankvaccountBankList': {
-				render: me.taboAccountBankRender
+				render: me.taboAccountBankRender,
+				beforeactivate: function (tab) {
+					/*check Account Supplier sudah disave?*/
+					var record = tab.up('form').getForm().getRecord();
+
+					if (!record) {
+						App.util.box.error('Silahkan Simpan data Supplier terlebih dahulu');
+						return false;
+					} else {
+						return true;
+					}
+				}
 			},
 			'appaccountBankvaccountBankList [action=addaccountBank]': {
-				click : function(btn){
+				click: function (btn) {
 					log(btn.text);
 				}
-			} ,
-//			'appaccountBankvaccountBankList [action=remove]': {
-//				click : function(btn){
-//					log(btn.text);
-//				}
-//			},
-			/**
-			 * Grid Account Bank
-			 */
-//
-//			'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #gridlist': {
-//				itemclick: me.showInfoAccountBank
-//			},
-//			'appSuppliersvSuppliersEdit #formsupplier appaccountBankvaccountBank #formaccount': {
-//
-//			},
-//
-//			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform #addnew': {
-//				/*Add Bank Account*/
-//				click: me.addRecordAccountBank
-//			},
-//			'appSuppliersvSuppliersEdit #accountbank appaccountBankform #saverecord': {
-//				/*Add Bank Account*/
-//				click: me.saveRecordAccountBank
-//			},
-//
-//			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankform #remove': {
-//				/*remove Bank Account*/
-//				click: me.removeRecordAccountBank
-//			},
-
-			/**
-			 * Grid Record Account Bank
-			 */
-//			'appSuppliersvSuppliersEdit appaccountBankvaccountBank appaccountBankvaccountBankList': {
-//				itemclick: me.showRecordAccountBank,
-//				selectionchange: me.showInfoAccountBank
-//			},
+			},
 
 			/**
 			 * Office
@@ -235,6 +209,23 @@ Ext.define('App.controller.cSuppliers', {
 				click: me.addLegalitas
 			},
 
+
+			/**
+			 * Phones
+			 */
+			'form#formsupplier appphonesgrid': {
+				beforeactivate: function (tab) {
+					/*check Account Supplier sudah disave?*/
+					var record = tab.up('form').getForm().getRecord();
+
+					if (!record) {
+						App.util.box.error('Silahkan Simpan data Supplier terlebih dahulu');
+						return false;
+					} else {
+						return true;
+					}
+				}
+			},
 			'appphonesgrid#gridphone': {
 				itemdblclick: me.showOrEditRecordPhone
 			},
@@ -261,13 +252,14 @@ Ext.define('App.controller.cSuppliers', {
 		/*@todo: setup store phone dan account bank */
 	},
 	taboAccountBankRender: function (tab) {
-		var record = tab.up('form').getForm().getRecord(),
-			grid = tab,
+		var record = tab.up('form').getForm().getRecord();
+		var grid = tab,
 			store = grid.getStore(),
 			proxy = store.getProxy();
-		proxy.setExtraParam('parent_id',record.get('id'));
-		proxy.setExtraParam('parenttype','supplier');
+		proxy.setExtraParam('parent_id', record.get('id'));
+		proxy.setExtraParam('parenttype', 'supplier');
 		store.load();
+
 	},
 	tabofficeRender: function (tab) {
 		tab.down('cbTypeSupBuy').getStore().load();
@@ -335,96 +327,7 @@ Ext.define('App.controller.cSuppliers', {
 		});
 		win.show();
 	},
-	addRecordLegalitas: function (btn) {
-		/*create model*/
-//		'App.model.Legality'
-	},
-	showRecordAccountBank: function (grid, record) {
-		this.getFormAccountBank().getForm().loadRecord(record);
-	},
-	/**
-	 * Menampilkan Record pada Form Account Bank
-	 *
-	 * @param grid
-	 * @param record
-	 */
-	showInfoAccountBank: function (grid, record) {
-		this.getFormAccountBank().getForm().loadRecord(record[0]);
-	},
-	/**
-	 * Remove Account Bank
-	 * @param btn
-	 */
-	removeRecordAccountBank: function (btn) {
-		var form = btn.up('form').getForm(),
-			record = form.getRecord(),
-			values = form.getValues();
-		log(values);
-	},
-	currentRecordSupplier: 0,
-	/**
-	 * Save Account Bank
-	 * @param btn
-	 */
-	saveRecordAccountBank: function (btn) {
-		var me = this, form = btn.up('form').getForm(),
-			record = form.getRecord(),
-			values = form.getValues(),
-			grid = me.getGridAccountBank(),
-			store = grid.getStore();
 
-		if (!form.isValid()) {
-			App.util.box.error('Silahkan Perbaiki Masukan');
-			return false;
-		}
-		if (record) {
-			record.set(values);
-			record.save();
-			form.updateRecord(record);
-			store.sync();
-			store.reload();
-			grid.getView().refresh();
-		}
-	},
-	/**
-	 * Add Record Account Bank
-	 * @param btn
-	 */
-	addRecordAccountBank: function (btn) {
-		var win;
-		if (!win) {
-			win = Ext.create('App.view.accountBank.WinForm', {
-				title: 'Add New Account Bank',
-				modal: true
-			});
-//			var record =
-//			win.down('form').loadRecord(record);
-			win.show();
-		}
-
-//		var me = this, form = btn.up('form');
-//		form.getForm().reset();
-//		var record = Ext.create('App.model.accountBank.maccountBank', {
-//			owner_id: me.currentRecordSupplier,
-//			owner_type: 'supplier'
-//		});
-//		var name = form.down('[name=name]'),
-//			number = form.down('[name=number]'),
-//			bankid = form.down('[name=bank_id]'),
-//			currencyid = form.down('[name=currency_id]'),
-//			typeid = form.down('[name=tax_id]');
-//
-//		me.setComponentEnabled(name);
-//		me.setComponentEnabled(number);
-//		me.setComponentEnabled(bankid);
-//		me.setComponentEnabled(currencyid);
-//		me.setComponentEnabled(typeid);
-//
-//		form.getForm().loadRecord(record);
-	},
-	setComponentEnabled: function (component) {
-		if (component.isDisabled()) component.setDisabled(false);
-	},
 	/**
 	 * Save Record Supplier
 	 * @param btn
@@ -434,18 +337,68 @@ Ext.define('App.controller.cSuppliers', {
 			form = btn.up('form').getForm(),
 			record = form.getRecord(),
 			values = form.getValues(),
+			isnew = false,
+			tabs = btn.up('appSuppliersvSuppliersEdit').down('#tabsupplierdetail'),
 			store = me.getGrid().getStore();
 		if (!record) {
+			isnew = true;
 			var record = Ext.create('App.model.Suppliers.mSuppliers');
 			record.set(values);
-			var errors = record.validate();
-			log(errors);
-			store.add(record);
-		} else {
-			form.updateRecord(record);
+		}else{
+			isnew = false;
 		}
-		store.sync();
-		me.closeFormEdit(btn);
+
+		var errors = record.validate();
+		if (!errors.isValid()) {
+			App.util.box.error('Ada Error Pada Form Silahkan Coba lagi');
+			return false;
+		}
+
+		record.save({
+			success: function (rec, ops) {
+				var idSupplier = rec.get('id');
+				App.util.box.info(rec.get('name') + ' berhasil disimpan');
+				Ext.MessageBox.confirm('Konfirmasi', 'Apakah anda akan keluar ?', function (btnconfirm) {
+					if (btnconfirm == 'yes') {
+						store.load();
+						me.closeFormEdit(btn);
+					} else {
+						/*Load Record dl ke form*/
+						form.loadRecord(rec);
+						/*Tidak Jadi Keluar*/
+						if (isnew) {
+							/*Aktifkan Nomor Telp atau Rekening Bank */
+							Ext.MessageBox.confirm('Konfirmasi', 'Apakah anda ingin mengisi Rekening Bank ? ', function (btn) {
+								var gridaccountbank = tabs.down('appaccountBankvaccountBankList#accountbank'),
+									gridphone = tabs.down('appphonesgrid#gridphone');
+								if (btn == 'yes') {
+									/*Tampilkan Tab Rekening Bank*/
+									tabs.setActiveTab(gridaccountbank);
+								} else {
+									/*Tampilkan Tab Nomor Telp*/
+									tabs.setActiveTab(gridphone);
+								}
+								me.setupProxyGridAndLoadStore(gridaccountbank,idSupplier);
+								me.setupProxyGridAndLoadStore(gridphone,idSupplier);
+							});
+
+						}
+					}
+				});
+			}, failure: function (r, o) {
+				App.util.box.error('Ada kesalahan, silahkan perbaiki');
+				return false;
+			}
+		});
+
+
+	},
+	setupProxyGridAndLoadStore: function(grid,idSupplier){
+		var store = grid.getStore(),
+			proxy = store.getProxy();
+		proxy.setExtraParam('parent_id', idSupplier);
+		proxy.setExtraParam('parenttype', 'supplier');
+		store.load();
 	},
 	/**
 	 * Close Window/Form Info
@@ -494,16 +447,7 @@ Ext.define('App.controller.cSuppliers', {
 		me.currentRecordSupplier = id;
 		me.openNewTab(title, tabinfo);
 	},
-	setupAccountBank: function (id, store, grid, pagingtoolbar) {
-		grid.reconfigure(store);
-		pagingtoolbar.bindStore(store);
-		store.getProxy().setExtraParam('type', 'supplier');
-		store.getProxy().setExtraParam('typeid', id);
-		store.load();
-	},
-	setProxy: function (store, key, value) {
-		store.getProxy().setExtraParam(key, value);
-	},
+
 	/**
 	 * Saat Render
 	 */
@@ -562,7 +506,6 @@ Ext.define('App.controller.cSuppliers', {
 			store.remove(record);
 		});
 		store.sync();
-
 	}
 });
 
