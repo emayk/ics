@@ -22,14 +22,14 @@ Ext.define('App.controller.TranslationManager', {
     onSplitbuttonBeforeRender: function (abstractcomponent, options) {
         var lang = localStorage ? (localStorage.getItem('user-lang') || 'id') : 'id';
         abstractcomponent.iconCls = lang;
-        if (lang == 'en') {
-            abstractcomponent.text = 'English';
+        if (lang == 'id') {
+            abstractcomponent.text = 'Indonesian';
 //        } else if (lang == 'es') {
 //            abstractcomponent.text = 'Español';
 //        } else if (lang == 'id') {
 //            abstractcomponent.text = 'Português';
         } else {
-            abstractcomponent.text = 'Indonesian';
+            abstractcomponent.text = 'English';
         }
     },
 

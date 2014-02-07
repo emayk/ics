@@ -31,9 +31,11 @@ Ext.define('App.view.products.formproductdetail', {
         'App.form.combobox.cbcurrspm',
 //        'App.form.combobox.cbCurrencies'
     ],
-    record: null,
-    prodId: null,
-    prodName: null,
+	config: {
+		record: null,
+		prodId: null,
+		prodName: null
+	},
     title: null,
     dockedItems: [
         { xtype: 'toolbar', dock: 'bottom',
@@ -55,19 +57,20 @@ Ext.define('App.view.products.formproductdetail', {
         }
     ],
     initComponent: function () {
+	    var me = this;
         Ext.apply(this, {
             items: [
                 {
                     xtype: 'fieldset',
 	                itemId : 'fieldsetdetail',
-                    title : 'Form Detail Product ' + this.prodName,
+                    title : 'Form Detail Product ' + ( (me.getProdName() == null) ? ' ' : me.getProdName() ),
                     defaults:{
                         anchor : '95%'
                     },
                     items: [
-                        { xtype: "displayfield", fieldLabel: "Name", name: "prodname", value: this.prodName},
+                        { xtype: "displayfield", fieldLabel: "Name", name: "prodname", value: this.getProdName()},
                         { xtype: "hiddenfield", fieldLabel: "id", name: "id", hidden: true},
-                        { xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.prodId},
+                        { xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.getProdId()},
 
                         { xtype: "cbcolor", fieldLabel: "Color", name: "color_id"},
                         { xtype: "cbunits", fieldLabel: "Unit", name: "unit_id"},
@@ -94,7 +97,7 @@ Ext.define('App.view.products.formproductdetail', {
                                 { xtype: "cbcurrspm", fieldLabel: "", name: "currspm_id", flex: .6 }
                             ]
                         },
-                        { xtype: "textfield", fieldLabel: "parent_id", name: "parent_id", value: this.prodId,hidden:true },
+                        { xtype: "textfield", fieldLabel: "parent_id", name: "parent_id", value: this.getProdId(),hidden:true },
                         { xtype: "textfield", fieldLabel: "parent_type", name: "parent_type", value: 'product',hidden:true }
                     ]
                 }

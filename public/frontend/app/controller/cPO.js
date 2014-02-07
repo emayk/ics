@@ -199,6 +199,9 @@ Ext.define('App.controller.cPO', {
 		me.callParent(arguments);
 	},
 
+	/**
+	 * Counter
+	 */
 	totalPrice: 0,
 	totaldiscount: 0,
 	totalafterdiscount: 0,
@@ -207,6 +210,11 @@ Ext.define('App.controller.cPO', {
 	calculatedTotalPriceAndDiscountWhenRender: function (grid) {
 		log('render' + grid.getId());
 	},
+	/**
+	 * Kalkulasi Total setelah Dp
+	 * @param field
+	 * @param value
+	 */
 	calculateTotalAfterDptxtChange: function (field, value) {
 		var me = this;
 		var panel = field.up('panel');
@@ -223,12 +231,19 @@ Ext.define('App.controller.cPO', {
 			}
 		}
 	},
+	/**
+	 * Memilih Mata Uang dan Setup Simbol Uang Muka
+	 * @param combo
+	 * @param newValue
+	 * @param oldValue
+	 * @param eOpts
+	 */
 	selectCurrencyAndSetupSymbol: function (combo, newValue, oldValue, eOpts) {
 		/*Dapatkan Mata Uang dari Combo*/
-		var name = combo.displayTplData[0].name;
-		/*Setup ke combo discount*/
+		var model = combo.valueModels[0];
+		var name = model[0].name;
+		/*Setup ke combo mata uang*/
 		combo.up('panelNewOrderKain').down('[name=currency_name]').setValue(name);
-
 	},
 	/**
 	 * Menghitung Jumlah Total Price dan Total Discount

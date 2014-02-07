@@ -13,13 +13,16 @@ Ext.define('App.view.products.panelinfo', {
 		'App.view.products.productstocks',
 		'App.view.products.history'
 	],
-	prodId: null,
-	prodName: null,
-	stockStore: null,
-	storeHistory: null,
-	storeStockHistory: null,
-	record: null,
-	new: false,
+
+	config: {
+		new: false,
+		prodId: null,
+		prodName: null,
+		stockStore: null,
+		storeHistory: null,
+		storeStockHistory: null,
+		record: null,
+	},
 	debug: false,
 	title: 'Info',
 	extend: 'Ext.tab.Panel',
@@ -34,22 +37,23 @@ Ext.define('App.view.products.panelinfo', {
 	},
 	initComponent: function () {
 		var me = this;
-		if (me.new) {
-			var  items = [
+		if (me.getNew() == true) {
+			var items = [
 				{
 					xtype: 'formproductbasicinfo',
 					itemId: 'formbasicinfo',
-					record: me.record,
-					prodId: me.prodId,
-					prodName: me.prodName
+					record: me.getRecord(),
+					prodId: me.getProdId(),
+					prodName: me.getProdName(),
+					new: me.getNew()
 				},
 				{
 					xtype: 'formproductdetail',
 					itemId: 'formdetail',
-					title: 'Detail ' + ( (me.prodName !== null) ? me.prodName : ' ') ,
-					record: me.record,
-					prodId: me.prodId,
-					prodName: me.prodName
+					title: 'Detail ' + ( (me.getProdName() == null) ? ' ' : me.getProdName() ),
+					record: me.getRecord(),
+					prodId: me.getProdId(),
+					prodName: me.getProdName()
 				}
 			]
 		} else {
@@ -57,40 +61,48 @@ Ext.define('App.view.products.panelinfo', {
 				{
 					xtype: 'formproductbasicinfo',
 					itemId: 'formbasicinfo',
-					record: me.record,
-					prodId: me.prodId,
-					prodName: me.prodName
+					record: me.getRecord(),
+					prodId: me.getProdId(),
+					prodName: me.getProdName()
 				},
 				{
 					xtype: 'formproductdetail',
 					itemId: 'formdetail',
-					title: 'Detail ' + me.prodName,
-					record: me.record,
-					prodId: me.prodId,
-					prodName: me.prodName
-				},{
+					title: 'Detail ' + me.getProdName(),
+					record: me.getRecord(),
+					prodId: me.getProdId(),
+					prodName: me.getProdName()
+				},
+				{
 					xtype: 'productgridstocks',
 					itemId: 'panelGridStock',
-					stockStore: me.stockStore,
-					storeStockHistory: me.storeStockHistory,
-					record: me.record,
-					prodName: me.prodName,
-					prodId: me.prodId,
-					title: 'Stock ' + me.prodName
+					stockStore: me.getStockStore(),
+					storeStockHistory: me.getStoreStockHistory(),
+					record: me.getRecord(),
+					prodId: me.getProdId(),
+					prodName: me.getProdName(),
+					title: 'Stock ' + me.getProdName()
 				},
 				{
 					xtype: 'productshistory',
 					title: 'history',
 					itemId: 'gridHistoryProduct',
-					storeHistory: me.storeHistory,
-					prodId: me.prodId,
-					html: 'History Product ' + me.prodName
+					storeHistory: me.getStoreHistory(),
+					record: me.getRecord(),
+					prodId: me.getProdId(),
+					prodName: me.getProdName(),
+					html: 'History Product ' + me.getProdName()
 				}
 			]
 		}
-		Ext.apply(this, {
-			items:  items
+		Ext.apply(me, {
+			items: items
+//			items: [
+//				{
+//					xtype: 'container',
+//				}
+//			]
 		});
-		this.callParent(arguments);
+		me.callParent(arguments);
 	}
 });

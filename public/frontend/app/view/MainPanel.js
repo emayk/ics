@@ -1,5 +1,6 @@
 if (fromLocal()) {
 	itemsMainPanel = [
+		{ xtype : 'appstandintructionvstandintruction', title: 'Standing Intruction', iconCls:'home', closable:false},
 //		{ xtype : 'appcontactpersonvcontactperson', title: 'Contact Person Simulate', iconCls:'home', closable:false},
         { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:false},
 //		{ xtype : 'apptaxtypevtaxtypeLists', title: 'Tipe Pajak', iconCls:'home', closable:false},

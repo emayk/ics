@@ -39,9 +39,11 @@ if (fromLocal()) {
 		'cLogin',
 		'TranslationManager',
 		'cMenu',
+
 		'master.Countries',
 		'master.Currency',
 		'ctaxtype',
+				'ctypepayment',
 		'master.Gudang',
 		'cPO',
 		/*Diperlukan oleh buyer dan supplier*/
@@ -49,6 +51,8 @@ if (fromLocal()) {
 //		'cBuyers',
 //		'cSuppliers',
 
+		/*Standing Intruction*/
+		'cstandintruction',
 
 	/**
 	 * Master
@@ -72,7 +76,7 @@ if (fromLocal()) {
 ////
 ////
 ////		'master.ctlProducts',
-//		'ctypepayment',
+
 ////		'cposition',
 ////		'caccountBank',
 ////		'cphones',

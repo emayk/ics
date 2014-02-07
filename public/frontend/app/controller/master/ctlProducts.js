@@ -242,7 +242,7 @@ Ext.define('App.controller.master.ctlProducts', {
 //						var id = form.up('productinfo').down('formproductbasicinfo [name=id]').getValue();
 //						form.down['[name=product_id]'].setValue(id);
 //					}
-				},
+				}
 //				beforeactivate: function( form ){
 //					var id = form.up('productinfo').down('formproductbasicinfo [name=id]').getValue();
 ////					log(id);

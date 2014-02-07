@@ -18,66 +18,70 @@
 
 
 Ext.define('App.view.products.formbasicinfo', {
-    extend: 'Ext.form.Panel',
-    alias: 'widget.formproductbasicinfo',
-    autoScroll: true,
-    bodyPadding: 10,
-    frame: true,
-    flex: 2,
-    title: 'Basic Info',
-    itemId: 'detail',
-    layout: {
-        type: 'hbox',
-        align: 'stretch'
-    },
-    requires:[
-        'App.form.combobox.cbTypeProduct',
-        'App.form.combobox.cbCatproduct'
-    ],
-    record: null,
-    prodId : null,
-    prodName : null,
-    defaults: {
-        anchor: '95%',
-        widhtLabel: 100
-    },
-    initComponent: function () {
-        Ext.apply(this, {
-            items: [
-                {
-                    xtype: 'fieldset',
-	                itemId : 'fieldsetbasicinfo',
-                    autoScroll: true,
-                    title: 'Basic Info ' + this.prodName,
-                    margins: '0 10 0 0',
-                    bodyPadding: 2,
-                    flex: .6,
-                    items: [
-                        { xtype: 'hiddenfield', fieldLabel: 'id', name: 'id', anchor: '95%',readOnly: true,value : this.prodId },
-                        { xtype: 'textfield', fieldLabel: 'name', name: 'name', anchor: '95%' },
-                        { xtype: 'cbcatproduct', fieldLabel: 'Category', name: 'cat_id', anchor: '95%' },
-                        { xtype: 'textfield', fieldLabel: 'contruction', name: 'contruction', anchor: '95%' },
-                        { xtype: 'textfield', fieldLabel: 'nodesign', name: 'nodesign', anchor: '95%' },
-                        { xtype: 'cbTypeProduct', fieldLabel: 'type_id', name: 'type_id', anchor: '95%' },
-                        { xtype: 'fieldcontainer', fieldLabel: 'Weight', layout: 'hbox', anchor: '95%',
-                            items: [
-                                { xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3 },
-                                {
-                                    xtype: 'splitter'
-                                },
-                                { xtype: 'cbUnitWeight', fieldLabel: '', name: 'unitweight_id', flex: .6}
-                            ]
-                        },
+	extend: 'Ext.form.Panel',
+	alias: 'widget.formproductbasicinfo',
+	autoScroll: true,
+	bodyPadding: 10,
+	frame: true,
+	flex: 2,
+	title: 'Basic Info',
+	itemId: 'detail',
+	layout: {
+		type: 'hbox',
+		align: 'stretch'
+	},
+	requires: [
+		'App.form.combobox.cbTypeProduct',
+		'App.form.combobox.cbCatproduct'
+	],
+	config: {
+		new: false,
+		prodId: null,
+		prodName: null,
+		record: null
+	},
+	defaults: {
+		anchor: '95%',
+		widhtLabel: 100
+	},
+	initComponent: function () {
+		var me = this;
+		Ext.apply(me, {
+			items: [
+				{
+					xtype: 'fieldset',
+					itemId: 'fieldsetbasicinfo',
+					autoScroll: true,
+					title: 'Basic Info ' + ( ( me.getProdName() == null ) ? ' ' : me.getProdName() ),
+					margins: '0 10 0 0',
+					bodyPadding: 2,
+					flex: .6,
+					items: [
+						{ xtype: 'hiddenfield', fieldLabel: 'id', name: 'id', anchor: '95%', readOnly: true, value: this.prodId },
+						{ xtype: 'textfield', fieldLabel: 'name', name: 'name', anchor: '95%' },
+						{ xtype: 'cbcatproduct', fieldLabel: 'Category', name: 'cat_id', anchor: '95%' },
+						{ xtype: 'textfield', fieldLabel: 'contruction', name: 'contruction', anchor: '95%' },
+						{ xtype: 'textfield', fieldLabel: 'nodesign', name: 'nodesign', anchor: '95%' },
+						{ xtype: 'cbTypeProduct', fieldLabel: 'type_id', name: 'type_id', anchor: '95%' },
+						{ xtype: 'fieldcontainer', fieldLabel: 'Weight', layout: 'hbox', anchor: '95%',
+							items: [
+								{ xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3 },
+								{
+									xtype: 'splitter'
+								},
+								{ xtype: 'cbUnitWeight', fieldLabel: '', name: 'unitweight_id', flex: .6}
+							]
+						},
 
-                        { xtype: 'fieldcontainer', fieldLabel: 'Width', layout: 'hbox', anchor: '95%',
-                            items: [
-                                { xtype: 'numberfield', fieldLabel: '', name: 'width', flex: .3},
-                                {
-                                    xtype: 'splitter'
-                                },
-                                { xtype: 'cbUnitWidth', fieldLabel: '', name: 'unitwidth_id', flex: .6 }
-                            ]
-                        }
+						{ xtype: 'fieldcontainer', fieldLabel: 'Width', layout: 'hbox', anchor: '95%',
+							items: [
+								{ xtype: 'numberfield', fieldLabel: '', name: 'width', flex: .3},
+								{
+									xtype: 'splitter'
+								},
+								{ xtype: 'cbUnitWidth', fieldLabel: '', name: 'unitwidth_id', flex: .6 }
+							]
+						}
 
 //                        { xtype: 'textfield', fieldLabel: 'uuid', name: 'uuid', anchor: '95%' },
 //                        { xtype: 'textfield', fieldLabel: 'updated_at', name: 'updated_at', anchor: '95%' },
@@ -85,26 +89,26 @@ Ext.define('App.view.products.formbasicinfo', {
 //                        { xtype: 'textfield', fieldLabel: 'createby_id', name: 'createby_id', anchor: '95%' },
 //                        { xtype: 'textfield', fieldLabel: 'codeinternal', name: 'codeinternal', anchor: '95%' },
 //                        { xtype: 'textfield', fieldLabel: 'lastupdateby_id', name: 'lastupdateby_id', anchor: '95%' }
-                    ]
-                }
-            ]
-        });
-        this.callParent(arguments);
+					]
+				}
+			]
+		});
+		this.callParent(arguments);
 
-    },
+	},
 
-    buttons: [
-        {
-            text: 'Help', iconCls: 'help', itemId: 'help',action: 'help'
-        },
-        '->',
-        {
-            text: 'Save', iconCls: 'save', itemId: 'save',action: 'save'
-        },
-        {
-            text: 'Close', iconCls: 'close', itemId: 'close',action: 'close'
-        }
-    ]
+	buttons: [
+		{
+			text: 'Help', iconCls: 'help', itemId: 'help', action: 'help'
+		},
+		'->',
+		{
+			text: 'Save', iconCls: 'save', itemId: 'save', action: 'save'
+		},
+		{
+			text: 'Close', iconCls: 'close', itemId: 'close', action: 'close'
+		}
+	]
 });
 
 //

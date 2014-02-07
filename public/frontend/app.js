@@ -59,8 +59,9 @@ if (fromLocal()) {
 		'ccatprod',
 		'creceiveProduct',
 
-		'cPO'
+		'cPO',
 
+		'cstandintruction',
 		/*Sale Product*/
 		/*'cOrders',
 		 'csaleProduct',*/
