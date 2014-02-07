@@ -32,12 +32,18 @@ Ext.define('App.view.Suppliers.Edit', {
 		'App.form.combobox.cbLegalitas',
 		'App.form.combobox.cbTypeProduct',
 		'App.view.accountBank.vaccountBank',
-		'App.view.accountBank.Lists'
+		'App.view.accountBank.Lists',
+		'App.view.contactperson.vcontactperson'
 
 	],
 	layout: { type: 'fit', align: 'stretch'},
 	padding: 10,
 	mode: null,
+	config: {
+		parentId: null,
+		parentName: null,
+		parenttype: null
+	},
 	frame: true,
 	initComponent: function () {
 		var me = this;
@@ -312,6 +318,16 @@ Ext.define('App.view.Suppliers.Edit', {
 									}
 								},
 								/*Phone Number*/
+								{
+									flex: 1,
+									height: 300,
+									title: 'Kontak',
+									xtype: 'appcontactpersonvcontactperson',
+									itemId: 'contactperson',
+									parentId: me.getParentId(),
+									parentName: me.getParentName(),
+									parenttype: me.getParenttype()
+								},
 								{
 									flex: 1,
 									height: 300,

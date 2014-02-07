@@ -420,7 +420,10 @@ Ext.define('App.controller.cSuppliers', {
 				title: title,
 				closable: true,
 				iconCls: 'home',
-				mode: 'edit'
+				mode: 'edit',
+				parentId: id,
+				parenttype: 'supplier',
+				parentName: record.get('name')
 			});
 		tabinfo.down('#formsupplier').getForm().loadRecord(record);
 
@@ -432,8 +435,8 @@ Ext.define('App.controller.cSuppliers', {
 		storeGridPhone.getProxy().setExtraParam('parenttype', 'supplier');
 		storeGridPhone.load();
 
-		var gridAccount = tabinfo.down('#gridaccountbank');
-		var pgAccount = tabinfo.down('#pgAccountBank');
+//		var gridAccount = tabinfo.down('#gridaccountbank');
+//		var pgAccount = tabinfo.down('#pgAccountBank');
 
 
 //        gridAccount.reconfigure(storeAccountBank);
@@ -465,7 +468,10 @@ Ext.define('App.controller.cSuppliers', {
 				title: title,
 				closable: true,
 				iconCls: 'home',
-				mode: 'edit'
+				mode: 'edit',
+				parentId: null,
+				parentName: null,
+				parenttype: null
 			});
 		me.openNewTab(title, newtab);
 		me.newtab++;

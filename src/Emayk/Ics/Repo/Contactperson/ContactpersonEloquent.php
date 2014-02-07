@@ -52,29 +52,30 @@ class ContactpersonEloquent implements ContactpersonInterface
 	/**
 	 * Mendapatkan Semua Contactperson
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function all()
 	{
+		$this->checkParams();
+
 		$page          = \Input::get('page');
 		$limit         = \Input::get('limit', 1);
-		$start         = \Input::get('start', 1);
+		$start         = \Input::get('start', 0);
 		$contactperson = $this->contactperson;
+		$parentId      = Input::get('parent_id');
+		$parentType    = Input::get('parenttype');
+		$parentType    = $this->contactperson->getOwnerType($parentType);
+		$contactperson = $contactperson->whereParentId($parentId)
+			->whereParentType($parentType);
 
-		if (( Input::has('parent_id') ) and ( Input::has('parenttype') )) {
-			$parentId      = Input::get('parent_id');
-			$parentType    = Input::get('parenttype');
-			$parentType    = $this->contactperson->getOwnerType($parentType);
-			$contactperson = $contactperson->whereParentId($parentId)
-				->whereParentType($parentType);
-
-			if (Input::has('contactname')) {
-				$contactname   = Input::get('contactname');
-				$contactperson = $contactperson->where('name', 'LIKE', "%$contactname%");
-			}
-
+		if (Input::has('contactname')) {
+			$contactname   = Input::get('contactname');
+			$contactperson = $contactperson->where('name', 'LIKE', "%$contactname%");
 		}
 
+		$contactperson = $contactperson->with('position', 'departement')
+			->orderBy('updated_at','DESC');
 		$total         = $contactperson->count();
 		$contactperson = $contactperson->skip($start)
 			->take($limit)
@@ -91,6 +92,17 @@ class ContactpersonEloquent implements ContactpersonInterface
 
 	}
 
+	/**
+	 * Check Parameters
+	 *
+	 * @throws \Exception
+	 */
+	protected function checkParams()
+	{
+		if (( !Input::has('parent_id') ) or ( !Input::has('parenttype') )) {
+			throw new \Exception( 'Not Enough parameter please provider parameter id and type' );
+		}
+	}
 
 	/**
 	 *
@@ -119,8 +131,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 		 */
 
 		/*==========  Sesuaikan dengan Field di table  ==========*/
-		if (!Input::has('parent_id')) throw new \Exception( 'Butuh Parameter Parent' );
-		if (!Input::has('parenttype')) throw new \Exception( 'Butuh Parameter Parent Type' );
+		$this->checkParams();
 
 		$type  = Input::get('parenttype');
 		$types = ['supplier', 'office', 'buyer'];
@@ -131,7 +142,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 		$this->contactperson->parent_id       = Input::get('parent_id');
 		$this->contactperson->parent_type     = $this->contactperson->getOwnerType($type);
 		$this->contactperson->name            = Input::get("name");
-		$this->contactperson->info            = Input::get("info");
+		$this->contactperson->info            = Input::get("info",' ');
 		$this->contactperson->pos_id          = Input::get("pos_id");
 		$this->contactperson->dept_id         = Input::get("dept_id");
 		$this->contactperson->phone           = Input::get("phone");
@@ -163,14 +174,22 @@ class ContactpersonEloquent implements ContactpersonInterface
 	public function delete($id)
 	{
 
-		if ($this->hasAccess()) {
-			$deleted = $this->contactperson
-				->find($id)
-				->delete();
+		$this->checkParams();
 
-			return \Icsoutput::toJson(array(
-				'results' => $deleted
-			), $deleted);
+		if ($this->hasAccess()) {
+			$contact = $this->contactperson
+				->find($id);
+
+
+			return ($contact->delete())
+				? Response::json([
+					'success' => true,
+					'error' => false,
+				])
+				: Response::json([
+						'success' => false,
+						'error' => true,
+					]);
 
 		} else {
 			return \Icsoutput::toJson(array(
@@ -191,7 +210,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 	{
 		$db = $this->contactperson->find($id);
 		/*==========  Sesuaikan  ==========*/
-		$uid                                  = Auth::user()->id;
+		$uid                 = Auth::user()->id;
 		$db->name            = Input::get("name");
 		$db->info            = Input::get("info");
 		$db->pos_id          = Input::get("pos_id");
@@ -201,7 +220,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 		$db->fax             = Input::get("fax");
 		$db->lastupdateby_id = $uid;
 		$db->updated_at      = new Carbon();
-		$db->uuid = uniqid('Update_');
+		$db->uuid            = uniqid('Update_');
 		return ( $db->save() )
 			? \Icsoutput::msgSuccess($db->toArray())
 			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));

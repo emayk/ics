@@ -8,7 +8,7 @@ Ext.define('App.store.combo.cbPosition',{
 	extend: 'Ext.data.Store',
 	fields: [ 'id','name' ],
     proxy: {
-		type: 'ajax',
+		type: 'rest',
 		url: getApiUrl() +'/positions',
 		reader: {
 			type: 'json',

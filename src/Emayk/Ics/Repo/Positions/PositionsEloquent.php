@@ -56,6 +56,8 @@ class PositionsEloquent implements PositionsInterface
 	 */
 	public function all()
 	{
+		if (Input::has('idselected')) { return $this->show(Input::get('idselected')); }
+
 		$page      = \Input::get('page');
 		$limit     = \Input::get('limit', 1);
 		$start     = \Input::get('start', 1);
@@ -189,7 +191,12 @@ class PositionsEloquent implements PositionsInterface
 	 */
 	public function show($id)
 	{
-		// TODO: Implement show() method.
+		$pos = $this->positions->findOrFail($id);
+		return Response::json([
+			'success' => true,
+			'error'   => false,
+			'results' => $pos->toArray()
+		]);
 	}
 
 	/**

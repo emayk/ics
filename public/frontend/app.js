@@ -51,7 +51,8 @@ if (fromLocal()) {
 		'ctypesupbuy',
 		'ccontacts',
 		'coffices',
-
+		/*Diperlukan oleh buyer dan supplier*/
+		'ccontactperson',
 		'cBuyers',
 		'cSuppliers',
 		'ctaxtype',
@@ -220,7 +221,7 @@ Ext.application({
 			/*Header*/
 			Ext.ComponentQuery.query('mainviewport #header')[0].toggleCollapse();
 			/*Menu*/
-			Ext.ComponentQuery.query('mainviewport #appmenu')[0].toggleCollapse();
+//			Ext.ComponentQuery.query('mainviewport #appmenu')[0].toggleCollapse();
 		}
 
 	}

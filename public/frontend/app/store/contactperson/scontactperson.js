@@ -1,4 +1,6 @@
 /**
+ * Store contactperson
+ *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +16,21 @@
  *
  * @author Emay Komarudin
  *
+ *
+ *
  **/
 
-Ext.define('App.form.combobox.cbPositions', {
-	alias : 'widget.cbpositions',
-	pageSize: 10,
-	extend: 'Ext.form.ComboBox',
-	queryMode: 'remote',
-	fieldLabel : 'Choose Positions', allowBlank: false ,
-	displayField : 'name',
-	valueField: 'id',
-	triggerAction: 'all',
-	forceSelection : false,
-	emptyText: 'Select Positions',
-	store : 'App.store.combo.cbPosition',
-	tpl: App.util.Form.combobox_tpl ,
-	displayTpl: App.util.Form.combobox_displayTpl,
-	initComponent : function(){ this.callParent(arguments); }
+Ext.define('App.store.contactperson.scontactperson',{
+	extend : 'Ext.data.Store',
+	model : 'App.model.contactperson.mcontactperson',
+
+	proxy: {
+		type: 'rest',
+		url: getApiUrl() +'/contactperson',
+		reader: {
+			type: 'json',
+			root: 'results',
+			totalProperty: 'total'
+		}
+	}
 });

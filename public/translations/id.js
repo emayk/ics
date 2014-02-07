@@ -168,6 +168,8 @@ translations = {
 	typetax: 'Tipe Pajak',
 	typebussiness: 'Tipe Usaha',
 	name : 'Nama',
-	abbr : 'Singkatan'
-
+	abbr : 'Singkatan',
+/*New added*/
+	deptname : 'Nama Divisi',
+	posname : 'Nama Jabatan',
 }

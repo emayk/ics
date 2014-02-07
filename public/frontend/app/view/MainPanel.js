@@ -1,12 +1,13 @@
 if (fromLocal()) {
 	itemsMainPanel = [
+//		{ xtype : 'appcontactpersonvcontactperson', title: 'Contact Person Simulate', iconCls:'home', closable:false},
+        { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:false},
 //		{ xtype : 'apptaxtypevtaxtypeLists', title: 'Tipe Pajak', iconCls:'home', closable:false},
 //		{ xtype : 'appcatprodvcatprod', title: 'Kategory Produk', iconCls:'home', closable:false},
 //		{ xtype : 'apptypeproductvtypeproduct', title: 'Type Product', iconCls:'home', closable:false},
 //		{ xtype : 'appfabrictypevfabrictype', title: 'Type Fabric', iconCls:'home', closable:false},
 //		{ xtype : 'apptypesupbuyvtypesupbuy', title: 'Type Supplier and Buyer', iconCls:'home', closable:false},
 //        { xtype : 'tabbank', title: 'Bank', iconCls:'home', closable:false},
-        { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:false},
 //        { xtype : 'tabscolor', title: 'Warna', iconCls:'home', closable:false},
 //        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
 //		{ xtype: 'appofficesvoffices', title: 'Office', iconCls: 'home', closable: false},

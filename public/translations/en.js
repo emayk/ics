@@ -178,5 +178,9 @@ menu_example : '[Debug] Menu Example',
 	typetax: 'Type Tax',
 	typebussiness: 'Type Bussiness',
 	name : 'Name',
-	abbr : 'Abbr'
+	abbr : 'Abbr',
+
+	/*New added*/
+	deptname : 'Name Of departement',
+	posname : 'Name of position'
 }

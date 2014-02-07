@@ -43,7 +43,11 @@ if (fromLocal()) {
 		'master.Currency',
 		'ctaxtype',
 		'master.Gudang',
-		'cPO'
+		'cPO',
+		/*Diperlukan oleh buyer dan supplier*/
+		'ccontactperson',
+//		'cBuyers',
+//		'cSuppliers',
 
 
 	/**
