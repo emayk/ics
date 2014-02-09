@@ -20,27 +20,13 @@
  *
  **/
 
-Ext.define('App.controller.creceiveProduct',{
+Ext.define('App.controller.cdashboard',{
 	extend: 'Ext.app.Controller',
-	views: [
-		/*tab*/
-		'App.view.receiveProduct.tabbarang',
-		'App.view.receiveProduct.vreceiveProduct',
-		'App.form.combobox.cbSupplier'
-	],
-	models:[
-		'App.model.receiveProduct.mreceiveProduct',
-		'App.model.receiveProduct.mreceiveProductItem'
-	],
-	stores:[
-		'App.store.receiveProduct.sreceiveProduct',
-		'App.store.receiveProduct.sreceiveProductItem',
-		'App.store.receiveProduct.sOrder',
-		'App.store.combo.cbSuppliers'
-
-	],
+	views: ['App.view.dashboard.vdashboard'],
+	models:['App.model.dashboard.mdashboard'],
+	stores:['App.store.dashboard.sdashboard'],
 	init: function(){
-		log('Controller creceiveProduct Loaded');
+		log('Controller cdashboard Loaded');
 	}
 });
 

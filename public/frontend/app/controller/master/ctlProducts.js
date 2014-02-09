@@ -300,7 +300,8 @@ Ext.define('App.controller.master.ctlProducts', {
 			/**
 			 * Add New Product
 			 */
-			'productstab button#add': {
+//			'productstab button#add': {
+			'productList button#add': {
 				click: function (btn) {
 					log('Product Add Button fire!');
 					/*Cek apakah requirement data terpenuhi ?*/

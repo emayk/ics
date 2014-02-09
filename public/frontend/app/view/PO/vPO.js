@@ -110,7 +110,31 @@ Ext.define('App.view.PO.vPO', {
 								}
 							]
 						},
-						/*Buat PO Kain*/
+						/*Tab Cetak PO*/
+						{
+							title: 'Cetak',
+							xtype: 'tabpanel',
+							itemId: 'cetakpo',
+							items:[
+								{
+									title: 'Cetak Duplikasi',
+									xtype: 'container',
+									html : 'Content Cetak Duplikasi PO'
+								},{
+									title: 'Cetak Revise',
+									xtype: 'container',
+									html : 'Content Cetak Revise PO'
+								}
+							]
+						},
+						/*Tutup PO */
+						{
+							title: 'Tutup PO',
+							xtype: 'container',
+							html : 'Content Tutup PO'
+						},
+
+						/*Buat PO Kain hanya untuk simulasi saja */
 						{
 							title: 'Buat PO Kain',
 							xtype: 'panelNewOrderKain',

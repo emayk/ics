@@ -59,7 +59,9 @@ use Illuminate\Database\Eloquent\Model;
       * @return mixed
       */
      protected function createChild($parent_id){
-             return  $this->where('parent_id',$parent_id)->get()->toArray();
+             return  $this->where('parent_id',$parent_id)
+             ->orderBy('text','ASC')
+	             ->get()->toArray();
      }
 
  }

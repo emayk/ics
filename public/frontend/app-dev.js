@@ -39,20 +39,59 @@ if (fromLocal()) {
 		'cLogin',
 		'TranslationManager',
 		'cMenu',
+		/*Dashboard*/
+		'cdashboard',
 
 		'master.Countries',
 		'master.Currency',
 		'ctaxtype',
-				'ctypepayment',
+
 		'master.Gudang',
+		/*Pembelian*/
 		'cPO',
 		/*Diperlukan oleh buyer dan supplier*/
-		'ccontactperson',
+//		'ccontactperson',
 //		'cBuyers',
 //		'cSuppliers',
 
 		/*Standing Intruction*/
+		/*Masih devel*/
 		'cstandintruction',
+		/*simulasi*/
+		'cdefaultsetting',
+		/*Simulasi Terima Barang */
+		'creceiveProduct',
+
+		/*Pembayaran*/
+		'ctypepayment',
+		'cpayment',
+		/*Kontra Bon*/
+		'ccontrabon',
+		/*Retur Barang*/
+		'creturgood',
+
+		/*Debit Note*/
+		'cdebitnote',
+
+		/*Penjualan*/
+		'csales',
+
+		/*Intruksi Keluar Barang*/
+		'cinsoutgood',
+
+		/*Terima Dp*/
+		'creceivedp',
+
+		/*Terima Pembayaran*/
+		'creceivepayment',
+		/*Check Tolak*/
+		'ccheckdenied',
+		/*Credit Note*/
+		'ccreditnote',
+		/*Komisi Penjual*/
+		'ccommisionsale'
+
+
 
 	/**
 	 * Master

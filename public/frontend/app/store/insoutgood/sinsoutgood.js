@@ -1,5 +1,5 @@
 /**
- * Part Of ICS
+ * Store insoutgood
  *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -20,27 +20,18 @@
  *
  **/
 
-Ext.define('App.controller.creceiveProduct',{
-	extend: 'Ext.app.Controller',
-	views: [
-		/*tab*/
-		'App.view.receiveProduct.tabbarang',
-		'App.view.receiveProduct.vreceiveProduct',
-		'App.form.combobox.cbSupplier'
-	],
-	models:[
-		'App.model.receiveProduct.mreceiveProduct',
-		'App.model.receiveProduct.mreceiveProductItem'
-	],
-	stores:[
-		'App.store.receiveProduct.sreceiveProduct',
-		'App.store.receiveProduct.sreceiveProductItem',
-		'App.store.receiveProduct.sOrder',
-		'App.store.combo.cbSuppliers'
+Ext.define('App.store.insoutgood.sinsoutgood',{
+	extend : 'Ext.data.Store',
+	model : 'App.model.insoutgood.minsoutgood',
 
-	],
-	init: function(){
-		log('Controller creceiveProduct Loaded');
-	}
-});
+/*	proxy: {
+		type: 'rest',
+		url: getApiUrl() +'/insoutgood',
+		reader: {
+			type: 'json',
+			root: 'results',
+			totalProperty: 'total'
+		},
+	},*/
 
+})

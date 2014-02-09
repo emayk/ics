@@ -20,27 +20,13 @@
  *
  **/
 
-Ext.define('App.controller.creceiveProduct',{
+Ext.define('App.controller.ccheckdenied',{
 	extend: 'Ext.app.Controller',
-	views: [
-		/*tab*/
-		'App.view.receiveProduct.tabbarang',
-		'App.view.receiveProduct.vreceiveProduct',
-		'App.form.combobox.cbSupplier'
-	],
-	models:[
-		'App.model.receiveProduct.mreceiveProduct',
-		'App.model.receiveProduct.mreceiveProductItem'
-	],
-	stores:[
-		'App.store.receiveProduct.sreceiveProduct',
-		'App.store.receiveProduct.sreceiveProductItem',
-		'App.store.receiveProduct.sOrder',
-		'App.store.combo.cbSuppliers'
-
-	],
+	views: ['App.view.checkdenied.vcheckdenied'],
+	models:['App.model.checkdenied.mcheckdenied'],
+	stores:['App.store.checkdenied.scheckdenied'],
 	init: function(){
-		log('Controller creceiveProduct Loaded');
+		log('Controller ccheckdenied Loaded');
 	}
 });
 

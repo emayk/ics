@@ -17,7 +17,9 @@
  * @author Emay Komarudin
  *
  *
- *
+ * Flow :
+ * dari     :
+ * Ke       : SI -> Instruksi Keluar Barang
  **/
 Ext.define('App.view.standintruction.vstandintruction', {
 	extend: 'Ext.panel.Panel',
@@ -233,7 +235,18 @@ Ext.define('App.view.standintruction.vstandintruction', {
 								}
 							]
 						},
-
+						/*Cetak Standing Intruction*/
+						{
+							xtype: 'container',
+							title: 'Cetak',
+							html: 'Cetak Standing Intruction'
+						},
+						/*Konfirmasi Standing Intruction*/
+						{
+							xtype: 'container',
+							title: 'Konfirmasi',
+							html: 'Konfirmasi Standing Intruction'
+						}
 					]
 				}
 			]

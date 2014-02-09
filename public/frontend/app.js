@@ -21,10 +21,15 @@ if (fromLocal()) {
 		'cLogin',
 		'TranslationManager',
 		'cMenu',
+
+		/*Dashboard*/
+		'cdashboard',
 	/**
 	 * Master
 	 *
 	 */
+		/*Setting Awal*/
+		'cdefaultsetting',
 
 		'master.Departement',
 		'master.Legalitas',
@@ -44,7 +49,7 @@ if (fromLocal()) {
 
 		'ctypeAccountBank',
 		'master.ctlProducts',
-		'ctypepayment',
+
 		'cposition',
 		'caccountBank',
 		'cphones',
@@ -59,9 +64,45 @@ if (fromLocal()) {
 		'ccatprod',
 		'creceiveProduct',
 
+		/*Pembelian*/
 		'cPO',
 
 		'cstandintruction',
+		/*Pembayaran*/
+		'ctypepayment',
+		'cpayment',
+		/*Kontra Bon*/
+		'ccontrabon',
+
+		/*Retur Barang*/
+		'creturgood',
+
+
+		/*Debit Note*/
+		'cdebitnote',
+
+		/*Penjualan*/
+		'csales',
+
+		/*Intruksi Keluar Barang*/
+		'cinsoutgood',
+
+		/*Terima Dp*/
+		'creceivedp',
+
+		/*Terima Pembayaran*/
+		'creceivepayment',
+		/*Check Tolak*/
+		'ccheckdenied',
+		/*Credit Note*/
+		'ccreditnote',
+		/*Komisi Penjual*/
+		'ccommisionsale'
+
+
+
+
+
 		/*Sale Product*/
 		/*'cOrders',
 		 'csaleProduct',*/

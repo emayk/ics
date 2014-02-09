@@ -1,6 +1,4 @@
 /**
- * Part Of ICS
- *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,31 +14,19 @@
  *
  * @author Emay Komarudin
  *
- *
- *
  **/
 
-Ext.define('App.controller.creceiveProduct',{
-	extend: 'Ext.app.Controller',
-	views: [
-		/*tab*/
-		'App.view.receiveProduct.tabbarang',
-		'App.view.receiveProduct.vreceiveProduct',
-		'App.form.combobox.cbSupplier'
-	],
-	models:[
-		'App.model.receiveProduct.mreceiveProduct',
-		'App.model.receiveProduct.mreceiveProductItem'
-	],
-	stores:[
-		'App.store.receiveProduct.sreceiveProduct',
-		'App.store.receiveProduct.sreceiveProductItem',
-		'App.store.receiveProduct.sOrder',
-		'App.store.combo.cbSuppliers'
 
-	],
-	init: function(){
-		log('Controller creceiveProduct Loaded');
+Ext.define('App.view.PO.printduplicate', {
+	extend: 'Ext.panel.Panel',
+	frame: true,
+	bodyPadding: 5,
+	alias: 'widget.poprintduplicate',
+	initComponent: function(){
+		var me = this;
+		Ext.apply(me,{
+
+		});
+		me.callParent(arguments);
 	}
 });
-

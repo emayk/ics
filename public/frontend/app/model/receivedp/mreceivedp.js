@@ -1,5 +1,5 @@
 /**
- * Part Of ICS
+ * Model receivedp
  *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -19,28 +19,7 @@
  *
  *
  **/
-
-Ext.define('App.controller.creceiveProduct',{
-	extend: 'Ext.app.Controller',
-	views: [
-		/*tab*/
-		'App.view.receiveProduct.tabbarang',
-		'App.view.receiveProduct.vreceiveProduct',
-		'App.form.combobox.cbSupplier'
-	],
-	models:[
-		'App.model.receiveProduct.mreceiveProduct',
-		'App.model.receiveProduct.mreceiveProductItem'
-	],
-	stores:[
-		'App.store.receiveProduct.sreceiveProduct',
-		'App.store.receiveProduct.sreceiveProductItem',
-		'App.store.receiveProduct.sOrder',
-		'App.store.combo.cbSuppliers'
-
-	],
-	init: function(){
-		log('Controller creceiveProduct Loaded');
-	}
+Ext.define('App.model.receivedp.mreceivedp', {
+    extend: 'Ext.data.Model',
+    fields: [ 'id', 'name' ]
 });
-

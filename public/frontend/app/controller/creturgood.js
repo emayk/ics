@@ -20,27 +20,13 @@
  *
  **/
 
-Ext.define('App.controller.creceiveProduct',{
+Ext.define('App.controller.creturgood',{
 	extend: 'Ext.app.Controller',
-	views: [
-		/*tab*/
-		'App.view.receiveProduct.tabbarang',
-		'App.view.receiveProduct.vreceiveProduct',
-		'App.form.combobox.cbSupplier'
-	],
-	models:[
-		'App.model.receiveProduct.mreceiveProduct',
-		'App.model.receiveProduct.mreceiveProductItem'
-	],
-	stores:[
-		'App.store.receiveProduct.sreceiveProduct',
-		'App.store.receiveProduct.sreceiveProductItem',
-		'App.store.receiveProduct.sOrder',
-		'App.store.combo.cbSuppliers'
-
-	],
+	views: ['App.view.returgood.vreturgood'],
+	models:['App.model.returgood.mreturgood'],
+	stores:['App.store.returgood.sreturgood'],
 	init: function(){
-		log('Controller creceiveProduct Loaded');
+		log('Controller creturgood Loaded');
 	}
 });
 
