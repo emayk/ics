@@ -1,12 +1,12 @@
 
 [
 	{
-		"text": "To Do 1",
+		"text": "Menu Master",
 		"cls": "folder",
 		"expanded": true,
 		"children": [
 			{
-				"text": "Go jogging",
+				"text": "Badan Hukum",
 				"leaf": true,
 				"checked": true,
 				"id": 90

@@ -1,6 +1,6 @@
 if (fromLocal()) {
 	itemsMainPanel = [
-//        { xtype : 'appusersvusers', title: 'Pengguna dan Hak Akses', iconCls:'home', closable:true},
+        { xtype : 'appusersvusers', title: 'Pengguna dan Hak Akses', iconCls:'home', closable:true},
         { xtype : 'appdashboardvdashboard', title: 'Dashboard', iconCls:'home', closable:false},
 //        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:true},
 //        { xtype : 'appcommisionsalevcommisionsale', title: 'Komisi Penjual', iconCls:'home', closable:true},

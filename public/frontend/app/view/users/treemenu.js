@@ -24,7 +24,6 @@ Ext.define('App.view.users.treemenu', {
 	requires: [
 		'Ext.data.TreeStore'
 	],
-//	xtype: 'check-tree',
 	autoScroll: true,
 	layout: {
 		type: 'fit', align: 'stretch'
@@ -32,14 +31,14 @@ Ext.define('App.view.users.treemenu', {
 	rootVisible: false,
 	useArrows: true,
 	initComponent: function () {
-		log(App.util.box.maxHeightwindow());
-
 		Ext.apply(this, {
-			height: 350 ,
+			height: 350,
 			store: new Ext.data.TreeStore({
 				proxy: {
 					type: 'ajax',
-					url: '/packages/emayk/ics/frontend/app/data/treemenu.json'
+//					url: '/packages/emayk/ics/frontend/app/data/treemenu.json'
+
+					url: 'http://ba.dev/ba/test/menuroot'
 				},
 				sorters: [
 					{
@@ -54,7 +53,8 @@ Ext.define('App.view.users.treemenu', {
 			}),
 			tbar: [
 				{
-					text: 'Get checked nodes',
+					text: 'Set Hak Akses',
+					iconCls: 'save',
 					scope: this,
 					handler: this.onCheckedNodesClick
 				}
@@ -73,7 +73,7 @@ Ext.define('App.view.users.treemenu', {
 		});
 
 		/*Lakukan kirim ke server */
-
+		log(names.join(','));
 //		Ext.MessageBox.show({
 //			title: 'Selected Nodes',
 //			msg: names.join('<br />'),

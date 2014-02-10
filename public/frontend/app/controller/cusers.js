@@ -20,15 +20,84 @@
  *
  **/
 
-Ext.define('App.controller.cusers',{
+Ext.define('App.controller.cusers', {
 	extend: 'Ext.app.Controller',
-	views: ['App.view.users.vusers','App.view.users.treemenu'],
-	models:['App.model.users.musers'],
-	stores:['App.store.users.susers'],
-	init: function(){
+	views: ['App.view.users.vusers',
+		'App.view.users.lists',
+		'App.view.users.form',
+		'App.view.users.treemenu'
+	],
+	models: ['App.model.users.musers'],
+	stores: ['App.store.users.susers'],
+	init: function () {
 		var me = this;
 		me.control({
+			/*Panel*/
+			'appusersvusers': { },
 
+			/*Grid User*/
+			'appusersvgridusers': {
+				itemdblclick: function (grid, record) {
+					log(record);
+				}
+			},
+			/*Tambah Record*/
+			'appusersvgridusers > toolbar button[action=add]': {
+				click: function (btn) {
+					log(btn.text + 'fire!!!');
+				}
+			},
+			/*remove Record*/
+			'appusersvgridusers > toolbar button[action=remove]': {
+				click: function (btn) {
+					var gridusers = btn.up('grid');
+					var selections = gridusers.getSelectionModel().getSelection();
+					var selected = (selections.length > 0);
+
+					if (!selected) {
+						App.util.box.error('Silahkan Pilih Record Pengguna yang akan dihapus ');
+						return false;
+					}
+
+					var store = gridusers.getStore();
+					Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin akan menghapus semua Tipe yang dipilih ? ', function (btn) {
+						if (btn == 'yes') {
+							Ext.each(selections, function (rec, index, value) {
+								rec.destroy({
+									failure: function (rec, opts) {
+										App.util.box.error('Ada Record yang gagal dihapus');
+									}
+								});
+							});
+							store.load();
+						}
+					});
+				}
+			},
+
+			/*Form*/
+			'appusersvform': { },
+			/*Simpan atau Update User */
+			'appusersvform > toolbar button[action=addorupdate]': {
+				click: function (btn) {
+					log(btn.text + 'fire!!!');
+				}
+			},
+			'appusersvform > toolbar button[action=close]': {
+				click: function (btn) {
+					log(btn.text + 'fire!!!');
+				}
+			},
+			'appusersvform > toolbar button[action=help]': {
+				click: function (btn) {
+					log(btn.text + 'fire!!!');
+				}
+			},
+
+			/*Tree Menu*/
+			'appviewuserstreemenu': {
+
+			}
 		});
 	}
 });
