@@ -66,7 +66,7 @@ Ext.define('App.view.users.lists', {
 					width: 40,
 					items: [
 						{
-							iconCls: 'show',
+							iconCls: 'setup',
 							tooltip: 'Actif/non aktif',
 							handler: function (grid, rowIndex, colIndex) {
 								var rec = grid.getStore().getAt(rowIndex);

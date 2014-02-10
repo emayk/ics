@@ -1,5 +1,20 @@
+.setup {
+    background-image: url('../icons/wrench-screwdriver.png') !important;
+}
+
 .show {
-    background-image: url('../icons/ms-excel.gif') !important;
+    background-image: url('../images/info-16.png') !important;
+}
+
+.check {
+        background-image: url('../icons/accept.png') !important;
+}
+.uncheck {
+    background-image: url('../icons/delete.png') !important;
+}
+
+.refresh {
+        background-image: url('../icons/database_table.png') !important;
 }
 #bg {
     position: fixed;

@@ -57,6 +57,12 @@ Ext.define('App.view.users.treemenu', {
 					iconCls: 'save',
 					scope: this,
 					handler: this.onCheckedNodesClick
+				},'->',
+				{
+					text: 'Refresh',
+					iconCls: 'refresh',
+					scope: this,
+					handler: this.onRefreshNode
 				}
 			]
 		});
@@ -64,6 +70,11 @@ Ext.define('App.view.users.treemenu', {
 
 	},
 
+	onRefreshNode: function(btn){
+	var grid = btn.up('appviewuserstreemenu');
+		var store = grid.getStore();
+		store.reload();
+	},
 	onCheckedNodesClick: function () {
 		var records = this.getView().getChecked(),
 			names = [];
