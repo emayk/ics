@@ -4,7 +4,7 @@ translations = {
 	password: "Kata Kunci",
 	fullname: 'Nama Lengkap',
 	username: 'Nama Pengguna',
-	email: 'Alamat Surel',
+	email: 'Alamat Email',
 	group: 'Kelompok',
 	departement: 'Departement',
 	picture: 'Gambar',

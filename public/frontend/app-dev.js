@@ -42,6 +42,17 @@ if (fromLocal()) {
 		/*Dashboard*/
 		'cdashboard',
 
+		'cposition',
+		'caccountBank',
+		'cphones',
+		'ctypesupbuy',
+//		'ccontacts',
+		'coffices',
+		/*Diperlukan oleh buyer dan supplier*/
+		'ccontactperson',
+		'cBuyers',
+		'cSuppliers',
+
 		'master.Countries',
 		'master.Currency',
 		'ctaxtype',
@@ -116,15 +127,10 @@ if (fromLocal()) {
 ////
 ////		'master.ctlProducts',
 
-////		'cposition',
-////		'caccountBank',
-////		'cphones',
-//		'ctypesupbuy',
-////		'ccontacts',
-////		'coffices',
+
 ////
 ////		'cBuyers',
-////		'cSuppliers',
+
 ////		'creceiveProduct',
 //
 

@@ -1,5 +1,6 @@
 if (fromLocal()) {
 	itemsMainPanel = [
+//        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:true},
         { xtype : 'appdashboardvdashboard', title: 'Dashboard', iconCls:'home', closable:false},
 //        { xtype : 'appcommisionsalevcommisionsale', title: 'Komisi Penjual', iconCls:'home', closable:true},
 //        { xtype : 'appcreditnotevcreditnote', title: 'Credit Note', iconCls:'home', closable:true},
@@ -25,7 +26,6 @@ if (fromLocal()) {
 //		{ xtype : 'apptypesupbuyvtypesupbuy', title: 'Type Supplier and Buyer', iconCls:'home', closable:false},
 //        { xtype : 'tabbank', title: 'Bank', iconCls:'home', closable:false},
 //        { xtype : 'tabscolor', title: 'Warna', iconCls:'home', closable:false},
-//        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:false},
 //		{ xtype: 'appofficesvoffices', title: 'Office', iconCls: 'home', closable: false},
 //		{ xtype: 'appcatprodtreegrid', title: 'Master Category Product Tree', iconCls: 'home', closable: false},
 //		{ xtype: 'appcatprodvcatprod', title: 'Master Category Product', iconCls: 'home', closable: false},

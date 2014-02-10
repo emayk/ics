@@ -246,10 +246,38 @@ Ext.define('App.controller.cSuppliers', {
 			 */
 			'form#formsupplier #taboffice': {
 				render: me.tabofficeRender
+			},
+			/**
+			 * Kontak Person
+			 */
+			'form#formsupplier #tabcontactperson': {
+				render: me.tabcontactpersonRender,
+				beforeactivate: function (tab) {
+					/*check Account Supplier sudah disave?*/
+					var record = tab.up('form').getForm().getRecord();
+					if (!record) {
+						App.util.box.error('Silahkan Simpan data Supplier terlebih dahulu');
+						return false;
+					} else {
+						/*setup proxy grid contact*/
+						var cp = tab;
+						cp.parentId = record.get('id');
+						cp.parenttype = 'supplier';
+						cp.parentName = record.get('name');
+						return true;
+					}
+				}
 			}
 			/*End Control*/
 		});
 		/*@todo: setup store phone dan account bank */
+	},
+	tabcontactpersonRender: function(tab){
+//		var record = tab.up('form').getForm().getRecord();
+//		if (!record){
+//			App.util.box.error('Silahkan Simpan Pemasok Terlebih dahulu');
+//			return false;
+//		}
 	},
 	taboAccountBankRender: function (tab) {
 		var record = tab.up('form').getForm().getRecord();

@@ -25,7 +25,9 @@ Ext.define('App.view.contacts.vForm', {
 		'App.form.combobox.cbPositions'
 	],
 	config: {
-		isReadonly: false
+		isReadonly: false,
+		parentId : null,
+		parenttype : null
 	},
 	initComponent: function () {
 		var me = this;
@@ -67,10 +69,10 @@ Ext.define('App.view.contacts.vForm', {
 					name: 'fax'
 				},{
 					xtype: 'hiddenfield',
-					name: 'parent_id'
+					name: 'parent_id' ,value: me.getParentId()
 				},{
 					xtype: 'hiddenfield',
-					name: 'parenttype'
+					name: 'parenttype',value: me.getParenttype()
 				}
 			]
 		});

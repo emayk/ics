@@ -317,17 +317,18 @@ Ext.define('App.view.Suppliers.Edit', {
 										name: 'note'
 									}
 								},
-								/*Phone Number*/
+								/*Kontak Person*/
 								{
 									flex: 1,
 									height: 300,
 									title: 'Kontak',
 									xtype: 'appcontactpersonvcontactperson',
-									itemId: 'contactperson',
+									itemId: 'tabcontactperson',
 									parentId: me.getParentId(),
 									parentName: me.getParentName(),
 									parenttype: me.getParenttype()
 								},
+								/*Phone Number*/
 								{
 									flex: 1,
 									height: 300,

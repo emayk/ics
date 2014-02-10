@@ -54,7 +54,6 @@ Ext.define('App.view.contactperson.vcontactperson', {
 							xtype: 'rownumberer',
 							text: '#'
 						},
-						/*@todo: ganti dengan field*/
 						{
 							dataIndex: 'name',
 							text: translations.name,
@@ -111,12 +110,14 @@ Ext.define('App.view.contactperson.vcontactperson', {
 								{
 									text: translations.add,
 									iconCls: 'add',
-									action: 'add'
+									action: 'add',
+//									disabled : (me.getParentId() == null)
 								},
 								{
 									text: translations.remove,
 									iconCls: 'delete',
-									action: 'remove'
+									action: 'remove',
+//									disabled : (me.getParentId() == null)
 								},
 								'->',
 								{
@@ -147,6 +148,6 @@ Ext.define('App.view.contactperson.vcontactperson', {
 			]
 		});
 		me.callParent(arguments);
-		me.down('#listcontacts').getStore().load();
+//		me.down('#listcontacts').getStore().load();
 	}
 });

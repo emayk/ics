@@ -35,6 +35,7 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 	alias: 'widget.appreceiveProductvreceiveProduct',
 	padding: 10,
 	frame: true,
+	autoScroll: true,
 	layout: { type: 'fit', align: 'stretch'},
 	store: 'App.store.receiveProduct.sreceiveProductItem',
 	requires: [
@@ -52,12 +53,14 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 			items: [
 				{
 					xtype: 'container',
+					autoScroll: true,
 					layout: {
 						type: 'vbox', align: 'stretch'
 					},
 					items: [
 						{
 							xtype: 'form',
+							autoScroll: true,
 							bodyPadding: 10,
 							defaults: {
 								anchor: '95%'
