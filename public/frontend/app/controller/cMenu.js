@@ -105,66 +105,66 @@ Ext.define('App.controller.cMenu', {
         log(m);
     },
 
-    onTreepanelItemClickMainMenus: function (treepanel, record, item, index, e, eOpts) {
-        var tp = Ext.ComponentQuery.query('mainmenus')[0];
-        log('treepanel component ', treepanel);
-        log('record ', record);
-        // log('item ', item);
-        log('index ', index);
-        log('Get Depth Record', record.get('depth'));
-
-        var sm = treepanel.getSelectionModel();
-        if (sm.hasSelection()) {
-            selectedRoot = sm.getSelection()[0];
-        }
-        ;
-
-        log('Selected Root : ', selectedRoot);
-        var id = record.get('id');
-
-        if (typeof id == 'undefined') return false;
-        if (typeof selectedRoot == 'undefined') return false;
-
-        log('Selected ID : ', selectedRoot.get('id'));
-        log('Selected depth : ', selectedRoot.get('depth'));
-        if (selectedRoot.get('depth') == '2') {
-            log('im depth 2 bray');
-            var parentId = selectedRoot.parentNode.get('index'),
-                childId = selectedRoot.get('index');
-            // return;
-        }
-
-//        log('Parent ID : ', selectedRoot.get('parentId'));
-//        log('Parent Index : ', selectedRoot.parentNode.get('index'));
-
-        // var item = Ext.ModelManager.getModel('App.model.menu.menusItem');
-        var item = Ext.ModelManager.getModel('App.model.menu.menus');
-        item.load(id, {success: function (items) {
-            Ext.each(items.children(), function (a) {
-                Ext.each(a.data.items, function (b, c) {
-                    var textC = b.get('text');
-                    var hasCreated = selectedRoot.findChild('id', b.get('id'));
-                    if (hasCreated == null) {
-                        var i = Ext.create('App.model.menu.menus', {
-                            text: b.get('text'),
-                            leaf: b.get('leaf') || true,
-                            iconCls: b.get('iconCls'),
-                            id: b.get('id'),
-                            className: b.get('className')
-                        });
-                        selectedRoot.appendChild(i);
-                    }
-                    ;
-                })
-            })
-
-        }, failure: function (o) {
-            msgError('Error Loading Menu ');
-        }
-        });
-        tp.getView().refresh();
-        selectedRoot.expand();
-    },
+//    onTreepanelItemClickMainMenus: function (treepanel, record, item, index, e, eOpts) {
+//        var tp = Ext.ComponentQuery.query('mainmenus')[0];
+//        log('treepanel component ', treepanel);
+//        log('record ', record);
+//        // log('item ', item);
+//        log('index ', index);
+//        log('Get Depth Record', record.get('depth'));
+//
+//        var sm = treepanel.getSelectionModel();
+//        if (sm.hasSelection()) {
+//            selectedRoot = sm.getSelection()[0];
+//        }
+//        ;
+//
+//        log('Selected Root : ', selectedRoot);
+//        var id = record.get('id');
+//
+//        if (typeof id == 'undefined') return false;
+//        if (typeof selectedRoot == 'undefined') return false;
+//
+//        log('Selected ID : ', selectedRoot.get('id'));
+//        log('Selected depth : ', selectedRoot.get('depth'));
+//        if (selectedRoot.get('depth') == '2') {
+//            log('im depth 2 bray');
+//            var parentId = selectedRoot.parentNode.get('index'),
+//                childId = selectedRoot.get('index');
+//            // return;
+//        }
+//
+////        log('Parent ID : ', selectedRoot.get('parentId'));
+////        log('Parent Index : ', selectedRoot.parentNode.get('index'));
+//
+//        // var item = Ext.ModelManager.getModel('App.model.menu.menusItem');
+//        var item = Ext.ModelManager.getModel('App.model.menu.menus');
+//        item.load(id, {success: function (items) {
+//            Ext.each(items.children(), function (a) {
+//                Ext.each(a.data.items, function (b, c) {
+//                    var textC = b.get('text');
+//                    var hasCreated = selectedRoot.findChild('id', b.get('id'));
+//                    if (hasCreated == null) {
+//                        var i = Ext.create('App.model.menu.menus', {
+//                            text: b.get('text'),
+//                            leaf: b.get('leaf') || true,
+//                            iconCls: b.get('iconCls'),
+//                            id: b.get('id'),
+//                            className: b.get('className')
+//                        });
+//                        selectedRoot.appendChild(i);
+//                    }
+//                    ;
+//                })
+//            })
+//
+//        }, failure: function (o) {
+//            msgError('Error Loading Menu ');
+//        }
+//        });
+//        tp.getView().refresh();
+//        selectedRoot.expand();
+//    },
 
     /**
      * Saat Render Panel Menu

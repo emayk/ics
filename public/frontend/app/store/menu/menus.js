@@ -15,9 +15,7 @@ Ext.define('App.store.menu.menus',{
 				 id: 'menu',
 			 // id: 'menu',
         expanded: true
-    },
-
-
+    }
     // listeners: {
     //     load: function (tree, node, records) {
     //         // log('After loading a node: ' , node);

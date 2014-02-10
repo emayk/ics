@@ -22,11 +22,14 @@
 
 Ext.define('App.controller.cusers',{
 	extend: 'Ext.app.Controller',
-	views: ['App.view.users.vusers'],
+	views: ['App.view.users.vusers','App.view.users.treemenu'],
 	models:['App.model.users.musers'],
 	stores:['App.store.users.susers'],
 	init: function(){
-		log('Controller cusers Loaded');
+		var me = this;
+		me.control({
+
+		});
 	}
 });
 
