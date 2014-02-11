@@ -1,7 +1,11 @@
 if (fromLocal()) {
 	itemsMainPanel = [
-        { xtype : 'appusersvusers', title: 'Pengguna dan Hak Akses', iconCls:'home', closable:true},
-        { xtype : 'appdashboardvdashboard', title: 'Dashboard', iconCls:'home', closable:false},
+		{ xtype: 'appdashboardvdashboard', title: 'Dashboard', iconCls: 'home', closable: false},
+        { xtype : 'appreceiveProductvtabbarang', title: 'Terima Barang', iconCls:'home', closable:true},
+        { xtype : 'appreturgoodvreturgood', title: 'Retur Barang', iconCls:'home', closable:true},
+		{ xtype: 'appcontrabonvcontrabon', title: 'Tukar Kontra Bon', iconCls: 'home', closable: true},
+		{ xtype: 'apppaymentvpayment', title: 'Pembayaran', iconCls: 'home', closable: true},
+		{ xtype: 'appusersvusers', title: 'Pengguna dan Hak Akses', iconCls: 'home', closable: true},
 //        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:true},
 //        { xtype : 'appcommisionsalevcommisionsale', title: 'Komisi Penjual', iconCls:'home', closable:true},
 //        { xtype : 'appcreditnotevcreditnote', title: 'Credit Note', iconCls:'home', closable:true},
@@ -12,10 +16,7 @@ if (fromLocal()) {
 
 //        { xtype : 'appsalesvsales', title: 'Penjualan', iconCls:'home', closable:true},
 //        { xtype : 'appdebitnotevdebitnote', title: 'Debit Note', iconCls:'home', closable:true},
-//        { xtype : 'appreturgoodvreturgood', title: 'Retur Barang', iconCls:'home', closable:true},
-//        { xtype : 'appreceiveProductvtabbarang', title: 'Terima Barang', iconCls:'home', closable:true},
-//        { xtype : 'appcontrabonvcontrabon', title: 'Tukar Kontra Bon', iconCls:'home', closable:true},
-//        { xtype : 'apppaymentvpayment', title: 'Pembayaran', iconCls:'home', closable:true},
+
 //        { xtype : 'appPOvPO', title: 'PO', iconCls:'home', closable:true},
 //		{ xtype : 'appdefaultsettingvdefaultsetting', title: 'Setting Awal', iconCls:'home', closable:true},
 //		{ xtype : 'appstandintructionvstandintruction', title: 'Standing Intruction', iconCls:'home', closable:true},
@@ -86,7 +87,7 @@ Ext.define('App.view.MainPanel', {
 //    requires: [
 //        'App.view.trx.order.TabOrder'],
 	alias: 'widget.mainpanel',
-	activeTab: 0,
+	activeTab: 1,
 	plain: true,
 	items: itemsMainPanel,
 	plugins: [

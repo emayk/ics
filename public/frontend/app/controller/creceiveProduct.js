@@ -40,7 +40,7 @@ Ext.define('App.controller.creceiveProduct',{
 
 	],
 	init: function(){
-		log('Controller creceiveProduct Loaded');
+
 	}
 });
 

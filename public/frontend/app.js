@@ -21,7 +21,8 @@ if (fromLocal()) {
 		'cLogin',
 		'TranslationManager',
 		'cMenu',
-
+		/*Pengguna*/
+		'cusers',
 		/*Dashboard*/
 		'cdashboard',
 	/**

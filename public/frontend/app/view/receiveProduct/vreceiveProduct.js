@@ -41,6 +41,13 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 	requires: [
 		'App.form.combobox.cbSupplier'
 	],
+	config: {
+		ponumber: undefined,
+		tglpo: undefined,
+		supname: undefined,
+		warehouse: undefined,
+		poid: undefined
+	},
 	initComponent: function () {
 		var me = this;
 		Ext.apply(me, {
@@ -63,76 +70,70 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 							autoScroll: true,
 							bodyPadding: 10,
 							defaults: {
-								anchor: '95%'
+								anchor: '95%',
+								labelWidth: 200
 							},
 							itemId: 'formreceive',
 							items: [
+
+								/*Dokument dari Pemasok*/
+								{
+									xtype: 'fieldset',
+									title: 'Dokument dari Supplier/Pemasok',
+									items: [
+										{
+											/*Surat Jalan*/
+											xtype: 'fieldcontainer',
+											labelWidth: 150,
+											fieldLabel: 'Surat Jalan',
+											tooltip: 'Surat Jalan dari Supplier',
+											layout: { type: 'hbox', align: 'stretch'},
+											items: [
+												{ xtype: 'textfield', fieldLabel: '', name: 'sjno', flex: 0.5, readOnly: false },
+												{
+													flex: .5,
+													xtype: 'datefield',
+													labelWidth: 150,
+													fieldLabel: 'Tanggal Surat Jalan',
+													name: 'sjdate',
+													value: new Date(),
+													maxValue: new Date(), margin: '0 0 0 10'
+												}
+											]
+										},
+										{
+											/*Surat Jalan*/
+											xtype: 'fieldcontainer',
+											labelWidth: 150,
+											fieldLabel: 'Nama Supir',
+											tooltip: 'Nama Supir dari Barang yang diterima',
+											layout: { type: 'hbox', align: 'stretch'},
+											items: [
+												{ xtype: 'textfield', fieldLabel: '', name: 'drivername', flex: 0.5, readOnly: false },
+												{ xtype: 'textfield', fieldLabel: 'Nomor Kendaraan', name: 'platno', flex: 0.5, readOnly: false, margin: '0 0 0 10' }
+											]
+										}
+									]
+								},
+								{ xtype: 'displayfield', fieldLabel: 'Nama Pemasok', name: 'supname', flex: .8, value: me.getSupname() },
 								{
 									/**
 									 * Menampilkan No Order Yang Masih Open
 									 */
 									xtype: 'fieldcontainer',
-									fieldLabel: 'Order No ',
-									tooltip: 'Order No status Open',
+									fieldLabel: 'Nomor PO',
+									tooltip: 'Nomor Order',
 									layout: { type: 'hbox', align: 'stretch'},
 									items: [
-										{ xtype: 'textfield', fieldLabel: '', name: 'orderno', flex: 0.8, readOnly: true },
-										{ xtype: 'hiddenfield', fieldLabel: '', name: 'orderid', flex: 0.8, readOnly: true },
-										{ xtype: 'button', itemId: 'selectorderid', text: 'Select', flex: 0.2, margin: '0 0 0 10' }
+										{ xtype: 'textfield', fieldLabel: '', name: 'orderno', flex: 0.8, readOnly: true, value: me.getPonumber() },
+										{ xtype: 'hiddenfield', fieldLabel: '', name: 'orderid', flex: 0.8, readOnly: true, value: me.getPoid() }
 									]
 								},
-								{
-									xtype: 'fieldset',
-									title: 'Document From Supplier',
-									items: [
-										{
-											/*Surat Jalan*/
-											xtype: 'fieldcontainer',
-											fieldLabel: 'Document Permit',
-											tooltip: 'Surat Jalan dari Supplier',
-											layout: { type: 'hbox', align: 'stretch'},
-											items: [
-												{ xtype: 'textfield', fieldLabel: '', name: 'sjno', flex: 0.8, readOnly: false },
-												{ xtype: 'button', itemId: 'getdoc', text: 'Get', flex: 0.2, margin: '0 0 0 10' }
-											]
-										},
-										{
-											xtype: 'datefield',
-											fieldLabel: 'Permit Date',
-											name: 'sjdate',
-											value: new Date(),
-											maxValue: new Date()
-										}
-									]
-								},
-								{
-									xtype: 'datefield',
-									fieldLabel: 'Receive Date',
-									name: 'receivedate',
-									value: new Date(),
-									maxValue: new Date()
-								},
-								{
-									xtype: 'fieldcontainer',
-									anchor: '95%',
-									layout: 'hbox',
-									items: [
-										{ xtype: 'cbSupplier', fieldLabel: 'Supplier', name: 'supplier_id', flex: .8},
-										{
-											xtype: 'button',
-											margin: '0 0 0 10',
-											text: '',
-											iconCls: 'add',
-											action: 'quickaddsupplier'
-										}
-									]
-								}
+								{ xtype: 'datefield', fieldLabel: 'Terima Tanggal', labelWidth: 200, name: 'receivedate', value: new Date(), maxValue: new Date() },
 
 							]
 						},
-//						{
-//							xtype: 'splitter'
-//						},
+						/*Grid daftar Barang Yang diterima*/
 						{
 							margin: '5 0 5 0',
 							xtype: 'container',
@@ -145,6 +146,7 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 									 * Grid Receive List Product
 									 */
 									xtype: 'grid',
+									title: 'Daftar Terima Barang dari PO [ ' + me.getPonumber() + ' ]',
 									flex: 1,
 									store: me.store,
 									columns: [
@@ -166,8 +168,8 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 											xtype: 'toolbar',
 											dock: 'top',
 											items: [
-												{ text: 'Add', iconCls: 'add', action: 'additem'},
-												{ text: 'Remove', iconCls: 'delete', action: 'removeitem'}
+												{ text: 'Tambah Terima Barang', iconCls: 'add', action: 'additem'}
+//												{ text: 'Remove', iconCls: 'delete', action: 'removeitem'}
 //												'->',
 //												{ text: 'Help', iconCls: 'excel', action: 'helpitem'}
 											]

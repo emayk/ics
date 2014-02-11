@@ -20,6 +20,19 @@
  *
  **/
 Ext.define('App.model.returgood.mreturgood', {
-    extend: 'Ext.data.Model',
-    fields: [ 'id', 'name' ]
+	extend: 'Ext.data.Model',
+	fields: [
+		'id',
+		'nomorcorak',
+		'warna',
+		'unit',
+		'noroll',
+		{name: 'qty', type: 'int',defaultValue:0}
+	],
+	validations: [
+		{type: 'presence', field: 'nomorcorak'},
+		{type: 'presence', field: 'warna'},
+		{type: 'presence', field: 'unit'},
+		{type: 'presence', field: 'noroll'}
+	]
 });

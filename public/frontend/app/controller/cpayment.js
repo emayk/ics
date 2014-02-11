@@ -22,7 +22,11 @@
 
 Ext.define('App.controller.cpayment',{
 	extend: 'Ext.app.Controller',
-	views: ['App.view.payment.vpayment'],
+	views: [
+		'App.view.payment.vpayment',
+		'App.view.payment.preparepayment',
+		'App.view.payment.formprepare'
+	],
 	models:['App.model.payment.mpayment'],
 	stores:['App.store.payment.spayment'],
 	init: function(){

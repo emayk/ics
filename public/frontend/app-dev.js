@@ -75,15 +75,15 @@ if (fromLocal()) {
 //		/*simulasi*/
 //		'cdefaultsetting',
 //		/*Simulasi Terima Barang */
-//		'creceiveProduct',
+		'creceiveProduct',
 //
 //		/*Pembayaran*/
-//		'ctypepayment',
-//		'cpayment',
+		'ctypepayment',
+		'cpayment',
 //		/*Kontra Bon*/
-//		'ccontrabon',
+		'ccontrabon',
 //		/*Retur Barang*/
-//		'creturgood',
+		'creturgood',
 //
 //		/*Debit Note*/
 //		'cdebitnote',

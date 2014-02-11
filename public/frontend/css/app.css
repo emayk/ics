@@ -1,3 +1,23 @@
+.folderopen {
+    background-image: url('../icons/folder_open_16.png') !important;
+}
+.grid {
+    background-image: url('../icons/grid.png') !important;
+}
+
+.form {
+    background-image: url('../icons/application_form_edit.png') !important;
+}
+
+.tab {
+    background-image: url('../icons/kpager_Icon_16x16.png') !important;
+}
+
+
+.forward {
+    background-image: url('../icons/forward16.png') !important;
+}
+
 .setup {
     background-image: url('../icons/wrench-screwdriver.png') !important;
 }
@@ -14,7 +34,7 @@
 }
 
 .refresh {
-        background-image: url('../icons/database_table.png') !important;
+        background-image: url('../icons/reload_all_tabs.png') !important;
 }
 #bg {
     position: fixed;

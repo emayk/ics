@@ -23,43 +23,53 @@ Ext.define('App.view.payment.vpayment', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.apppaymentvpayment',
 	requires: [
-		'App.view.typepayment.vtypepayment'
+		'App.view.typepayment.vtypepayment',
+		'App.view.payment.preparepayment'
 	],
 	layout: { type: 'fit', align: 'stretch'},
 	frame: true,
 	bodyPadding: 5,
-	items: [
-		{
-			xtype: 'tabpanel',
-			plain: true,
+	initComponent: function () {
+		var me = this;
+		Ext.apply(me, {
 			items: [
 				{
-					xtype: 'apptypepaymentvtypepayment',
-					title: 'Tipe'
-				},
-				{
-					xtype: 'container',
-					title: 'Uang Muka',
-					html: 'Content Pembayaran Uang Muka/DP'
-				},
-				{
-					xtype: 'container',
-					title: 'Persiapan',
-					html: 'Content Persiapan Pembayaran'
-				},
+					xtype: 'tabpanel',
+					plain: true,
+					activeTab: 2,
+					items: [
+						{
+							xtype: 'apptypepaymentvtypepayment',
+							title: 'Tipe'
+						},
+						{
+							xtype: 'container',
+							title: 'Uang Muka',
+							html: 'Content Pembayaran Uang Muka/DP'
+						},
+						{
+							/*CL 4 dev 13*/
+							xtype: 'apppaymentvpreparepayment',
+							title: 'Persiapan',
+							itemId: 'preparepayment'
+						},
 
-				{
-					xtype: 'container',
-					title: 'Daftar Pembayaran',
-					html: 'Content daftar Pembayaran'
-				},
-				{
-					xtype: 'container',
-					title: 'Cek Cancelled',
-					html: 'Content Cek Cancelled'
+						{
+							xtype: 'container',
+							title: 'Daftar Pembayaran',
+							html: 'Content daftar Pembayaran'
+						},
+						{
+							xtype: 'container',
+							title: 'Cek Cancelled',
+							html: 'Content Cek Cancelled'
+						}
+
+					]
 				}
-
 			]
-		}
-	]
+		});
+		me.callParent(arguments);
+	}
+
 });
