@@ -85,6 +85,12 @@ if (fromLocal()) {
 //		/*Retur Barang*/
 		'creturgood',
 //
+		/*Check Barang*/
+		'ccheckgood',
+		/*Persetujuan Purchase Request*/
+		'capprovepr',
+
+
 //		/*Debit Note*/
 //		'cdebitnote',
 //

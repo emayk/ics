@@ -1,11 +1,13 @@
 if (fromLocal()) {
 	itemsMainPanel = [
 		{ xtype: 'appdashboardvdashboard', title: 'Dashboard', iconCls: 'home', closable: false},
-        { xtype : 'appreceiveProductvtabbarang', title: 'Terima Barang', iconCls:'home', closable:true},
-        { xtype : 'appreturgoodvreturgood', title: 'Retur Barang', iconCls:'home', closable:true},
-		{ xtype: 'appcontrabonvcontrabon', title: 'Tukar Kontra Bon', iconCls: 'home', closable: true},
-		{ xtype: 'apppaymentvpayment', title: 'Pembayaran', iconCls: 'home', closable: true},
-		{ xtype: 'appusersvusers', title: 'Pengguna dan Hak Akses', iconCls: 'home', closable: true},
+        { xtype : 'appapproveprvapprovepr', title: 'Persetujuan Pengajuan Pembelian', iconCls:'home', closable:true},
+//        { xtype : 'appcheckgoodvcheckgood', title: 'Cek Barang', iconCls:'home', closable:true},
+//        { xtype : 'appreceiveProductvtabbarang', title: 'Terima Barang', iconCls:'home', closable:true},
+//        { xtype : 'appreturgoodvreturgood', title: 'Retur Barang', iconCls:'home', closable:true},
+//		{ xtype: 'appcontrabonvcontrabon', title: 'Tukar Kontra Bon', iconCls: 'home', closable: true},
+//		{ xtype: 'apppaymentvpayment', title: 'Pembayaran', iconCls: 'home', closable: true},
+//		{ xtype: 'appusersvusers', title: 'Pengguna dan Hak Akses', iconCls: 'home', closable: true},
 //        { xtype : 'appSuppliersvSuppliers', title: 'Suppliers', iconCls:'home', closable:true},
 //        { xtype : 'appcommisionsalevcommisionsale', title: 'Komisi Penjual', iconCls:'home', closable:true},
 //        { xtype : 'appcreditnotevcreditnote', title: 'Credit Note', iconCls:'home', closable:true},

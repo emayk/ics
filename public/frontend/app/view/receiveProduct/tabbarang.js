@@ -29,13 +29,13 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 	],
 	config: {
 		storeproductreceive: Ext.create('Ext.data.Store', {
-			fields: ['id', 'ponumber', 'tglpo', 'supname', 'tglkirim'],
+			fields: ['id', 'ponumber', { type: 'date', name: 'tglpo'}, 'supname', { name : 'tglkirim', type: 'date',dateFormat: 'd/m/Y' }, 'warehouse'],
 			data: [
-				{ id: 1, ponumber: 'PO-1234', supname: 'Supplier Name1234', tglpo: '12/12/2014', tglkirim: '22/12/2014'},
-				{ id: 2, ponumber: 'PO-1235', supname: 'Supplier Name1235', tglpo: '12/12/2014', tglkirim: '12/12/2014'},
-				{ id: 3, ponumber: 'PO-1236', supname: 'Supplier Name1236', tglpo: '12/12/2014', tglkirim: '23/12/2014'},
-				{ id: 4, ponumber: 'PO-1237', supname: 'Supplier Name1237', tglpo: '12/12/2014', tglkirim: '24/12/2014'},
-				{ id: 5, ponumber: 'PO-1238', supname: 'Supplier Name1238', tglpo: '12/12/2014', tglkirim: '25/12/2014'}
+				{ id: 1, ponumber: 'PO-1234', supname: 'Supplier Name1234', tglpo: '12/12/2014', tglkirim: '22/12/2014', warehouse: 'KOPO'},
+				{ id: 2, ponumber: 'PO-1235', supname: 'Supplier Name1235', tglpo: '12/12/2014', tglkirim: '12/12/2014', warehouse: 'Kebon Jati'},
+				{ id: 3, ponumber: 'PO-1236', supname: 'Supplier Name1236', tglpo: '12/12/2014', tglkirim: '23/12/2014', warehouse: 'KOPO'},
+				{ id: 4, ponumber: 'PO-1237', supname: 'Supplier Name1237', tglpo: '12/12/2014', tglkirim: '24/12/2014', warehouse: 'Bandung'},
+				{ id: 5, ponumber: 'PO-1238', supname: 'Supplier Name1238', tglpo: '12/12/2014', tglkirim: '25/12/2014', warehouse: 'Jakarta'}
 			]
 		})
 	},
@@ -127,17 +127,27 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 								{
 									text: 'Tanggal',
 									dataIndex: 'tglpo',
-									flex: 1
+									flex: 1,
+									renderer: function (v) {
+										return Ext.Date.format(v, 'd F Y');
+									}
 								},
 								{
 									text: 'Tanggal Kirim',
 									dataIndex: 'tglkirim',
-									flex: 1
+									flex: 1,
+									renderer: function (v) {
+										return Ext.Date.format(v, 'd F Y');
+									}
 								},
 								{
 									text: 'Nama Supplier',
 									dataIndex: 'supname',
-									flex: 3
+									flex: 2
+								},{
+									text: 'Gudang',
+									dataIndex: 'warehouse',
+									flex: 1
 								},
 								{
 									header: 'Proses',
@@ -150,14 +160,19 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 											handler: function (grid, rowIndex, colIndex) {
 												var rec = grid.getStore().getAt(rowIndex);
 												log(rec);
-//														Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
-//															if (btn == 'yes') {
-//																var rec = grid.getStore().getAt(rowIndex);
-//																grid.getStore().remove(rec);
-//																grid.getStore().sync();
-//																grid.getStore().load();
-//															}
-//														});
+												var tab = grid.up('appreceiveProductvtabbarang');
+												var title = 'Form Terima Barang [ PO : ' + rec.get('ponumber') + ' ]',
+													config = {
+														iconCls: 'form',
+														title: title,
+														closable: true,
+														ponumber: rec.get('ponumber'),
+														tglpo: rec.get('tglpo'),
+														supname: rec.get('supname'),
+														warehouse: rec.get('warehouse'),
+														poid: rec.get('id')
+													};
+												App.util.box.openNewtab(tab, title, 'App.view.receiveProduct.vreceiveProduct', config);
 											}
 										}
 									]
@@ -185,19 +200,19 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 							html: 'Cetak Bukti Terima Barang'
 						}
 					]
-				},
-				{
-					/*Daftar Terima Barang*/
-					title: 'Form Terima Barang[simulasi]',
-					iconCls: 'form',
-					closable: true,
-					xtype: 'appreceiveProductvreceiveProduct',
-					ponumber: 'APO 12233/1/2013',
-					tglpo : '12/1/2013',
-					supname : 'PT Kahatex',
-					warehouse: 'KOPO',
-					poid: 123
 				}
+//				{
+//					/*Daftar Terima Barang*/
+//					title: 'Form Terima Barang[simulasi]',
+//					iconCls: 'form',
+//					closable: true,
+//					xtype: 'appreceiveProductvreceiveProduct',
+//					ponumber: 'APO 12233/1/2013',
+//					tglpo: '12/1/2013',
+//					supname: 'PT Kahatex',
+//					warehouse: 'KOPO',
+//					poid: 123
+//				}
 			]
 		});
 		me.callParent(arguments);
