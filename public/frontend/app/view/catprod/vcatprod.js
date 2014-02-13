@@ -48,7 +48,7 @@ Ext.define('App.view.catprod.vcatprod', {
 							xtype: 'rownumberer'
 						},
 						{
-							text: 'Name',
+							text: 'Nama',
 							dataIndex: 'name',
 							flex: 2,
 							editor: {
@@ -56,7 +56,7 @@ Ext.define('App.view.catprod.vcatprod', {
 							}
 						},
 						{
-							text: 'Description',
+							text: 'Keterangan',
 							dataIndex: 'info',
 							flex: 2,
 							editor: {
@@ -64,7 +64,7 @@ Ext.define('App.view.catprod.vcatprod', {
 							}
 						},
 						{
-							header: 'Action',
+							header: 'Aksi',
 							xtype: 'actioncolumn',
 							flex: .4,
 							items: [
@@ -81,12 +81,12 @@ Ext.define('App.view.catprod.vcatprod', {
 							xtype: 'toolbar',
 							dock: 'top',
 							items: [
-								{ text: 'Add', action: 'add', iconCls: 'add', tooltip: 'Add Record Type'},
-								{ text: 'Remove', action: 'remove', iconCls: 'delete', tooltip: 'Remove Record Type'},
+								{ text: translations.add, action: 'add', iconCls: 'add', tooltip: 'Add Record Type'},
+								{ text: translations.remove, action: 'remove', iconCls: 'delete', tooltip: 'Remove Record Type'},
 								'->',
-								{ text: 'Import', action: 'import', iconCls: 'excel', tooltip: 'Import Record From Excel'},
-								{ text: 'Export', action: 'export', iconCls: 'excel', tooltip: 'Export Record To Excel'},
-								{ text: 'Help', action: 'help', iconCls: 'help', tooltip: 'Help'}
+								{ text: translations.import, action: 'import', iconCls: 'excel', tooltip: 'Import Record From Excel'},
+								{ text: translations.export, action: 'export', iconCls: 'excel', tooltip: 'Export Record To Excel'},
+								{ text: translations.help, action: 'help', iconCls: 'help', tooltip: 'Help'}
 							]
 						},
 						{

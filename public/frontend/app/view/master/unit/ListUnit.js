@@ -3,19 +3,20 @@ Ext.define('App.view.master.unit.ListUnit', {
 	alias: 'widget.gridAllunit',
 	store: 'App.store.unit.Allunit',
 	initComponent: function () {
-		Ext.apply(this,{
+		Ext.apply(this, {
+			selModel: App.util.box.createSelectionModel(),
 			columns: [
 				{
 					xtype: 'rownumberer'
 				},
 				{
-					header: 'Name',
+					header: 'Nama',
 					dataIndex: 'name',
 					flex: 1,
 					editor: { allowBlank: true }
 				},
 				{
-					header: 'Information',
+					header: 'Informasi',
 					dataIndex: 'info',
 					flex: .7,
 					editor: {
@@ -24,7 +25,7 @@ Ext.define('App.view.master.unit.ListUnit', {
 				},
 
 				{
-					header: 'Type',
+					header: 'Tipe',
 					dataIndex: 'type_id',
 					flex: .7,
 					editor: {
@@ -35,33 +36,40 @@ Ext.define('App.view.master.unit.ListUnit', {
 						return record.get('typename');
 					}
 				},
-//
-//		{
-//			header: 'Last Update By',
-//			flex: 1,
-//			dataIndex: 'updater'
-//		},
-//
-//		{
-//			header: 'Create By',
-//			flex: 1,
-//			dataIndex: 'creator'
-//		},
 				{
 					header: 'Action',
 					xtype: 'actioncolumn',
 					flex: .4,
 					items: [
 						{
-							// icon: '/assets/fugue/icons/cross-shield.png',
 							iconCls: 'delete',
-							tooltip: 'Delete',
-							handler: function(grid, rowIndex, colIndex) {
-								Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function(btn,text){
-									if (btn == 'yes'){
-										var rec = grid.getStore().getAt(rowIndex);
-										grid.getStore().remove(rec);
-										grid.getStore().sync();
+							tooltip: 'Hapus',
+							handler: function (grid, rowIndex, colIndex) {
+								var rec = grid.getStore().getAt(rowIndex);
+								Ext.MessageBox.confirm('Confirm', 'Apakah Anda Yakin Akan Menghapus Record ?', function (btn, text) {
+									var rec = grid.getStore().getAt(rowIndex);
+									if (btn == 'yes') {
+										rec.destroy({
+											callback: function (recs,ops,success) {
+												if (!ops.error) {
+													App.util.box.info('Record Berhasil dihapus');
+													grid.getStore().load();
+												} else {
+													App.util.box.error('Record Gagal dihapus');
+													return false;
+												}
+											},
+//											success: function (r, o) {
+//												App.util.box.info('Record Berhasil dihapus');
+//												grid.getStore().load();
+//											},
+											failure: function (r, o) {
+												App.util.box.error('Record Gagal dihapus');
+												return false;
+											}
+										})
+//										grid.getStore().remove(rec);
+//										grid.getStore().sync();
 //										grid.getStore().load();
 									}
 								});
@@ -87,11 +95,11 @@ Ext.define('App.view.master.unit.ListUnit', {
 					items: [
 						{
 							action: 'add',
-							text: 'Add',iconCls:'add'
+							text: 'Add', iconCls: 'add'
 						},
 						{
 							action: 'remove',
-							text: 'Remove',iconCls: 'delete',
+							text: 'Remove', iconCls: 'delete',
 							disabled: true
 						}
 					]

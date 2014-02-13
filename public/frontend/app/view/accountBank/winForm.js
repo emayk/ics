@@ -21,11 +21,11 @@
 Ext.define('App.view.accountBank.WinForm', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.appaccountBankWinForm',
-	frame: true,
+//	frame: true,
 	requires:[
 		'App.view.accountBank.form'
 	],
-	width: 500,
+	layout: { type: 'fit', align: 'stretch'},
 	initComponent: function(){
 		var me = this;
 		Ext.apply(me,{

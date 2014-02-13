@@ -71,44 +71,47 @@ Ext.define('App.view.products.productstocks', {
                             itemId: 'gridStockHistory',
                             margin: '0 5 0 0'
                         },
-                        {
-                            /*Form Tambah Record Stock */
-                            xtype: 'form',
-                            itemId: 'formaddstock',
-                            autoScroll: true,
-                            margin: '0 0 0 5',
-                            bodyPadding: 10,
-                            frame: true,
-                            defaults:{
-                                anchor : '95%'
-                            },
-                            title: 'Add New Stock Product ' + this.prodName,
-                            flex: .5,
-                            items: [
-                                { xtype: "displayfield", fieldLabel: "Product", name: "prodName", value: this.prodId + ' / ' + this.prodName},
-                                { xtype: "hiddenfield", fieldLabel: "id", name: "id"},
-                                { xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.prodId},
-                                { xtype : "cbwarehouse",fieldLabel : "Warehouse", name: "wh_id"},
-                                { xtype : "numberfield",fieldLabel : "lengthfabric", name: "lengthfabric"},
-                                {
-                                    fieldLabel : "Delivery At",
-                                    name: "onday",
-                                    xtype: 'datefield',
-//                                    anchor: '100%',
-                                    format: 'd.m.Y',
-                                    submitFormat: 'Y-m-d'
-                                },
-                                { xtype : "cbunits",fieldLabel : "Units", name: "unit_id"}
-                            ],
-                            buttons: [
-                                {
-                                    text: 'Add New', iconCls: 'add', itemId: 'addstock'
-                                },
-                                {
-                                    text: 'Reset', iconCls: 'refresh', itemId: 'resetstock'
-                                }
-                            ]
-                        }
+	                    {
+		                    xtype: 'container', flex:.5
+	                    }
+//                        {
+//                            /*Form Tambah Record Stock */
+//                            xtype: 'form',
+//                            itemId: 'formaddstock',
+//                            autoScroll: true,
+//                            margin: '0 0 0 5',
+//                            bodyPadding: 10,
+//                            frame: true,
+//                            defaults:{
+//                                anchor : '95%'
+//                            },
+//                            title: 'Add New Stock Product ' + this.prodName,
+//                            flex: .5,
+//                            items: [
+//                                { xtype: "displayfield", fieldLabel: "Product", name: "prodName", value: this.prodId + ' / ' + this.prodName},
+//                                { xtype: "hiddenfield", fieldLabel: "id", name: "id"},
+//                                { xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.prodId},
+//                                { xtype : "cbwarehouse",fieldLabel : "Warehouse", name: "wh_id"},
+//                                { xtype : "numberfield",fieldLabel : "lengthfabric", name: "lengthfabric"},
+//                                {
+//                                    fieldLabel : "Delivery At",
+//                                    name: "onday",
+//                                    xtype: 'datefield',
+////                                    anchor: '100%',
+//                                    format: 'd.m.Y',
+//                                    submitFormat: 'Y-m-d'
+//                                },
+//                                { xtype : "cbunits",fieldLabel : "Units", name: "unit_id"}
+//                            ],
+//                            buttons: [
+//                                {
+//                                    text: 'Add New', iconCls: 'add', itemId: 'addstock'
+//                                },
+//                                {
+//                                    text: 'Reset', iconCls: 'refresh', itemId: 'resetstock'
+//                                }
+//                            ]
+//                        }
                     ]
                 }
             ]

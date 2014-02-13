@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/overrides.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/plugins/filterbar/resources/css/app.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/css/app.css') }}">
-
+	<link rel="stylesheet" type="text/css" href="{{ Icsview::asset('frontend/css/notification.css') }}">
 </head>
 <body>
 {{( !Auth :: check() ) ? '<div id="bg"><img src="'.Icsview::asset('frontend/images/logologin.png').'"  alt=""> </div>' : null; }}

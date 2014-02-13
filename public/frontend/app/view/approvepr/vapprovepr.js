@@ -27,17 +27,7 @@ Ext.define('App.view.approvepr.vapprovepr', {
 	],
 	layout: { type: 'fit', align: 'stretch'},
 	config: {
-		storegridpr: Ext.create('Ext.data.Store', {
-			fields: ['id', 'prnumber', { name: 'tgl', type: 'date'},
-				/*1 = belum diproses , 2 = sudah diproses dan disetujui , 3 = sudah diproses dan ditolak*/
-				'status'
-			],
-			data: [
-				{ id: 1, prnumber: 'PR1-11feb2014-timothy', tgl: '02/11/2014', status: 1 },
-				{ id: 2, prnumber: 'PR2-11feb2014-timothy', tgl: '02/11/2014', status: 1 },
-				{ id: 3, prnumber: 'PR3-11feb2014-timothy', tgl: '02/11/2014', status: 1 }
-			]
-		}),
+		storegridpr: Ext.create('App.store.approvepr.sapprovepr'),
 		storegridprapproved: Ext.create('Ext.data.Store', {
 			fields: ['id', 'prnumber', { name: 'tgl', type: 'date'},
 				/*1 = belum diproses , 2 = sudah diproses dan disetujui , 3 = sudah diproses dan ditolak*/
@@ -72,6 +62,7 @@ Ext.define('App.view.approvepr.vapprovepr', {
 						{
 							/*Daftar Pengajuan Pembelian Yang belum diproses */
 							xtype: 'container',
+
 							bodyPadding: 2, frame: true,
 							layout: { type: 'fit', align: 'stretch'},
 							flex: 1,
@@ -80,6 +71,7 @@ Ext.define('App.view.approvepr.vapprovepr', {
 							items: [
 								{
 									xtype: 'grid',
+									itemId: 'listpr',
 									columns: [
 										{
 											xtype: 'rownumberer'
@@ -132,6 +124,7 @@ Ext.define('App.view.approvepr.vapprovepr', {
 							title: 'Daftar PR Setuju',
 							items: [
 								{
+									itemId: 'listprapprove',
 									xtype: 'grid',
 									columns: [
 										{
@@ -174,6 +167,7 @@ Ext.define('App.view.approvepr.vapprovepr', {
 							items: [
 								{
 									xtype: 'grid',
+									itemId: 'listprdenied',
 									columns: [
 										{
 											xtype: 'rownumberer'
@@ -203,16 +197,19 @@ Ext.define('App.view.approvepr.vapprovepr', {
 									]
 								}
 							]
-						},
-//						{
-//							xtype: 'appapproveprvprocess',
-//							title: 'Simulate'
-//						}
+						}
 					]
 				}
 			]
 		});
 		me.callParent(arguments);
+//		me.down('#listpr').getStore().load();
+		me.loadAllGridStore();
+	},
+	loadAllGridStore: function () {
+		this.down('#listpr').getStore().load();
+//		this.down('#listprapprove').getStore().load();
+//		this.down('#listprdenied').getStore().load();
 	},
 	/**
 	 * Menampilkan record pada Tab baru.

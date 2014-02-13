@@ -100,7 +100,7 @@ Ext.define('App.util.box', {
 		 * @param fileview
 		 * @param config
 		 */
-		openNewtab: function (tab, title, fileview,config) {
+		openNewtab: function (tab, title, fileview, config) {
 			var newtab = tab.items.findBy(function (t) {
 				return t.title === title
 			});
@@ -111,6 +111,48 @@ Ext.define('App.util.box', {
 			}
 
 			tab.setActiveTab(newtab);
+		},
+		createNoticeInfo: function (msg, title, closable) {
+			Ext.create('widget.uxNotification', {
+				title: 'Notification',
+				spacing: 200,
+				position: 'tr',
+				manager: 'instructions',
+				cls: 'ux-notification-light',
+				iconCls: 'ux-notification-icon-information',
+				html: 'Using document as manager. No title and closable: false. Entering from the t edge.',
+//				html: msg || 'tidak ada isi',
+				slideBackDuration: 500,
+				slideInAnimation: 'bounceOut',
+				slideBackAnimation: 'easeIn'
+			}).show();
+			/*Ext.create('widget.uxNotification', {
+			 position: 'tr',
+			 cls: 'ux-notification-light',
+			 closable: false,
+			 title: '',
+			 iconCls: 'ux-notification-icon-information',
+			 html: 'Using document as manager. No title and closable: false. Entering from the t edge.'
+			 }).show();*/
+		},
+		createNoticeInfo2: function (msg, title, closable) {
+			var closable = closable || false,
+				title = title || '';
+//			Ext.create('widget.uxNotification', {
+			Ext.create('App.util.Notification', {
+				position: 'tr',
+				useXAxis: true,
+				cls: 'ux-notification-light',
+				iconCls: 'ux-notification-icon-information',
+				closable: closable,
+				title: title,
+				html: msg,
+				slideInDuration: 800,
+				slideBackDuration: 1500,
+				autoCloseDelay: 4000,
+				slideInAnimation: 'elasticIn',
+				slideBackAnimation: 'elasticIn'
+			}).show();
 		}
 
 	}

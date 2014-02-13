@@ -162,6 +162,7 @@ Ext.application({
 		'Ext.container.Viewport',
 		'App.util.Util',
 		'App.util.dummy',
+		'App.util.Notification',
 		'App.util.Form'
 		// 'App.view.help.vHelp'
 

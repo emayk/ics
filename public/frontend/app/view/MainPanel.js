@@ -1,7 +1,7 @@
 if (fromLocal()) {
 	itemsMainPanel = [
 		{ xtype: 'appdashboardvdashboard', title: 'Dashboard', iconCls: 'home', closable: false},
-        { xtype : 'appapproveprvapprovepr', title: 'Persetujuan Pengajuan Pembelian', iconCls:'home', closable:true},
+//        { xtype : 'appapproveprvapprovepr', title: 'Persetujuan Pengajuan Pembelian', iconCls:'home', closable:true},
 //        { xtype : 'appcheckgoodvcheckgood', title: 'Cek Barang', iconCls:'home', closable:true},
 //        { xtype : 'appreceiveProductvtabbarang', title: 'Terima Barang', iconCls:'home', closable:true},
 //        { xtype : 'appreturgoodvreturgood', title: 'Retur Barang', iconCls:'home', closable:true},

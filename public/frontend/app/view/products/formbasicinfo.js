@@ -24,7 +24,7 @@ Ext.define('App.view.products.formbasicinfo', {
 	bodyPadding: 10,
 	frame: true,
 	flex: 2,
-	title: 'Basic Info',
+	title: 'Informasi Basic',
 	itemId: 'detail',
 	layout: {
 		type: 'hbox',
@@ -58,37 +58,24 @@ Ext.define('App.view.products.formbasicinfo', {
 					flex: .6,
 					items: [
 						{ xtype: 'hiddenfield', fieldLabel: 'id', name: 'id', anchor: '95%', readOnly: true, value: this.prodId },
-						{ xtype: 'textfield', fieldLabel: 'name', name: 'name', anchor: '95%' },
-						{ xtype: 'cbcatproduct', fieldLabel: 'Category', name: 'cat_id', anchor: '95%' },
-						{ xtype: 'textfield', fieldLabel: 'contruction', name: 'contruction', anchor: '95%' },
-						{ xtype: 'textfield', fieldLabel: 'nodesign', name: 'nodesign', anchor: '95%' },
-						{ xtype: 'cbTypeProduct', fieldLabel: 'type_id', name: 'type_id', anchor: '95%' },
-						{ xtype: 'fieldcontainer', fieldLabel: 'Weight', layout: 'hbox', anchor: '95%',
+						{ xtype: 'textfield', fieldLabel: 'Nama', name: 'name', anchor: '95%' },
+						{ xtype: 'cbcatproduct', fieldLabel: 'Kategory', name: 'cat_id', anchor: '95%' },
+						{ xtype: 'textfield', fieldLabel: 'Corak', name: 'contruction', anchor: '95%' },
+						{ xtype: 'textfield', fieldLabel: 'Nomor Design', name: 'nodesign', anchor: '95%' },
+						{ xtype: 'cbTypeProduct', fieldLabel: 'Tipe Produk', name: 'type_id', anchor: '95%' },
+						{ xtype: 'fieldcontainer', fieldLabel: 'Berat', layout: 'hbox', anchor: '95%',
 							items: [
-								{ xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3 },
-								{
-									xtype: 'splitter'
-								},
-								{ xtype: 'cbUnitWeight', fieldLabel: '', name: 'unitweight_id', flex: .6}
+								{ xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3 , margin: '0 5 0 0'},
+								{ xtype: 'cbUnitWeight', fieldLabel: '', name: 'unitweight_id', flex: .7}
 							]
 						},
 
-						{ xtype: 'fieldcontainer', fieldLabel: 'Width', layout: 'hbox', anchor: '95%',
+						{ xtype: 'fieldcontainer', fieldLabel: 'Lebar', layout: 'hbox', anchor: '95%',
 							items: [
-								{ xtype: 'numberfield', fieldLabel: '', name: 'width', flex: .3},
-								{
-									xtype: 'splitter'
-								},
-								{ xtype: 'cbUnitWidth', fieldLabel: '', name: 'unitwidth_id', flex: .6 }
+								{ xtype: 'numberfield', fieldLabel: '', name: 'width', flex: .3, margin: '0 5 0 0'},
+								{ xtype: 'cbUnitWidth', fieldLabel: '', name: 'unitwidth_id', flex: .7 }
 							]
 						}
-
-//                        { xtype: 'textfield', fieldLabel: 'uuid', name: 'uuid', anchor: '95%' },
-//                        { xtype: 'textfield', fieldLabel: 'updated_at', name: 'updated_at', anchor: '95%' },
-//                        { xtype: 'textfield', fieldLabel: 'created_at', name: 'created_at', anchor: '95%' },
-//                        { xtype: 'textfield', fieldLabel: 'createby_id', name: 'createby_id', anchor: '95%' },
-//                        { xtype: 'textfield', fieldLabel: 'codeinternal', name: 'codeinternal', anchor: '95%' },
-//                        { xtype: 'textfield', fieldLabel: 'lastupdateby_id', name: 'lastupdateby_id', anchor: '95%' }
 					]
 				}
 			]

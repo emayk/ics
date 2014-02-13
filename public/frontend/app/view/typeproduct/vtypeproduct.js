@@ -42,13 +42,13 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 							xtype: 'rownumberer',
 							text: '#'
 						},
-						{text: "Name", dataIndex: "name",
+						{text: "Nama", dataIndex: "name",
 							flex: 2,
 							editor: {
 								allowBlank: false
 							}
 						},
-						{text: "Fabric Name", dataIndex: "fabrictype_id",
+						{text: "Tipe", dataIndex: "fabrictype_id",
 							renderer: function (v, m, r) {
 								return r.get('typefabric');
 							},
@@ -67,7 +67,7 @@ Ext.define('App.view.typeproduct.vtypeproduct', {
 									tooltip: 'Delete',
 									handler: function (grid, rowIndex, colIndex) {
 										var store = grid.getStore();
-										Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
+										Ext.MessageBox.confirm('Konfirmasi', 'Apakah Anda Yakin akan hapus ?', function (btn, text) {
 											if (btn == 'yes') {
 												var rec = store.getAt(rowIndex);
 												rec.destroy({

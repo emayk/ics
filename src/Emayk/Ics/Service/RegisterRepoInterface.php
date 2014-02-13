@@ -416,3 +416,11 @@ App::bindIf('Emayk\Ics\Repo\Purchaseorder\PurchaseorderInterface',function(){
 	return new Repo\Purchaseorder\PurchaseorderEloquent(new Repo\Purchaseorder\Purchaseorder() );
 });
 
+
+/*==========  Register Interface Prapprove  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Prapprove\PrapproveInterface',function(){
+	return new Repo\Prapprove\PrapproveArray();
+//	return new Repo\Prapprove\PrapproveEloquent(new Repo\Prapprove\Prapprove() );
+});
+

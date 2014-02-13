@@ -130,21 +130,28 @@ class UnitsEloquent implements UnitsInterface
 	 */
 	public function delete($id)
 	{
-
 		if ($this->hasAccess()) {
-			$deleted = $this->units
-				->find($id)
-				->delete();
+			$unit = $this->units
+				->findOrFail($id);
 
-			return \Icsoutput::toJson(array(
-				'results' => $deleted
-			), $deleted);
 
+			return ( $unit->delete() )
+				? Response::json([
+					/*Extjs untuk delete dan fire callback model.destroy() method di setup false */
+					'success' => false,
+					'error'   => false
+				])
+				: Response::json([
+					'success' => false,
+					'error'   => true,
+					'reason'  => 'Cannot Deleted'
+				], 500);
 		} else {
-			return \Icsoutput::toJson(array(
-				'results' => false,
-				'reason'  => 'Dont Have Access to Delete '
-			), false);
+			return Response::json([
+				'success' => false,
+				'error'   => true,
+				'reason'  => 'Not Authenticated'
+			], 500);
 		}
 	}
 

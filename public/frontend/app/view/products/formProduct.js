@@ -45,7 +45,7 @@ Ext.define('App.view.products.formProduct',{
                 {
                     xtype: 'fieldset',
                     flex:.5,
-                    title: 'Information New Product',
+                    title: 'Informasi Produk Baru',
                     defaults : {
                         allowBlank:false,
                         anchor: '95%',labelWidth: 100
@@ -53,9 +53,9 @@ Ext.define('App.view.products.formProduct',{
                     items:[
                         { xtype: 'textfield' , fieldLabel: translations.field.name.product, name : 'name' },
                         { xtype: 'cbcatproduct' , fieldLabel: translations.field.category.product, name : 'cat_id' },
-                        { xtype: 'textfield' , fieldLabel: 'contruction', name : 'contruction' },
-                        { xtype: 'textfield' , fieldLabel: 'nodesign', name : 'nodesign' },
-                        { xtype: 'cbTypeProduct' , fieldLabel: translations.field.type.product, name: 'type_id'},
+                        { xtype: 'textfield' , fieldLabel: 'Corak', name : 'contruction' },
+                        { xtype: 'textfield' , fieldLabel: 'Nomor Design', name : 'nodesign' },
+                        { xtype: 'cbTypeProduct' , fieldLabel: 'Tipe Produk', name: 'type_id'},
                         {
                             xtype: 'fieldcontainer',
                             fieldLabel: translations.field.weight,
@@ -68,12 +68,12 @@ Ext.define('App.view.products.formProduct',{
                                 hideLabel: true
                             },
                             items: [
-                                { xtype: 'numberfield' , fieldLabel: 'weight', name : 'weight' ,margin: '0 5 0 0'},
-                                { xtype: 'cbUnitWeight' , fieldLabel: 'unitweight_id', name : 'unitweight_id' }
+                                { xtype: 'numberfield' , fieldLabel: 'Berat', name : 'weight' ,margin: '0 5 0 0'},
+                                { xtype: 'cbUnitWeight' , fieldLabel: 'unitweight_id', name : 'unitweight_id',emptyText:'Pilih Berat' }
                             ]
                         },{
                             xtype: 'fieldcontainer',
-                            fieldLabel: translations.field.width,
+                            fieldLabel: 'Lebar',
                             combineErrors: true,
                             msgTarget : 'side',
                             layout: 'hbox',
@@ -83,8 +83,8 @@ Ext.define('App.view.products.formProduct',{
                                 hideLabel: true
                             },
                             items: [
-                                { xtype: 'numberfield' , fieldLabel: 'width', name : 'width' ,margin: '0 5 0 0'},
-                                { xtype: 'cbUnitWidth' , fieldLabel: 'unitwidth_id', name : 'unitwidth_id' }
+                                { xtype: 'numberfield' , fieldLabel: '', name : 'width' ,margin: '0 5 0 0'},
+                                { xtype: 'cbUnitWidth' , fieldLabel: 'unitwidth_id', name : 'unitwidth_id',emptyText:'Pilih Lebar' }
                             ]
                         }
                     ]
@@ -93,7 +93,7 @@ Ext.define('App.view.products.formProduct',{
                     xtype: 'fieldset',
                     flex:.5,
                     margins: '0 0 0 10',
-                    title : 'Detail Product',
+                    title : 'Detail Produk',
                     defaults : {
                         allowBlank:false,anchor: '95%',labelWidth: 100
                     },

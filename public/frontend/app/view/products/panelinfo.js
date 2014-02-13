@@ -21,7 +21,7 @@ Ext.define('App.view.products.panelinfo', {
 		stockStore: null,
 		storeHistory: null,
 		storeStockHistory: null,
-		record: null,
+		record: null
 	},
 	debug: false,
 	title: 'Info',
@@ -97,11 +97,6 @@ Ext.define('App.view.products.panelinfo', {
 		}
 		Ext.apply(me, {
 			items: items
-//			items: [
-//				{
-//					xtype: 'container',
-//				}
-//			]
 		});
 		me.callParent(arguments);
 	}

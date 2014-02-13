@@ -1,15 +1,18 @@
 Ext.define('App.controller.master.Gudang',{
 	extend: 'Ext.app.Controller',
 	views:[
+		'App.view.master.gudang.tab',
         'App.view.master.gudang.List',
         'App.form.combobox.cbWarehouseCat',
         'App.form.combobox.cbCities'
     ],
 	models:[
-        'App.model.Gudang'
+        'App.model.Gudang',
+		'App.model.warehouse.category'
     ],
 	stores:[
         'App.store.Gudangs',
+		'App.store.warehouse.category',
         'App.store.warehouse.cbcategory',
         'App.store.combo.cbCities'
     ],
@@ -50,7 +53,7 @@ Ext.define('App.controller.master.Gudang',{
 		 	'gudangGridList > toolbar > button[action=add]' : {
 		 		click: function(button){
 		 			log('Add Warehouse');
-		 			this.getGrid().getStore().insert(0, Ext.create('App.model.Gudang'));
+		 			this.getGrid().getStore().insert(0, Ext.create('App.model.Gudang',{name: ' '} ));
 		 			var rowEditing = this.getGrid().getPlugin('cellEditorGudang');
 		 			rowEditing.startEdit(0, 0);
 		 		}
@@ -69,7 +72,26 @@ Ext.define('App.controller.master.Gudang',{
                     me.getGrid().getStore().sync();
 		 			this.doRefresh();
 		 		}
-		 	}
+		 	},
+			 'tabgudang grid#gridcategory' : {
+				 render: function(grid){
+					 log('Render W Cat');
+					 grid.getStore().load();
+				 },
+				 edit : function(editor,object){
+					 var grid = object.grid;
+					 grid.getStore().sync();
+					 grid.getStore().load();
+				 }
+			 },
+			 'tabgudang grid#gridcategory > toolbar > button[action=add]' : {
+				 click: function(button){
+					 var grid = button.up('grid#gridcategory');
+					 grid.getStore().insert(0, Ext.create('App.model.warehouse.category',{name: 'baru'}));
+					 var rowEditing = grid.getPlugin('cellEditorGudangC');
+					 rowEditing.startEdit(0, 0);
+				 }
+			 }
 		 });
 
 	},

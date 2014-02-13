@@ -17,9 +17,20 @@
  * @author Emay Komarudin
  *
  *
+ * Model Persetujuan Pengajuan Pembelian
  *
  **/
 Ext.define('App.model.approvepr.mapprovepr', {
-    extend: 'Ext.data.Model',
-    fields: [ 'id', 'name' ]
+	extend: 'Ext.data.Model',
+	fields: ['id', 'prnumber', { name: 'tgl', type: 'date'}],
+	proxy: {
+		type: 'rest',
+		url: getApiUrl() + '/prapprove',
+		reader: {
+			type: 'json',
+			root: 'results',
+			totalProperty: 'total'
+		}
+	}
+
 });

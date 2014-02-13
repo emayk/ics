@@ -70,11 +70,10 @@ Ext.define('App.controller.master.TypeOrder', {
      * @constructor
      */
     Addrow: function (button) {
-        log('Add');
         var me = this, grid = me.getGrid(),
             cnt = me.cntNewRecord,
             model = Ext.create('App.model.TypeOrder', {
-                name: 'Type Order ' +cnt
+                name: ' '
             });
 
         grid.getStore().insert(0, model);

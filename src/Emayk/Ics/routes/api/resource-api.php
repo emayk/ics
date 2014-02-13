@@ -123,3 +123,5 @@ Route::resource('receiveproductitem', 'Emayk\Ics\Repo\Transreceiveproductitem\Tr
 Route::resource('sysprodhistory', 'Emayk\Ics\Repo\Sysprodhistory\SysprodhistoryController');
 /*==========  Register Resource Purchaseorder  ==========*/
 Route::resource('purchaseorder', 'Emayk\Ics\Repo\Purchaseorder\PurchaseorderController');
+/*==========  Register Resource Prapprove  ==========*/
+Route::resource('prapprove', 'Emayk\Ics\Repo\Prapprove\PrapproveController');

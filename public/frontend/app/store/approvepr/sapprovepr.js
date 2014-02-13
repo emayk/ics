@@ -24,14 +24,14 @@ Ext.define('App.store.approvepr.sapprovepr',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.approvepr.mapprovepr',
 
-/*	proxy: {
+	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/approvepr',
+		url: getApiUrl() +'/prapprove',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},*/
+		}
+	}
 
 })

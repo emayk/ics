@@ -20,7 +20,6 @@
 
 Ext.define('App.view.accountBank.form', {
 	extend: 'Ext.form.Panel',
-	flex: .3,
 	alias: 'widget.appaccountBankform',
 	itemId: 'formaccount',
 	requires: [
@@ -29,125 +28,129 @@ Ext.define('App.view.accountBank.form', {
 		'App.form.combobox.cbTypeTax'
 	],
 	bodyPadding: 10,
-	frame: true,
-	margin: '0 0 0 5',
 	layout: 'anchor',
 	defaults: {
 		anchor: '95%',
-		labelWidth: '150'
+		labelWidth: 150
 	},
-	items: [
-		{ xtype: 'hiddenfield', name: 'owner_id', hidden: true},
-		{ xtype: 'hiddenfield', name: 'owner_type', hidden: true},
-		{
-			xtype: 'textfield',labelWidth: '150',
-			fieldLabel: translations.accountbank.name,
-			name: 'name',
+	frame: true,
+	initComponent: function(){
+		var me = this;
+		Ext.apply(me,{
+			width: App.util.box.maxWidthWindow() - 100,
+			items: [
+				{ xtype: 'hiddenfield', name: 'owner_id'},
+				{ xtype: 'hiddenfield', name: 'owner_type'},
+				{
+					xtype: 'textfield',
+					fieldLabel: translations.accountbank.name,
+					name: 'name',
 //			disabled: true,
-			allowblank: false
-		},
-		{
-			xtype: 'textfield',labelWidth: '150',
-			fieldLabel: translations.accountbank.number,
-//			disabled: true,
-			name: 'number',
-			allowblank: false
-		},
-		{
-			xtype: 'fieldcontainer',labelWidth: '150',
-			flex: 1,
-			fieldLabel: translations.accountbank.bankname,
-			layout: { type: 'hbox', align: 'stretch'},
-			items: [
-				{
-					/*Combo box Bank*/
-					flex: 1,
-					xtype: 'cbBank',
-					fieldLabel: '',
-//					disabled: true,
-					allowblank: false,
-					name: 'bank_id'
-				},
-				{
-					margin: '0 0 0 5',
-					xtype: 'button',
-					iconCls: 'add',
-					action: 'addbank'
-				}
-			]
-		},
-		{
-			xtype: 'fieldcontainer',
-			flex: 1,labelWidth: '150',
-			fieldLabel: translations.currency,
-			layout: { type: 'hbox', align: 'stretch'},
-			items: [
-				{
-					/*CurrencyAccount */
-					flex: 1,
-					xtype: 'cbcurrencies',
-					fieldLabel:'',
-//					disabled: true,
-					allowblank: false,
-					name: 'currency_id'
-				},
-				{
-					margin: '0 0 0 5',
-					xtype: 'button',
-					iconCls: 'add',
-					action: 'addcurrency'
-				}
-			]
-		},
-		{
-			xtype: 'fieldcontainer',
-			flex: 1,labelWidth: '150',
-			fieldLabel: translations.typetax,
-			layout: { type: 'hbox', align: 'stretch'},
-			items: [
-				{
-					/*Taxt Account  */
-					flex: 1,
-					xtype: 'cbtypetax',
-					fieldLabel:'',
-//					disabled: true,
-					name: 'tax_id',
 					allowblank: false
 				},
 				{
-					margin: '0 0 0 5',
-					xtype: 'button',
-					iconCls: 'add',
-					action: 'addtax'
-				}
-			]
-		}
-	],
-	dockedItems: [
-		{
-			xtype: 'toolbar',
-			dock: 'bottom',
-			items: [
-				{
-					action: 'help',
-					text: translations.help,
-					iconCls: 'help'
-				},
-				'->',
-				{
-					itemId: 'save',
-					action: 'save',
-					iconCls: 'save',
-					text: translations.save,
-					tooltip: 'Save Record'
+					xtype: 'textfield',
+					fieldLabel: translations.accountbank.number,
+//			disabled: true,
+					name: 'number',
+					allowblank: false
 				},
 				{
-					action: 'close',
-					iconCls: 'close',
-					text: translations.close,
-					tooltip: 'Save Record'
+					xtype: 'fieldcontainer',
+					flex: 1,
+					fieldLabel: translations.accountbank.bankname,
+					layout: { type: 'hbox', align: 'stretch'},
+					items: [
+						{
+							/*Combo box Bank*/
+							flex: 1,
+							xtype: 'cbBank',
+							fieldLabel: '',
+//					disabled: true,
+							allowblank: false,
+							name: 'bank_id'
+						},
+						{
+							margin: '0 0 0 5',
+							xtype: 'button',
+							iconCls: 'add',
+							action: 'addbank'
+						}
+					]
+				},
+				{
+					xtype: 'fieldcontainer',
+					fieldLabel: translations.currency,
+					layout: { type: 'hbox', align: 'stretch'},
+					items: [
+						{
+							/*CurrencyAccount */
+							flex: 1,
+							xtype: 'cbcurrencies',
+							fieldLabel:'',
+//					disabled: true,
+							allowblank: false,
+							name: 'currency_id'
+						},
+						{
+							margin: '0 0 0 5',
+							xtype: 'button',
+							iconCls: 'add',
+							action: 'addcurrency'
+						}
+					]
+				},
+				{
+					xtype: 'fieldcontainer',
+					fieldLabel: translations.typetax,
+					layout: { type: 'hbox', align: 'stretch'},
+					items: [
+						{
+							/*Taxt Account  */
+							flex: 1,
+							xtype: 'cbtypetax',
+							fieldLabel:'',
+//					disabled: true,
+							name: 'tax_id',
+							allowblank: false
+						},
+						{
+							margin: '0 0 0 5',
+							xtype: 'button',
+							iconCls: 'add',
+							action: 'addtax'
+						}
+					]
+				}
+			],
+			dockedItems: [
+				{
+					xtype: 'toolbar',
+					dock: 'bottom',
+					items: [
+						{
+							action: 'help',
+							text: translations.help,
+							iconCls: 'help'
+						},
+						'->',
+						{
+							itemId: 'save',
+							action: 'save',
+							iconCls: 'save',
+							text: translations.save,
+							tooltip: 'Save Record'
+						},
+						{
+							action: 'close',
+							iconCls: 'close',
+							text: translations.close,
+							tooltip: 'Save Record'
+						}
+					]
 				}
 			]
-		}
-	]
+		});
+		me.callParent(arguments);
+	}
 });
