@@ -16,17 +16,19 @@
  * @author Emay Komarudin
  *
  **/
-require __DIR__ . '/menu/rest.php';
 require __DIR__ . '/bank/rest.php';
-require __DIR__ . '/dept/rest.php';
 require __DIR__ . '/color/rest.php';
 require __DIR__ . '/currency/rest.php';
+require __DIR__ . '/dept/rest.php';
 /*Kain*/
 require __DIR__ . '/fabric/rest.php';
+require __DIR__ . '/legality/rest.php';
+require __DIR__ . '/menu/rest.php';
 /*Warehouse*/
-require __DIR__ . '/warehouse/rest.php';
+require __DIR__ . '/phone/rest.php';
 require __DIR__ . '/product/rest.php';
-require __DIR__ . '/supplier/rest.php';
 require __DIR__ . '/setting/rest.php';
 require __DIR__ . '/status/rest.php';
-require __DIR__ . '/phone/rest.php';
+require __DIR__ . '/supplier/rest.php';
+require __DIR__ . '/unit/rest.php';
+require __DIR__ . '/warehouse/rest.php';
