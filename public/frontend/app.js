@@ -25,6 +25,19 @@ if (fromLocal()) {
 		'cusers',
 		/*Dashboard*/
 		'cdashboard',
+
+
+
+		/*Dashboard*/
+		'cdashboard',
+		/*Proses Pemesanan Barang*/
+		'cpurchase', // daftar pembelian
+		'cprocespo', // Proses Pemesanan Barang
+		'capprovepr', // persetujuan Pesan barang
+		'ctypeproduct',
+		'master.ctlProducts', //daftar Barang
+		'ccheckgood', //Check Barang
+
 	/**
 	 * Master
 	 *
