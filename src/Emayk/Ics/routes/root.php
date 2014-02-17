@@ -34,6 +34,7 @@ Route::group(array('prefix' => \Config::get('ics::path.baseUrl') ),function(){
 	require __DIR__.'/test-extjs.php';
 	/*==========  Routing Home  ==========*/
 	require __DIR__.'/api/root.php';
+
 	/*==========  Routing Home  ==========*/
 	require __DIR__.'/test.php';
 	/*==========  Routing Home  ==========*/

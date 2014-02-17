@@ -22,6 +22,7 @@
 namespace Emayk\Ics\Repo\Transorderdetails;
 
 use Carbon\Carbon;
+use Emayk\Ics\Repo\Transorders\TransOrderTmp;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
@@ -33,6 +34,7 @@ class TransorderdetailsEloquent implements TransorderdetailsInterface
 	function __construct(Transorderdetails $transorderdetails)
 	{
 		$this->transorderdetails = $transorderdetails;
+
 	}
 
 	/**
@@ -57,12 +59,19 @@ class TransorderdetailsEloquent implements TransorderdetailsInterface
 	 */
 	public function all()
 	{
+
+
+		if (Input::has('tmp')) {
+			return $this->listTmpItems();
+		}
+
+		$page  = \Input::get('page');
+		$limit = \Input::get('limit', 1);
+		$start = \Input::get('start', 0);
 		if (!Input::has('order_id')) {
 			throw new \Exception( 'Need Order ID' );
 		}
-		$page              = \Input::get('page');
-		$limit             = \Input::get('limit', 1);
-		$start             = \Input::get('start', 0);
+
 		$orderId           = Input::get('order_id');
 		$transorderdetails = $this->transorderdetails
 			->whereOrderId($orderId);
@@ -84,10 +93,71 @@ class TransorderdetailsEloquent implements TransorderdetailsInterface
 
 	}
 
+	protected function listTmpItems()
+	{
+		$page  = \Input::get('page');
+		$limit = \Input::get('limit', 1);
+		$start = \Input::get('start', 0);
+
+		if (!Input::has('tmptrxid')) {
+			throw new \Exception( 'Butuh Transaksi ID' );
+		}
+
+		$trxid = Input::get('tmptrxid');
+		$tmp   = $this->transorderdetails->getTmp()->whereTrxid($trxid);
+
+		$total = $tmp->count();
+
+		$tmp = $tmp
+			->skip($start)
+			->take($limit)
+			->get()->toArray();
+
+
+		$tmps = array(
+			'success' => true,
+			'results' => $tmp,
+			'total'   => $total
+		);
+
+		return Response::json($tmps);
+
+	}
+
+	public function createTemporaryOrderItems()
+	{
+		if (!Input::has('tmptrxid')) {
+			throw new \Exception( 'Need Transaction Number' );
+		}
+		$trxid = Input::get('tmptrxid');
+		/*Check Apakah memang ada ?*/
+		$existtrx = $this->transorderdetails->getTmpTransaction()->findOrFail($trxid);
+		if ($existtrx->count() == 0) {
+			throw new \Exception( 'Nomor Transaksi Tidak ada' );
+		}
+
+		$trxid = $existtrx->id;
+		/*Create Data*/
+		$qty        = Input::get('qty');
+		$producId   = Input::get('prodname');
+		$producName = Input::get('prodid');
+		$trxtemp    = $this->transorderdetails->getTmp()->create(
+			[
+				'qty'         => $qty,
+				'productname' => $producId,
+				'product_id'  => $producName,
+				'trxid'       => $trxid
+			]
+		);
+
+		return $trxtemp;
+	}
+
 	/**
 	 *
 	 * Proses Simpan Transorderdetails
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
@@ -100,6 +170,12 @@ class TransorderdetailsEloquent implements TransorderdetailsInterface
 					'results' => null
 				))->setCallback();
 		}
+
+		if (Input::has('tmp')) {
+			return $this->createTemporaryOrderItems();
+		}
+
+
 		/*==========  Sesuaikan dengan Field di table  ==========*/
 		$this->transorderdetails->id         = Input::get("id");
 		$this->transorderdetails->qty        = Input::get("qty");
@@ -135,22 +211,56 @@ class TransorderdetailsEloquent implements TransorderdetailsInterface
 	 */
 	public function delete($id)
 	{
-
-		if ($this->hasAccess()) {
-			$deleted = $this->transorderdetails
-				->find($id)
-				->delete();
-
-			return \Icsoutput::toJson(array(
-				'results' => $deleted
-			), $deleted);
-
-		} else {
-			return \Icsoutput::toJson(array(
-				'results' => false,
-				'reason'  => 'Dont Have Access to Delete '
-			), false);
+		if (!$this->hasAccess()) {
+			throw new \Exception( 'Tidak ada akses untuk delete' );
 		}
+
+		if (Input::has('tmp')) {
+			if (!Input::has('tmptrxid')) {
+				throw new \Exception( 'Butuh Transaction ID untuk hapus' );
+			}
+			$trxid  = Input::get('tmptrxid');
+			$prodId = Input::get('prodid');
+			$record = $this->transorderdetails->getTmp()->whereTrxid($trxid)->whereProductId($prodId);
+
+			if (!$record) {
+				return Response::json([
+					'success' => false,
+					'error'   => true,
+					'reason'  => 'Cannot Deleted'
+				], 200);
+			}
+
+			return ( $record->delete() )
+				? Response::json([
+					/*Extjs untuk delete dan fire callback model.destroy() method di setup false */
+					'success' => false,
+					'error'   => false
+				])
+				: Response::json([
+					'success' => false,
+					'error'   => true,
+					'reason'  => 'Cannot Deleted'
+				], 200);
+
+
+		}
+//
+//		if ($this->hasAccess()) {
+//			$deleted = $this->transorderdetails
+//				->find($id)
+//				->delete();
+//
+//			return \Icsoutput::toJson(array(
+//				'results' => $deleted
+//			), $deleted);
+//
+//		} else {
+//			return \Icsoutput::toJson(array(
+//				'results' => false,
+//				'reason'  => 'Dont Have Access to Delete '
+//			), false);
+//		}
 	}
 
 	/**
@@ -162,10 +272,23 @@ class TransorderdetailsEloquent implements TransorderdetailsInterface
 	 */
 	public function update($id)
 	{
+
+		if ( Input::has('tmp') ) {
+			if (!Input::has('tmptrxid')){
+				throw new \Exception('Butuh Transaction ID');
+			};
+
+			$id          = Input::get('id');
+			$record      = $this->transorderdetails->getTmp()->findOrFail($id);
+			$record->qty = Input::get('qty');
+			return ($record->save() ) ? \Response::json(['success' => true, 'results' => $record->toArray()])
+				: \Response::json(['success' => false,'error'=> true, 'results' => $record->toArray()]) ;
+
+		}
 		$db = $this->transorderdetails->find($id);
 		/*==========  Sesuaikan  ==========*/
 		// $db->name = Input::get('name');
-		 $db->qty = Input::get('qty');
+		$db->qty  = Input::get('qty');
 		$db->uuid = uniqid('Update_');
 		return ( $db->save() )
 			? \Icsoutput::msgSuccess($db->toArray())

@@ -108,17 +108,20 @@ Ext.define('App.view.Suppliers.Edit', {
 											xtype: 'numberfield',
 											minValue: 0,
 											value: 0,
-											maxValue: 365
+											maxValue: 365,
+											/*CL 8g5*/
+											step: 7
 										},
 										{
 											fieldLabel: 'Batas Max Pembelian',
-//												translations.supplier.plafon,
 											afterLabelTextTpl: required,
 											allowBlank: false,
 											name: 'plafon',
 											xtype: 'numberfield',
 											minValue: 0,
-											anchor: '95%'
+											anchor: '95%',
+											/*CL 8g5*/
+											step: 1000000
 										}
 									]
 								}

@@ -24,25 +24,16 @@
 Ext.define('App.view.approvepr.process', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.appapproveprvprocess',
-	iconCls: 'add',
-	closable: true,
 	config: {
-		prnumber: 'PR1-11feb2014-timothy',
+		closable: false,
+		iconCls: 'add',
+		aprnumber: undefined,
 		tgl: '02/11/2014',
 		status: 1,
-		storegrid: undefined
-//		storegrid: Ext.create('Ext.data.Store', {
-//			fields: [ 'id', 'code', 'name', 'category', 'jenis', { name: 'length', type: 'int' }, 'unitname', 'price'],
-//			data: [
-//				{ id: 1, code: 'ab1', name: 'kain1', category: 'Kategory', jenis: '12e', length: 200, unitname: 'yard', price: 0},
-//				{ id: 2, code: 'ab2', name: 'kain2', category: 'Kategory1', jenis: '12e', length: 150, unitname: 'yard', price: 0},
-//				{ id: 3, code: 'ab3', name: 'kain3', category: 'Kategory1', jenis: 'r4', length: 300, unitname: 'yard', price: 0}
-//			],
-//			proxy: {
-//				type: 'memory'
-//			}
-//		})
+		aprid : undefined,
+		storegrid: Ext.create('App.store.approvepr.items')
 	},
+
 	bodyPadding: 2,
 	frame: true,
 	initComponent: function () {
@@ -52,19 +43,20 @@ Ext.define('App.view.approvepr.process', {
 			layout: { type: 'fit', align: 'stretch'},
 			items: [
 				{
-					title: 'Daftar Barang [ ' + me.getPrnumber() + ' ]',
+					title: 'Daftar Barang [ ' + me.getAprnumber() + ' ]',
 					xtype: 'grid',
+					itemId: 'listsproduct',
 					flex: 1,
 					columns: [
 						{xtype: 'rownumberer'},
 						{text: 'Kode', dataIndex: 'code'},
 						{text: 'Nama Produk', dataIndex: 'name'},
 						{text: 'Kategory', dataIndex: 'category'},
-						{text: 'Jenis', dataIndex: 'jenis'},
+						{text: 'Jenis', dataIndex: 'type'},
 						{
-							text: 'Panjang', dataIndex: 'length',
+							text: 'Panjang', dataIndex: 'qty',
 							renderer: function (v, m, r) {
-								return v + ' ' + r.get('unitname');
+								return v + ' ' + r.get('unit');
 							},
 							editor: {
 								xtype: 'numberfield',
@@ -83,7 +75,7 @@ Ext.define('App.view.approvepr.process', {
 							text: 'Total',
 							dataIndex: 'subtotal',
 							renderer: function (v, m, r) {
-								var price = r.get('price'), length = r.get('length');
+								var price = r.get('price'), length = r.get('qty');
 								var subtotal = parseFloat(price) * parseFloat(length);
 								return Ext.util.Format.number(subtotal, '0,00');
 							}
@@ -123,5 +115,11 @@ Ext.define('App.view.approvepr.process', {
 			]
 		});
 		me.callParent(arguments);
+		if (me.getAprid()){
+			var grid = me.down('grid#listsproduct'), store = grid.getStore();
+			store.getProxy().setExtraParam('aprid',me.getAprid());
+			store.getProxy().setExtraParam('aprnumber',me.getAprnumber());
+			store.load();
+		}
 	}
 });

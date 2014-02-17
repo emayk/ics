@@ -16,12 +16,6 @@
  *
  **/
 
-var fromLocal = function () {
-	return true;
-//    return ((window.location.protocol + '//' + window.location.host + '/') === 'http://localhost:9090');
-};
-
-
 /**
  *
  * Application Core
@@ -45,6 +39,14 @@ if (fromLocal()) {
 //
 		/*Dashboard*/
 		'cdashboard',
+		/*Proses Pemesanan Barang*/
+		'cpurchase', // daftar pembelian
+		'cprocespo', // Proses Pemesanan Barang
+		'capprovepr', // persetujuan Pesan barang
+		'ctypeproduct',
+		'master.ctlProducts', //daftar Barang
+		'ccheckgood', //Check Barang
+		/*/end Proses Pemesanan Barang*/
 //
 //		'cposition',
 //		'caccountBank',
@@ -75,20 +77,20 @@ if (fromLocal()) {
 //		/*simulasi*/
 //		'cdefaultsetting',
 //		/*Simulasi Terima Barang */
-		'creceiveProduct',
+//		'creceiveProduct',
 //
 //		/*Pembayaran*/
-		'ctypepayment',
-		'cpayment',
+//		'ctypepayment',
+//		'cpayment',
 //		/*Kontra Bon*/
-		'ccontrabon',
+//		'ccontrabon',
 //		/*Retur Barang*/
-		'creturgood',
+//		'creturgood',
 //
 		/*Check Barang*/
-		'ccheckgood',
+//		'ccheckgood',
 		/*Persetujuan Purchase Request*/
-		'capprovepr',
+//		'capprovepr',
 
 
 //		/*Debit Note*/
@@ -121,7 +123,7 @@ if (fromLocal()) {
 //		'ccatprod',
 //		'master.Legalitas',
 //		'cfabrictype',
-//		'ctypeproduct',
+
 //
 ////		'master.Departement',
 //		'ctypeAccountBank',
@@ -135,7 +137,7 @@ if (fromLocal()) {
 ////		'master.ctlUnit',
 ////
 ////
-////		'master.ctlProducts',
+//		'master.ctlProducts',
 
 
 ////

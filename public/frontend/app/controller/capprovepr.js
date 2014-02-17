@@ -25,8 +25,14 @@ Ext.define('App.controller.capprovepr',{
 	views: ['App.view.approvepr.vapprovepr',
 		'App.view.approvepr.process'
 	],
-	models:['App.model.approvepr.mapprovepr'],
-	stores:['App.store.approvepr.sapprovepr'],
+	models:['App.model.approvepr.mapprovepr','App.model.approvepr.mitem'],
+	stores:[
+		'App.store.approvepr.sapprovepr',
+		'App.store.approvepr.sapprovepraggree',
+		'App.store.approvepr.sapproveprdenied',
+		'App.store.approvepr.items'
+
+	],
 	init: function(){
 
 	}

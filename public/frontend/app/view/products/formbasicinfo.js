@@ -59,7 +59,7 @@ Ext.define('App.view.products.formbasicinfo', {
 					items: [
 						{ xtype: 'hiddenfield', fieldLabel: 'id', name: 'id', anchor: '95%', readOnly: true, value: this.prodId },
 						{ xtype: 'textfield', fieldLabel: 'Nama', name: 'name', anchor: '95%' },
-						{ xtype: 'cbcatproduct', fieldLabel: 'Kategory', name: 'cat_id', anchor: '95%' },
+						{ xtype: 'cbcatproduct', fieldLabel: 'Kategori', name: 'cat_id', anchor: '95%' },
 						{ xtype: 'textfield', fieldLabel: 'Corak', name: 'contruction', anchor: '95%' },
 						{ xtype: 'textfield', fieldLabel: 'Nomor Design', name: 'nodesign', anchor: '95%' },
 						{ xtype: 'cbTypeProduct', fieldLabel: 'Tipe Produk', name: 'type_id', anchor: '95%' },

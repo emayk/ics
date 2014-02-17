@@ -32,9 +32,4 @@ class Orderstatus extends Model {
 	protected $guarded = array();
 	protected $table = 'master_order_status';
 	public static $rules = array();
-
-	 public function orders()
-	 {
-//			todo : orders
-	 }
 }

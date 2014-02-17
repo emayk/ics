@@ -24,8 +24,8 @@ Ext.define('App.view.Orders.vOrders', {
 		{
 			xtype: 'toolbar', flex: 1, dock: 'top',
 			items: [
-				{xtype: 'button', text: 'New Order', itemId: 'add', action: 'add', iconCls: 'add'},
-				{xtype: 'button', text: 'Multi Order', itemId: 'multiadd', action: 'multiadd', iconCls: 'add'},
+				{xtype: 'button', text: 'New Order 1', itemId: 'add', action: 'add', iconCls: 'add'},
+//				{xtype: 'button', text: 'Multi Order', itemId: 'multiadd', action: 'multiadd', iconCls: 'add'},
 				// {xtype: 'button', text: 'Edit', itemId: 'edit', iconCls: 'edit', action: 'edit', disabled : true, },
 				// {xtype: 'button', text: 'Delete', disabled : true, itemId: 'delete', iconCls: 'delete'}
 			]

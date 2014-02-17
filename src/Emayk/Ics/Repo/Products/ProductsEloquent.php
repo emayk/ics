@@ -55,12 +55,63 @@ class ProductsEloquent implements ProductsInterface
 	}
 
 	/**
+	 * Mendapatkan List Product Berdasarkan Nama Produk yang diberikan
+	 * @param $searchName
+	 * @param $limit
+	 * @param $start
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function searchByName($searchName,$limit,$start){
+
+		$products = $this->products->where('name', 'LIKE', "%$searchName%");
+		$total    = $products->count();
+		$products = $products->skip($start)
+			->take($limit)
+			->get()->toArray();
+
+		return Response::json([
+			'success' => true,
+			'results' => $products,
+			'total'   => $total
+		]);
+	}
+	/**
 	 * Mendapatkan Semua Products
 	 *
 	 * @return mixed
 	 */
 	public function all()
 	{
+
+		$page  = \Input::get('page');
+		$limit = \Input::get('limit', 1);
+		$start = \Input::get('start', 0);
+		/*Jika ada Input cari berdasarkan Nama */
+		if (Input::has('searchbyName')) {
+			$searchName     = Input::get('searchbyName');
+			return $this->searchByName($searchName,$limit,$start);
+		}
+		$product = $this->products;
+		$total   = $product->count();
+//            ->orderBy('id','DESC')
+		$product = $product->skip($start)
+			->take($limit)
+			->get()->toArray();
+//		$total = $this->$product
+//			->all()->count();
+
+		$product = array(
+			'success' => true,
+			'results' => $product,
+			'total'   => $total
+		);
+
+		return Response::json($product)
+			->setCallback(\Input::get('callback'));
+
+
+		/*kalo sudah produksi gunakan ini*/
 		$page    = \Input::get('page');
 		$product = $this->products;
 		\Event::fire('product.refresh', array($product));

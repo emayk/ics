@@ -1,0 +1,3 @@
+Type Kantor
+- Utama
+- Perwakilan

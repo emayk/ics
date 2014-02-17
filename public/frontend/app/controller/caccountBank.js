@@ -17,7 +17,7 @@
  * @author Emay Komarudin
  *
  *
- *
+ * rekening bank
  **/
 
 Ext.define('App.controller.caccountBank', {

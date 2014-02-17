@@ -29,14 +29,14 @@ Ext.define('App.view.products.ListPrd', {
                             autoScroll: true,
                             itemId: 'gridProducts',
                             store: 'App.store.product.Product',
-                            plugins: [
-                                {
-                                    ptype: 'filterbar',
-                                    renderHidden: false,
-                                    showShowHideButton: true,
-                                    showClearAllButton: true
-                                }
-                            ],
+//                            plugins: [
+//                                {
+//                                    ptype: 'filterbar',
+//                                    renderHidden: false,
+//                                    showShowHideButton: true,
+//                                    showClearAllButton: true
+//                                }
+//                            ],
                             columns: {
                                 plugins: [
                                     {
@@ -44,49 +44,65 @@ Ext.define('App.view.products.ListPrd', {
                                     }
                                 ],
                                 items: [
-//
-                                    {
-                                        text: '#',
-                                        dataIndex: 'id',
-                                        filter: {
-                                            type: 'int',
-                                            minValue: 1
-                                        }
-                                    },
-                                    {
-                                        text: 'stocks',
-                                        dataIndex: 'totalstocks',
-                                        filter: true,
-                                        renderer: function (v,a,rec) {
-                                            var v = (v==null) ? v = 0 : v;
-                                            return v + ' items';
-                                        },
-                                        filter: {
-                                            type: 'int',
-                                            minValue: 1
-                                        }, flex: .5
-                                    },
+	                                {
+		                                xtype: 'rownumberer'
+	                                },
+//                                    {
+//                                        text: '#',
+//                                        dataIndex: 'id',
+//                                        filter: {
+//                                            type: 'int',
+//                                            minValue: 1
+//                                        }
+//                                    },
+	                                {
+		                                /*CL 7 */
+		                                text: 'Total Panjang',
+		                                dataIndex:'totallength',
+		                                flex:1
+	                                },
+	                                {
+		                                /*CL 7 */
+		                                text: 'Total Roll',
+		                                dataIndex:'totalroll',
+		                                flex:1
+	                                },
+//                                    {
+//                                        text: 'stocks',
+//                                        dataIndex: 'totalstocks',
+//                                        filter: true,
+//                                        renderer: function (v,a,rec) {
+//                                            var v = (v==null) ? v = 0 : v;
+//                                            return v + ' items';
+//                                        },
+//                                        filter: {
+//                                            type: 'int',
+//                                            minValue: 1
+//                                        }, flex: .5
+//                                    },
                                     {
                                         text: translations.field.design,
                                         dataIndex: 'nodesign',
-                                        filter: true, flex: .5
-
+                                        filter: true, flex: .5,
+	                                    flex:1
                                     },
                                     {
                                         text: translations.field.contruction,
                                         dataIndex: 'contruction',
-                                        filter: true, flex: .5
-
+                                        filter: true, flex: .5,
+	                                    flex:1
                                     },
                                     {
                                         text: translations.field.category.default,
                                         dataIndex: 'catname',
-                                        filter: true, flex: .5
+                                        filter: true, flex: .5,
+	                                    flex:1
                                     },
                                     {
                                         text: translations.field.type.default,
                                         dataIndex: 'typename',
-                                        filter: true, flex: .5
+                                        filter: true, flex: .5,
+	                                    flex:1
                                     },
                                     {
                                         text: translations.field.width,
@@ -110,11 +126,10 @@ Ext.define('App.view.products.ListPrd', {
                                             type: 'int',
                                             minValue: 1
                                         }
-                                    }
-                                    ,
-                                    {
-                                        text: translations.field.uuid,
-                                        dataIndex: 'uuid', flex: .5
+//                                    },
+//                                    {
+//                                        text: translations.field.uuid,
+//                                        dataIndex: 'uuid', flex: .5
                                     }
                                 ]
                             },

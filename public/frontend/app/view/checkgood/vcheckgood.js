@@ -25,11 +25,15 @@ Ext.define('App.view.checkgood.vcheckgood', {
 	layout: { type: 'fit', align: 'stretch'},
 	config: {
 		storegrid: Ext.create('Ext.data.Store', {
-			fields: ['id', 'name', 'countstock'],
+			fields: ['id', 'name', 'countstock','totallength','totalroll'],
 			data: [
-				{ id: 1, name: 'Produk A', countstock: 100 },
-				{ id: 2, name: 'Produk B', countstock: 100 },
-				{ id: 3, name: 'Produk C', countstock: 100 }
+				{ id: 1, name: 'Produk A', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) },
+				{ id: 2, name: 'Produk B', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) },
+				{ id: 3, name: 'Produk C', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) },
+				{ id: 4, name: 'Produk C', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) },
+				{ id: 5, name: 'Produk C', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) },
+				{ id: 6, name: 'Produk C', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) },
+				{ id: 7, name: 'Produk C', countstock: randomInt(90),totallength : randomInt(10), totalroll: randomInt(8) }
 			]
 		})
 	},
@@ -69,6 +73,14 @@ Ext.define('App.view.checkgood.vcheckgood', {
 										{
 											text: 'Stok',
 											dataIndex: 'countstock',
+											flex: 1
+										},{
+											text: 'Total Panjang',
+											dataIndex: 'totallength',
+											flex: 1
+										},{
+											text: 'Total Roll',
+											dataIndex: 'totalroll',
 											flex: 1
 										},
 										{

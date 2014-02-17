@@ -80,21 +80,26 @@ class Products extends Model
 	protected $guarded = array();
 	protected $table = 'master_products';
 	public static $rules = array();
-	protected $appends = array('totalstocks', 'catname', 'typename', 'widthname', 'weightname');
+	protected $appends = array('totalstocks', 'catname', 'typename', 'widthname', 'weightname','totallength','totalroll');
 	protected $hidden = array('parent_id', 'parent_type');
-	protected $with = array(//        'count',
-//        'type',
-//        'category',
-//        'image',
-//        'unitweight',
-//        'unitwidth',
-//        'createby',
-//        'detail',
-//        'updateby',
-//        'stocks',
-//        'countStocks'
-	);
+	protected $with = array();
 
+
+	public function getTotallengthAttribute()
+	{
+		/*@todo: relasikan dengan totalroll yang ada di kartu stock*/
+		$totallength = $this->stocks()->pluck('totallength');
+		$count = (is_null($totallength) ) ? 0 :  $totallength ;
+		return $this->attributes[ 'totallength' ] = $count;
+	}
+
+	public function getTotalrollAttribute()
+	{
+		/*@todo: relasikan dengan totalroll yang ada di kartu stock*/
+		$totalroll = $this->stocks()->pluck('totalroll');
+		$count = (is_null($totalroll) ) ? 0 :  $totalroll ;
+		return $this->attributes[ 'totalroll' ] =$count;
+	}
 
 	public function orderItem()
 	{

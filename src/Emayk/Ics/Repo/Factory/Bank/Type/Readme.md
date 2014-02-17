@@ -1,0 +1,3 @@
+Type  Bank
+- Giro
+- Check

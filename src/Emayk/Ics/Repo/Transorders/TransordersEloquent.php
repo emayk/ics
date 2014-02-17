@@ -82,6 +82,7 @@ class TransordersEloquent implements TransordersInterface
 	 *
 	 * Proses Simpan Transorders
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
@@ -94,6 +95,16 @@ class TransordersEloquent implements TransordersInterface
 					'results' => null
 				))->setCallback();
 		}
+
+		if (Input::has('tmp')) {
+			$transTemp = ( Input::get('tmp') );
+			if ($transTemp === 'true') {
+				return $this->createAndGetRecord();
+			} else {
+				throw new \Exception( 'Mode tidak didukung, silahkan gunakan true/false' );
+			};
+
+		}
 		/*==========  Sesuaikan dengan Field di table  ==========*/
 		$this->transorders->approve_id  = 2; // 1 = Yes, Selain 1 == No (default tidak )
 		$this->transorders->cp_id       = Input::get("cp_id");
@@ -101,10 +112,10 @@ class TransordersEloquent implements TransordersInterface
 		$this->transorders->curr_id     = Input::get("curr_id");
 		$da                             = Input::get("delivery_at");
 		$deliverycount                  = $this->transorders->where('delivery_at', $da)->get()->count();
-		$nodoc                          = $deliverycount+1;
+		$nodoc                          = $deliverycount + 1;
 		$this->transorders->delivery_at = $da;
 		$this->transorders->rate        = Input::get("kurs");
-		$this->transorders->nodoc       = 'Sales-Order-' . $nodoc ;
+		$this->transorders->nodoc       = 'Sales-Order-' . $nodoc;
 //			Input::get("nodoc");
 		$this->transorders->paymenttype_id  = Input::get("paymenttype_id");
 		$this->transorders->tax_id          = Input::get("ppn_id");
@@ -123,6 +134,7 @@ class TransordersEloquent implements TransordersInterface
 			'results' => $this->transorders->toArray()
 		))->setCallback();
 	}
+
 
 	/**
 	 * Menghapus Transorders
@@ -230,5 +242,15 @@ class TransordersEloquent implements TransordersInterface
 		return $this->delete($id);
 	}
 
+	public function createAndGetRecord()
+	{
+		$record  = $this->transorders->createPOtemp();
+		$records = array(
+			'success' => true,
+			'results' => $record->toArray(),
+			'total'   => 1
+		);
+		return Response::json($records);
+	}
 
 }

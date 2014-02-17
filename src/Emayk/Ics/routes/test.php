@@ -7,6 +7,17 @@
  **/
 Route::group(array('prefix' => 'test'), function () {
 
+//	Route::get('testInsert',function(){
+	Route::get('transorders',function(){
+
+//			$tmp = \DB::table('trans_orders_tmp')->insert(
+//				['trxnumber' => 'Trx-'.time()]
+//			);
+		$tmp = new \Emayk\Ics\Repo\Transorders\Transorders();
+		return $tmp->createPOtemp();
+//			return s($tmp);//->toArray();
+
+	});
 	Route::get('menuroot', function () {
 		$model = new \Emayk\Ics\Repo\Menu\Menu();
 //		$idsroot = \Emayk\Ics\Repo\Menu\Menu::whereParentId(0)->get(array('id', 'text')); //->lists('id','text');

@@ -22,7 +22,112 @@
 Ext.define('App.view.dashboard.vdashboard', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.appdashboardvdashboard',
+	layout: { type: 'vbox', align:'stretch'},
+	bodyPadding: 5,
+	frame: true,
+	autoScroll: true,
+	defaults:{
+		margin: '0 0 5 0'
+	},
     items: [
-        {html : 'Content Dashboard', xtype: 'container' }
+        {
+	        flex:.5,
+	        xtype: 'container',
+	        layout: { type: 'hbox', align: 'stretch'},
+	        items: [
+		        {
+			        xtype : 'panel',flex:.3,
+			        title: 'Master',
+			        bodyPadding: 10,
+			        items:[
+				        {
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        }
+			        ]
+		        },{
+			        margin: '0 5 0 5',
+			        xtype : 'panel',flex:.3,
+			        title: 'Master',
+			        bodyPadding: 10,
+			        items:[
+				        {
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        }
+			        ]
+		        },{
+			        xtype : 'panel',flex:.25,
+			        title: 'Master',
+			        bodyPadding: 10,
+			        items:[
+				        {
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        }
+			        ]
+		        }
+	        ]
+        },
+        {
+	        flex:.5,
+	        xtype: 'container',
+	        layout: { type: 'hbox', align: 'stretch'},
+	        items: [
+		        {
+			        xtype : 'panel',flex:.3,
+			        title: 'Master',
+			        bodyPadding: 10,
+			        items:[
+				        {
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        }
+			        ]
+		        },{
+			        margin: '0 5 0 5',
+			        xtype : 'panel',flex:.3,
+			        title: 'Master',
+			        bodyPadding: 10,
+			        items:[
+				        {
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        }
+			        ]
+		        },{
+			        xtype : 'panel',flex:.25,
+			        title: 'Master',
+			        bodyPadding: 10,
+			        items:[
+				        {
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        },{
+					        xtype: 'button', text: 'Produk'
+				        }
+			        ]
+		        }
+	        ]
+        },
+
+
+
     ]
 });

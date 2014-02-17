@@ -378,7 +378,10 @@ Ext.define('App.controller.cSuppliers', {
 
 		var errors = record.validate();
 		if (!errors.isValid()) {
-			App.util.box.error('Ada Error Pada Form Silahkan Coba lagi');
+			var errornamemsg = errors.getByField('name');
+			log(errornamemsg);
+			var msg = 'Ada Error Pada Form Silahkan Coba lagi , <br/>' + errornamemsg.message
+			App.util.box.error(msg);
 			return false;
 		}
 

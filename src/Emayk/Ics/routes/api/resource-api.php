@@ -1,61 +1,20 @@
 <?php
-/*==========  Register Resource Menu  ==========*/
-Route::resource('menu','Emayk\Ics\Repo\Menu\MenuController');
-/*==========  Register Resource Bank  ==========*/
-Route::resource('bank','Emayk\Ics\Repo\Bank\BankController');
-/*==========  Register Resource Departements  ==========*/
-Route::resource('dept','Emayk\Ics\Repo\Dept\DeptController');
-/*==========  Register Resource legality  ==========*/
-Route::resource('legality', 'Emayk\Ics\Repo\Legality\LegalityController');
-/*==========  Register Resource Colors  ==========*/
-Route::resource('colors', 'Emayk\Ics\Repo\Colors\ColorsController');
-/*==========  Register Resource Currencies  ==========*/
-Route::resource('currencies', 'Emayk\Ics\Repo\Currencies\CurrenciesController');
-/*==========  Register Resource Fabricgrade  ==========*/
-Route::resource('fabricgrade', 'Emayk\Ics\Repo\Fabricgrade\FabricgradeController');
 
-/*==========  Register Resource Warehouse  ==========*/
-Route::resource('warehouse', 'Emayk\Ics\Repo\Warehouse\WarehouseController');
-/*==========  Register Resource Warehousecategory  ==========*/
-Route::resource('warehousecategory', 'Emayk\Ics\Repo\Warehousecategory\WarehousecategoryController');
-/*==========  Register Resource Products  ==========*/
-Route::resource('products', 'Emayk\Ics\Repo\Products\ProductsController');
-/*==========  Register Interface Units  ==========*/
-Route::resource('units', 'Emayk\Ics\Repo\Units\UnitsController');
-
-/*==========  Register Resource Suppliers  ==========*/
-Route::resource('suppliers', 'Emayk\Ics\Repo\Suppliers\SuppliersController');
-/*==========  Register Resource Productdetails  ==========*/
-Route::resource('productdetails', 'Emayk\Ics\Repo\Productdetails\ProductdetailsController');
-/*==========  Register Resource Producttype  ==========*/
-Route::resource('producttype', 'Emayk\Ics\Repo\Producttype\ProducttypeController');
-/*==========  Register Resource Settingprogram  ==========*/
-Route::resource('settingprogram', 'Emayk\Ics\Repo\Settingprogram\SettingprogramController');
-/*==========  Register Resource Settingcompany  ==========*/
-Route::resource('settingcompany', 'Emayk\Ics\Repo\Settingcompany\SettingcompanyController');
-/*==========  Register Resource Status  ==========*/
-Route::resource('status', 'Emayk\Ics\Repo\Status\StatusController');
-/*==========  Register Resource Bankaccount  ==========*/
-Route::resource('bankaccount', 'Emayk\Ics\Repo\Bankaccount\BankaccountController');
 /*==========  Register Resource Approvaltype  ==========*/
 Route::resource('approvaltype', 'Emayk\Ics\Repo\Approvaltype\ApprovaltypeController');
-/*==========  Register Resource Bankaccounttype  ==========*/
-Route::resource('bankaccounttype', 'Emayk\Ics\Repo\Bankaccounttype\BankaccounttypeController');
+
 /*==========  Register Resource Buyers  ==========*/
 Route::resource('buyers', 'Emayk\Ics\Repo\Buyers\BuyersController');
-/*==========  Register Resource Productcategory  ==========*/
-Route::resource('productcategory', 'Emayk\Ics\Repo\Productcategory\ProductcategoryController');
+
 /*==========  Register Resource Contactperson  ==========*/
 Route::resource('contactperson', 'Emayk\Ics\Repo\Contactperson\ContactpersonController');
-/*==========  Register Resource Fabrictype  ==========*/
-Route::resource('fabrictype', 'Emayk\Ics\Repo\Fabrictype\FabrictypeController');
+
 /*==========  Register Resource Locations  ==========*/
 /**
  * Locations
  */
 Route::resource('locations', 'Emayk\Ics\Repo\Locations\LocationsController');
-/*==========  Register Resource Warehouseofficer  ==========*/
-Route::resource('warehouseofficer', 'Emayk\Ics\Repo\Warehouseofficer\WarehouseofficerController');
+
 /*==========  Register Resource Offices  ==========*/
 Route::resource('offices', 'Emayk\Ics\Repo\Offices\OfficesController');
 /*==========  Register Resource Ordertype  ==========*/
@@ -64,8 +23,7 @@ Route::resource('ordertype', 'Emayk\Ics\Repo\Ordertype\OrdertypeController');
 Route::resource('orderstatus', 'Emayk\Ics\Repo\Orderstatus\OrderstatusController');
 /*==========  Register Resource Paymenttype  ==========*/
 Route::resource('paymenttype', 'Emayk\Ics\Repo\Paymenttype\PaymenttypeController');
-/*==========  Register Resource Phones  ==========*/
-Route::resource('phones', 'Emayk\Ics\Repo\Phones\PhonesController');
+
 /*==========  Register Resource Positions  ==========*/
 Route::resource('positions', 'Emayk\Ics\Repo\Positions\PositionsController');
 /*==========  Register Resource Productsuppliers  ==========*/
@@ -123,5 +81,3 @@ Route::resource('receiveproductitem', 'Emayk\Ics\Repo\Transreceiveproductitem\Tr
 Route::resource('sysprodhistory', 'Emayk\Ics\Repo\Sysprodhistory\SysprodhistoryController');
 /*==========  Register Resource Purchaseorder  ==========*/
 Route::resource('purchaseorder', 'Emayk\Ics\Repo\Purchaseorder\PurchaseorderController');
-/*==========  Register Resource Prapprove  ==========*/
-Route::resource('prapprove', 'Emayk\Ics\Repo\Prapprove\PrapproveController');

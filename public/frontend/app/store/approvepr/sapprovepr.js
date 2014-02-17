@@ -20,17 +20,23 @@
  *
  **/
 
+/**
+ * Persetujuan PR yang belum diproses
+ */
 Ext.define('App.store.approvepr.sapprovepr',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.approvepr.mapprovepr',
 
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/prapprove',
+		url: getApiUrl() +'/transaction/prapprove',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
+		},
+		extraParams:{
+			type: 'new'
 		}
 	}
 

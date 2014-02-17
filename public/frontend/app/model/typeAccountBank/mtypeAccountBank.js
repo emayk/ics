@@ -22,6 +22,13 @@
 Ext.define('App.model.typeAccountBank.mtypeAccountBank', {
     extend: 'Ext.data.Model',
     fields: [ 'id', 'name',"info" ,"uuid","created_at","updated_at" ,"createby","updater"],
+	validations: [
+		{
+			type: 'length',
+			field: 'name',
+			min: 2
+		}
+	],
     proxy: {
         type: 'rest',
         url: getApiUrl() +'/bankaccounttype',

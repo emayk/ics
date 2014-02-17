@@ -1,0 +1,1 @@
+Product2 yang disetup saldo awal untuk Qty dlsb,

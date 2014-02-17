@@ -1,0 +1,1 @@
+Statistik Product yang dibeli dari pemasok yang berbeda2

@@ -109,7 +109,7 @@ Ext.define('App.view.checkgood.formpr', {
 							xtype: 'toolbar',
 							dock: 'top',
 							items: [
-								{ text: translations.remove, iconCls: 'delte',
+								{ text: translations.remove, iconCls: 'delete',
 									handler: me.removeProductFromGrid
 								}
 							]

@@ -13,7 +13,7 @@ Ext.define('App.view.products.tab', {
 	        /*Product*/
             xtype: 'productList',
             iconCls: 'home',
-            title: 'Daftar Produk'
+            title: 'Daftar'
         },{
 		    /*Kategori*/
 		    title : 'Kategori',

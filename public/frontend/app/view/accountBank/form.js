@@ -31,7 +31,7 @@ Ext.define('App.view.accountBank.form', {
 	layout: 'anchor',
 	defaults: {
 		anchor: '95%',
-		labelWidth: 150
+		labelWidth: 100
 	},
 	frame: true,
 	initComponent: function(){

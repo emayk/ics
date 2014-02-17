@@ -1,0 +1,1 @@
+Menampilkan Semua Color yang sudah tidak diproduksi lagi

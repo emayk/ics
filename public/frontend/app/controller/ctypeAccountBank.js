@@ -54,17 +54,17 @@ Ext.define('App.controller.ctypeAccountBank',{
             },
             'apptypeAccountBankvtypeAccountBank grid button#import': {
                 click: function (btn) {
-                    log(btn.text + 'clicked');
+                    belumImplement();
                 }
             },
             'apptypeAccountBankvtypeAccountBank grid button#export': {
                 click: function (btn) {
-                    log(btn.text + 'clicked');
+	                belumImplement();
                 }
             },
             'apptypeAccountBankvtypeAccountBank grid button#help': {
                 click: function (btn) {
-                    log(btn.text + 'clicked');
+	                belumImplement();
                 }
             }
         });
@@ -73,6 +73,7 @@ Ext.define('App.controller.ctypeAccountBank',{
         this.getGrid().getStore().load();
     },
     processEdit: function(editor, object){
+	    /*@todo : Check Store apakah Sudah ada Nama Yang sama*/
         object.store.sync();
         this.getGrid().getView().refresh();
     },
@@ -85,7 +86,7 @@ Ext.define('App.controller.ctypeAccountBank',{
             cnt = me.cntNewRecord,
             rowEditing = grid.getPlugin('cellEditorTypeAccountBank'),
             model = Ext.create('App.model.typeAccountBank.mtypeAccountBank',{
-                name: 'New Type Account Bank ' + cnt
+                name: ' '
             });
         grid.getStore().insert(0, model);
         rowEditing.startEdit(0, 0);

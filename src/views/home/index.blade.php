@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>{{ $title }}</title>
+	<title>{{ $title }} </title>
 	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/'.$selectedtheme.'.css') }}">
 <!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all.css') }}">-->
 <!--	<link rel="stylesheet" type="text/css" href="{{ Icsview::extjsasset('resources/css/ext-all-neptune.css') }}">-->
@@ -20,6 +20,8 @@
 <script type="text/javascript"> var _session_Expire = -1;
     /*Menit*/ </script>
 <script type="text/javascript">
+	/*Mode developer*/
+	var ismodedev =  '{{ ($modedev) }}';
     var appjs = "{{ Icsview::asset()}}";
     var extjsbase = "{{Icsview::extjsasset()}}";
     var app_session_Expire = ((typeof _session_Expire !== 'undefined') && (_session_Expire > 0 ) ) ? _session_Expire : 60;
@@ -60,6 +62,7 @@
         as: "{{ (Auth::check()) ? Auth::user()->username : 'Anonymous' }}",
         fn: "{{ (Auth::check()) ? Auth::user()->fullname : 'Anonymous' }}"
     };
+
 </script>
 
 <!--	<script type="text/javascript" src="{{ Icsview::extjsasset('ext-all-debug-w-comments.js') }} "></script>-->

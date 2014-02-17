@@ -22,10 +22,10 @@
  **/
 Ext.define('App.model.approvepr.mapprovepr', {
 	extend: 'Ext.data.Model',
-	fields: ['id', 'prnumber', { name: 'tgl', type: 'date'}],
+	fields: ['id', { name: 'prnumber', mapping: 'trxnumber'}, { name: 'tgl', type: 'date', mapping: 'created_at'}],
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() + '/prapprove',
+		url: getApiUrl() +'/transaction/prapprove',
 		reader: {
 			type: 'json',
 			root: 'results',

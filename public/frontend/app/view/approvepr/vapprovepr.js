@@ -28,28 +28,8 @@ Ext.define('App.view.approvepr.vapprovepr', {
 	layout: { type: 'fit', align: 'stretch'},
 	config: {
 		storegridpr: Ext.create('App.store.approvepr.sapprovepr'),
-		storegridprapproved: Ext.create('Ext.data.Store', {
-			fields: ['id', 'prnumber', { name: 'tgl', type: 'date'},
-				/*1 = belum diproses , 2 = sudah diproses dan disetujui , 3 = sudah diproses dan ditolak*/
-				'status'
-			],
-			data: [
-				{ id: 3, prnumber: 'PR4-11feb2014-timothy', tgl: '02/10/2014', status: 2 },
-				{ id: 4, prnumber: 'PR5-11feb2014-timothy', tgl: '02/10/2014', status: 2 },
-				{ id: 5, prnumber: 'PR6-11feb2014-timothy', tgl: '02/10/2014', status: 2 }
-			]
-		}),
-		storegridprdenied: Ext.create('Ext.data.Store', {
-			fields: ['id', 'prnumber', { name: 'tgl', type: 'date'},
-				/*1 = belum diproses , 2 = sudah diproses dan disetujui , 3 = sudah diproses dan ditolak*/
-				'status'
-			],
-			data: [
-				{ id: 6, prnumber: 'PR7-11feb2014-timothy', tgl: '02/10/2014', status: 3 },
-				{ id: 7, prnumber: 'PR8-11feb2014-timothy', tgl: '02/10/2014', status: 3 },
-				{ id: 8, prnumber: 'PR9-11feb2014-timothy', tgl: '02/10/2014', status: 3 }
-			]
-		})
+		storegridprapproved: Ext.create('App.store.approvepr.sapprovepraggree'),
+		storegridprdenied: Ext.create('App.store.approvepr.sapproveprdenied')
 	},
 	initComponent: function () {
 		var me = this;
@@ -208,8 +188,8 @@ Ext.define('App.view.approvepr.vapprovepr', {
 	},
 	loadAllGridStore: function () {
 		this.down('#listpr').getStore().load();
-//		this.down('#listprapprove').getStore().load();
-//		this.down('#listprdenied').getStore().load();
+		this.down('#listprapprove').getStore().load();
+		this.down('#listprdenied').getStore().load();
 	},
 	/**
 	 * Menampilkan record pada Tab baru.
@@ -220,24 +200,49 @@ Ext.define('App.view.approvepr.vapprovepr', {
 	openNewTabForProcess: function (grid, rowIndex, colIndex) {
 		var rec = grid.getStore().getAt(rowIndex),
 			tab = grid.up('tabpanel'),
-			title = 'Proses PR [ ' + rec.get('prnumber') + ']',
-			config = {
-				prnumber: rec.get('prnumber'),
-				tgl: rec.get('tgl'),
-				title: title,
-				status: rec.get('status'),
-				storegrid: Ext.create('Ext.data.Store', {
-					fields: [ 'id', 'code', 'name', 'category', 'jenis', { name: 'length', type: 'int' }, 'unitname', 'price'],
-					data: [
-						{ id: 1, code: 'ab1', name: 'kain1', category: 'Kategory', jenis: '12e', length: 200, unitname: 'yard', price: 0},
-						{ id: 2, code: 'ab2', name: 'kain2', category: 'Kategory1', jenis: '12e', length: 150, unitname: 'yard', price: 0},
-						{ id: 3, code: 'ab3', name: 'kain3', category: 'Kategory1', jenis: 'r4', length: 300, unitname: 'yard', price: 0}
-					],
-					proxy: {
-						type: 'memory'
-					}
-				})
-			};
-		App.util.box.openNewtab(tab, title, 'App.view.approvepr.process', config);
+			number = rec.get('prnumber'),
+			id = rec.get('id');
+
+
+
+		Ext.Ajax.request({
+			url: getApiUrl() + '/transaction/prapprove',
+			params: {
+				prid: id,
+				prnumber: number,
+				cmd: 'getitems'
+			},
+			method: 'POST',
+			success: function (response, opts) {
+				log(response);
+				var r = Ext.JSON.decode(response.responseText, true);
+				var aprnumber = r.trxnumber;
+				var aprid = r.id;
+				var tgl = r.created_at;
+				var status = r.status;
+				title = 'Proses Approve Purchase Request [ ' + aprnumber + ']';
+				var config = {
+					aprnumber: aprnumber,
+					tgl: tgl,
+					aprid : aprid,
+					title: title,
+					status: status,
+					closable: true,
+					iconCls: 'add'
+//					storegrid: Ext.create('App.store.approvepr.items')
+				};
+				App.util.box.openNewtab(tab, title, 'App.view.approvepr.process', config);
+			},
+			failure: function (response, opts) {
+//				btn.enable();
+//				App.util.box.error('Maaf,<br/>' +
+//					'Pengajuan Pembelian Barang gagal dilakukan '
+//				);
+				return false;
+			}
+		});
+
+
+
 	}
 });

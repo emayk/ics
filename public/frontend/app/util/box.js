@@ -26,6 +26,9 @@ Ext.define('App.util.box', {
 				buttons: Ext.MessageBox.OK
 			});
 		},
+		isdev : function(){
+			return (ismodedev == 'true') ? true : false ;
+		},
 		info: function (text, title) {
 			Ext.MessageBox.show({ title: title || 'Information', msg: text || 'Info Message', buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.INFO });
 		},

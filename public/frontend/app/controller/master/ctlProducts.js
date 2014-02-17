@@ -48,7 +48,9 @@ Ext.define('App.controller.master.ctlProducts', {
 		'App.model.warehouse.category',
 		'App.model.warehouse.warehouse',
 		'App.model.product.updater',
-		'App.model.product.history'
+		'App.model.product.history',
+
+
 	],
 	stores: [
 		'App.store.product.Product',
@@ -102,8 +104,9 @@ Ext.define('App.controller.master.ctlProducts', {
 			 * Grid Product
 			 */
 			'productList': {
-				render: function () {
-					this.getGridProducts().getStore().load();
+				render: function (grid) {
+//					this.getGridProducts().getStore().load();
+					grid.down('grid#gridProducts').getStore().load();
 				}
 			},
 			/**

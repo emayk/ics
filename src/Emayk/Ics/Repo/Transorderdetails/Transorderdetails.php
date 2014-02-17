@@ -63,4 +63,15 @@ class Transorderdetails extends Model {
 		return $this->attributes[ "productimg" ] = 'http://';
 	}
 
+	public function createTmp(array $data)
+	{
+		return $this->getTmp()->createRecord($data);
+	}
+	public function getTmp(){
+		return new Tmp();
+	}
+
+	public function getTmpTransaction(){
+		return new \Emayk\Ics\Repo\Transorders\TransOrderTmp();
+	}
 }

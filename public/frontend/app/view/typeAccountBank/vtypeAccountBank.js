@@ -45,12 +45,6 @@ Ext.define('App.view.typeAccountBank.vtypeAccountBank', {
                         {text: "Description", dataIndex: "info", flex: 2, editor: {
                             allowBlank: true
                         }},
-
-//                        {text: "Uuid", dataIndex: "uuid", flex: 2 },
-//                        {text: "Create By", dataIndex: "createby", flex: 1 },
-//                        {text: "Last Update", dataIndex: "updater", flex: 1 },
-//                        {text: "Created At", dataIndex: "created_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
-//                        {text: "Updated At", dataIndex: "updated_at", flex: 2, renderer: Ext.util.Format.dateRenderer('d F Y') },
                         {
                             header: 'Action',
                             xtype: 'actioncolumn',
@@ -60,7 +54,7 @@ Ext.define('App.view.typeAccountBank.vtypeAccountBank', {
                                     iconCls: 'delete',
                                     tooltip: 'Delete',
                                     handler: function (grid, rowIndex, colIndex) {
-                                        Ext.MessageBox.confirm('Confirm', 'Are you sure you want to do that?', function (btn, text) {
+                                        Ext.MessageBox.confirm('Konfirmasi', 'Anda Yakin Akan Menghapus Record ?', function (btn, text) {
                                             if (btn == 'yes') {
                                                 var rec = grid.getStore().getAt(rowIndex);
                                                 grid.getStore().remove(rec);
@@ -74,7 +68,6 @@ Ext.define('App.view.typeAccountBank.vtypeAccountBank', {
                         }
                     ],
                     columnLines: true,
-//                    selModel: 'rowmodel',
                     selModel: App.util.box.createSelectionModel(),
                     /*==========  Plugins  ==========*/
                     plugins: [
