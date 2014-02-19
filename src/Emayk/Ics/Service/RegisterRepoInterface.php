@@ -421,6 +421,15 @@ App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Request\iRequest', function () 
 		new Repo\Transaction\Purchase\Request\Model()
 	);
 });
+
+/*==========  Register Interface Proses Pengajuan Pembelian  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Adjustment\iAdjustment', function () {
+	return new Repo\Transaction\Purchase\Adjustment\impEloquent(
+		new Repo\Transaction\Purchase\Adjustment\Eloquent()
+	);
+});
+
 /*==========  Register Interface Persetujuan Pembelian  ==========*/
 
 App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Approval\iApproval', function () {
@@ -428,4 +437,5 @@ App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Approval\iApproval', function (
 		new Repo\Transaction\Purchase\Approval\Model()
 	);
 });
+
 

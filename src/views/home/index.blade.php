@@ -17,7 +17,8 @@
 {{( !Auth :: check() ) ? '<div id="bg"><img src="'.Icsview::asset('frontend/images/logologin.png').'"  alt=""> </div>' : null; }}
 
 
-<script type="text/javascript"> var _session_Expire = -1;
+<script type="text/javascript">
+	var _session_Expire = "{{ Icsview::getSessionTimeOut() }}";
     /*Menit*/ </script>
 <script type="text/javascript">
 	/*Mode developer*/

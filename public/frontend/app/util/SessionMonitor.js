@@ -10,7 +10,8 @@ Ext.define('App.util.SessionMonitor', {
     interval: 1000 * 10,  // run every 10 seconds.
     lastActive: null,
 //    maxInactive: 5,
-    maxInactive: 1000 * 60 * app_session_Expire,
+    maxInactive: 1000 * 60 * _session_Expire,
+//    maxInactive: 1000 * 60 * this.timeouts,
     remaining: 0,
     ui: Ext.getBody(),
 
@@ -43,7 +44,7 @@ Ext.define('App.util.SessionMonitor', {
                     Ext.TaskManager.stop(App.util.SessionMonitor.countDownTask);
                     App.util.SessionMonitor.window.hide();
                     App.util.SessionMonitor.start();
-                    log('Regenerate Session');
+//                    log('Regenerate Session');
                     Ext.Ajax.request({url: getBaseUrl() + '/regensession'});
                 }
             },
@@ -100,10 +101,8 @@ Ext.define('App.util.SessionMonitor', {
     monitorUI: function () {
         var now = new Date();
         var inactive = (now - this.lastActive);
-
         if (inactive >= this.maxInactive) {
             this.stop();
-
             this.window.show();
             this.remaining = 60;  // seconds remaining.
             Ext.TaskManager.start(this.countDownTask);

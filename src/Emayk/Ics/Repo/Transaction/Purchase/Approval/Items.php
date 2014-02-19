@@ -37,7 +37,13 @@ class Items extends BaseModel
 	 * @var array
 	 */
 	public static $rules = array();
-	protected $appends = array('unitname','name','length');
+	protected $appends = array('unitname','name','length','approved');
+
+
+
+	public function getApprovedAttribute(){
+		return ($this->status == 2 );
+	}
 
 	public function getNameAttribute()
 	{

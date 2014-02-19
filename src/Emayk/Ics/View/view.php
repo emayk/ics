@@ -102,6 +102,15 @@ class View implements ViewInterface
 	}
 
 	/**
+	 * Mendapatkan Session Timeout dari Laravel Env
+	 * @return mixed
+	 */
+	public function getSessionTimeOut(){
+		$timeout = \Config::get('session.lifetime');
+		return ($timeout);
+	}
+
+	/**
 	 * @param $value
 	 *
 	 * @return mixed

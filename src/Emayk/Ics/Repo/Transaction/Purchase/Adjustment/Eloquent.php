@@ -19,25 +19,67 @@
 
 
 
-namespace Emayk\Ics\Repo\Transaction\Purchase\Request;
+namespace Emayk\Ics\Repo\Transaction\Purchase\Adjustment;
 
 use Emayk\Ics\Models\BaseModel;
-class Model extends BaseModel{
+
+
+/**
+ * Class Eloquent
+ *
+ * @package Emayk\Ics\Repo\Transaction\Purchase\Adjustment
+ */
+class Eloquent extends BaseModel{
+	/**
+	 * @var array
+	 */
 	protected $guarded = array();
-	protected $table = 'trans_pr';
+	/**
+	 * @var string
+	 */
+	protected $table = 'trans_pr_adjustment';
+	/**
+	 * @var array
+	 */
 	public static $rules = array();
+	/**
+	 * @var array
+	 */
+	public $hidden = ['price'];
+	/**
+	 * @var array
+	 */
+	public $appends = [
+		'productimg','productname'
+	];
 
-	public function items()
+
+	/**
+	 * Mendapatkan Transaksi Number
+	 *
+	 * @return mixed
+	 */
+	protected function getNumber(){
+		return $this->trxnumber;
+	}
+
+	public function getSupplier()
 	{
-		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Request\item','prid');
+		return new Item\Supplier();
 	}
 
-	public function getItem(){
-		return new Item();
+	public function getContact()
+	{
+		return new Item\Contact();
+	}
+	public function getProduct()
+	{
+		return new Item\Product();
 	}
 
-	public function scopeNew($query){
-		return $query->whereStatus(1);
+	public function getWarehouse()
+	{
+		return new Item\Warehouse();
 	}
 }
 

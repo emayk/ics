@@ -1,3 +1,6 @@
+function getSessionTimeOut(){
+	return time_out_session();
+}
 function formatCurrency(v) {
     return Ext.util.Format.currency(v);
 }

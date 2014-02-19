@@ -1,6 +1,4 @@
 /**
- * Part Of ICS
- *
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,29 +14,30 @@
  *
  * @author Emay Komarudin
  *
- *
- *
  **/
 
-Ext.define('App.controller.cdashboard',{
-	extend: 'Ext.app.Controller',
-	views: ['App.view.dashboard.vdashboard'],
-	models:['App.model.dashboard.mdashboard'],
-	stores:['App.store.dashboard.sdashboard'],
-	init: function(){
-		var me = this;
-		me.listen({
-			controller: {
-				/* * == semua controller */
-				'*' : {
-					'clickedHelp' : me.doShowWindowHelp
-				}
-			}
-		})
+Ext.Ajax.request({
+	url: getApiUrl() + '/transaction/prapprove/' + aprid,
+	params: {
+		setitemid: rec.get('id'),
+		setitems: true,
+		_method: 'PUT',
+		approved: rec.get('approved'),
+		qty: rec.get('qty'),
+		price: rec.get('price'),
+		supplierid: rec.get('supplierid'),
+		contactid: rec.get('contactid'),
 	},
-	doShowWindowHelp: function(arguments,component,id,supname){
-
-		log(arguments,component,id,supname);
+	method: 'POST',
+	success: function (res, o) {
+		log('All Response', res);
+		var respon = Ext.JSON.decode(res.responseText, true);
+		if (respon) {
+			log('Response Text JSON decoded ', respon);
+		}
+		store.load();
+		grid.getView().refresh();
+	}, failure: function (res, opt) {
+		log(res);
 	}
 });
-

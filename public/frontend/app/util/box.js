@@ -32,7 +32,9 @@ Ext.define('App.util.box', {
 		info: function (text, title) {
 			Ext.MessageBox.show({ title: title || 'Information', msg: text || 'Info Message', buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.INFO });
 		},
-
+		confirm: function(title,msg,callbackfn){
+			Ext.MessageBox.confirm(title,msg,callbackfn);
+		},
 		showConfirm: function (msg, title, Fn) {
 			/*@todo: menampilkan confirm*/
 		},
@@ -156,6 +158,16 @@ Ext.define('App.util.box', {
 				slideInAnimation: 'elasticIn',
 				slideBackAnimation: 'elasticIn'
 			}).show();
+		},
+
+		ajax : function(url,params,method,successfn,failurefn){
+			var method = method || 'GET';
+			Ext.Ajax.request({
+				url: url,
+				params: params,
+				method: method,
+				success: successfn, failure: failurefn
+			});
 		}
 
 	}

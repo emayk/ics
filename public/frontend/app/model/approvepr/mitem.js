@@ -26,10 +26,18 @@ Ext.define('App.model.approvepr.mitem', {
 		{ name : 'code', mapping: 'products.codeinternal' } ,
 		'price',
 		'qty',
+		'qtypr',
 		'subtotal',
+		'approved' ,
 		{ name : 'category', mapping: 'products.catname' } ,
 		{ name : 'type', mapping: 'products.typename' } ,
-		{ name : 'unit', mapping: 'products.widthname' }
+		{ name : 'unit', mapping: 'products.widthname' },
+		'supplierid','contactid',
+		{
+			name: 'supname', mapping: 'supplier.name'
+		},{
+			name: 'salesname', mapping: 'contact.name'
+		},
 	],
 	proxy: {
 		type: 'rest',

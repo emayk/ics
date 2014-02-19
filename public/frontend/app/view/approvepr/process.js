@@ -30,7 +30,7 @@ Ext.define('App.view.approvepr.process', {
 		aprnumber: undefined,
 		tgl: '02/11/2014',
 		status: 1,
-		aprid : undefined,
+		aprid: undefined,
 		storegrid: Ext.create('App.store.approvepr.items')
 	},
 
@@ -46,25 +46,39 @@ Ext.define('App.view.approvepr.process', {
 					title: 'Daftar Barang [ ' + me.getAprnumber() + ' ]',
 					xtype: 'grid',
 					itemId: 'listsproduct',
+					defaults: {
+						flex: 1
+					},
 					flex: 1,
 					columns: [
 						{xtype: 'rownumberer'},
-						{text: 'Kode', dataIndex: 'code'},
-						{text: 'Nama Produk', dataIndex: 'name'},
-						{text: 'Kategory', dataIndex: 'category'},
-						{text: 'Jenis', dataIndex: 'type'},
-						{
-							text: 'Panjang', dataIndex: 'qty',
+						{text: 'Kode', dataIndex: 'code', flex: 1},
+						{text: 'Nama Produk', dataIndex: 'name', flex: 1.5},
+						{text: 'Kategory', dataIndex: 'category', flex: 1},
+//						{text: 'Supplier', dataIndex: 'supplierid'},
+//						{text: 'Sales', dataIndex: 'contactid'},
+						{text: 'Jenis', dataIndex: 'type', flex: 1.5},
+						{text: 'Qty Pengajuan', dataIndex: 'qtypr',
 							renderer: function (v, m, r) {
-								return v + ' ' + r.get('unit');
+								var formattedval = Ext.util.Format.number(v, '0,00');
+								return formattedval + ' ' + r.get('unit');
+							}
+						},
+						{
+							text: 'Qty', dataIndex: 'qty',
+							renderer: function (v, m, r) {
+								var formattedval = Ext.util.Format.number(v, '0,00');
+								return formattedval + ' ' + r.get('unit');
+//								return v + ' ' + r.get('unit');
 							},
+							flex: 1,
 							editor: {
 								xtype: 'numberfield',
 								minValue: 0
 							}
 						},
 						{
-							text: 'Harga', dataIndex: 'price',
+							text: 'Harga', dataIndex: 'price', flex: 1,
 							editor: {
 								xtype: 'numberfield',
 								minValue: 0
@@ -72,12 +86,26 @@ Ext.define('App.view.approvepr.process', {
 							renderer: Ext.util.Format.numberRenderer('0,00')
 						},
 						{
-							text: 'Total',
+							text: 'Total', flex: 1,
 							dataIndex: 'subtotal',
 							renderer: function (v, m, r) {
 								var price = r.get('price'), length = r.get('qty');
 								var subtotal = parseFloat(price) * parseFloat(length);
 								return Ext.util.Format.number(subtotal, '0,00');
+							}
+						},
+						{ xtype: 'checkcolumn', text: 'Disetujui ?',
+							dataIndex: 'approved',
+							editor: {
+								xtype: 'checkbox'
+							},
+							listeners: {
+								checkchange: function (column, recordIndex, checked) {
+									log(checked);
+									log(column);
+									column.up('grid').getStore().sync();
+//									column.fireEvent('debug','checkchange',column);
+								}
 							}
 						}
 					],
@@ -107,18 +135,18 @@ Ext.define('App.view.approvepr.process', {
 					items: [
 						{ text: translations.help, iconCls: 'help', action: 'help'},
 						'->',
-						{ text: 'Process', iconCls: 'add', action: 'approvepr' },
-						{ text: 'Tolak', iconCls: 'cancel', action: 'deniedpr' },
-						{ text: 'Batal', iconCls: 'close', action: 'closepr' }
+						{ text: 'Process', iconCls: 'add', action: 'prapproved' },
+						{ text: 'Tolak', iconCls: 'cancel', action: 'prdenied' },
+						{ text: 'Batal', iconCls: 'close', action: 'close' }
 					]
 				}
 			]
 		});
 		me.callParent(arguments);
-		if (me.getAprid()){
+		if (me.getAprid()) {
 			var grid = me.down('grid#listsproduct'), store = grid.getStore();
-			store.getProxy().setExtraParam('aprid',me.getAprid());
-			store.getProxy().setExtraParam('aprnumber',me.getAprnumber());
+			store.getProxy().setExtraParam('aprid', me.getAprid());
+			store.getProxy().setExtraParam('aprnumber', me.getAprnumber());
 			store.load();
 		}
 	}

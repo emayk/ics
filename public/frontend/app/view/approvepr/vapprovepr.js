@@ -203,8 +203,6 @@ Ext.define('App.view.approvepr.vapprovepr', {
 			number = rec.get('prnumber'),
 			id = rec.get('id');
 
-
-
 		Ext.Ajax.request({
 			url: getApiUrl() + '/transaction/prapprove',
 			params: {
@@ -215,12 +213,23 @@ Ext.define('App.view.approvepr.vapprovepr', {
 			method: 'POST',
 			success: function (response, opts) {
 				log(response);
-				var r = Ext.JSON.decode(response.responseText, true);
+				var res = Ext.JSON.decode(response.responseText, true);
+				if (!res.success){
+					var reason = res.reason;
+					var reasonmsg = (reason) ? reason : ' terjadi Kesalahan';
+					App.util.box.error(reasonmsg + ' , Silahkan reload halaman terlebih dahulu');
+					return false;
+				}
+				var r = res.results;
 				var aprnumber = r.trxnumber;
+				if (!aprnumber){
+					App.util.box.error('Maaf Nomor Transaksi tidak diketemukan , Silahkan coba lagi');
+					return false;
+				}
 				var aprid = r.id;
 				var tgl = r.created_at;
 				var status = r.status;
-				title = 'Proses Approve Purchase Request [ ' + aprnumber + ']';
+				title = 'Proses Approve Purchase Request' + ( (aprnumber) ? ' [ ' + aprnumber + ']' : ' ');
 				var config = {
 					aprnumber: aprnumber,
 					tgl: tgl,

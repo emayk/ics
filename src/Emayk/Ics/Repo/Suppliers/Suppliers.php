@@ -27,11 +27,12 @@ use Emayk\Ics\Repo\Locations\Locations;
 use Emayk\Ics\Repo\Producttype\Producttype;
 use Emayk\Ics\Repo\Status\Status;
 use Emayk\Ics\Repo\Typesuppliersbuyers\Typesuppliersbuyers;
-use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Emayk\Ics\Support\Dummy\Faker\Suppliers as SuppliersFaker;
-use Illuminate\Database\Eloquent\Model;
 use Log;
 use Emayk\Ics\Repo\Suppliers\SampleData;
+use Illuminate\Database\Eloquent\Model;
+
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Suppliers\Suppliers'

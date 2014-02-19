@@ -18,19 +18,19 @@
  **/
 
 
-namespace Emayk\Ics\Repo\Transaction\Purchase\Approval;
+namespace Emayk\Ics\Repo\Transaction\Purchase\Adjustment;
 
 use \Response;
 use \Input;
 use Illuminate\Support\Facades\Auth;
 
-class impEloquent implements iApproval
+class impEloquent implements iAdjustment
 {
-	protected $approval;
+	protected $adjustment;
 
-	function __construct(Model $Approve)
+	function __construct(Eloquent $Adjustment)
 	{
-		$this->approval = $Approve;
+		$this->adjustment = $Adjustment;
 	}
 
 	/**
@@ -44,7 +44,7 @@ class impEloquent implements iApproval
 
 	public function find($id)
 	{
-		return $this->approval->find($id);
+		return $this->adjustment->find($id);
 	}
 
 	/**
@@ -58,61 +58,8 @@ class impEloquent implements iApproval
 		$page    = \Input::get('page');
 		$limit   = \Input::get('limit', 1);
 		$start   = \Input::get('start', 0);
-		$approve = $this->approval
+		$approve = $this->adjustment
 			->orderBy('id', 'DESC');
-		if (Input::has('type')) {
-//			$allowType = ['active', 'denied', 'agree', 'pending'];
-			$type = Input::get('type');
-			if ($type == 'agree') {
-				$approve = $approve->Agree();
-//				$approve = $approve->whereStatus(2);
-			} else {
-				if ($type == 'denied') {
-					$approve = $approve->Denied();
-//					$approve = $approve->whereStatus(3);
-				} else {
-					if ($type == 'new') {
-						//jika baru maka ambil dari model purchase request bertipe status belum diprocess,
-						$newapprove = $this->approval->getAllnewPR();
-						$total      = $newapprove->count();
-						$newapprove = $newapprove->skip($start)
-							->take($limit)
-							->get()->toArray();
-
-
-						$approves = array(
-							'success' => true,
-							'results' => $newapprove,
-							'total'   => $total
-						);
-						return Response::json($approves);
-					} else {
-						$approve = $approve->whereStatus(1)->orWhere('status', 4);
-					}
-				}
-			}
-		};
-
-		if (Input::has('cmd')) {
-			/*Mendapatkan Semua Item berdasarkan ID Approve */
-			$getitems = Input::get('cmd');
-			if ($getitems == 'getitems') {
-				if (!Input::has('aprid')) throw new \Exception( 'Need Approve Id' );
-				if (!Input::has('aprnumber')) throw new \Exception( 'Need Approve Number' );
-				$id     = Input::get('aprid');
-				$number = Input::get('aprnumber');
-				$items  = $this->approval->getItems()->whereAprid($id);
-				$count  = $items->count();
-				return Response::json([
-					'success' => true,
-					'results' => $items->get()->toArray(),
-					'total'   => $count
-				]);
-			}
-//			return $items;
-			return 'Get Items';
-		}
-
 		$total   = $approve->count();
 		$approve = $approve->skip($start)
 			->take($limit)
@@ -159,7 +106,7 @@ class impEloquent implements iApproval
 				$prid     = Input::get('prid');
 				$prnumber = Input::get('prnumber');
 				/*Check PR apakah sudah ada ? */
-				$record = $this->approval->createNewApproveRecordFromPr($prid, $prnumber);
+				$record = $this->adjustment->createNewApproveRecordFromPr($prid, $prnumber);
 				if (is_array($record)) $record = $record[ 0 ];
 				return Response::json(['success' => true, 'results' => $record]);
 			}
@@ -178,7 +125,7 @@ class impEloquent implements iApproval
 	{
 
 		if ($this->hasAccess()) {
-			$deleted = $this->approval
+			$deleted = $this->adjustment
 				->find($id)
 				->delete();
 
@@ -221,7 +168,7 @@ class impEloquent implements iApproval
 
 //				return Input::all();
 
-				$item             = $this->approval->getItems();
+				$item             = $this->adjustment->getItems();
 				$item             = $item->findOrFail($id);
 				$item->qty        = Input::get('qty');
 				$item->supplierid = Input::get('supplierid', 0);
@@ -244,7 +191,7 @@ class impEloquent implements iApproval
 		if (Input::has('cmd')) {
 			$cmd = Input::get('cmd');
 			if ($cmd == 'setstatus') {
-				$statusDecode = base64_decode(Input::get('status','pending'));
+				$statusDecode = base64_decode(Input::get('status', 'pending'));
 
 				if ($statusDecode == 'approve') {
 					$status = 2; // approve / disetujui
@@ -256,7 +203,7 @@ class impEloquent implements iApproval
 					}
 				}
 
-				$recordApr = $this->approval->findOrFail($id);
+				$recordApr         = $this->adjustment->findOrFail($id);
 				$recordApr->status = $status;
 				return $this->savedAndResponseJson($recordApr);
 			}
@@ -267,13 +214,15 @@ class impEloquent implements iApproval
 		return Response::json(['success' => false, 'results' => Input::all(), 'decoded' => base64_decode(Input::get('status')), 'total' => 1]);
 	}
 
-	protected function savedAndResponseJson($record){
+	protected function savedAndResponseJson($record)
+	{
 		if ($record->save()) {
 			return Response::json($record->toArray());
 		} else {
 			return Response::json(['success' => false, 'results' => Input::all(), 'total' => 1]);
 		}
 	}
+
 	/**
 	 *
 	 * Apakah Sudah Login
@@ -334,6 +283,18 @@ class impEloquent implements iApproval
 		return $this->delete($id);
 	}
 
+	/**
+	 * Mendapatkan Object dari Pr Id
+	 *
+	 * @param $purchaseOrderId
+	 *
+	 * @return mixed
+	 */
+	public function findByPrid($purchaseOrderId)
+	{
+		// TODO: Implement findByPrid() method.
+	}
 }
+
 
  

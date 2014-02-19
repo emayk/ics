@@ -20,21 +20,89 @@
  *
  **/
 
-Ext.define('App.controller.capprovepr',{
+Ext.define('App.controller.capprovepr', {
 	extend: 'Ext.app.Controller',
 	views: ['App.view.approvepr.vapprovepr',
 		'App.view.approvepr.process'
 	],
-	models:['App.model.approvepr.mapprovepr','App.model.approvepr.mitem'],
-	stores:[
+	models: ['App.model.approvepr.mapprovepr', 'App.model.approvepr.mitem'],
+	stores: [
 		'App.store.approvepr.sapprovepr',
 		'App.store.approvepr.sapprovepraggree',
 		'App.store.approvepr.sapproveprdenied',
 		'App.store.approvepr.items'
 
 	],
-	init: function(){
+	init: function () {
+		var me = this;
+		me.control({
+			/*Panel Proses Approve PR (Single)*/
+			'appapproveprvprocess': {
+				/**
+				 * Saat Render Lakukan Setup Proxy dengan Parameter.
+				 * @param panel
+				 */
+				render: function (panel) {
+					var id = panel.getAprid();
+					var number = panel.getAprnumber();
+					var grid = panel.down('#listsproduct');
+					var store = grid.getStore();
+					var proxy = store.getProxy();
+					proxy.setExtraParam('setitemid', id);
+					proxy.setExtraParam('setaprnumber', number);
+					proxy.setExtraParam('setitems', number);
+					proxy.setExtraParam('setitem', true);
+					store.load();
+				}
+			},
+			'appapproveprvprocess #listsproduct': {
+				/**
+				 * Saat Melakukan Edit
+				 * @param editor
+				 * @param o
+				 */
+				edit: function (editor, o) {
+					log(o);
+					var newVals = o.newValues;
+					var oriVals = o.originalValues;
+					var view = o.view;
+					var store = o.store;
+					var rec = o.record;
+					var grid = o.grid;
+					var panel = grid.up('appapproveprvprocess');
+					var aprid = panel.getAprid();
+					store.sync();
+				}
+			},
+			/*Tombol Bantuan*/
+			'appapproveprvprocess [action=help]': {
+				click: function(btn){
+					me.fireEvent('clickedHelp');
+				}
+			},
+			/*Tombol Approve PR*/
+			'appapproveprvprocess [action=prapproved]': {
+				/*Proses Simpan ke Server dan Setting Status Approve */
+				click: function (btn) {
+					me.fireEvent('approvePrFromButton',btn);
+				}
+			},
+			/*Tombol Denied PR*/
+			'appapproveprvprocess [action=prdenied]': {
+				click: function (btn) {
+					me.fireEvent('deniedPrFromButton',btn);
+					/*Notice dialog*/
 
+				}},
+			/*Tombol Close*/
+			'appapproveprvprocess [action=close]': {
+				click: function(btn){
+					var panel = btn.up('appapproveprvprocess');
+					var tab = panel.up('tabpanel');
+					tab.remove(panel);
+				}
+			}
+		});
 	}
 });
 

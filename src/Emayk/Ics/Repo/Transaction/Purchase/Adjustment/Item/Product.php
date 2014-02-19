@@ -18,16 +18,10 @@
 **/
 
 
-Route::group(['prefix' => 'transaction'], function () {
-	Route::get('/', function () {
-		echo __LINE__ . ' Transaction';
-	});
 
-	/*==========  Register Resource Pengajuan Pembelian  ==========*/
-	Route::resource('pr', 'Emayk\Ics\Repo\Transaction\Purchase\Request\Controller');
-	Route::resource('prapprove', 'Emayk\Ics\Repo\Transaction\Purchase\Approval\Controller');
-	Route::resource('pradjustment', 'Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Controller');
+namespace Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item;
 
-//
-});
+use \Emayk\Ics\Repo\Factory\Product\Model;
+class Product extends Model{ }
+
  

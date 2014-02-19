@@ -23,8 +23,10 @@ Ext.define('App.view.devmainpanel', {
 	plain: true,
 	items: [
 		{ xtype: 'appdashboardvdashboard', title: 'Development', iconCls: 'home', closable: false},
+		{ xtype: 'appapproveprvprocess', title: '[Pembelian] Proses Pemesanan [APR-PR-1392623810]', iconCls: 'home', closable: false,
+			closable: false, iconCls: 'add', aprid: "49", aprnumber: "APR-PR-1392623810" },
 		{ xtype: 'apppurchasevpurchase', title: '[User] Pengajuan Pemesanan Barang', iconCls: 'home', closable: false},
-		{ xtype: 'appapproveprvapprovepr', title: '[Management] Persetujuan Pemesanan Barang', iconCls: 'home', closable: false},
+		{ xtype: 'appapproveprvapprovepr', title: '[Pembelian] Pemesanan Barang', iconCls: 'home', closable: false},
 
 //		{ xtype: 'appprocespovprocespo', title: 'Proses Pemesanan Barang', iconCls: 'home', closable: false},
 //        { xtype : 'appapproveprvapprovepr', title: 'Persetujuan Pengajuan Pembelian', iconCls:'home', closable:true},

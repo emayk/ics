@@ -33,6 +33,7 @@ if (fromLocal()) {
 		'cLogin',
 		'TranslationManager',
 		'cMenu',
+		'cDomain',
 		/*Pengguna*/
 		'cusers',
 
