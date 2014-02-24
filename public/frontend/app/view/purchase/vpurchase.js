@@ -114,6 +114,7 @@ Ext.define('App.view.purchase.vpurchase', {
 				}
 			]
 		});
+
 		me.callParent(arguments);
 		if (me.getAutoloadgrid()) {
 			me.down('#lists').getStore().load();

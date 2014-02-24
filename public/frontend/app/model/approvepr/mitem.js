@@ -21,27 +21,55 @@
  */
 Ext.define('App.model.approvepr.mitem', {
 	extend: 'Ext.data.Model',
-	fields: ['id',
-		{ name : 'name', mapping: 'products.name' } ,
-		{ name : 'code', mapping: 'products.codeinternal' } ,
-		'price',
-		'qty',
-		'qtypr',
-		'subtotal',
-		'approved' ,
-		{ name : 'category', mapping: 'products.catname' } ,
-		{ name : 'type', mapping: 'products.typename' } ,
-		{ name : 'unit', mapping: 'products.widthname' },
-		'supplierid','contactid',
+//	fields: ['id',
+//		{ name : 'name', mapping: 'products.name' } ,
+//		{ name : 'code', mapping: 'products.codeinternal' } ,
+//		'price',
+//		'qty',
+//		'qtypr',
+//		'subtotal',
+//		'approved' ,
+//		{ name : 'category', mapping: 'products.catname' } ,
+//		{ name : 'type', mapping: 'products.typename' } ,
+//		{ name : 'unit', mapping: 'products.widthname' },
+//		'supplierid','contactid',
+//		{
+//			name: 'supname', mapping: 'supplier.name'
+//		},{
+//			name: 'salesname', mapping: 'contact.name'
+//		},
+//	],
+//
+	fields: [
+		/*Product*/
+		{ name: 'name', mapping: 'adjitem.product.name'},
+		{ name: 'code', mapping: 'adjitem.product.codeinternal'},
+		{ name: 'category', mapping: 'adjitem.product.catname'},
+		{ name: 'type', mapping: 'adjitem.product.typename'},
+		{ name: 'unit', mapping: 'adjitem.product.widthname'},
+		/*Supplier*/
+		{ name: 'contact', mapping: 'adjitem.contact.name'},
+		{ name: 'supplier', mapping: 'adjitem.supplier.name'},
+		/*Billing*/
+		{ name: 'currency', mapping: 'adjitem.currency.name'},
+		{ name: 'rate', mapping: 'adjitem.rate'},
+		{ name: 'paymenttype', mapping: 'adjitem.paymenttype.name'},
+		{ name: 'taxtype', mapping: 'adjitem.taxtype.name'},
+		/*Shipping*/
+		{ name: 'warehouse', mapping: 'adjitem.warehouse.name'},
+		{ name: 'delivery_at', mapping: 'adjitem.delivery_at', type: 'date'},
+		/*Price*/
+		{ name: 'qtyadj', mapping: 'adjitem.qty'},
+		{ name: 'qtypr', mapping: 'adjitem.qtypr'},
+		{ name: 'price', mapping: 'adjitem.price'},
+		{ name: 'subtotal', mapping: 'adjitem.subtotal'},
 		{
-			name: 'supname', mapping: 'supplier.name'
-		},{
-			name: 'salesname', mapping: 'contact.name'
-		},
+			name: 'approved'
+		}
 	],
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/transaction/prapprove',
+		url: getApiUrl() + '/transaction/prapprove',
 		reader: {
 			type: 'json',
 			root: 'results',

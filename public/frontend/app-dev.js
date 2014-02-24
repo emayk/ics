@@ -43,10 +43,11 @@ if (fromLocal()) {
 		/*Proses Pemesanan Barang*/
 		'cpurchase', // daftar pembelian
 		'cprocespo', // Proses Pemesanan Barang
-		'capprovepr', // persetujuan Pesan barang
-		'ctypeproduct',
-		'master.ctlProducts', //daftar Barang
-		'ccheckgood', //Check Barang
+		'cpradjustment', // proses pr adjustment oleh pembelian
+		'capprovepr', // persetujuan Pesan barang oleh management
+//		'ctypeproduct',
+//		'master.ctlProducts', //daftar Barang
+//		'ccheckgood', //Check Barang
 		/*/end Proses Pemesanan Barang*/
 //
 //		'cposition',

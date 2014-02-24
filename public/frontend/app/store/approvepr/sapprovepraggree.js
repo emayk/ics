@@ -33,7 +33,7 @@ Ext.define('App.store.approvepr.sapprovepraggree',{
 			totalProperty: 'total'
 		},
 		extraParams:{
-			type: 'agree'
+			type: 'process'
 		}
 	}
 

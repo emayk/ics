@@ -21,9 +21,7 @@
 
 namespace Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item;
 
-
-class Warehouse {
-
-}
+use \Emayk\Ics\Repo\Factory\Warehouse\Eloquent;
+class Warehouse extends Eloquent{}
 
  

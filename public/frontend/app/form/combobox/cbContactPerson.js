@@ -9,7 +9,7 @@ Ext.define('App.form.combobox.cbContactPerson', {
 	extend: 'Ext.form.ComboBox',
 	// queryMode: 'local',
 	queryMode: 'remote',
-	pageSize: 20,
+	pageSize: 10,
 	fieldLabel: 'Choose Contact Person',
 	allowBlank: false,
 	anchor: '-10',
@@ -20,8 +20,8 @@ Ext.define('App.form.combobox.cbContactPerson', {
 	emptyText: 'Contact Person',
 	store: 'App.store.combo.cbContactPerson',
 
-	tpl: App.util.Form.combobox_tpl,
-	displayTpl: App.util.Form.combobox_displayTpl,
+//	tpl: App.util.Form.combobox_tpl,
+//	displayTpl: App.util.Form.combobox_displayTpl,
 
 	initComponent: function () {
 		this.callParent(arguments);

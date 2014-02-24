@@ -107,6 +107,10 @@ class Controller extends BaseController{
 	{
 		return $this->adjustment->destroy($id);
 	}
+
+	public function processToAproval(){
+		return $this->adjustment->processtoaproval();
+	}
 }
 
  

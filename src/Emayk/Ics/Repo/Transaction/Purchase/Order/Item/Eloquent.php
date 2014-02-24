@@ -19,10 +19,10 @@
 
 
 
-namespace Emayk\Ics\Repo\Transaction\Purchase\Adjustment;
+namespace Emayk\Ics\Repo\Transaction\Purchase\Order\Item;
 
 
-class Items {
+class Eloquent {
 
 }
 

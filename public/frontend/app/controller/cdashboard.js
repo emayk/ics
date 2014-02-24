@@ -20,25 +20,56 @@
  *
  **/
 
-Ext.define('App.controller.cdashboard',{
+Ext.define('App.controller.cdashboard', {
 	extend: 'Ext.app.Controller',
 	views: ['App.view.dashboard.vdashboard'],
-	models:['App.model.dashboard.mdashboard'],
-	stores:['App.store.dashboard.sdashboard'],
-	init: function(){
+	models: [
+		'App.model.dashboard.mdashboard',
+		'App.model.dashboard.log'
+	],
+	stores: [
+		'App.store.dashboard.sdashboard',
+		'App.store.dashboard.slog'
+	],
+	refs: [
+		{ ref: 'dashboad', selector: 'appdashboardvdashboard'}
+	],
+	init: function () {
 		var me = this;
 		me.listen({
 			controller: {
 				/* * == semua controller */
-				'*' : {
-					'clickedHelp' : me.doShowWindowHelp
+				'*': {
+					'clickedHelp': me.doShowWindowHelp,
+					/*Membuat Log System */
+					'createlog': me.createLogToGrid
 				}
 			}
 		})
-	},
-	doShowWindowHelp: function(arguments,component,id,supname){
 
-		log(arguments,component,id,supname);
+	},
+	doShowWindowHelp: function (arguments, component, id, supname) {
+
+		log(arguments, component, id, supname);
+	},
+
+	/*Membuat Log system*/
+	createLogToGrid: function (message) {
+		var dashboard = this.getDashboad();
+		var d = new Date()
+		var date = d.getDate();
+		var grid = dashboard.down('#gridlog');
+		var store = grid.getStore();
+		store.load();
+		/*Buat Model*/
+		var model = Ext.create('App.model.dashboard.log', {
+			msg: message,
+			create_at: d
+		});
+		/*Kirim Model ke store grid*/
+		store.add(model);
+		store.sync();
+
 	}
 });
 

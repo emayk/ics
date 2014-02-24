@@ -1,6 +1,42 @@
+.cred .x-grid-cell {
+    background-color: #FF0000 !important;
+}
+.cpending .x-grid-cell {
+    background-color: #ff7ded !important;
+}
+
+.cyellow {
+    background-color: #FFFF00 !important;
+}
+
+.cgreen .x-grid-cell {
+    background-color: #82FF8A !important;
+}
+
+.corange .x-grid-cell{
+    background-color: #FF9900 !important;
+}
+
+
+.row-processed .x-grid-cell {
+    background-color: #e2ffe2;
+    color: #090;
+}
+
+.child-row .x-grid-cell {
+    background-color: #ffe2e2;
+    color: #900;
+}
+
+.adult-row .x-grid-cell {
+    background-color: #e2ffe2;
+    color: #090;
+}
+
 .folderopen {
     background-image: url('../icons/folder_open_16.png') !important;
 }
+
 .grid {
     background-image: url('../icons/grid.png') !important;
 }
@@ -12,7 +48,6 @@
 .tab {
     background-image: url('../icons/kpager_Icon_16x16.png') !important;
 }
-
 
 .forward {
     background-image: url('../icons/forward16.png') !important;
@@ -27,15 +62,17 @@
 }
 
 .check {
-        background-image: url('../icons/accept.png') !important;
+    background-image: url('../icons/accept.png') !important;
 }
+
 .uncheck {
     background-image: url('../icons/delete.png') !important;
 }
 
 .refresh {
-        background-image: url('../icons/reload_all_tabs.png') !important;
+    background-image: url('../icons/reload_all_tabs.png') !important;
 }
+
 #bg {
     position: fixed;
     top: -50%;
@@ -43,6 +80,7 @@
     width: 200%;
     height: 200%;
 }
+
 #bg img {
     position: absolute;
     top: 0;
@@ -55,8 +93,9 @@
 }
 
 .loginbg {
-        background-image: url("../images/logologin.png");
+    background-image: url("../images/logologin.png");
 }
+
 .sample_sprite {
     /*background:url(http://start.ubuntu.com/12.04/sprite.png) -10px -310px;
     height:38px;*/

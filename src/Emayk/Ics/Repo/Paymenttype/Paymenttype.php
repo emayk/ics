@@ -36,9 +36,4 @@ class Paymenttype extends Model {
 	protected $guarded = array();
 	protected $table = 'master_payment_type';
 	public static $rules = array();
-
-	 public function payment()
-	 {
-//			todo : payment
-	 }
 }

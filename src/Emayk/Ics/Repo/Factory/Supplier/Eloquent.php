@@ -153,5 +153,16 @@ class Eloquent extends BaseModel
 	{
 //		return $this->morphMany('','parent_id','parent_type');
 	}
+
+	public function scopeName($q,$name)
+	{
+		return $q->whereName($name);
+	}
+
+	public function getCredit()
+	{
+		return $this->kredit;
+	}
+
 }
  

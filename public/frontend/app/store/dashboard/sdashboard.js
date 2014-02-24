@@ -22,8 +22,7 @@
 
 Ext.define('App.store.dashboard.sdashboard',{
 	extend : 'Ext.data.Store',
-	model : 'App.model.dashboard.mdashboard',
-
+	model : 'App.model.dashboard.mdashboard'
 /*	proxy: {
 		type: 'rest',
 		url: getApiUrl() +'/dashboard',

@@ -20,114 +20,191 @@
  *
  **/
 Ext.define('App.view.dashboard.vdashboard', {
-    extend: 'Ext.panel.Panel',
-    alias: 'widget.appdashboardvdashboard',
-	layout: { type: 'vbox', align:'stretch'},
+	extend: 'Ext.panel.Panel',
+	alias: 'widget.appdashboardvdashboard',
+	layout: { type: 'vbox', align: 'stretch'},
 	bodyPadding: 5,
 	frame: true,
 	autoScroll: true,
-	defaults:{
+	defaults: {
 		margin: '0 0 5 0'
 	},
-    items: [
-        {
-	        flex:.5,
-	        xtype: 'container',
-	        layout: { type: 'hbox', align: 'stretch'},
-	        items: [
-		        {
-			        xtype : 'panel',flex:.3,
-			        title: 'Master',
-			        bodyPadding: 10,
-			        items:[
-				        {
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        }
-			        ]
-		        },{
-			        margin: '0 5 0 5',
-			        xtype : 'panel',flex:.3,
-			        title: 'Master',
-			        bodyPadding: 10,
-			        items:[
-				        {
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        }
-			        ]
-		        },{
-			        xtype : 'panel',flex:.25,
-			        title: 'Master',
-			        bodyPadding: 10,
-			        items:[
-				        {
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        }
-			        ]
-		        }
-	        ]
-        },
-        {
-	        flex:.5,
-	        xtype: 'container',
-	        layout: { type: 'hbox', align: 'stretch'},
-	        items: [
-		        {
-			        xtype : 'panel',flex:.3,
-			        title: 'Master',
-			        bodyPadding: 10,
-			        items:[
-				        {
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        }
-			        ]
-		        },{
-			        margin: '0 5 0 5',
-			        xtype : 'panel',flex:.3,
-			        title: 'Master',
-			        bodyPadding: 10,
-			        items:[
-				        {
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        }
-			        ]
-		        },{
-			        xtype : 'panel',flex:.25,
-			        title: 'Master',
-			        bodyPadding: 10,
-			        items:[
-				        {
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        },{
-					        xtype: 'button', text: 'Produk'
-				        }
-			        ]
-		        }
-	        ]
-        },
+	items: [
+		/*Baris 1*/
+		{
+			flex: .5,
+			xtype: 'container',
+			layout: { type: 'hbox', align: 'stretch'},
+			items: [
+				/*Kolom 1*/
+				{
+					xtype: 'panel', flex: .3,
+					title: 'Master',
+					bodyPadding: 10,
+//					items: [
+//						{
+//							xtype: 'container',
+//							margin: '0 0 5 0',
+//							layout: { type: 'hbox', align: 'stretch'},
+//							items: [
+//								{
+//									xtype: 'button', flex: .3,
+//									text: 'Product',
+//									action: 'masterproduct'
+//								},
+//								{
+//									xtype: 'button', flex: .3,
+//									margin: '0 5 0 5',
+//									text: 'Setting Saldo Product',
+//									action: 'setupsaldoproduct'
+//								}
+//							]
+//						}
+//					]
+				},
+				/*Kolom 2*/
+				{
+					margin: '0 5 0 5',
+					xtype: 'panel', flex: .3,
+//					html: 'Reserved',
+//					title: 'Untitled'
+				},
+				/*Kolom 3*/
+				{
+					xtype: 'panel', flex: .25,
+//					title: 'Master',
+					bodyPadding: 10,
+//					items: [
+//						{
+//							xtype: 'button', text: 'Produk'
+//						},
+//						{
+//							xtype: 'button', text: 'Produk'
+//						},
+//						{
+//							xtype: 'button', text: 'Produk'
+//						}
+//					]
+				}
+			]
+		},
+		/*Baris 2*/
+		{
 
+			flex: .5,
+			xtype: 'container',
+			layout: { type: 'hbox', align: 'stretch'},
+			items: [
+				/*Kolom 1*/
+				{
+					xtype: 'panel', flex: .3,
+					title: 'Aksi',
+					bodyPadding: 10,
+					defaults: {
+						margin: '5 5 5 5'
+					},
+					items: [
+						{
+							xtype: 'button', flex: .3,
+//					        margin: '0 5 0 5',
+							text: 'Daftar Pengajuan',
+							iconCls: 'grid',
+							action: 'listepr'
+						},
+						{
+							xtype: 'button', text: 'Buat PR',
+							action: 'createpr', iconCls: 'add'
+						},
+						{
+							xtype: 'button', text: 'Produk'
+						}
+					]
+				},
+				/*Kolom 2*/
+				{
+					/*Pembelian*/
+					margin: '0 5 0 5',
+					xtype: 'panel', flex: .3,
+					title: 'Pembelian',
+					bodyPadding: 10,
+					items: [
 
-
-    ]
+						{
+							xtype: 'container',
+//					        margin: '0 0 5 0',
+							defaults: {
+								margin: '5 5 5 5'
+							},
+							layout: { type: 'hbox', align: 'stretch'},
+							items: [
+								{
+									xtype: 'button', flex: .3,
+									text: 'Penyesuaian <br/>Pengajuan',
+									action: 'listadjustmentpr'
+								},
+								{
+									xtype: 'button', flex: .3,
+									text: 'Proses Pengajuan 3',
+									action: 'processadjpr3'
+								}
+							]
+						},
+						{
+							xtype: 'container',
+							margin: '0 0 5 0',
+							layout: { type: 'hbox', align: 'stretch'},
+							items: [
+								{
+									xtype: 'button', flex: .3,
+									text: 'Proses Pengajuan 1',
+									action: 'processadjpr1'
+								},
+								{
+									xtype: 'button', flex: .3,
+									margin: '0 5 0 5',
+									text: 'Proses Pengajuan 2',
+									action: 'processadjpr2'
+								},
+								{
+									xtype: 'button', flex: .3,
+									text: 'Proses Pengajuan 3',
+									action: 'processadjpr3'
+								}
+							]
+						}
+					]
+				},
+				/*Kolom 3*/
+				{
+					xtype: 'panel', flex: .25,
+					title: 'Aktifitas System',
+					layout: { type: 'fit', align: 'stretch'},
+//					bodyPadding: 10,
+					items: [
+						{
+							xtype: 'grid',
+							itemId: 'gridlog',
+							store: 'App.store.dashboard.slog',
+							columns: [
+								{
+									xtype: 'rownumberer', text: '#'
+								},
+								{ dataIndex: 'created_at', text: 'Time',
+									renderer: Ext.util.Format.dateRenderer('d F Y')
+								},
+								{ text: 'Informasi', dataIndex: 'msg', flex: 1}
+							],
+							dockedItems: [
+								{
+									xtype: 'pagingtoolbar',
+									store: 'App.store.dashboard.slog',
+									dock: 'bottom'
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
 });

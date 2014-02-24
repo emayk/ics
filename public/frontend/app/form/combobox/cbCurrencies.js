@@ -10,17 +10,17 @@ Ext.define('App.form.combobox.cbCurrencies', {
     queryMode: 'remote',
     pageSize : 10,
     // queryMode: 'remote',
-    fieldLabel : 'Choose Currency',
+    fieldLabel : 'Pilih Mata Uang',
     allowBlank: false ,
     anchor : '-10',
     displayField : 'name',
     valueField: 'id',
     // triggerAction: 'all',
-    // forceSelection : true,
+    forceSelection : false,
     emptyText: 'Select Currency',
     store : 'App.store.combo.cbCurrency',
-   tpl: App.util.Form.combobox_tpl ,
-    displayTpl: App.util.Form.combobox_displayTpl,
+//   tpl: App.util.Form.combobox_tpl ,
+//    displayTpl: App.util.Form.combobox_displayTpl,
 
     initComponent : function(){
     	this.callParent(arguments);

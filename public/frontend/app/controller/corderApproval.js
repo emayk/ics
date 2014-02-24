@@ -39,8 +39,7 @@ Ext.define('App.controller.corderApproval',{
             },
             'tabVorderApproval > vorderApproval grid#decline': {
                 selectionchange: me.on_grid_transaction_selection_change
-            },
-
+            }
         });
 
 		log('Controller corderApproval Loaded');

@@ -37,41 +37,83 @@ class Items extends BaseModel
 	 * @var array
 	 */
 	public static $rules = array();
-	protected $appends = array('unitname','name','length','approved');
+	protected $appends = array('unitname', 'name', 'length', 'approved');
+	protected $with = ['adjitem'];
 
 
-
-	public function getApprovedAttribute(){
-		return ($this->status == 2 );
+	public function getApprovedAttribute()
+	{
+		return ( $this->status == 2 );
 	}
 
 	public function getNameAttribute()
 	{
-		return $this->attributes[ 'name' ] = $this->products->name;
+		return $this->attributes[ 'name' ] = $this->adjitem->product->name;
 	}
 
 	public function getLengthAttribute()
 	{
-		return $this->attributes[ 'length' ] = $this->qty;
+		return $this->attributes[ 'length' ] = $this->qtyadj;
 	}
 
 	public function getUnitnameAttribute()
 	{
-		return $this->attributes[ 'unitname' ] = $this->products->typename;
+		return $this->attributes[ 'unitname' ] = $this->adjitem->product->typename;
 	}
 
 
 	public function approve()
 	{
-		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Approval\Model','aprid');
+		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Approval\Model', 'aprid');
 	}
 
 	public function products()
 	{
-		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Product\Model','product_id');
+		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Product\Model', 'product_id');
+	}
+
+	public function adjitem()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item', 'adj_item');
+	}
+
+	public function adj()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Eloquent', 'adj_id');
+	}
+
+	public function scopeUnprocessed($q)
+	{
+		return $q->whereStatus(1);
+	}
+	public function scopeAgree($q)
+	{
+		return $q->whereStatus(2);
+	}
+
+	public function scopeDenied($q)
+	{
+		return $q->whereStatus(3);
+	}
+
+	public function scopePending($q)
+	{
+		return $q->whereStatus(4);
 	}
 
 
+	public function scopeNewAndPending($q)
+	{
+		return $q->New()->orWhere(function($q){
+			return $q->whereStatus(4);
+		});
+	}
+
+
+	public function scopeProcessed($q)
+	{
+		return $q->where('status','=',5);
+	}
 
 }
 

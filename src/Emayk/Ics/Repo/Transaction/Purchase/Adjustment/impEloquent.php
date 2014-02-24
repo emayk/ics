@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 
 class impEloquent implements iAdjustment
 {
+
 	protected $adjustment;
 
 	function __construct(Eloquent $Adjustment)
@@ -34,17 +35,71 @@ class impEloquent implements iAdjustment
 	}
 
 	/**
+	 * Proses Ke Approval
+	 *
+	 * @throws \Exception
+	 * @return mixed
+	 */
+	public function processToAproval()
+	{
+		/*Security*/
+		if (!Input::has('_token')) throw new \Exception( 'Butuh Parameter Token Security' );
+		if (!Input::has('adjpr')) throw new \Exception( 'Butuh Parameter Adjustment ID yang akan diajukan' );
+		if (!Input::has('adjnumber')) throw new \Exception( 'Butuh Parameter Adjustment Number yang akan diajukan' );
+		if (!Input::has('setitemapproved')) throw new \Exception( 'Butuh Parameter item yang akan diajukan' );
+
+
+		$success = true;
+		/*List Item Id yang akan diajukan*/
+		$setitemapproved = Input::get('setitemapproved');
+		$items           = ( strpos($setitemapproved, ',') ) ? explode(",", $setitemapproved) : [$setitemapproved];
+		$adjustmentId    = Input::get('adjpr');
+		$adjustmentTrx   = Input::get('adjnumber');
+		$adjustment      = $this->adjustment->findOrFail($adjustmentId);
+//		return $adjustment;
+		if ($adjustment->status != 1) {
+			// nilai 1 == belum diproses;
+			/**
+			 * Dapatkan Approval Trx dari Trans Approval
+			 */
+//			return time();
+			$approval = $this->adjustment->oApproval();
+			$prefix   = $approval->getPrefix();
+			$approval   = $approval->whereTrxnumber($prefix . $adjustment->trxnumber)->first();
+
+		} else {
+
+//		return $adjustment;
+			$approval = $this->adjustment
+				->oApproval()
+				->moveAdjustmentToApproval($adjustmentId, $adjustmentTrx, $items);
+		}
+
+//		return $newApproval;
+//		$noTrxApproval   = 'Adj-PR-' . time();
+		$noTrxApproval = $approval->trxnumber;
+		$response      = ( $success )
+			? [
+				'success' => true,
+				'msg'     => 'Penyesuaian Pembelian sudah berhasil diajukan ke Management <br/>untuk diproses dengan nomor ' . $noTrxApproval,
+				'items'   => $items
+			]
+			: ['success' => false, 'reason' => 'Cannot Approve , silahkan coba lagi'];
+		return Response::json($response);
+	}
+
+	/**
 	 *
 	 * Mendapatkan Record  berdasarkan ID yang diberikan
 	 *
 	 * @param  int $id ID Record
 	 *
-	 * @return Model Record
+	 * @return \Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Eloquent | static
 	 **/
 
 	public function find($id)
 	{
-		return $this->adjustment->find($id);
+		return $this->adjustment->findOrFail($id);
 	}
 
 	/**
@@ -55,11 +110,27 @@ class impEloquent implements iAdjustment
 	 */
 	public function all()
 	{
-		$page    = \Input::get('page');
-		$limit   = \Input::get('limit', 1);
-		$start   = \Input::get('start', 0);
-		$approve = $this->adjustment
-			->orderBy('id', 'DESC');
+		$page  = \Input::get('page');
+		$limit = \Input::get('limit', 1);
+		$start = \Input::get('start', 0);
+		if (Input::has('getitems')) {
+			if (!Input::has('adjid')) throw new \Exception( 'Need Adj Id' );
+			$adjid = Input::get('adjid');
+			if (!is_numeric($adjid)) throw new \Exception( 'Adj Id bukan angka' );
+			$adj          = $this->find($adjid);
+			$countAdjItem = $adj->items->count();
+			return Response::json([
+				'success' => true,
+				'total'   => $countAdjItem,
+				'results' => $adj->items->toArray()
+			]);
+		}
+		if ($this->adjustment->hasNewPr()) {
+			$approve = $this->adjustment->getAllnew();
+		} else {
+			$approve = $this->adjustment
+				->orderBy('id', 'DESC');
+		}
 		$total   = $approve->count();
 		$approve = $approve->skip($start)
 			->take($limit)

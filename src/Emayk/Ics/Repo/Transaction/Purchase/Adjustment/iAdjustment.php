@@ -93,4 +93,10 @@ interface iAdjustment {
 	 *
 	 */
 	public function destroy($id);
+
+	/**
+	 * Proses Ke Approval
+	 * @return mixed
+	 */
+	public function processtoaproval();
 }

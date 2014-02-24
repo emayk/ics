@@ -22,7 +22,18 @@
  **/
 Ext.define('App.model.approvepr.mapprovepr', {
 	extend: 'Ext.data.Model',
-	fields: ['id', { name: 'prnumber', mapping: 'trxnumber'}, { name: 'tgl', type: 'date', mapping: 'created_at'}],
+	fields: ['id',
+		{ name: 'aprnumber', mapping: 'trxnumber'},
+		{ name: 'tgl', type: 'date', mapping: 'created_at'},
+		'totalitems',
+		{ name: 'adjnumber', mapping: 'adj.trxnumber'},
+		{ name: 'prnumber', mapping: 'adj.request.trxnumber'},
+		"totalagree",
+		"totaldenied",
+		"totalpending",
+		"totalunprocess",
+		"totalprocessed"
+	],
 	proxy: {
 		type: 'rest',
 		url: getApiUrl() +'/transaction/prapprove',

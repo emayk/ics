@@ -28,7 +28,7 @@ class Model extends BaseModel{
 	public static $rules = array();
 	protected $appends = array('totalstocks', 'catname', 'typename', 'widthname', 'weightname','totallength','totalroll');
 	protected $hidden = array('parent_id', 'parent_type');
-	protected $with = array();
+//	protected $with = ['category','type','unitweight','unitheight'];
 
 
 	public function getTotallengthAttribute()

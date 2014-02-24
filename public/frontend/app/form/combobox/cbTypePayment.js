@@ -15,12 +15,13 @@ Ext.define('App.form.combobox.cbTypePayment', {
     displayField : 'name',
     valueField: 'id',
 	pageSize: 10,
+	editable: false,
     // triggerAction: 'all',
-    forceSelection : true,
+    forceSelection : false,
     emptyText: 'Select Type Payment',
     store : 'App.store.combo.cbTypePaymentStore',
-    tpl: App.util.Form.combobox_tpl ,
-    displayTpl: App.util.Form.combobox_displayTpl,
+//    tpl: App.util.Form.combobox_tpl ,
+//    displayTpl: App.util.Form.combobox_displayTpl,
 
     initComponent : function(){
     	this.callParent(arguments);

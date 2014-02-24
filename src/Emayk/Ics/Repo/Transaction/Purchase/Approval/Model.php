@@ -23,12 +23,85 @@ namespace Emayk\Ics\Repo\Transaction\Purchase\Approval;
 use Emayk\Ics\Models\BaseModel;
 use Emayk\Ics\Repo\Transaction\Purchase\Request\Item as Pritem;
 
+/**
+ * Class Model
+ *
+ * @package Emayk\Ics\Repo\Transaction\Purchase\Approval
+ */
 class Model extends BaseModel
 {
+	/**
+	 * @var string
+	 */
 	protected $table = 'trans_pr_approve';
-	protected $fillable = ['trxnumber', 'status'];
+//	protected $fillable = ['trxnumber', 'status','adj_id'];
+	/**
+	 * @var string
+	 */
 	protected $prefix = 'APR-';
-	protected static $idStatus = ['agree' => 2, 'denied' => 3, 'new' => [1, 4]];
+	/**
+	 * @var array
+	 */
+	protected $guarded = array();
+	/**
+	 * @var array
+	 */
+	protected $with = [
+		'adj'
+	];
+
+	protected $hidden = ['item'];
+
+	public $appends = ['totalitems', 'totalagree', 'totaldenied', 'totalunprocess', 'totalpending', 'totalprocessed'];
+
+	/**
+	 * @return mixed
+	 */
+	public function getTotalagreeAttribute()
+	{
+		/*Mendapatkan Jumlah Status Yang di approve */
+		return $this->item()->Agree()->count();
+	}
+
+	public function getTotalitemsAttribute()
+	{
+		$total        = $this->item->count();
+		return $total;
+	}
+
+	public function getTotaldeniedAttribute()
+	{
+		return $this->item()->Denied()->count();
+	}
+
+	public function getTotalunprocessAttribute()
+	{
+		return $this->item()->Unprocessed()->count();
+	}
+
+	public function getTotalpendingAttribute()
+	{
+		return $this->item()->Pending()->count();
+	}
+
+	public function getTotalProcessedAttribute()
+	{
+		return $this->item()->Processed()->count();
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getPrefix()
+	{
+		return $this->prefix;
+	}
+
+	/**
+	 * @var array
+	 */
+	protected static $idStatus = ['agree' => 2, 'denied' => 3, 'new' => [1, 4], 'processed' => 5];
 
 
 	/**
@@ -70,6 +143,11 @@ class Model extends BaseModel
 	 * @return mixed
 	 */
 //	public function getPrItemAndSetupApprove($prid)
+	/**
+	 * @param $prid
+	 *
+	 * @return mixed
+	 */
 	public function getPrItemAndSetStatus($prid)
 	{
 		$item = $this->getPritem();
@@ -83,6 +161,15 @@ class Model extends BaseModel
 	}
 
 	/**
+	 * @param $adjprid
+	 * @param $prnumber
+	 */
+	public function createNewApproveRecordFromAdjustmentPr($adjprid, $prnumber)
+	{
+
+	}
+
+	/**
 	 * Membuat Record Approve PR dari PR
 	 *
 	 * @param $prid
@@ -90,6 +177,8 @@ class Model extends BaseModel
 	 *
 	 * @return array
 	 * @throws \Exception
+	 *
+	 * @deprecate
 	 */
 	public function createNewApproveRecordFromPr($prid, $prnumber)
 	{
@@ -172,7 +261,7 @@ class Model extends BaseModel
 		$newitem = $item->create([
 			'product_id' => $productId,
 			'qty'        => $qty,
-			'qtypr'        => $qty,
+			'qtypr'      => $qty,
 			'supplierid' => 0,
 			'price'      => 0,
 			'contactid'  => 0,
@@ -185,6 +274,7 @@ class Model extends BaseModel
 
 	/**
 	 * Membuat Record baru dari PR ke Apr
+	 *
 	 * @param \Emayk\Ics\Repo\Transaction\Purchase\Request\Model $objpr
 	 */
 	public function createNewRecordFromPrToApr(\Emayk\Ics\Repo\Transaction\Purchase\Request\Model $objpr)
@@ -199,8 +289,8 @@ class Model extends BaseModel
 				/*Ambil Item PR dari PR id */
 				$newprsitems = $this->getPritem()->wherePrid($pr->id);
 				foreach ($newprsitems->get() as $item) {
-					$newaprid = $newapr->id;
-					$newitem  = $this->createRecordAprItem($newaprid, $item->product_id, $item->qty);
+					$newaprid     = $newapr->id;
+					$newitem      = $this->createRecordAprItem($newaprid, $item->product_id, $item->qty);
 					$item->status = 5;
 					$item->save();
 				}
@@ -221,18 +311,32 @@ class Model extends BaseModel
 		return new Items();
 	}
 
+
+//	public function items()
+//	{
+//		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Approval\Items', 'apr_id');
+//	}
+
 	/**
 	 * Mendapatkan Items Apr dengan Relasi
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function items()
+	public function item()
 	{
-		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Approval\Items', 'aprid');
+		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Approval\Items', 'apr_id');
 	}
 
 	/**
-	 * Mendapatkan Status New atau ditunda
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function adj()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Eloquent', 'adj_id');
+	}
+
+	/**
+	 * Mendapatkan Status New
 	 *
 	 * @param $query
 	 *
@@ -240,10 +344,33 @@ class Model extends BaseModel
 	 */
 	public function scopeNew($query)
 	{
-		return $query->whereStatus(1)->orWhere(function ($q) {
-			$q->where('status', 4);
+		return $query->whereStatus(1);
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function scopePending($query)
+	{
+		return $query->whereStatus(4);
+	}
+
+	/**
+	 * Mendapatkan Status New atau ditunda
+	 *
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
+	public function scopeNewAndPending($q)
+	{
+		return $q->New()->orWhere(function ($q) {
+			$q->whereStatus(4);
 		});
 	}
+
 
 	/**
 	 * Mendapatkan Status di setujui
@@ -288,6 +415,11 @@ class Model extends BaseModel
 			return $query->whereStatus($s);
 	}
 
+	public function scopeProcessed($query)
+	{
+		return $query->whereStatus(static::$idStatus[ 'processed' ]);
+	}
+
 	/**
 	 * Mendapatkan Semua PR
 	 *
@@ -296,7 +428,7 @@ class Model extends BaseModel
 	 */
 	public function getAllnewPR()
 	{
-		$pr = $this->getPr();
+		$pr        = $this->getPr();
 		$listnewpr = $pr->whereStatus(1);
 		/*Jika ada PR yang masih belum diproses , lakukan import ke Apr beserta Itemnya*/
 		if ($listnewpr->count() > 0) {
@@ -315,6 +447,108 @@ class Model extends BaseModel
 //		return $listnewpr;
 		/*Ambil dari PR dengan status 1 atau 4*/
 	}
+
+
+	/**
+	 * Mendapatkan Adjustment Object
+	 *
+	 * @return Adjustment
+	 */
+	public function oAdjustment()
+	{
+		return new Adjustment();
+	}
+
+	/**
+	 * Pindah Adjustment ke Approval List
+	 *
+	 * @param       $adjid
+	 * @param       $adjnumber
+	 * @param array $itemAdj
+	 *
+	 * @throws \Exception
+	 * @return \Illuminate\Database\Eloquent\Model|static
+	 */
+	public function moveAdjustmentToApproval($adjid, $adjnumber, array $itemAdj)
+	{
+		$adjustment = $this->oAdjustment()->findOrFail($adjid);
+		if (!$adjustment) {
+			$msg = 'Adjustment Id tidak diketemukan ';
+			Log::alert($msg, ['time' => time(), 'class' => __CLASS__]);
+			throw new \Exception( $msg );
+		}
+
+		$trxnumber_adjustment = $adjustment->trxnumber;
+		$id_adjustment        = $adjustment->id;
+		if ($trxnumber_adjustment !== $adjnumber) {
+			$msg = 'Adjustment Number tidak cocok';
+			Log::alert($msg, ['time' => time(), 'class' => __CLASS__ . '::' . __FUNCTION__]);
+			throw new \Exception( $msg );
+		}
+
+		$Adjitems = $this->oAdjustment()->getItem();
+
+		/*Transaksi Number Adjustment */
+
+		/*Prefix Approval*/
+		$prefix_approval = $this->getPrefix();
+		/*Transaksi Number Approval*/
+		$trxnumber_approval = $prefix_approval . $trxnumber_adjustment;
+
+		$uuid         = $this->createUuid($trxnumber_approval);
+		$newApproval  = $this->create([
+			'trxnumber'       => $trxnumber_approval,
+			'adj_id'          => $id_adjustment,
+			'uuid'            => $uuid,
+			'status'          => 1,
+			'createby_id'     => $this->getUid(),
+			'lastupdateby_id' => $this->getUid(),
+		]);
+		$approvalItem = $this->getItems();
+
+		foreach ($itemAdj as $itemtoapprove) {
+			/*Item Record Adjustment*/
+			$item = $Adjitems->find($itemtoapprove);
+			if (!$item) {
+				/*Jika Item Id tidak ada Laporkan ke Log*/
+				Log::critical('Adjustment dengan ID ' . $itemtoapprove . ' gagal dimasukan karena Id tidak diketemukan');
+			} else {
+				/*Jika Adjustment Item ada */
+				$approvalItem->create(
+					[
+						'product_id'      => $item->product_id,
+						'qtyadj'          => $item->qty,
+						'adj_id'          => $adjustment->id,
+						'adj_item'        => $item->id,
+						'apr_id'          => $newApproval->id,
+						'status'          => 1, // belum diproses
+						'trxnumber'       => $trxnumber_approval,
+						'uuid'            => $uuid,
+						'createby_id'     => $this->getUid(),
+						'lastupdateby_id' => $this->getUid()
+					]
+				);
+				$item->status = 5;
+				$item->save();
+			}
+		}
+
+		/*Setup Status Adjustment menjadi sudah diajukan */
+		$adjustment->status = 5;
+		$adjustment->save();
+
+		return $newApproval;
+	}
+
+ public function checkCountAndSetupStatus(){
+//	 $items = $this->item();
+//	 $total = $items->count();
+//	 $totalcount =
+//	 if ($total == $totalProcess) {
+//		 $this->status = 5;
+//		 $this->save();
+//	 }
+ }
 }
 
  

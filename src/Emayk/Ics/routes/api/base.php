@@ -25,3 +25,4 @@ require __DIR__.'/login/base.php';
 require __DIR__.'/printing/base.php';
 require __DIR__.'/report/base.php';
 require __DIR__.'/transaction/base.php';
+require __DIR__.'/system/base.php';

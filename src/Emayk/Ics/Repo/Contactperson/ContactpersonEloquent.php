@@ -22,6 +22,7 @@
 namespace Emayk\Ics\Repo\Contactperson;
 
 use Carbon\Carbon;
+use Emayk\Ics\Repo\Suppliers\Suppliers;
 use Illuminate\Support\Facades\Auth;
 use \Response;
 use \Input;
@@ -57,11 +58,45 @@ class ContactpersonEloquent implements ContactpersonInterface
 	 */
 	public function all()
 	{
-		$this->checkParams();
-
 		$page          = \Input::get('page');
 		$limit         = \Input::get('limit', 1);
 		$start         = \Input::get('start', 0);
+
+		/*Jika Ambil Contact Berdasarkan Name Supplier /Buyer*/
+		if (Input::has('pname')) {
+			if (!Input::has('ptype')) throw new \Exception( 'Butuh Parameter Type' );
+
+			$name       = Input::get('pname');
+			$ptype      = Input::get('ptype');
+			$parentId = 0;
+			if ($ptype == 'supplier'){
+				$supplier = new \Emayk\Ics\Repo\Factory\Supplier\Eloquent();
+				$parentId = $supplier->Name($name)->first()->id;
+			}else{
+				if ($ptype==='buyer'){
+					/*@todo : siapkan untuk model lain*/
+					$parentId = 1;
+				}
+			}
+			$parentType = $this->contactperson->getOwnerType($ptype);
+			$contacts   = $this->contactperson->whereParentId($parentId)
+				->whereParentType($parentType);
+			$total = $contacts->count();
+			$contacts = $contacts->skip($start)
+				->take($limit)
+				->get()->toArray();
+
+			$contactpersons = array(
+				'success' => true,
+				'results' => $contacts,
+				'total'   => $total
+			);
+
+			return Response::json($contactpersons);
+		};
+		$this->checkParams();
+
+
 		$contactperson = $this->contactperson;
 		$parentId      = Input::get('parent_id');
 		$parentType    = Input::get('parenttype');
@@ -75,7 +110,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 		}
 
 		$contactperson = $contactperson->with('position', 'departement')
-			->orderBy('updated_at','DESC');
+			->orderBy('updated_at', 'DESC');
 		$total         = $contactperson->count();
 		$contactperson = $contactperson->skip($start)
 			->take($limit)
@@ -142,7 +177,7 @@ class ContactpersonEloquent implements ContactpersonInterface
 		$this->contactperson->parent_id       = Input::get('parent_id');
 		$this->contactperson->parent_type     = $this->contactperson->getOwnerType($type);
 		$this->contactperson->name            = Input::get("name");
-		$this->contactperson->info            = Input::get("info",' ');
+		$this->contactperson->info            = Input::get("info", ' ');
 		$this->contactperson->pos_id          = Input::get("pos_id");
 		$this->contactperson->dept_id         = Input::get("dept_id");
 		$this->contactperson->phone           = Input::get("phone");
@@ -181,15 +216,15 @@ class ContactpersonEloquent implements ContactpersonInterface
 				->find($id);
 
 
-			return ($contact->delete())
+			return ( $contact->delete() )
 				? Response::json([
 					'success' => true,
-					'error' => false,
+					'error'   => false,
 				])
 				: Response::json([
-						'success' => false,
-						'error' => true,
-					]);
+					'success' => false,
+					'error'   => true,
+				]);
 
 		} else {
 			return \Icsoutput::toJson(array(

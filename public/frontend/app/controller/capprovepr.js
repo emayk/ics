@@ -25,7 +25,9 @@ Ext.define('App.controller.capprovepr', {
 	views: ['App.view.approvepr.vapprovepr',
 		'App.view.approvepr.process'
 	],
-	models: ['App.model.approvepr.mapprovepr', 'App.model.approvepr.mitem'],
+	models: [
+		'App.model.approvepr.mapprovepr',
+		'App.model.approvepr.mitem'],
 	stores: [
 		'App.store.approvepr.sapprovepr',
 		'App.store.approvepr.sapprovepraggree',
@@ -36,6 +38,21 @@ Ext.define('App.controller.capprovepr', {
 	init: function () {
 		var me = this;
 		me.control({
+			'appapproveprvapprovepr > tabpanel #listpr': {
+				render: function (grid) {
+					grid.getStore().load();
+				}
+			},
+			'appapproveprvapprovepr > tabpanel #listprapprove': {
+				render: function (grid) {
+					grid.getStore().load();
+				}
+			},
+			'appapproveprvapprovepr > tabpanel #listprdenied': {
+				render: function (grid) {
+					grid.getStore().load();
+				}
+			},
 			/*Panel Proses Approve PR (Single)*/
 			'appapproveprvprocess': {
 				/**
@@ -43,16 +60,7 @@ Ext.define('App.controller.capprovepr', {
 				 * @param panel
 				 */
 				render: function (panel) {
-					var id = panel.getAprid();
-					var number = panel.getAprnumber();
-					var grid = panel.down('#listsproduct');
-					var store = grid.getStore();
-					var proxy = store.getProxy();
-					proxy.setExtraParam('setitemid', id);
-					proxy.setExtraParam('setaprnumber', number);
-					proxy.setExtraParam('setitems', number);
-					proxy.setExtraParam('setitem', true);
-					store.load();
+//					log('render process pr');
 				}
 			},
 			'appapproveprvprocess #listsproduct': {
@@ -76,7 +84,7 @@ Ext.define('App.controller.capprovepr', {
 			},
 			/*Tombol Bantuan*/
 			'appapproveprvprocess [action=help]': {
-				click: function(btn){
+				click: function (btn) {
 					me.fireEvent('clickedHelp');
 				}
 			},
@@ -84,19 +92,19 @@ Ext.define('App.controller.capprovepr', {
 			'appapproveprvprocess [action=prapproved]': {
 				/*Proses Simpan ke Server dan Setting Status Approve */
 				click: function (btn) {
-					me.fireEvent('approvePrFromButton',btn);
+					me.fireEvent('approvePrFromButton', btn);
 				}
 			},
 			/*Tombol Denied PR*/
 			'appapproveprvprocess [action=prdenied]': {
 				click: function (btn) {
-					me.fireEvent('deniedPrFromButton',btn);
+					me.fireEvent('deniedPrFromButton', btn);
 					/*Notice dialog*/
 
 				}},
 			/*Tombol Close*/
 			'appapproveprvprocess [action=close]': {
-				click: function(btn){
+				click: function (btn) {
 					var panel = btn.up('appapproveprvprocess');
 					var tab = panel.up('tabpanel');
 					tab.remove(panel);

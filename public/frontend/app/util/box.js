@@ -26,14 +26,14 @@ Ext.define('App.util.box', {
 				buttons: Ext.MessageBox.OK
 			});
 		},
-		isdev : function(){
-			return (ismodedev == 'true') ? true : false ;
+		isdev: function () {
+			return (ismodedev == 'true') ? true : false;
 		},
 		info: function (text, title) {
 			Ext.MessageBox.show({ title: title || 'Information', msg: text || 'Info Message', buttons: Ext.MessageBox.OK, icon: Ext.MessageBox.INFO });
 		},
-		confirm: function(title,msg,callbackfn){
-			Ext.MessageBox.confirm(title,msg,callbackfn);
+		confirm: function (title, msg, callbackfn) {
+			Ext.MessageBox.confirm(title, msg, callbackfn);
 		},
 		showConfirm: function (msg, title, Fn) {
 			/*@todo: menampilkan confirm*/
@@ -119,14 +119,14 @@ Ext.define('App.util.box', {
 		},
 		createNoticeInfo: function (msg, title, closable) {
 			Ext.create('widget.uxNotification', {
-				title: 'Notification',
+				title: 'Informasi ',
+				autoCloseDelay: 3000,
 				spacing: 200,
 				position: 'tr',
 				manager: 'instructions',
 				cls: 'ux-notification-light',
 				iconCls: 'ux-notification-icon-information',
-				html: 'Using document as manager. No title and closable: false. Entering from the t edge.',
-//				html: msg || 'tidak ada isi',
+				html: msg,
 				slideBackDuration: 500,
 				slideInAnimation: 'bounceOut',
 				slideBackAnimation: 'easeIn'
@@ -160,7 +160,7 @@ Ext.define('App.util.box', {
 			}).show();
 		},
 
-		ajax : function(url,params,method,successfn,failurefn){
+		ajax: function (url, params, method, successfn, failurefn) {
 			var method = method || 'GET';
 			Ext.Ajax.request({
 				url: url,
@@ -168,7 +168,33 @@ Ext.define('App.util.box', {
 				method: method,
 				success: successfn, failure: failurefn
 			});
-		}
+		},
+		rendererDisplayField: function (v, field) {
+			var formattedval = Ext.util.Format.number(v, '0,00');
+			return formattedval;
+		},
+		dockedItemsForm: [
+			{
+				xtype: 'toolbar',
+				dock: 'bottom',
+
+				items: [
+					{
+						text: 'Reset', iconCls: 'reset',
+						handler: function (btn) {
+							var form = btn.up('form').getForm();
+							form.reset();
+						}
+					},
+					'->',
+					{
+						text: 'Simpan', iconCls: 'save',
+						action: 'save'
+					}
+				]
+
+			}
+		]
 
 	}
 });

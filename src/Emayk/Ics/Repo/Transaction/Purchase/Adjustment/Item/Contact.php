@@ -22,6 +22,7 @@
 namespace Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item;
 
 use \Emayk\Ics\Repo\Factory\Contact\Eloquent;
-class Contact extends Eloquent{ }
+class Contact extends Eloquent{
+}
 
  

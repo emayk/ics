@@ -43,16 +43,18 @@ Ext.define('App.controller.cDomain', {
 			store: {},
 		});
 	},
-
+	/**
+	 * Debug Event
+	 * @param eventName
+	 * @param component
+	 */
 	debugConsole: function (eventName, component) {
 		log('Debug ....', eventName, component);
 	},
-	controlStore: function () {
-
-	},
+	/**
+	 * Proses Approve Purchase Request
+	 * */
 	deniedPurchaseRequest: function (btn) {
-//		var approved = false;
-		log('Denied PR', btn);
 		this.processPRFromButton(btn, false);
 	},
 	processPRFromButton: function (btn, approve) {

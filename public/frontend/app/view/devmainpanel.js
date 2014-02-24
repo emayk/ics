@@ -19,14 +19,16 @@
 Ext.define('App.view.devmainpanel', {
 	extend: "Ext.tab.Panel",
 	alias: 'widget.devmainpanel',
-	activeTab: 1,
+	activeTab: 2,
 	plain: true,
 	items: [
 		{ xtype: 'appdashboardvdashboard', title: 'Development', iconCls: 'home', closable: false},
-		{ xtype: 'appapproveprvprocess', title: '[Pembelian] Proses Pemesanan [APR-PR-1392623810]', iconCls: 'home', closable: false,
-			closable: false, iconCls: 'add', aprid: "49", aprnumber: "APR-PR-1392623810" },
-		{ xtype: 'apppurchasevpurchase', title: '[User] Pengajuan Pemesanan Barang', iconCls: 'home', closable: false},
-		{ xtype: 'appapproveprvapprovepr', title: '[Pembelian] Pemesanan Barang', iconCls: 'home', closable: false},
+		{ xtype: 'apppradjustmentvpradjustment', title: 'Adjustment Barang', iconCls: 'home', closable: false,withtestgrid: true},
+//		{ xtype: 'apppradjustmentvpradjustment', title: '[Pembelian] Proses Pemesanan', iconCls: 'home', closable: false},
+//		{ xtype: 'appapproveprvprocess', title: '[Pembelian] Proses Pemesanan [APR-PR-1392623810]', iconCls: 'home', closable: false,
+//			closable: false, iconCls: 'add', aprid: "49", aprnumber: "APR-PR-1392623810" },
+//		{ xtype: 'apppurchasevpurchase', title: '[User] Pengajuan Pemesanan Barang', iconCls: 'home', closable: false},
+		{ xtype: 'appapproveprvapprovepr', title: '[Management] Approve Pemesanan Barang', iconCls: 'home', closable: false},
 
 //		{ xtype: 'appprocespovprocespo', title: 'Proses Pemesanan Barang', iconCls: 'home', closable: false},
 //        { xtype : 'appapproveprvapprovepr', title: 'Persetujuan Pengajuan Pembelian', iconCls:'home', closable:true},

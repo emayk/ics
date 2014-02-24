@@ -55,44 +55,21 @@ class impEloquent implements iApproval
 	 */
 	public function all()
 	{
+		/*Check Semua yang sudah diproses akan disetup Status sudah diproses*/
+
 		$page    = \Input::get('page');
 		$limit   = \Input::get('limit', 1);
 		$start   = \Input::get('start', 0);
-		$approve = $this->approval
-			->orderBy('id', 'DESC');
+		$approve = $this->approval;
+		$approve = $approve->orderBy('id', 'DESC');
+
+		/*Mendapatkan Approval List berdasarkan Type*/
 		if (Input::has('type')) {
-//			$allowType = ['active', 'denied', 'agree', 'pending'];
-			$type = Input::get('type');
-			if ($type == 'agree') {
-				$approve = $approve->Agree();
-//				$approve = $approve->whereStatus(2);
-			} else {
-				if ($type == 'denied') {
-					$approve = $approve->Denied();
-//					$approve = $approve->whereStatus(3);
-				} else {
-					if ($type == 'new') {
-						//jika baru maka ambil dari model purchase request bertipe status belum diprocess,
-						$newapprove = $this->approval->getAllnewPR();
-						$total      = $newapprove->count();
-						$newapprove = $newapprove->skip($start)
-							->take($limit)
-							->get()->toArray();
-
-
-						$approves = array(
-							'success' => true,
-							'results' => $newapprove,
-							'total'   => $total
-						);
-						return Response::json($approves);
-					} else {
-						$approve = $approve->whereStatus(1)->orWhere('status', 4);
-					}
-				}
-			}
+			$type    = Input::get('type');
+			$approve = $this->getApprovalByType($type, $approve);
 		};
 
+		/**/
 		if (Input::has('cmd')) {
 			/*Mendapatkan Semua Item berdasarkan ID Approve */
 			$getitems = Input::get('cmd');
@@ -101,16 +78,9 @@ class impEloquent implements iApproval
 				if (!Input::has('aprnumber')) throw new \Exception( 'Need Approve Number' );
 				$id     = Input::get('aprid');
 				$number = Input::get('aprnumber');
-				$items  = $this->approval->getItems()->whereAprid($id);
-				$count  = $items->count();
-				return Response::json([
-					'success' => true,
-					'results' => $items->get()->toArray(),
-					'total'   => $count
-				]);
+				return Response::json($this->getItemApproval($id, $number));
 			}
-//			return $items;
-			return 'Get Items';
+
 		}
 
 		$total   = $approve->count();
@@ -124,13 +94,86 @@ class impEloquent implements iApproval
 			'results' => $approve,
 			'total'   => $total
 		);
-
 		return Response::json($approves);
 
 	}
 
 	/**
+	 * Mendapatkan Daftar Approval berdasarkan Type Input yang diberikan
 	 *
+	 * @param $type
+	 * @param $approve
+	 *
+	 * @return mixed
+	 */
+	public function getApprovalByType($type, $approve)
+	{
+
+		switch ($type) {
+			case 'agree' :
+				$approve = $approve->Agree();
+				break;
+			case 'denied' :
+				$approve = $approve->Denied();
+				break;
+			case 'new' :
+				$approve = $approve->NewAndPending();
+				break;
+			case 'process' :
+				$approve = $approve->Processed();
+				break;
+			case 'pending' :
+				$approve = $approve->Pending();
+				break;
+				defaults :
+				$approve = $approve->NewAndPending();
+		}
+
+		return $approve;
+	}
+
+
+	/**
+	 * Mendapatkan Item Approval berdasarkan id dan trxnumber
+	 *
+	 * @param $aprId
+	 * @param $aprNumber
+	 *
+	 * @throws \Exception
+	 * @internal param $id
+	 * @internal param $trxnumber
+	 *
+	 * @return array
+	 */
+	public function getItemApproval($aprId, $aprNumber)
+	{
+
+		/*Check PR apakah sudah ada ? */
+		$approval = $this->approval->findOrFail($aprId);
+		if ($approval->trxnumber != $aprNumber) throw new \Exception( 'Approval Number Tidak cocok' );
+		$newO = true;
+		if ($newO) {
+			$itemApproval = $this->approval->getItems()->whereAprId($aprId)->where('status', '!=', 2);
+			$results      = $itemApproval->get()->toArray();
+		} else {
+			$itemApproval = $approval->item;
+			$results      = $itemApproval->toArray();
+		}
+
+		return [
+			'success'    => true,
+			'results'    => $results,
+			'totalitems' => intval($itemApproval->count()),
+			'trxnumber'  => $approval->trxnumber,
+			'id'         => $approval->id,
+			'created_at' => $approval->created_at,
+			'status'     => $approval->status,
+//			'debug' => ['approval'=> $approval->toArray()]
+		];
+
+	}
+
+	/**
 	 * Proses Simpan
 	 *
 	 * @throws \Exception
@@ -139,6 +182,12 @@ class impEloquent implements iApproval
 	public function store()
 	{
 
+
+		/**
+		 * Tidak ada Proses Penyimpanan dari request http,
+		 *
+		 * fungsi ini digunakan untuk mengambil item
+		 */
 		if (!$this->hasAccess()) {
 			return Response::json(
 				array(
@@ -148,26 +197,63 @@ class impEloquent implements iApproval
 				))->setCallback();
 		}
 
-		if (Input::get('cmd')) {
-			/*Proses Pindah dari trans_tr ke trans_app_item*/
-			/*Jika cmd == getitems*/
 
+		if (Input::has('setstatus')) {
+			$aprid = Input::get('aprid');
+			if (!Input::has('aprnumber')) throw new \Exception( 'Butuh Approval Number' );
+			$aprnumber = Input::get('aprnumber');
+			$approval  = $this->approval->findOrFail($aprid);
+			if ($approval->trxnumber !== $aprnumber) throw new \Exception( 'Nomor Approval tidak sesuai' );
+//			$totalitems = $approval->item()->count();
+//			$totalprocess = $approval->item()->Processed()->count();
+
+			$totalprocess = $approval->totalitems;
+			$totalitems   = intval($approval->totalagree);
+
+			if ($totalitems == $totalprocess) {
+				/*@todo : Proses Simpan Document dari Approval ke PO */
+				$approval->status = 5;
+				$approval->save();
+			};
+
+			return array_merge([
+					'success' => true,
+//			                    'ponumber' => 'PO-' . time()
+				],
+				$approval->toArray());
+		}
+
+
+		if (Input::get('cmd')) {
+//			/*Proses Pindah dari trans_tr ke trans_app_item*/
+//			/*Jika cmd == getitems*/
+//
 			$cmd = Input::get('cmd');
 			if ($cmd == 'getitems') {
-				if (!Input::has('prid')) throw new \Exception( 'Butuh PR id' );
-				if (!Input::has('prnumber')) throw new \Exception( 'Butuh PR Number' );
-				$prid     = Input::get('prid');
-				$prnumber = Input::get('prnumber');
-				/*Check PR apakah sudah ada ? */
-				$record = $this->approval->createNewApproveRecordFromPr($prid, $prnumber);
-				if (is_array($record)) $record = $record[ 0 ];
-				return Response::json(['success' => true, 'results' => $record]);
+				/*parameter pencarian*/
+				$params_adjid = 'aprid';
+				$adjnumber    = 'aprnumber';
+				if (!Input::has($params_adjid)) throw new \Exception( 'Butuh Adjustment id' );
+				if (!Input::has($adjnumber)) throw new \Exception( 'Butuh Adjustment Number' );
+				$aprId     = Input::get($params_adjid);
+				$aprNumber = Input::get($adjnumber);
+				return Response::json($this->getItemApproval($aprId, $aprNumber));
 			}
 		}
+
+		return Response::json([
+			'success' => true,
+			'results' => Input::all(),
+			'msg'     => 'Tidak ada proses simpan pada approval,
+			pembuatan dilakukan saat penyesuaian pengajuan pembelian'
+		]);
+
+
 	}
 
+
 	/**
-	 * Menghapus Taxtype
+	 * Menghapus
 	 *
 	 * @param $id
 	 *
@@ -179,23 +265,17 @@ class impEloquent implements iApproval
 
 		if ($this->hasAccess()) {
 			$deleted = $this->approval
-				->find($id)
-				->delete();
-
-			return \Icsoutput::toJson(array(
-				'results' => $deleted
-			), $deleted);
-
-		} else {
-			return \Icsoutput::toJson(array(
-				'results' => false,
-				'reason'  => 'Dont Have Access to Delete '
-			), false);
+				->findOrFail($id);
 		}
+		/**
+		 * Tidak ada proses hapus
+		 * Yang ada pemindahan status
+		 */
+		return Input::all();
 	}
 
 	/**
-	 * Update Informasi [[cName]]
+	 * Update Informasi
 	 *
 	 * @param int $id
 	 *
@@ -205,7 +285,47 @@ class impEloquent implements iApproval
 	public function update($id)
 	{
 
-		/*Set Item dari ID yang diberikan*/
+//		return Input::all();
+		$approve         = $this->approval->getItems()->findOrFail($id);
+		$approved        = ( Input::get('approved') == 'true' ) ? 2 : 3;
+		$approve->status = $approved;
+		$approve->save();
+		return $approve;
+	}
+
+	public function updatedisabled($id)
+	{
+		$approve         = $this->approval->getItems()->findOrFail($id);
+		$approved        = ( Input::get('approved') == 'true' ) ? 2 : 3;
+		$approve->status = $approved;
+		$approve->save();
+		return $approve;
+		/*Set Item dari ID Approval yang diberikan*/
+//		if (Input::has('setitemapproved')) {
+//			$setitemapproved = Input::get('setitemapproved');
+//			if ($setitemapproved) {
+//				$approved = Input::get('approved');
+//				if (!Input::has('approved')) throw new \Exception( 'Butuh Mode Approve ' );
+//				$status = ( $approved == 'true' ) ? 2 : 3;
+//				if (!Input::has('setitemid')) throw new \Exception( 'Silahkan Masukan parameter Item Id untuk di approved' );
+//				$itemid               = Input::get('setitemid');
+//				$approvalitem         = $this->approval->getItems()->findOrFail($itemid);
+//				$approvalitem->status = $status;
+//				$success              = $approvalitem->save();
+//
+//				$results = array_merge(
+//					[
+//						'success' => $success,
+//						'reason'  => ( $success ) ? 'Penyimpanan Berhasil' : ' gagal disimpan'
+//					], $approvalitem->toArray());
+//
+//			} else {
+//				$results = ['success' => false, 'reason' => 'Penyimpanan gagal '];
+//			};
+//			return Response::json($results);
+//		}
+
+
 		if (Input::has('setitem')) {
 			$setitem = Input::get('setitem');
 			if ($setitem) {
@@ -217,21 +337,25 @@ class impEloquent implements iApproval
 				if (!Input::has('setitemid')) {
 					throw new \Exception( 'Silahkan Masukan parameter setitemid untuk edit item ' );
 				}
+				$itemId   = Input::get('setitemid');
+				$item     = $this->approval->getItems()->findOrFail($itemId);
+				$approved = Input::get('approved');
+				$status   = ( $approved ) ? 2 : 3;
+
+				$item->status = $status;
 
 
-//				return Input::all();
-
-				$item             = $this->approval->getItems();
-				$item             = $item->findOrFail($id);
-				$item->qty        = Input::get('qty');
-				$item->supplierid = Input::get('supplierid', 0);
-				$item->contactid  = Input::get('contactid', 0);
-				$approve          = Input::get('approved');
-				$status           = ( $approve == 'true' ) ? 2 : 3;
-				$item->status     = $status;
-				$item->price      = Input::get('price', 0);
-				$aprid            = Input::get('aprid');
-				$item->aprid      = $aprid;
+//				$item             = $this->approval->getItems();
+//				$item             = $item->findOrFail($id);
+//				$item->qty        = Input::get('qty');
+//				$item->supplierid = Input::get('supplierid', 0);
+//				$item->contactid  = Input::get('contactid', 0);
+//				$approve          = Input::get('approved');
+//				$status           = ( $approve == 'true' ) ? 2 : 3;
+//				$item->status     = $status;
+//				$item->price      = Input::get('price', 0);
+//				$aprid            = Input::get('aprid');
+//				$item->aprid      = $aprid;
 
 				if ($item->save()) {
 					return Response::json($item->toArray());
@@ -244,7 +368,7 @@ class impEloquent implements iApproval
 		if (Input::has('cmd')) {
 			$cmd = Input::get('cmd');
 			if ($cmd == 'setstatus') {
-				$statusDecode = base64_decode(Input::get('status','pending'));
+				$statusDecode = base64_decode(Input::get('status', 'pending'));
 
 				if ($statusDecode == 'approve') {
 					$status = 2; // approve / disetujui
@@ -256,7 +380,7 @@ class impEloquent implements iApproval
 					}
 				}
 
-				$recordApr = $this->approval->findOrFail($id);
+				$recordApr         = $this->approval->findOrFail($id);
 				$recordApr->status = $status;
 				return $this->savedAndResponseJson($recordApr);
 			}
@@ -264,16 +388,23 @@ class impEloquent implements iApproval
 
 
 		/*Setting dan Simpan*/
-		return Response::json(['success' => false, 'results' => Input::all(), 'decoded' => base64_decode(Input::get('status')), 'total' => 1]);
+//		return Response::json(['success' => false, 'results' => Input::all(), 'decoded' => base64_decode(Input::get('status')), 'total' => 1]);
 	}
 
-	protected function savedAndResponseJson($record){
+	/**
+	 * @param $record
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	protected function savedAndResponseJson($record)
+	{
 		if ($record->save()) {
 			return Response::json($record->toArray());
 		} else {
 			return Response::json(['success' => false, 'results' => Input::all(), 'total' => 1]);
 		}
 	}
+
 	/**
 	 *
 	 * Apakah Sudah Login

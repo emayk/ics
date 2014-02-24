@@ -42,29 +42,74 @@ Ext.define('App.view.approvepr.vapprovepr', {
 						{
 							/*Daftar Pengajuan Pembelian Yang belum diproses */
 							xtype: 'container',
-
 							bodyPadding: 2, frame: true,
 							layout: { type: 'fit', align: 'stretch'},
 							flex: 1,
 							iconCls: 'grid',
-							title: 'Daftar PR',
+							title: 'Daftar PR dalam Proses',
 							items: [
 								{
 									xtype: 'grid',
 									itemId: 'listpr',
+									viewConfig: {
+										getRowClass: function (record) {
+											if (record) {
+												var approve = 'cgreen';
+												var denied = 'cred';
+												var unprocess = 'corange';
+												var pending = 'cpending';
+												var processed = 'row-processed';
+												var color;
+												var status = parseInt(record.get('status'));
+												switch (status) {
+													case 2:
+														color = approve;
+														break;
+													case 3:
+														color = denied;
+														break;
+													case 4:
+														color = pending;
+														break;
+													/*Sudah diproses*/
+													case 5:
+														color = processed;
+														break;
+													default:
+														color = unprocess
+												}
+												return color;
+											}
+										}
+									},
 									columns: [
 										{
 											xtype: 'rownumberer'
 										},
 										{
-											text: 'Nomor Purchase Request',
-											dataIndex: 'prnumber',
-											flex: 2
+											text: 'Nomor Document',
+											columns:[
+												{ text: 'Approve Request',width: 200, dataIndex: 'aprnumber',tooltip:'Nomor Approval'  },
+												{ text: 'Adjustment Request',width: 200, dataIndex: 'adjnumber',tooltip:'Nomor Adjustment'  },
+												{ text: 'Purchase Request',width: 200, dataIndex: 'prnumber',tooltip:'Nomor Purchase'  }
+											]
+										},
+
+										{
+										text: 'Items',
+											columns:[
+												{ text: 'Total', dataIndex: 'totalitems',width: 50,tooltip:'Total Item Pengajuan' },
+												{ text: 'UP', dataIndex: 'totalunprocess',width: 50,tooltip:'Total Item Pengajuan yang belum diproses'  },
+												{ text: 'P', dataIndex: 'totalprocessed' ,width: 50,tooltip:'Total Pengajuan yang sudah diproses' },
+												{ text: 'D', dataIndex: 'totaldenied',width: 50 ,tooltip:'Total Item Pengajuan yang ditolak' },
+												{ text: 'A', dataIndex: 'totalagree' ,width: 50,tooltip:'Total Item Pengajuan yang disetujui' },
+												{ text: 'P', dataIndex: 'totalpending',width: 50,tooltip:'Total Item Pengajuan yang ditunda'  }
+
+											]
 										},
 										{
 											text: 'Tanggal',
 											dataIndex: 'tgl',
-											flex: 1,
 											renderer: function (v) {
 												return Ext.Date.format(v, 'd F Y');
 											}
@@ -101,29 +146,86 @@ Ext.define('App.view.approvepr.vapprovepr', {
 							flex: 1,
 							layout: { type: 'fit', align: 'stretch'},
 							iconCls: 'grid',
-							title: 'Daftar PR Setuju',
+							title: 'Daftar PR Sudah diproses',
 							items: [
 								{
 									itemId: 'listprapprove',
 									xtype: 'grid',
+									viewConfig: {
+										getRowClass: function (record) {
+											if (record) {
+												return 'cgreen';
+											}
+										}
+									},
 									columns: [
 										{
 											xtype: 'rownumberer'
 										},
 										{
-											text: 'Nomor Purchase Request',
-											dataIndex: 'prnumber',
-											flex: 2
+											text: 'Nomor Document',
+											columns:[
+												{ text: 'Approve Request',width: 200, dataIndex: 'aprnumber',tooltip:'Nomor Approval'  },
+												{ text: 'Adjustment Request',width: 200, dataIndex: 'adjnumber',tooltip:'Nomor Adjustment'  },
+												{ text: 'Purchase Request',width: 200, dataIndex: 'prnumber',tooltip:'Nomor Purchase'  },
+												{ text: 'Purchase Order',width: 200, dataIndex: 'ponumber',tooltip:'Nomor Purchase Order',
+													renderer : function(v,m,r){
+														return (!v) ? 'dalam proses' : v;
+													}
+												}
+											]
+										},
+
+										{
+											text: 'Items',
+											columns:[
+												{ text: 'Total', dataIndex: 'totalitems',width: 50,tooltip:'Total Item Pengajuan' },
+												{ text: 'UP', dataIndex: 'totalunprocess',width: 50,tooltip:'Total Item Pengajuan yang belum diproses'  },
+												{ text: 'P', dataIndex: 'totalprocessed' ,width: 50,tooltip:'Total Pengajuan yang sudah diproses' },
+												{ text: 'D', dataIndex: 'totaldenied',width: 50 ,tooltip:'Total Item Pengajuan yang ditolak' },
+												{ text: 'A', dataIndex: 'totalagree' ,width: 50,tooltip:'Total Item Pengajuan yang disetujui' },
+												{ text: 'P', dataIndex: 'totalpending',width: 50,tooltip:'Total Item Pengajuan yang ditunda'  }
+
+											]
 										},
 										{
 											text: 'Tanggal',
 											dataIndex: 'tgl',
-											flex: 1,
 											renderer: function (v) {
 												return Ext.Date.format(v, 'd F Y');
 											}
 										}
+//										{
+//											header: 'Proses',
+//											xtype: 'actioncolumn',
+//											width: 40,
+//											items: [
+//												{
+//													iconCls: 'forward',
+//													tooltip: 'Proses Pengajuan Pembelian',
+//													handler: me.openNewTabForProcess
+//												}
+//											]
+//										}
 									],
+//									columns: [
+//										{
+//											xtype: 'rownumberer'
+//										},
+//										{
+//											text: 'Nomor Purchase Request',
+//											dataIndex: 'prnumber',
+//											flex: 2
+//										},
+//										{
+//											text: 'Tanggal',
+//											dataIndex: 'tgl',
+//											flex: 1,
+//											renderer: function (v) {
+//												return Ext.Date.format(v, 'd F Y');
+//											}
+//										}
+//									],
 									store: me.getStoregridprapproved(),
 									dockedItems: [
 										{
@@ -136,60 +238,69 @@ Ext.define('App.view.approvepr.vapprovepr', {
 								}
 							]
 
-						},
-						{
-							xtype: 'container',
-							layout: { type: 'fit', align: 'stretch'},
-							flex: 1,
-							bodyPadding: 2, frame: true,
-							iconCls: 'grid',
-							title: 'Daftar PR Tolak',
-							items: [
-								{
-									xtype: 'grid',
-									itemId: 'listprdenied',
-									columns: [
-										{
-											xtype: 'rownumberer'
-										},
-										{
-											text: 'Nomor Purchase Request',
-											dataIndex: 'prnumber',
-											flex: 2
-										},
-										{
-											text: 'Tanggal',
-											dataIndex: 'tgl',
-											flex: 1,
-											renderer: function (v) {
-												return Ext.Date.format(v, 'd F Y');
-											}
-										}
-									],
-									store: me.getStoregridprdenied(),
-									dockedItems: [
-										{
-											xtype: 'pagingtoolbar',
-											dock: 'bottom',
-											displayInfo: true,
-											store: me.getStoregridprdenied()
-										}
-									]
-								}
-							]
 						}
+//						{
+//							xtype: 'container',
+//							layout: { type: 'fit', align: 'stretch'},
+//							flex: 1,
+//							bodyPadding: 2, frame: true,
+//							iconCls: 'grid',
+//							title: 'Daftar PR Tolak',
+//							items: [
+//								{
+//									xtype: 'grid',
+//									itemId: 'listprdenied',
+//									columns: [
+//										{
+//											xtype: 'rownumberer'
+//										},
+//										{
+//											text: 'Nomor Purchase Request',
+//											dataIndex: 'prnumber',
+//											flex: 2
+//										},
+//										{
+//											text: 'Tanggal',
+//											dataIndex: 'tgl',
+//											flex: 1,
+//											renderer: function (v) {
+//												return Ext.Date.format(v, 'd F Y');
+//											}
+//										}
+//									],
+//									store: me.getStoregridprdenied(),
+//									dockedItems: [
+//										{
+//											xtype: 'pagingtoolbar',
+//											dock: 'bottom',
+//											displayInfo: true,
+//											store: me.getStoregridprdenied()
+//										}
+//									]
+//								}
+//							]
+//						},
+//						{
+//							xtype: 'appapproveprvprocess',
+//							title: "Debug Process Approval Pembelian",
+//							closable: false,
+//							iconCls: 'add',
+//							aprnumber: "APR-Adj-PR-1392958027",
+//							tgl: '02/11/2014',
+//							status: 1,
+//							aprid: "7"
+//						}
 					]
 				}
 			]
 		});
 		me.callParent(arguments);
-//		me.down('#listpr').getStore().load();
-		me.loadAllGridStore();
+//		me.loadAllGridStore();
 	},
 	loadAllGridStore: function () {
-		this.down('#listpr').getStore().load();
-		this.down('#listprapprove').getStore().load();
-		this.down('#listprdenied').getStore().load();
+//		this.down('#listpr').getStore().load();
+//		this.down('#listprapprove').getStore().load();
+//		this.down('#listprdenied').getStore().load();
 	},
 	/**
 	 * Menampilkan record pada Tab baru.
@@ -200,15 +311,16 @@ Ext.define('App.view.approvepr.vapprovepr', {
 	openNewTabForProcess: function (grid, rowIndex, colIndex) {
 		var rec = grid.getStore().getAt(rowIndex),
 			tab = grid.up('tabpanel'),
-			number = rec.get('prnumber'),
+			number = rec.get('aprnumber'),
 			id = rec.get('id');
 
 		Ext.Ajax.request({
 			url: getApiUrl() + '/transaction/prapprove',
 			params: {
-				prid: id,
-				prnumber: number,
-				cmd: 'getitems'
+				aprid: id,
+				aprnumber: number,
+				cmd: 'getitems',
+				_token : gettoken()
 			},
 			method: 'POST',
 			success: function (response, opts) {
@@ -221,14 +333,15 @@ Ext.define('App.view.approvepr.vapprovepr', {
 					return false;
 				}
 				var r = res.results;
-				var aprnumber = r.trxnumber;
+				var aprnumber = res.trxnumber;
 				if (!aprnumber){
 					App.util.box.error('Maaf Nomor Transaksi tidak diketemukan , Silahkan coba lagi');
 					return false;
 				}
-				var aprid = r.id;
-				var tgl = r.created_at;
-				var status = r.status;
+
+				var aprid = res.id;
+				var tgl = res.created_at;
+				var status = res.status;
 				title = 'Proses Approve Purchase Request' + ( (aprnumber) ? ' [ ' + aprnumber + ']' : ' ');
 				var config = {
 					aprnumber: aprnumber,
@@ -237,8 +350,8 @@ Ext.define('App.view.approvepr.vapprovepr', {
 					title: title,
 					status: status,
 					closable: true,
-					iconCls: 'add'
-//					storegrid: Ext.create('App.store.approvepr.items')
+					iconCls: 'add',
+					storegrid: Ext.create('App.store.approvepr.items')
 				};
 				App.util.box.openNewtab(tab, title, 'App.view.approvepr.process', config);
 			},

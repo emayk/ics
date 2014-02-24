@@ -31,6 +31,7 @@ Ext.define('App.view.procespo.vprocespo', {
 		/*Page Approve PR*/
 		'App.view.approvepr.process' // widget appapproveprvprocess
 	],
+
 	frame: true,
 	bodyPadding: 10,
 	layout: { type: 'fit', align: 'stretch'},
@@ -46,9 +47,8 @@ Ext.define('App.view.procespo.vprocespo', {
 				{
 					/*Halaman Pemesanan Produk*/
 					xtype: 'panel',
-					title: '(1/' + totalPage + ') Pemilihan Produk Pesanan',
+					title: 'Buat Pengajuan pembelian barang',
 					itemId: 'pageselectedproduct',
-//					bodyPadding: 5,
 					frame: true,
 					layout: { type: 'hbox', align: 'stretch'},
 					autoScroll: true,
