@@ -1,25 +1,25 @@
 <?php
 /**
- * Copyright (C) 2013  Emay Komarudin
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Emay Komarudin
- *
- * Bussiness Logic Products
- *
- **/
+* Copyright (C) 2013  Emay Komarudin
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+* @author Emay Komarudin
+*
+**/
 
-namespace Emayk\Ics\Repo\Products;
+
+
+namespace Emayk\Ics\Repo\Factory\Product;
 
 use \Exception;
 use Carbon\Carbon;
@@ -31,13 +31,13 @@ use \DB;
 use \Event;
 use \Cache;
 
-class ProductsEloquent implements ProductsInterface
+class impEloquent implements iProduct
 {
-	protected $products;
+	protected $product;
 
-	function __construct(Products $products)
+	function __construct(Eloquent $Product)
 	{
-		$this->products = $products;
+		$this->product = $Product;
 	}
 
 	/**
@@ -51,7 +51,7 @@ class ProductsEloquent implements ProductsInterface
 
 	public function find($id)
 	{
-		return $this->products->find($id);
+		return $this->product->find($id);
 	}
 
 	/**
@@ -64,7 +64,7 @@ class ProductsEloquent implements ProductsInterface
 	 */
 	public function searchByName($searchName,$limit,$start){
 
-		$products = $this->products->where('name', 'LIKE', "%$searchName%");
+		$products = $this->product->where('name', 'LIKE', "%$searchName%");
 		$total    = $products->count();
 		$products = $products->skip($start)
 			->take($limit)
@@ -92,7 +92,7 @@ class ProductsEloquent implements ProductsInterface
 			$searchName     = Input::get('searchbyName');
 			return $this->searchByName($searchName,$limit,$start);
 		}
-		$product = $this->products;
+		$product = $this->product;
 		$total   = $product->count();
 //            ->orderBy('id','DESC')
 		$product = $product->skip($start)
@@ -129,7 +129,7 @@ class ProductsEloquent implements ProductsInterface
 	 */
 	public function store_2()
 	{
-		$product = $this->products;
+		$product = $this->product;
 		$userId  = \Auth::user()->id;
 		DB::beginTransaction();
 
@@ -198,33 +198,33 @@ class ProductsEloquent implements ProductsInterface
 		/*==========  Sesuaikan dengan Field di table  ==========*/
 		$userId                        = \Auth::user()->id;
 		$name                          = Input::get('name');
-		$this->products->name          = $name;
+		$this->product->name          = $name;
 		$catId                         = Input::get('cat_id', 1);
-		$this->products->cat_id        = $catId;
-		$this->products->contruction   = Input::get('contruction');
-		$this->products->nodesign      = Input::get('nodesign');
-		$this->products->type_id       = Input::get('type_id');
-		$this->products->weight        = Input::get('weight');
-		$this->products->parent_id     = $catId;
-		$this->products->parent_type   = '\Emayk\Ics\Repo\Productcategory\Productcategory';
-		$this->products->unitweight_id = Input::get('unitweight_id');
-		$this->products->width         = Input::get('width');
-		$this->products->unitwidth_id  = Input::get('unitwidth_id');
-		$this->products->codeinternal  = uniqid('Prd_');
+		$this->product->cat_id        = $catId;
+		$this->product->contruction   = Input::get('contruction');
+		$this->product->nodesign      = Input::get('nodesign');
+		$this->product->type_id       = Input::get('type_id');
+		$this->product->weight        = Input::get('weight');
+		$this->product->parent_id     = $catId;
+		$this->product->parent_type   = '\Emayk\Ics\Repo\Productcategory\Productcategory';
+		$this->product->unitweight_id = Input::get('unitweight_id');
+		$this->product->width         = Input::get('width');
+		$this->product->unitwidth_id  = Input::get('unitwidth_id');
+		$this->product->codeinternal  = uniqid('Prd_');
 
-		$this->products->uuid            = uniqid('Prd_');
-		$this->products->createby_id     = $userId;
-		$this->products->lastupdateby_id = $userId;
-		$this->products->created_at      = new \Datetime();
-		$this->products->updated_at      = new \Datetime();
-		$saved                           = $this->products->save() ? true : false;
+		$this->product->uuid            = uniqid('Prd_');
+		$this->product->createby_id     = $userId;
+		$this->product->lastupdateby_id = $userId;
+		$this->product->created_at      = new \Datetime();
+		$this->product->updated_at      = new \Datetime();
+		$saved                           = $this->product->save() ? true : false;
 
 		if ($saved) {
-			Sysprodhistory::createlog(["Product {$name} berhasil dibuat "], $userId, $this->products->id);
+			Sysprodhistory::createlog(["Product {$name} berhasil dibuat "], $userId, $this->product->id);
 		};
 		return Response::json(array(
 			'success' => $saved,
-			'results' => ( $saved ) ? $this->products->toArray() : null,
+			'results' => ( $saved ) ? $this->product->toArray() : null,
 			'reason'  => ( $saved ) ? 'Created Successfully' : 'Fail Create',
 		))->setCallback();
 	}
@@ -241,7 +241,7 @@ class ProductsEloquent implements ProductsInterface
 	{
 
 		if ($this->hasAccess()) {
-			$deleted = $this->products
+			$deleted = $this->product
 				->find($id)
 				->delete();
 
@@ -266,7 +266,7 @@ class ProductsEloquent implements ProductsInterface
 	 */
 	public function update($id)
 	{
-		$db = $this->products->find($id);
+		$db = $this->product->find($id);
 		/*==========  Sesuaikan  ==========*/
 		$db->name        = Input::get('name');
 		$catId           = Input::get('cat_id', 1);
@@ -324,7 +324,7 @@ class ProductsEloquent implements ProductsInterface
 	 */
 	public function show($id)
 	{
-		$record = $this->products->whereId($id);
+		$record = $this->product->whereId($id);
 
 		return ( $record->count() ) ?
 			Response::json(
@@ -369,3 +369,5 @@ class ProductsEloquent implements ProductsInterface
 
 
 }
+
+ 

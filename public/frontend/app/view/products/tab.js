@@ -7,7 +7,11 @@ Ext.define('App.view.products.tab', {
 
     ],
     alias: 'widget.productstab',
-    activeTab: 0,
+	layout: { type: 'fit', align: 'stretch'},
+    activeTab: 3,
+	defaults:{
+		flex:1
+	},
     items: [
         {
 	        /*Product*/
@@ -22,6 +26,11 @@ Ext.define('App.view.products.tab', {
 		    /*tipe*/
 		    title : 'Tipe',
 		    xtype: 'apptypeproductvtypeproduct'
+	    },{
+		    /*Test*/
+		    title : 'Test Import',
+
+		    xtype: 'productimport'
 	    }
     ],
     plugins: [

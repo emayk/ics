@@ -115,9 +115,9 @@ Ext.define('App.view.dashboard.vdashboard', {
 							xtype: 'button', text: 'Buat PR',
 							action: 'createpr', iconCls: 'add'
 						},
-						{
-							xtype: 'button', text: 'Produk'
-						}
+//						{
+//							xtype: 'button', text: 'Produk'
+//						}
 					]
 				},
 				/*Kolom 2*/
@@ -142,36 +142,36 @@ Ext.define('App.view.dashboard.vdashboard', {
 									text: 'Penyesuaian <br/>Pengajuan',
 									action: 'listadjustmentpr'
 								},
-								{
-									xtype: 'button', flex: .3,
-									text: 'Proses Pengajuan 3',
-									action: 'processadjpr3'
-								}
+//								{
+//									xtype: 'button', flex: .3,
+//									text: 'Proses Pengajuan 3',
+//									action: 'processadjpr3'
+//								}
 							]
 						},
-						{
-							xtype: 'container',
-							margin: '0 0 5 0',
-							layout: { type: 'hbox', align: 'stretch'},
-							items: [
-								{
-									xtype: 'button', flex: .3,
-									text: 'Proses Pengajuan 1',
-									action: 'processadjpr1'
-								},
-								{
-									xtype: 'button', flex: .3,
-									margin: '0 5 0 5',
-									text: 'Proses Pengajuan 2',
-									action: 'processadjpr2'
-								},
-								{
-									xtype: 'button', flex: .3,
-									text: 'Proses Pengajuan 3',
-									action: 'processadjpr3'
-								}
-							]
-						}
+//						{
+//							xtype: 'container',
+//							margin: '0 0 5 0',
+//							layout: { type: 'hbox', align: 'stretch'},
+//							items: [
+//								{
+//									xtype: 'button', flex: .3,
+//									text: 'Proses Pengajuan 1',
+//									action: 'processadjpr1'
+//								},
+//								{
+//									xtype: 'button', flex: .3,
+//									margin: '0 5 0 5',
+//									text: 'Proses Pengajuan 2',
+//									action: 'processadjpr2'
+//								},
+//								{
+//									xtype: 'button', flex: .3,
+//									text: 'Proses Pengajuan 3',
+//									action: 'processadjpr3'
+//								}
+//							]
+//						}
 					]
 				},
 				/*Kolom 3*/

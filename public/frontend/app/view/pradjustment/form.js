@@ -72,12 +72,27 @@ Ext.define('App.view.pradjustment.form', {
 					items: [
 						{ xtype: 'cbcurrencies', fieldLabel: 'Mata Uang', name: 'currname', valueField: 'name', editable: false },
 						{ xtype: 'cbtypetax', fieldLabel: 'Jenis Pajak', name: 'taxname', valueField: 'name', editable: false },
+						{
+							xtype: 'fieldcontainer',
+							layout: { type: 'hbox', align: 'stretch'},
+							fieldLabel: '',
+							defaults: {
+								labelAlign: 'top'
+							},
+							items: [
+								{ xtype: 'displayfield', fieldLabel: 'Sub Total', name: 'subtotal',
+									flex: .5,
+									renderer: App.util.box.rendererDisplayField
+								},
+								{ xtype: 'displayfield', fieldLabel: 'Setelah DP', name: 'subtotalafterdp', flex: .5,
+									renderer: App.util.box.rendererDisplayField
+								}
+							]
+						},
 						{ xtype: 'numberfield', fieldLabel: 'Kurs', name: 'rate', step: .1, minValue: 1, hideTrigger: true, enableKeyEvents: true},
-						{ xtype: 'numberfield', fieldLabel: 'Harga', name: 'price', minValue: 0, hideTrigger: true, enableKeyEvents: true},
 						{ xtype: 'numberfield', fieldLabel: 'Qty Penyesuaian', name: 'qty', minValue: 0, hideTrigger: true, enableKeyEvents: true},
-						{ xtype: 'displayfield', fieldLabel: 'Sub Total', name: 'subtotal',
-							renderer: App.util.box.rendererDisplayField
-						}
+						{ xtype: 'numberfield', fieldLabel: 'Harga', name: 'price', minValue: 0, hideTrigger: true, enableKeyEvents: true},
+						{ xtype: 'numberfield', fieldLabel: 'Down Payment(DP)', name: 'dp', minValue: 0, hideTrigger: true, enableKeyEvents: true}
 					]
 				},
 				/*Pemasok dan Pengiriman*/
@@ -162,7 +177,8 @@ Ext.define('App.view.pradjustment.form', {
 							name: 'status',
 							itemId: 'status5',
 							inputValue: '5'
-						},{
+						},
+						{
 							boxLabel: 'Belum diproses',
 							name: 'status',
 							itemId: 'status1',

@@ -45,8 +45,13 @@ if (fromLocal()) {
 		'cprocespo', // Proses Pemesanan Barang
 		'cpradjustment', // proses pr adjustment oleh pembelian
 		'capprovepr', // persetujuan Pesan barang oleh management
-//		'ctypeproduct',
-//		'master.ctlProducts', //daftar Barang
+
+	/**
+	 * Produk
+	 */
+		'ccatprod',
+		'ctypeproduct',
+		'master.ctlProducts', //daftar Barang
 //		'ccheckgood', //Check Barang
 		/*/end Proses Pemesanan Barang*/
 //
@@ -122,7 +127,7 @@ if (fromLocal()) {
 	 * Master
 	 *
 	 */
-//		'ccatprod',
+
 //		'master.Legalitas',
 //		'cfabrictype',
 

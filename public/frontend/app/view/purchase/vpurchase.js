@@ -23,12 +23,12 @@ Ext.define('App.view.purchase.vpurchase', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.apppurchasevpurchase',
 	config: {
-		store: Ext.create('App.store.purchase.spurchase'),
 		autoloadgrid: true
 	},
 	layout: 'fit',
 	initComponent: function () {
 		var me = this;
+		var store = Ext.create('App.store.purchase.spurchase');
 		Ext.apply(me, {
 			items: [
 				{
@@ -46,7 +46,8 @@ Ext.define('App.view.purchase.vpurchase', {
 									flex: .5,
 									itemId: 'lists',
 									flex: 1,
-									store: me.getStore(),
+									store: store,
+//									store: me.getStore(),
 									columns: [
 										{
 											xtype: 'rownumberer'
@@ -89,7 +90,8 @@ Ext.define('App.view.purchase.vpurchase', {
 										{
 											xtype: 'pagingtoolbar',
 											dock: 'bottom',
-											store: me.getStore(),
+											store: store,
+//											store: me.getStore(),
 											displayInfo: true
 										}
 									]

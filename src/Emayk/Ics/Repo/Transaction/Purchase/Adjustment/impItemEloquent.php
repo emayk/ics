@@ -183,7 +183,7 @@ class impItemEloquent implements iItem
 
 		$cpname  = Input::get('cpname');
 		$contact = $this->item->oContact()->Name($cpname);
-		if (!$contact->count() > 0) throw new \Exception( 'Nama Kontact tidak sesuai' );
+		if (!$contact->count() > 0) throw new \Exception( 'Nama Kontak tidak sesuai' );
 		$contactId   = $contact->first()->id;
 		$item->cp_id = $contactId;
 
@@ -191,6 +191,7 @@ class impItemEloquent implements iItem
 		$price          = strval(Input::get('price'));
 		$qty            = strval(Input::get('qty'));
 		$item->qty      = $qty;
+		$item->dp       = Input::get('dp');
 		$item->price    = $price;
 		$item->subtotal = ( $qty * $price );
 
@@ -239,7 +240,7 @@ class impItemEloquent implements iItem
 			$whid . $sep .
 //			$currid . $sep .
 			$taxid . $sep .
-			$paymenttypeid ;
+			$paymenttypeid;
 //			$ddate;
 
 		$item->route = $route;

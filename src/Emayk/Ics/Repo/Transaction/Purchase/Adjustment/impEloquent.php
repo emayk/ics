@@ -65,7 +65,7 @@ class impEloquent implements iAdjustment
 //			return time();
 			$approval = $this->adjustment->oApproval();
 			$prefix   = $approval->getPrefix();
-			$approval   = $approval->whereTrxnumber($prefix . $adjustment->trxnumber)->first();
+			$approval = $approval->whereTrxnumber($prefix . $adjustment->trxnumber)->first();
 
 		} else {
 
@@ -185,7 +185,7 @@ class impEloquent implements iAdjustment
 	}
 
 	/**
-	 * Menghapus Taxtype
+	 * Menghapus
 	 *
 	 * @param $id
 	 *
@@ -247,9 +247,11 @@ class impEloquent implements iAdjustment
 				$approve          = Input::get('approved');
 				$status           = ( $approve == 'true' ) ? 2 : 3;
 				$item->status     = $status;
+				$item->dp         = Input::get('dp');
 				$item->price      = Input::get('price', 0);
 				$aprid            = Input::get('aprid');
-				$item->aprid      = $aprid;
+
+				$item->aprid = $aprid;
 
 				if ($item->save()) {
 					return Response::json($item->toArray());

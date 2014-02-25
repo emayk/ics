@@ -28,6 +28,7 @@ Ext.define('App.view.devmainpanel', {
 //		{ xtype: 'appapproveprvprocess', title: '[Pembelian] Proses Pemesanan [APR-PR-1392623810]', iconCls: 'home', closable: false,
 //			closable: false, iconCls: 'add', aprid: "49", aprnumber: "APR-PR-1392623810" },
 //		{ xtype: 'apppurchasevpurchase', title: '[User] Pengajuan Pemesanan Barang', iconCls: 'home', closable: false},
+		{ xtype : 'productstab', title: '[User] Produk', iconCls:'home', closable:false},
 		{ xtype: 'appapproveprvapprovepr', title: '[Management] Approve Pemesanan Barang', iconCls: 'home', closable: false},
 
 //		{ xtype: 'appprocespovprocespo', title: 'Proses Pemesanan Barang', iconCls: 'home', closable: false},
@@ -75,7 +76,7 @@ Ext.define('App.view.devmainpanel', {
 
 
 //        { xtype : 'masterlegalitasGridList', title: 'Legalitas', iconCls:'home', closable:false},
-//        { xtype : 'productstab', title: 'Products', iconCls:'home', closable:false},
+
 //        { xtype : 'apptaxtypevtaxtype', title: 'Tax Type', iconCls:'home', closable:false},
 //        { xtype : 'appBuyersvBuyers', title: 'Buyer', iconCls:'home', closable:false},
 //        { xtype : 'typeorderGridList', title: 'Type Order', iconCls:'home', closable:false},

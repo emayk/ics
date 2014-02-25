@@ -188,14 +188,15 @@ class impEloquent implements iApproval
 		 *
 		 * fungsi ini digunakan untuk mengambil item
 		 */
-		if (!$this->hasAccess()) {
-			return Response::json(
-				array(
-					'success' => false,
-					'reason'  => 'Action Need Login First',
-					'results' => null
-				))->setCallback();
-		}
+
+//		if (!$this->hasAccess()) {
+//			return Response::json(
+//				array(
+//					'success' => false,
+//					'reason'  => 'Action Need Login First',
+//					'results' => null
+//				))->setCallback();
+//		}
 
 
 		if (Input::has('setstatus')) {
@@ -203,15 +204,18 @@ class impEloquent implements iApproval
 			if (!Input::has('aprnumber')) throw new \Exception( 'Butuh Approval Number' );
 			$aprnumber = Input::get('aprnumber');
 			$approval  = $this->approval->findOrFail($aprid);
-			if ($approval->trxnumber !== $aprnumber) throw new \Exception( 'Nomor Approval tidak sesuai' );
-//			$totalitems = $approval->item()->count();
-//			$totalprocess = $approval->item()->Processed()->count();
 
+
+			/*Debug */
+//			return $approval->moveApprovalToOrder();
+
+			if ($approval->trxnumber !== $aprnumber) throw new \Exception( 'Nomor Approval tidak sesuai' );
 			$totalprocess = $approval->totalitems;
 			$totalitems   = intval($approval->totalagree);
 
 			if ($totalitems == $totalprocess) {
 				/*@todo : Proses Simpan Document dari Approval ke PO */
+
 				$approval->status = 5;
 				$approval->save();
 			};

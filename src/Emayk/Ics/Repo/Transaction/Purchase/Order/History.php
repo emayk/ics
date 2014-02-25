@@ -16,20 +16,33 @@
  * @author Emay Komarudin
  *
  **/
-require __DIR__ . '/bank/rest.php';
-require __DIR__ . '/import/rest.php';
-require __DIR__ . '/color/rest.php';
-require __DIR__ . '/currency/rest.php';
-require __DIR__ . '/dept/rest.php';
-/*Kain*/
-require __DIR__ . '/fabric/rest.php';
-require __DIR__ . '/legality/rest.php';
-require __DIR__ . '/menu/rest.php';
-/*Warehouse*/
-require __DIR__ . '/phone/rest.php';
-require __DIR__ . '/product/rest.php';
-require __DIR__ . '/setting/rest.php';
-require __DIR__ . '/status/rest.php';
-require __DIR__ . '/supplier/rest.php';
-require __DIR__ . '/unit/rest.php';
-require __DIR__ . '/warehouse/rest.php';
+
+
+namespace Emayk\Ics\Repo\Transaction\Purchase\Order;
+
+use Carbon\Carbon;
+use Emayk\Ics\Models\BaseModel;
+
+class History extends BaseModel
+{
+	protected $guarded = array();
+	protected $table = 'trans_order_history';
+	public static $rules = array();
+
+	public function createRecord($orderId, $trxnumber, $description = '')
+	{
+		return $this->create(
+			[
+				"trxnumber"       => $trxnumber,
+				"order_id"        => $orderId,
+				"description"     => time(),
+				"createby_id"     => $this->getUid(),
+				"lastupdateby_id" => $this->getUid(),
+				"created_at"      => Carbon::create(),
+				"updated_at"      => Carbon::create()
+			]
+		);
+	}
+}
+
+ 

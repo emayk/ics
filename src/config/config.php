@@ -14,6 +14,7 @@ return Array(
 	'path' => array(
 		'baseUrl' => 'ics',
 		'logger' => storage_path().'/logs',
+		'tmp' => storage_path().'/tmp',
 		/**
 		 * Lokasi Framework Extjs 4.2
 		 * relative dari public_path

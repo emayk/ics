@@ -265,7 +265,23 @@ class Item extends BaseModel
 		return new Item\PaymentType();
 	}
 
-	public function oTaxType(){
+	public function oTaxType()
+	{
 		return new \Emayk\Ics\Repo\Factory\Tax\Type\Eloquent();
 	}
+
+	public function setRouteAttribute($value)
+	{
+		$sep                         = '_';
+		//"2014-02-24T07:00:00"
+		$date                        = explode('T', $this->delivery_at);
+		//20140224
+		$deliverydate                = str_replace('-', '', $date[0]);
+		$this->attributes[ 'route' ] = $this->supplier_id . $sep .
+			$this->cp_id . $sep . $this->credit . $sep . $this->tax_id . $sep .
+			$this->paymenttype_id . $sep . $this->warehouse_id . $sep .
+			$deliverydate;
+	}
+
+
 }

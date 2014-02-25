@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -15,98 +14,84 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Emay Komarudin
+ *
  **/
 
-namespace Emayk\Ics\Repo\Products;
 
-use Emayk\Ics\Controllers\BaseController as Base;
-use \Input;
+namespace Emayk\Ics\Repo\Factory\Product;
 
-class ProductsController extends Base
+
+interface iProduct
 {
-	protected $products;
-
-	function __construct(ProductsInterface $products)
-	{
-		$this->products = $products;
-	}
-
 	/**
-	 * Display a listing of the resource.
+	 * Menampilkan Daftar Resource
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{
-		return $this->products->all();
-	}
+	public function all();
 
 	/**
-	 * Show the form for creating a new resource.
+	 * Menyimpan Resource Baru
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
-		return $this->products->create();
-	}
+	public function store();
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Menampilkan Form New
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
-		return $this->products->store();
-	}
+	public function create();
 
 	/**
-	 * Display the specified resource.
+	 * Menampilkan Resource
 	 *
 	 * @param  int $id
 	 *
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		return $this->products->show($id);
-	}
+	public function show($id);
 
 	/**
-	 * Show the form for editing the specified resource.
+	 * Menampilkan Data Untuk di edit
 	 *
 	 * @param  int $id
 	 *
 	 * @return Response
 	 */
-	public function edit($id)
-	{
-		return $this->products->edit($id);
-	}
+	public function edit($id);
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update Resource Tertentu dari Storage
 	 *
 	 * @param  int $id
 	 *
 	 * @return Response
 	 */
-	public function update($id)
-	{
-		return $this->products->update($id);
-	}
+	public function update($id);
 
 	/**
-	 * Remove the specified resource from storage.
+	 * Menghapus Spesifikasi Resource dari Storage
 	 *
 	 * @param  int $id
 	 *
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
-		return $this->products->destroy($id);
-	}
+	public function delete($id);
 
+	/**
+	 * Mencari Record berdasarkan Primary key
+	 *
+	 * @param  int $id
+	 *
+	 * @return Response
+	 */
+	public function find($id);
+
+	/**
+	 * Remove from Storage
+	 *
+	 */
+	public function destroy($id);
 }

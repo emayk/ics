@@ -83,7 +83,8 @@ Ext.define('App.model.pradjustment.item', {
 			name: 'warehousename', mapping: 'warehouse.name'
 		},
 		/*Tambahan*/
-		"subtotal"
+		"subtotal",
+		"dp"
 	],
 	proxy: {
 		type: 'rest',

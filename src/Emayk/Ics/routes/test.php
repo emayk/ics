@@ -7,6 +7,14 @@
  **/
 Route::group(array('prefix' => 'test'), function () {
 
+
+
+	Route::get('dat1',function(){
+		$date = "2014-02-24T07:00:00";
+//		$date = strpos($date,'T');
+		$date = explode('T',$date);
+		return str_replace('-','_',$date[0]);
+	});
 //	Route::get('testInsert',function(){
 	Route::get('transorders',function(){
 

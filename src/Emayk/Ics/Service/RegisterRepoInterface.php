@@ -68,9 +68,15 @@ App::bindIf('Emayk\Ics\Repo\Warehousecategory\WarehousecategoryInterface', funct
 
 /*==========  Register Interface Products  ==========*/
 
-App::bindIf('Emayk\Ics\Repo\Products\ProductsInterface', function () {
-	return new Repo\Products\ProductsEloquent( new Repo\Products\Products() );
+//App::bindIf('Emayk\Ics\Repo\Products\ProductsInterface', function () {
+//	return new Repo\Products\ProductsEloquent( new Repo\Products\Products() );
+//});
+
+
+App::bindIf('Emayk\Ics\Repo\Factory\Product\iProduct', function () {
+	return new Repo\Factory\Product\impEloquent( new Repo\Factory\Product\Eloquent() );
 });
+
 
 
 /*==========  Register Interface Units  ==========*/

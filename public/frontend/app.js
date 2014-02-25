@@ -23,17 +23,26 @@ if (fromLocal()) {
 		'cMenu',
 		/*Pengguna*/
 		'cusers',
-		/*Dashboard*/
+	/**
+	 * Produk
+	 */
+
+		'ctypeproduct',
+		'master.ctlProducts', //daftar Barang
+
+	/**
+	 * Dashboard
+	 * */
 		'cdashboard',
-
-
-
-		/*Dashboard*/
-		'cdashboard',
-		/*Proses Pemesanan Barang*/
+	/**
+	 * Proses Pemesanan Barang
+	 * */
 		'cpurchase', // daftar pembelian
 		'cprocespo', // Proses Pemesanan Barang
+		'cpradjustment', // proses pr adjustment oleh pembelian
 		'capprovepr', // persetujuan Pesan barang
+
+		'ccatprod',
 		'ctypeproduct',
 		'master.ctlProducts', //daftar Barang
 		'ccheckgood', //Check Barang

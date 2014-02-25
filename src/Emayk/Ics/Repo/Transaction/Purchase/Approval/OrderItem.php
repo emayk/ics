@@ -17,14 +17,11 @@
 *
 **/
 
-/*==========  Register Resource Products  ==========*/
-//Route::resource('products', 'Emayk\Ics\Repo\Products\ProductsController');
-Route::resource('products', '\Emayk\Ics\Repo\Factory\Product\Controller');
 
-/*==========  Register Resource Productdetails  ==========*/
-Route::resource('productdetails', 'Emayk\Ics\Repo\Productdetails\ProductdetailsController');
-/*==========  Register Resource Producttype  ==========*/
-Route::resource('producttype', 'Emayk\Ics\Repo\Producttype\ProducttypeController');
 
-/*==========  Register Resource Productcategory  ==========*/
-Route::resource('productcategory', 'Emayk\Ics\Repo\Productcategory\ProductcategoryController');
+namespace Emayk\Ics\Repo\Transaction\Purchase\Approval;
+
+use \Emayk\Ics\Repo\Transaction\Purchase\Order\Item\Eloquent;
+class OrderItem extends Eloquent{ }
+
+ 

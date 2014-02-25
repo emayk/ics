@@ -50,8 +50,14 @@ class Model extends BaseModel
 		'adj'
 	];
 
+	/**
+	 * @var array
+	 */
 	protected $hidden = ['item'];
 
+	/**
+	 * @var array
+	 */
 	public $appends = ['totalitems', 'totalagree', 'totaldenied', 'totalunprocess', 'totalpending', 'totalprocessed'];
 
 	/**
@@ -63,27 +69,42 @@ class Model extends BaseModel
 		return $this->item()->Agree()->count();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTotalitemsAttribute()
 	{
-		$total        = $this->item->count();
+		$total = $this->item->count();
 		return $total;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTotaldeniedAttribute()
 	{
 		return $this->item()->Denied()->count();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTotalunprocessAttribute()
 	{
 		return $this->item()->Unprocessed()->count();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTotalpendingAttribute()
 	{
 		return $this->item()->Pending()->count();
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTotalProcessedAttribute()
 	{
 		return $this->item()->Processed()->count();
@@ -328,6 +349,44 @@ class Model extends BaseModel
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public function  cntItem()
+	{
+		return $this->item()->count();
+	}
+
+	/**
+	 * Apakah memiliki Item - item yang sudah diproses.
+	 *
+	 * @return bool
+	 */
+	public function hasItemProcessed()
+	{
+		return ( $this->cntItemProcessed() > 0 );
+	}
+
+	/**
+	 * Mendapatkan Jumlah Item Yang sudah diproses
+	 *
+	 * @return mixed
+	 */
+	public function cntItemProcessed()
+	{
+		return $this->itemProcessed()->count();
+	}
+
+	/**
+	 * Mendapatkan Item - item yang sudah diproses
+	 *
+	 * @return mixed
+	 */
+	public function itemProcessed()
+	{
+		return $this->item()->Processed();
+	}
+
+	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function adj()
@@ -371,7 +430,6 @@ class Model extends BaseModel
 		});
 	}
 
-
 	/**
 	 * Mendapatkan Status di setujui
 	 *
@@ -382,7 +440,6 @@ class Model extends BaseModel
 	public function scopeAgree($query)
 	{
 		return $query->whereStatus(static::$idStatus[ 'agree' ]);
-//		return $query->whereStatus(2);
 	}
 
 	/**
@@ -395,7 +452,6 @@ class Model extends BaseModel
 	public function scopeDenied($query)
 	{
 		return $query->whereStatus(static::$idStatus[ 'denied' ]);
-//		return $query->whereStatus(3);
 	}
 
 	/**
@@ -415,6 +471,13 @@ class Model extends BaseModel
 			return $query->whereStatus($s);
 	}
 
+	/**
+	 * Mendapatkan record - record approval yang sudah diproses
+	 *
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
 	public function scopeProcessed($query)
 	{
 		return $query->whereStatus(static::$idStatus[ 'processed' ]);
@@ -425,6 +488,8 @@ class Model extends BaseModel
 	 *
 	 * Jika Belum ada akan dibuatkan.
 	 *
+	 * @deprecate
+	 * @since dev-24
 	 */
 	public function getAllnewPR()
 	{
@@ -434,18 +499,7 @@ class Model extends BaseModel
 		if ($listnewpr->count() > 0) {
 			$this->createNewRecordFromPrToApr($pr);
 		};
-
 		return $this->New();
-
-//		$listnewpr = [];
-//		/*Ambil dari PR dengan status 1*/
-//		$prs = $this->getPr()->whereStatus(1);
-//		foreach ($prs->get() as $pr) {
-//			$listnewpr[ ] = $pr->toArray();
-//		}
-//
-//		return $listnewpr;
-		/*Ambil dari PR dengan status 1 atau 4*/
 	}
 
 
@@ -517,7 +571,7 @@ class Model extends BaseModel
 				$approvalItem->create(
 					[
 						'product_id'      => $item->product_id,
-						'qtyadj'          => $item->qty,
+//						'qtyadj'          => $item->qty,
 						'adj_id'          => $adjustment->id,
 						'adj_item'        => $item->id,
 						'apr_id'          => $newApproval->id,
@@ -540,15 +594,136 @@ class Model extends BaseModel
 		return $newApproval;
 	}
 
- public function checkCountAndSetupStatus(){
-//	 $items = $this->item();
-//	 $total = $items->count();
-//	 $totalcount =
-//	 if ($total == $totalProcess) {
-//		 $this->status = 5;
-//		 $this->save();
-//	 }
- }
+	/**
+	 *
+	 */
+	public function checkCountAndSetupStatus()
+	{
+		//
+	}
+
+	protected function oOrder()
+	{
+		return new Order();
+	}
+
+	public function moveApprovalToOrder()
+	{
+		/*Jika Approval sudah diproses dan disetujui oleh Management*/
+		if ($this->status == 5) {
+			/*Tambahkan approval id ke table Order*/
+			/*Tambahkan approval item  ke table Order detail dengan approval id yang didapatkan */
+//			return \Input::all();
+
+			/*Generate Document PO */
+
+		}
+	}
+
+	public function moveApprovalToOrder2()
+	{
+		/*Jika Approval sudah diproses dan disetujui oleh Management*/
+		if ($this->status == 5) {
+			/*Dapatkan ItemApproval*/
+			$approvalId    = $this->id;
+			$itemsApproval = $this->item;
+			/*Buat Array Untuk temporary List*/
+			$listOrderItem = [];
+			$listOrder     = [];
+			$listponumbers = [];
+			$typeOrder     = 1; // Pembelian;
+			/*Iterasi Item*/
+			foreach ($itemsApproval as $item) {
+				/*dapatkan Item Adjustment*/
+				$adjustmentItem = $item->adjitem;
+				/*Check PPN */
+//				$prefixtaxtype    = $adjustmentItem->taxtype->prefixdoc;
+				$genPonumber      = $this->generatePoDoc($adjustmentItem, $typeOrder);
+				$listponumbers[ ] = [
+					'no'         => array(
+						'po' => $genPonumber,
+						'id' => $adjustmentItem->id
+					),
+					'adj_id'     => $adjustmentItem->id,
+					'jumlahitem' => $adjustmentItem->count()
+				];
+
+
+				$order   = $this->oOrder()->create([
+					'marktext'       => $genPonumber,
+					'type_id'        => $typeOrder,
+					'supplier_id'    => $adjustmentItem->supplier_id,
+					'cp_id'          => $adjustmentItem->cp_id,
+					'credit'         => $adjustmentItem->credit,
+					'rate'           => $adjustmentItem->rate,
+					'approve_id'     => $approvalId,
+					'tax_id'         => $adjustmentItem->tax_id,
+					'paymenttype_id' => $adjustmentItem->paymenttype_id,
+					'warehouse_id'   => $adjustmentItem->warehouse_id,
+					'curr_id'        => $adjustmentItem->curr_id,
+					'delivery_at'    => $adjustmentItem->delivery_at,
+					'uuid'           => $this->createUuid($this->trxnumber),
+					'status'         => 1,
+					'printed'        => 0
+				]);
+				$orderId = $order->id;
+
+				$this->oOrder()->item()->create([
+//					'marktext'        => $genPonumber,
+					'apritem_id'      => $item->id,
+//					'adjitem_id'      => $adjustmentItem->id,
+					"qty"             => $adjustmentItem->qty,
+					"price"           => $adjustmentItem->price,
+					"product_id"      => $adjustmentItem->product_id,
+					"uuid"            => $this->createUuid($this->trxnumber),
+					'order_id'        => $orderId, //didapatkan setelah buat object order,
+					"createby_id"     => $adjustmentItem->createby_id,
+					"lastupdateby_id" => $adjustmentItem->lastupdateby_id,
+					"dp"              => $adjustmentItem->dp,
+					"subtotal"        => $adjustmentItem->subtotal,
+				]);
+
+			}
+
+			/*Generate PO */
+			return \Response::json($listponumbers);
+//			return \Response::json($listOrder);
+
+
+			/*Buat PO denga $nopo*/
+
+			/*Buat Item $itempo*/
+
+
+			return \Response::json([
+				'Orders'      => count($listOrder),
+				'totalpo'     => count($listponumbers),
+//				'orders'  => count($orders),
+				'ordersitems' => count($listOrderItem)
+			]);
+
+			return count($listOrder);
+			return count($listOrderItem);
+
+		}
+	}
+
+	protected function generatePoDoc(\Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item $adjustmentItem, $typeOrder, $sep = '_')
+	{
+		$o            = $adjustmentItem;
+		$deliverydate = str_replace('-', '', $o->delivery_at);
+		$o            =
+			$typeOrder . $sep .
+			$o->supplier_id . $sep .
+			$o->cp_id . $sep .
+			$o->credit . $sep .
+			$o->tax_id . $sep .
+			$o->paymenttype_id . $sep .
+			$o->warehouse_id . $sep;
+		//.
+		$deliverydate;
+		return $o;
+	}
 }
 
  

@@ -215,6 +215,19 @@ Ext.define('App.controller.cpradjustment', {
 				}
 			},
 
+			'apppradjustmentvpradjustmentform [name=dp]': {
+				keyup: function (dp, ev, opts) {
+//				(total-value dp)
+//				subtotalafterdp
+					var fieldset = dp.up('#priceandqty'),
+						total = fieldset.down('displayfield[name=subtotal]'),
+						dftotalafterdp = fieldset.down('displayfield[name=subtotalafterdp]'),
+						valtotal = total.getValue(),
+						dpval = dp.getValue();
+					var totalafterdp = parseFloat(valtotal) - parseFloat(dpval);
+					dftotalafterdp.setValue(totalafterdp);
+				}
+			},
 			'apppradjustmentvpradjustmentform [name=price]': {
 				keyup: function (eprice, ev, eOpts) {
 					var form = eprice.up('#priceandqty');
@@ -272,7 +285,7 @@ Ext.define('App.controller.cpradjustment', {
 					var r = record;
 					var route = 'Route Is ' +
 
-					log(record);
+						log(record);
 					log(values);
 
 					store.sync();
