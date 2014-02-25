@@ -78,7 +78,7 @@ Ext.define('App.view.pradjustment.edit', {
 						{xtype: 'rownumberer'},
 						{
 							text: 'Product',
-							flex: 2,
+
 							locked: true,
 							columns: [
 								{text: 'Kode', dataIndex: 'prodcode'},
@@ -93,7 +93,7 @@ Ext.define('App.view.pradjustment.edit', {
 						},
 						{
 							text: 'Supplier',
-							flex: 1,
+
 							columns: [
 								{text: 'Name', dataIndex: 'supname',
 									renderer: function (v, m, r) {
@@ -145,7 +145,7 @@ Ext.define('App.view.pradjustment.edit', {
 							]
 						},
 						{
-							text: 'Harga', dataIndex: 'price', flex: 1,
+							text: 'Harga', dataIndex: 'price',
 							editor: {
 								xtype: 'numberfield',
 								minValue: 0
@@ -153,7 +153,7 @@ Ext.define('App.view.pradjustment.edit', {
 							renderer: Ext.util.Format.numberRenderer('0,00')
 						},
 						{
-							text: 'Total', flex: 1,
+							text: 'Total',
 							dataIndex: 'subtotal',
 							renderer: function (v, m, r) {
 								var price = r.get('price'), length = r.get('qty');
