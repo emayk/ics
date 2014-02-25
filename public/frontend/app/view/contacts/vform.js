@@ -17,7 +17,7 @@
  **/
 
 
-Ext.define('App.view.contacts.vForm', {
+Ext.define('App.view.contacts.vform', {
 	extend: 'Ext.form.Panel',
 	alias: 'widget.appcontactsform',
 	requires:[

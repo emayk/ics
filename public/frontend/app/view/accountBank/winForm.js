@@ -18,7 +18,7 @@
 
 
 
-Ext.define('App.view.accountBank.WinForm', {
+Ext.define('App.view.accountBank.winForm', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.appaccountBankWinForm',
 //	frame: true,

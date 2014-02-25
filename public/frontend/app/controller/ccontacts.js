@@ -25,7 +25,7 @@ Ext.define('App.controller.ccontacts', {
 	views: [
 		'App.view.contacts.vcontacts',
 		'App.view.contacts.winForm',
-		'App.view.contacts.vForm',
+		'App.view.contacts.vform',
 		'App.form.combobox.cbDept',
 		'App.form.combobox.cbPositions'
 	],

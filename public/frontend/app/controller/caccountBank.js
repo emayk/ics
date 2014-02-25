@@ -24,7 +24,7 @@ Ext.define('App.controller.caccountBank', {
 	extend: 'Ext.app.Controller',
 	views: [
 		'App.view.accountBank.vaccountBank',
-		'App.view.accountBank.WinForm',
+		'App.view.accountBank.winForm',
 		'App.view.accountBank.form',
 		'App.view.accountBank.Lists'
 	],
