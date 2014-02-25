@@ -21,7 +21,7 @@ Ext.define('App.view.contacts.winForm', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.appcontactswin',
 	requires: [
-		'App.view.contacts.vForm'
+		'App.view.contacts.vform'
 	],
 	config: {
 		isReadonly: false
