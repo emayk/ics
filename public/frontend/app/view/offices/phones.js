@@ -17,7 +17,7 @@
  **/
 
 
-Ext.define('App.view.offices.Phones', {
+Ext.define('App.view.offices.phones', {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.appofficesgridphone',
 	layout: { type: 'fit', align: 'stretch'},

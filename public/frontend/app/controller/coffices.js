@@ -31,7 +31,7 @@ Ext.define('App.controller.coffices', {
 		'App.form.combobox.cbCities',
 
 		'App.view.offices.winAddLocation',
-		'App.view.offices.Phones',
+		'App.view.offices.phones',
 //		'App.view.offices.contacts',
 //		'App.view.contacts.vcontacts',
 		'App.view.contacts.vLists',
