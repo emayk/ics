@@ -36,7 +36,7 @@ class Model extends BaseModel
 
 	public function getItem()
 	{
-		return new Item();
+		return new item();
 	}
 
 	public function scopeNew($query)

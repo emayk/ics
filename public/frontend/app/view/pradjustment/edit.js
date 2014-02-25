@@ -81,10 +81,10 @@ Ext.define('App.view.pradjustment.edit', {
 							flex: 2,
 							locked: true,
 							columns: [
-								{text: 'Kode', dataIndex: 'prodcode', flex: .3},
-								{text: 'Nama', dataIndex: 'prodname', flex: .3},
-								{text: 'Jenis', dataIndex: 'typename', flex: .3},
-								{text: 'Kategory', dataIndex: 'catname', flex: .3,
+								{text: 'Kode', dataIndex: 'prodcode'},
+								{text: 'Nama', dataIndex: 'prodname'},
+								{text: 'Jenis', dataIndex: 'typename'},
+								{text: 'Kategory', dataIndex: 'catname',
 									renderer: function (v, m, r) {
 										return Ext.String.trim(v);
 									}
@@ -95,7 +95,7 @@ Ext.define('App.view.pradjustment.edit', {
 							text: 'Supplier',
 							flex: 1,
 							columns: [
-								{text: 'Name', dataIndex: 'supname', flex: 1,
+								{text: 'Name', dataIndex: 'supname',
 									renderer: function (v, m, r) {
 										var spname = r.get('supplier_id');
 										return (spname == 0 ) ? 'Belum di set' : v;
@@ -113,8 +113,8 @@ Ext.define('App.view.pradjustment.edit', {
 						{
 							text: 'Pengiriman',
 							columns: [
-								{text: 'Tanggal', dataIndex: 'delivery_at', flex: 1, xtype: 'datecolumn'},
-								{text: 'Gudang', dataIndex: 'warehousename', flex: 1,
+								{text: 'Tanggal', dataIndex: 'delivery_at', xtype: 'datecolumn'},
+								{text: 'Gudang', dataIndex: 'warehousename',
 									renderer: function (v, m, r) {
 										var warehouse_id = r.get('warehouse_id');
 										return (warehouse_id == 0 ) ? 'Belum di set' : v;
@@ -137,7 +137,6 @@ Ext.define('App.view.pradjustment.edit', {
 										var formattedval = Ext.util.Format.number(v, '0,00');
 										return formattedval + ' ' + r.get('produnit');
 									},
-									flex: 1,
 									editor: {
 										xtype: 'numberfield',
 										minValue: 0

@@ -27,7 +27,7 @@ use Emayk\Ics\Models\BaseModel;
  *
  * @package Emayk\Ics\Repo\Transaction\Purchase\Request
  */
-class Item extends BaseModel
+class item extends BaseModel
 {
 	/**
 	 * @var array
