@@ -8,15 +8,70 @@
 Route::group(array('prefix' => 'test'), function () {
 
 
+	Route::get('newapproval1', function () {
+		$queue = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Queue();
+		if ($queue->all()->count() == 0) {
+			$queue->createQueue();
+		}
+		return $queue->moveToOrder();
 
-	Route::get('dat1',function(){
+//		$itemApproval = new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
+////			$itemAdjustment = new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
+//
+//		/**
+//		 * dapatkan id item yang sudah diproses
+//		 */
+//		$itemIdsApproval = $itemApproval->Agree()->where('queue_id', '=', 0)->lists('id');
+//		$idAdjItems      = [];
+//		foreach ($itemIdsApproval as $iditem) {
+//			$itemAppr = $itemApproval->findOrFail($iditem);
+//			/**
+//			 * Adjustment Item
+//			 */
+//			$adjustmentItem      = $itemAppr->adjitem;
+//			$adjustmentItemRoute = $adjustmentItem->route;
+//			$adjustmentId        = $itemAppr->adj_id;
+//			$adjustmentItemId    = $adjustmentItem->id;
+//
+//			$approvalId     = $itemAppr->apr_id;
+//			$approvalItemId = $itemAppr->id;
+//
+//			$record = [
+//				'route'      => $adjustmentItemRoute,
+//				'adj_id'     => $adjustmentId,
+//				'adjitem_id' => $adjustmentItemId,
+//				'apr_id'     => $approvalId,
+//				'apritem_id' => $approvalItemId,
+//				'status'     => 1
+//			];
+//
+//			$createRecord = true;
+//			if ($createRecord) {
+//				$queue = $queue->create($record);
+//				/*setup status queue_id ke id $queue->id */
+//				$itemAppr->queue_id = $queue->id;
+//				$itemAppr->save();
+//				$idAdjItems[ ] = $queue->toArray();
+//
+//			} else {
+//				$idAdjItems[ ] = ['mode' => $createRecord, 'results' => $record ];
+//			}
+//
+//		}
+//		return $idAdjItems;
+		return $queue->createQueue();
+//		return $itemIdsApproval;
+	});
+
+
+	Route::get('dat1', function () {
 		$date = "2014-02-24T07:00:00";
 //		$date = strpos($date,'T');
-		$date = explode('T',$date);
-		return str_replace('-','_',$date[0]);
+		$date = explode('T', $date);
+		return str_replace('-', '_', $date[ 0 ]);
 	});
 //	Route::get('testInsert',function(){
-	Route::get('transorders',function(){
+	Route::get('transorders', function () {
 
 //			$tmp = \DB::table('trans_orders_tmp')->insert(
 //				['trxnumber' => 'Trx-'.time()]
@@ -31,8 +86,8 @@ Route::group(array('prefix' => 'test'), function () {
 //		$idsroot = \Emayk\Ics\Repo\Menu\Menu::whereParentId(0)->get(array('id', 'text')); //->lists('id','text');
 		$idsroot = $model::whereParentId(0)->get(array('id', 'text')); //->lists('id','text');
 //		return $idsroot;
-		$menus = [];
-		$checked = array(false,true);
+		$menus   = [];
+		$checked = array(false, true);
 		foreach ($idsroot as $root) {
 			$children = [];
 			/*Cari Child*/
@@ -40,11 +95,11 @@ Route::group(array('prefix' => 'test'), function () {
 			$child  = $model::whereParentId($idroot)->get(array('id', 'text'));
 
 			foreach ($child as $c) {
-				$simulasi_checked = $checked[rand(0,1)];
-				$children[ ] = [
-					'id'   => $c->id,
-					'text' => $c->text,
-					'leaf' => true,
+				$simulasi_checked = $checked[ rand(0, 1) ];
+				$children[ ]      = [
+					'id'      => $c->id,
+					'text'    => $c->text,
+					'leaf'    => true,
 					'checked' => $simulasi_checked
 				];
 			}

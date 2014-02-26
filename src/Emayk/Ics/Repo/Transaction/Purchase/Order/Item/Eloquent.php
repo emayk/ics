@@ -34,7 +34,7 @@ class Eloquent extends BaseModel
 
 	public function order()
 	{
-		return $this->belongsTo('', 'order_id');
+		return $this->belongsTo('Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent', 'order_id');
 	}
 
 

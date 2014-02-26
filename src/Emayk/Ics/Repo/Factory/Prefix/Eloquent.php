@@ -25,6 +25,18 @@ use Emayk\Ics\Models\BaseModel;
 class Eloquent extends BaseModel
 {
 	protected $table = 'master_prefix_doc';
+
+	public  function getPO()
+	{
+		/*@todo : ganti dengan nama value di db*/
+		return 'PO-';
+	}
+
+	public function getPR()
+	{
+		return 'PR-';
+	}
+
 }
 
  

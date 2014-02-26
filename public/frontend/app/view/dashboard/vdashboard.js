@@ -41,26 +41,26 @@ Ext.define('App.view.dashboard.vdashboard', {
 					xtype: 'panel', flex: .3,
 					title: 'Master',
 					bodyPadding: 10,
-//					items: [
-//						{
-//							xtype: 'container',
-//							margin: '0 0 5 0',
-//							layout: { type: 'hbox', align: 'stretch'},
-//							items: [
-//								{
-//									xtype: 'button', flex: .3,
-//									text: 'Product',
-//									action: 'masterproduct'
-//								},
-//								{
-//									xtype: 'button', flex: .3,
-//									margin: '0 5 0 5',
-//									text: 'Setting Saldo Product',
-//									action: 'setupsaldoproduct'
-//								}
-//							]
-//						}
-//					]
+					items: [
+						{
+							xtype: 'container',
+							margin: '0 0 5 0',
+							layout: { type: 'hbox', align: 'stretch'},
+							items: [
+								{
+									xtype: 'button', flex: .3,
+									text: 'Product',
+									action: 'masterproduct'
+								},
+								{
+									xtype: 'button', flex: .3,
+									margin: '0 5 0 5',
+									text: 'Setting Saldo Product',
+									action: 'setupsaldoproduct'
+								}
+							]
+						}
+					]
 				},
 				/*Kolom 2*/
 				{
@@ -72,19 +72,42 @@ Ext.define('App.view.dashboard.vdashboard', {
 				/*Kolom 3*/
 				{
 					xtype: 'panel', flex: .25,
-//					title: 'Master',
+					title: 'Management',
+					itemId: 'management',
 					bodyPadding: 10,
-//					items: [
-//						{
-//							xtype: 'button', text: 'Produk'
-//						},
+					items: [
+						{
+							xtype: 'button', text: 'Daftar Persetujuan Pengajuan Barang',
+							iconCls: 'grid',
+							itemId: 'approvalprbtn',
+							handler: function (btn) {
+								var tab = btn.up('tabpanel');
+								if (!tab) {
+									tab = btn.up('devmainpanel');
+									if (!tab) {
+										tab = btn.up('mainpanel');
+									} else {
+										Ext.Error.raise('Komponent Tab tidak diketemukan');
+									}
+								}
+								log(tab);
+								var panel = 'App.view.approvepr.vapprovepr';
+								var title = btn.text;
+
+								App.util.box.openNewtab(tab,title,panel,{
+									iconCls: 'grid',closable: true,title: title
+								});
+
+
+							}
+						},
 //						{
 //							xtype: 'button', text: 'Produk'
 //						},
 //						{
 //							xtype: 'button', text: 'Produk'
 //						}
-//					]
+					]
 				}
 			]
 		},
@@ -98,7 +121,7 @@ Ext.define('App.view.dashboard.vdashboard', {
 				/*Kolom 1*/
 				{
 					xtype: 'panel', flex: .3,
-					title: 'Aksi',
+					title: 'Aksi Pengguna',
 					bodyPadding: 10,
 					defaults: {
 						margin: '5 5 5 5'

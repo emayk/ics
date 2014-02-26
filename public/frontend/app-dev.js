@@ -25,7 +25,8 @@
 Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
 if (fromLocal()) {
-//    requires = [];
+
+
 	controllers = [
 	/**
 	 * Core
@@ -34,24 +35,32 @@ if (fromLocal()) {
 		'TranslationManager',
 		'cMenu',
 		'cDomain',
-		/*Pengguna*/
-		'cusers',
+	/**
+	 * Import
+	 */
+//		'cImport',
+
+//		/*Pengguna*/
+//		'cusers',
 
 //
-		/*Dashboard*/
+//		/*Dashboard*/
 		'cdashboard',
-		/*Proses Pemesanan Barang*/
+//		/*Proses Pemesanan Barang*/
 		'cpurchase', // daftar pembelian
 		'cprocespo', // Proses Pemesanan Barang
 		'cpradjustment', // proses pr adjustment oleh pembelian
 		'capprovepr', // persetujuan Pesan barang oleh management
-
-	/**
-	 * Produk
-	 */
+		'cprorder', // daftar PO
+//
+//	/**
+//	 * Produk
+//	 */
 		'ccatprod',
 		'ctypeproduct',
-		'master.ctlProducts', //daftar Barang
+		'master.ctlProducts', //daftar Barang, seting hpp
+
+
 //		'ccheckgood', //Check Barang
 		/*/end Proses Pemesanan Barang*/
 //

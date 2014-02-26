@@ -17,6 +17,10 @@ Ext.define('App.controller.master.ctlProducts', {
 		'App.view.products.history',
 		'App.view.products.import',
 
+		/*Setup Hpp*/
+		'App.view.products.setuphpp',
+
+
 		/*
 		 * Flow Add Product
 		 * */
@@ -38,6 +42,9 @@ Ext.define('App.controller.master.ctlProducts', {
 
 	models: [
 		'App.model.product.product',
+		/*Hpp*/
+		'App.model.product.hpp',
+
 		'App.model.product.detail',
 		'App.model.product.type',
 		'App.model.product.category',
@@ -55,6 +62,9 @@ Ext.define('App.controller.master.ctlProducts', {
 	],
 	stores: [
 		'App.store.product.Product',
+		/*Hpp*/
+		'App.store.product.hpp',
+
 		'App.store.product.pstocks',
 		'App.store.product.stockhistory',
 		// stores Combobox
@@ -100,6 +110,18 @@ Ext.define('App.controller.master.ctlProducts', {
 	 */
 	init: function () {
 		var me = this;
+
+		me.listen({
+			component: {
+				'appdashboardvdashboard button[action=setupsaldoproduct]': {
+					/**
+					 * Fire event untuk Dashboard Buka Setup Saldo barang
+					 */
+					'click': me.openListProductHppFromBtnDashboard
+				}
+			}
+		});
+
 		me.control({
 			/**
 			 * Grid Product
@@ -110,7 +132,47 @@ Ext.define('App.controller.master.ctlProducts', {
 					grid.down('grid#gridProducts').getStore().load();
 				}
 			},
+			/**
+			 * Grid Edit Hpp
+			 */
+			'appviewproductsetuphpp grid' :{
+				edit: function(editor,o){
+					var grid = o.grid;
+					var store = grid.getStore();
+					store.sync({
+						success: function(res,opts){
+							log(res);
+//							var r = Ext.JSON.decode(res.responseText,true);
+//							log(r);
+//							if (r){
+//								var success = r.success;
+//								if (success){
+									App.util.box.info('Berhasil diupdate');
+//								}else{
+//									App.util.box.error('Gagal diupdate');
+//								}
+//							}
+						},
+						failure: function(res,opts){
+							App.util.box.error('Maaf ada Kesalahan saat Update record');
+							return false;
+						}
+					});
+
+					log(editor);
+					log(o);
+				}
+			},
+			/**
+			 * Cari Produk
+			 */
 			'productList toolbar #searchtext': {
+				/**
+				 * Saat Cari Produck
+				 * @param field
+				 * @param e
+				 * @param opts
+				 */
 				specialkey: function (field, e, opts) {
 					if (e.getKey() == e.ENTER) {
 						var value = field.getValue();
@@ -122,8 +184,8 @@ Ext.define('App.controller.master.ctlProducts', {
 							var store = grid.getStore();
 							if (store) {
 								var proxy = store.getProxy();
-								if (proxy){
-									proxy.setExtraParam('search',value);
+								if (proxy) {
+									proxy.setExtraParam('search', value);
 									store.reload();
 								}
 							}
@@ -134,6 +196,9 @@ Ext.define('App.controller.master.ctlProducts', {
 					}
 				}
 			},
+			/**
+			 * Tombol Cari Produk
+			 */
 			'productList toolbar #searchbtn': {
 				click: function (btn) {
 					log(btn.text);
@@ -166,6 +231,9 @@ Ext.define('App.controller.master.ctlProducts', {
 				 */
 				itemcontextmenu: me.createContextMenu
 			},
+			/**
+			 * Form Basic
+			 */
 			'formproductbasicinfo': {
 				/**
 				 * Render Form Basic Informasi
@@ -186,20 +254,20 @@ Ext.define('App.controller.master.ctlProducts', {
 				}
 			},
 			/**
-			 * Save Informasi Product
+			 * Close Product Info Panel
 			 */
 			'formproductbasicinfo button#close': {
 				click: function (btn) {
 					/*Check apakah New or exist*/
 					var panel = btn.up('productinfo'),
 						newrecord = panel.new;
-//					if (newrecord) Ext.MessageBox.confirm('Konfirmasi Keluar', 'Anda yakin akan menutup ?', function (btn) {
 					panel.close();
-//					});
-
 				}
 			},
 
+			/**
+			 * Simpan Record Form Basic
+			 */
 			'formproductbasicinfo button#save': {
 				/**
 				 * Proses Simpan
@@ -253,6 +321,9 @@ Ext.define('App.controller.master.ctlProducts', {
 					});
 				}
 			},
+			/**
+			 * Render Form Detail
+			 */
 			'formproductdetail': {
 				/**
 				 * Render Form Detail
@@ -289,7 +360,9 @@ Ext.define('App.controller.master.ctlProducts', {
 ////					return !newrecord;
 //				}
 			},
-
+			/**
+			 * Form Detail Tombol Simpan
+			 */
 			'formproductdetail button#save': {
 				/**
 				 * Save Informasi Detail
@@ -335,7 +408,6 @@ Ext.define('App.controller.master.ctlProducts', {
 			/**
 			 * Add New Product
 			 */
-//			'productstab button#add': {
 			'productList button#add': {
 				click: function (btn) {
 					log('Product Add Button fire!');
@@ -556,157 +628,35 @@ Ext.define('App.controller.master.ctlProducts', {
 			newTab = tabs.add(component);
 		}
 		tabs.setActiveTab(newTab);
+	},
+	openListProductHppFromBtnDashboard: function (btn) {
+		/*cari tabpanel*/
+		var tab = btn.up('tabpanel');
+
+		if (!tab) {
+			tab = btn.up('mainpanel');
+			if (!tab) {
+				tab = btn.up('devmainpanel');
+			}
+		}
+
+		if (!tab) Ext.error.raise('Tidak diketemukan Tab Panel');
+
+		var title = 'Setting Hpp Produk';
+		var newTab = tab.items.findBy(
+			function (tab) {
+				return tab.title === title;
+			});
+
+		if (!newTab) {
+			var panel = Ext.create('App.view.products.setuphpp', {
+				title: title,
+				iconCls: 'grid',
+				closable: true
+			});
+			newTab = tab.add(panel);
+		}
+		tab.setActiveTab(newTab);
+
 	}
 });
-
-/* messageErrorBox: function () {
- msgError('Failure Creation Product , Please Try Again');
- },*/
-/*    add_product_detail: function (panel, tab, id, detail) {
- var me = this, mdldetail = Ext.create('App.model.product.detail', detail);
-
- mdldetail.save({
- success: function (d) {
- log('Product detail ' + d.get('id') + 'Success Added');
- Ext.Msg.show({
- title: 'Success Added with id ' + id,
- icon: Ext.MessageBox.INFO,
- msg: 'Thanks',
- buttons: Ext.MessageBox.OK
- });
- tab.remove(panel);
- },
- failure: function () {
- me.messageErrorBox();
- }
- });
- },*/
-/*    add_new_product: function () {
- var me = this, title = 'New Product ';
- var component = Ext.create('App.view.products.formProduct',
- {
- title: title
- }
- );
- if (isDebug()) {
- var model = Ext.create('App.model.product.product', {
- name: randomText(10),
- cat_id: randomInt(22, 6),
- contruction: randomText(3),
- nodesign: randomText(5),
- type_id: randomInt(22),
- weight: randomInt(10),
- unitweight_id: randomInt(10),
- width: randomInt(100),
- unitwidth_id: randomInt(22)
- });
- *//**
- * Setup Value Detail
- *//*
- component.down('[name=det_color_id]').setValue(4);
- component.down('[name=det_unit_id]').setValue(randomInt(10));
- component.down('[name=det_grade_id]').setValue(randomInt(8));
- component.down('[name=det_salesprice]').setValue(randomInt(10000));
- component.down('[name=det_currsp_id]').setValue(randomInt(5));
- component.down('[name=det_salespricemin]').setValue(randomInt(9999));
- component.down('[name=det_currspm_id]').setValue(randomInt(5));
- component.getForm().loadRecord(model);
- }
- this.open_new_tab(title, component);
- },*/
-/*open_new_tab_product_info: function (record) {
- var title = 'Product ' + record.get('name');
- var component = Ext.create('App.view.products.panelinfo', {
- prodId: record.get('id'),
- title: title,
- autoScroll: true,
- iconCls: 'home',
- closable: true,
- record: record,
- stockStore: Ext.create('App.store.product.pstocks')
- });
-
- component.down('form#detail').setTitle('Information Of ' + record.get('name'));
- component.down('form#detail').loadRecord(record);
-
- var pStock = component.down('#panelStock');
- var gridstock = component.down('gridProductStocks#gridStocks'),
- pg1 = component.down('gridProductStocks#gridStocks #pgstockStore1');
-
- pStock.setTitle('Stock Product ' + record.get('name'));
- gridstock.reconfigure(component.stockStore);
- pg1.bindStore(component.stockStore);
- gridstock.getStore().getProxy().setExtraParam('product_id', record.get('id'));
- gridstock.getStore().load();
- this.open_new_tab(title, component)
- },*/
-
-
-
-/*show_page_addstock: function (productid) {
- var pid = productid || randomInt(90);
- var pageStock;
- if (!pageStock) {
- *//*
- * Buat Stock Model
- * *//*
- var mdlstock = Ext.create('App.model.product.Stock', {
- product_id: pid
- });
- *//*
- Buat Page Stock
- * *//*
- var title = 'Add Stock For Product ID ' + pid;
-
- pageStock = Ext.create('App.view.products.add.stock', {
- title: title, closable: true
- });
- }
- this.open_new_tab(title, pageStock);
- }*/
-
-
-
-/*click: function (btn) {
- var me = this;
- var panel = btn.up('productform');
- var f = btn.up('form').getForm();
- var v = f.getValues();
- if (!f.isValid()) return msgError('Please Validate Form');
- if (v.salesprice < v.salespricemin)
- return msgError('Sales Price Mustbe Higher than Sales Price Minimal');
-
- var product = Ext.create('App.model.product.product', {
- name: v.name,
- nodesign: v.nodesign,
- contruction: v.contruction,
- cat_id: v.cat_id,
- type_id: v.type_id,
- weight: v.weight,
- unitweight_id: v.unitweight_id,
- width: v.width,
- unitwidth_id: v.unitwidth_id
- });
- var tab = me.getTab();
- product.save({
- success: function (p) {
- var pid = p.get('id');
- log(p);
- me.saved = true;
- var detail = {
- product_id: pid,
- color_id: v.det_color_id,
- unit_id: v.det_unit_id,
- grade_id: v.det_grade_id,
- salesprice: v.det_salesprice,
- salespricemin: v.det_salespricemin,
- currsp_id: v.det_currsp_id,
- currspm_id: v.det_currspm_id
- };
- me.add_product_detail(panel, tab, pid, detail);
- },
- failure: function (p) {
- me.messageErrorBox();
- }
- });
- }*/

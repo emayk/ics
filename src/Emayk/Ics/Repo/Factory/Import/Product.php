@@ -22,7 +22,59 @@
 namespace Emayk\Ics\Repo\Factory\Import;
 
 
-class Product {
+class Product extends Base{
+	protected $folder = '';
+	protected $file;
+	protected $location;
+
+	/**
+	 * @param mixed $location
+	 */
+	public function setLocation($location)
+	{
+		$this->location = $location;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLocation()
+	{
+		return $this->location;
+	}
+
+	/**
+	 * @param mixed $file
+	 */
+	public function setFile($file)
+	{
+		$this->file = $file;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFile()
+	{
+		return $this->file;
+	}
+
+	/**
+	 * @param string $folder
+	 */
+	public function setFolder($folder)
+	{
+		$this->folder = $folder;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFolder()
+	{
+		return $this->folder;
+	}
+
 
 }
 

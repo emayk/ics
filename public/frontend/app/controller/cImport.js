@@ -10,33 +10,35 @@ Ext.define('App.controller.cImport', {
     // models: [],
     // stores: [],
     views: [
-    'import.import', /*Main Page Import*/
-    'import.departement',
+    'App.view.import.vImport', /*Main Page Import*/
+    'App.view.import.departement',
     ],
     refs: [
-        {ref: 'card', selector: 'cardimport'},
-        { ref : 'pageDept', selector : 'cardimport #departement'},
-        { ref : 'formDept', selector : 'cardimport #departement form'},
-        { ref : 'gridDept', selector : 'cardimport #departement grid#griddept'},
+        {ref: 'card', selector: 'appviewimportvimport'},
+        { ref : 'pageDept', selector : 'appviewimportvimport #departement'},
+        { ref : 'formDept', selector : 'appviewimportvimport #departement form'},
+        { ref : 'gridDept', selector : 'appviewimportvimport #departement grid#griddept'},
         // { ref : 'formDeptDlBtn', selector : 'cardimport #dept form #download'},
         // { ref : 'formDeptUlBtn', selector : 'cardimport #dept form #upload'},
     ],
     init: function(application) {
     	var me = this;
         me.control({
-        	'cardimport #departement form button#upload' : { click : me.onUpload_import_Departement },
-        	'cardimport #departement form button#download' : { click : me.onDownload_import_Departement },
-        	'cardimport #departement grid button#savetoserver' : { click : me.onsavetoserver_grid_Click },
-        	'cardimport toolbar menu#typeImport menuitem' : {
+        	'appviewimportvimport #departement form button#upload' : { click : me.onUpload_import_Departement },
+        	'appviewimportvimport #departement form button#download' : { click : me.onDownload_import_Departement },
+//        	'appviewimportvimport #departement grid button#savetoserver' : { click : me.onsavetoserver_grid_Click },
+        	'appviewimportvimport toolbar menu#typeImport menuitem' : {
         		click : me.onChangeTypeImport
         	}
         });
-        log('Initialize...');
+
     },
 
     onChangeTypeImport: function(item, e, opt){
     	var me = this;
-    	var p = item.up('cardimport').getLayout();
+    	var p = item.up('appviewimportvimport').getLayout();
+	    log(p);
+	    log(item);
     	p.setActiveItem(item.itemId);
     },
 

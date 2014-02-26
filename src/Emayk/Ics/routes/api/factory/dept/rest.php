@@ -19,3 +19,5 @@
 
 /*==========  Register Resource Departements  ==========*/
 Route::resource('dept','Emayk\Ics\Repo\Dept\DeptController');
+
+Route::resource('departement','\Emayk\Ics\Repo\Factory\Departement\Controller');

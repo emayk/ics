@@ -54,6 +54,10 @@ class Eloquent extends BaseModel{
 		return $this->hasMany('\Emayk\Ics\Repo\Transorderdetails\Transorderdetails','product_id');
 	}
 
+	/**
+	 * Barang - barang yang sudah dijual
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function sale()
 	{
 		return $this->hasMany('\Emayk\Ics\Repo\Saleproduct\Saleproduct', 'product_id');
@@ -66,16 +70,19 @@ class Eloquent extends BaseModel{
 	 */
 	public function category()
 	{
-		return $this->belongsTo('Emayk\Ics\Repo\Productcategory\Productcategory', 'cat_id');
+
+		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Product\Category\Eloquent', 'cat_id');
 	}
 
 	public function getCatnameAttribute()
 	{
 		return $this->attributes[ 'catname' ] = $this->category()->pluck('name');
+//		return $this->attributes[ 'catname' ] = $this->category->name;
 	}
 
 	public function getWidthnameAttribute()
 	{
+//		return $this->attributes[ 'widthname' ] = $this->unitwidth->name;//->pluck('name');
 		return $this->attributes[ 'widthname' ] = $this->unitwidth()->pluck('name');
 	}
 
@@ -151,7 +158,16 @@ class Eloquent extends BaseModel{
 	 */
 	public function detail()
 	{
-		return $this->hasOne('Emayk\Ics\Repo\Productdetails\Productdetails', 'product_id');
+		return $this->hasOne('\Emayk\Ics\Repo\Factory\Product\Detail\Eloquent', 'product_id');
+	}
+
+	/**
+	 * Mendapatkan Sales Price
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function price()
+	{
+		return $this->hasOne('\Emayk\Ics\Repo\Factory\Product\SalesPrice\Eloquent', 'product_id');
 	}
 
 

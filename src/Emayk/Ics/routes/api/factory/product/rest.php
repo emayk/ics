@@ -28,3 +28,8 @@ Route::resource('producttype', 'Emayk\Ics\Repo\Producttype\ProducttypeController
 
 /*==========  Register Resource Productcategory  ==========*/
 Route::resource('productcategory', 'Emayk\Ics\Repo\Productcategory\ProductcategoryController');
+//Route::resource('product/category', 'Emayk\Ics\Repo\Productcategory\ProductcategoryController');
+Route::resource('product/category', '\Emayk\Ics\Repo\Factory\Product\Category\Controller');
+
+/*Setting Hpp Produk*/
+Route::resource('product/hpp', '\Emayk\Ics\Repo\Factory\Product\SalesPrice\Controller');

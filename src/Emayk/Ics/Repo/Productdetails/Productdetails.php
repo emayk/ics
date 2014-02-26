@@ -19,8 +19,8 @@
 *
 **/
 namespace Emayk\Ics\Repo\Productdetails;
-use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 use Illuminate\Database\Eloquent\Model;
+use Emayk\Ics\Support\Dummy\Faker\AbstractGenerate;
 /**
  * An Eloquent Model: 'Emayk\Ics\Repo\Productdetails\Productdetails'
  *

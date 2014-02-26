@@ -140,4 +140,8 @@ class BaseModel extends Model
 	{
 		return uniqid(str_replace('-', '_', $trxnumber));
 	}
+
+	public function getPrefix(){
+		return new \Emayk\Ics\Repo\Factory\Prefix\Eloquent();
+	}
 }

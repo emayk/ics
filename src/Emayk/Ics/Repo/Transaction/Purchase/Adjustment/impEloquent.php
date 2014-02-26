@@ -52,11 +52,23 @@ class impEloquent implements iAdjustment
 		$success = true;
 		/*List Item Id yang akan diajukan*/
 		$setitemapproved = Input::get('setitemapproved');
-		$items           = ( strpos($setitemapproved, ',') ) ? explode(",", $setitemapproved) : [$setitemapproved];
-		$adjustmentId    = Input::get('adjpr');
-		$adjustmentTrx   = Input::get('adjnumber');
-		$adjustment      = $this->adjustment->findOrFail($adjustmentId);
-//		return $adjustment;
+		$adjustmentId  = Input::get('adjpr');
+		$adjustmentTrx = Input::get('adjnumber');
+		$adjustment    = $this->adjustment->findOrFail($adjustmentId);
+
+//		if ($setitemapproved == 'movestatus') {
+//			$adjustment->status = 5;
+//			$success = $adjustment->save();
+//			$response      = ( $success )
+//				? [
+//					'success' => true,
+//					'msg'     => 'Penyesuaian Pembelian sudah berhasil diajukan ke Management <br/>'
+//				]
+//				: ['success' => false, 'reason' => 'Cannot Approve , silahkan coba lagi'];
+//			return Response::json($response);
+//		}
+
+		$items         = ( strpos($setitemapproved, ',') ) ? explode(",", $setitemapproved) : [$setitemapproved];
 		if ($adjustment->status != 1) {
 			// nilai 1 == belum diproses;
 			/**
@@ -68,8 +80,6 @@ class impEloquent implements iAdjustment
 			$approval = $approval->whereTrxnumber($prefix . $adjustment->trxnumber)->first();
 
 		} else {
-
-//		return $adjustment;
 			$approval = $this->adjustment
 				->oApproval()
 				->moveAdjustmentToApproval($adjustmentId, $adjustmentTrx, $items);

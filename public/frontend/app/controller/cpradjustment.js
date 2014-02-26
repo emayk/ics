@@ -66,6 +66,9 @@ Ext.define('App.controller.cpradjustment', {
 		me.listen({
 			component: {
 				'appdashboardvdashboard button[action=listadjustmentpr]': {
+					/**
+					 * Fire event untuk Dashboard List Adjustment PR dari dashboard
+					 */
 					'click': me.openListAdjustmentPrFromBtn
 				}
 			}
@@ -73,9 +76,12 @@ Ext.define('App.controller.cpradjustment', {
 
 		me.control({
 			'apppradjustmentvpradjustmentedit': {
-//				beforeactive: function () {
-//					return false;
-//				},
+				/**
+				 * Sebelum Render Cek apakah Adjustment Id ada ?
+				 * Jika tidak ada maka error raise
+				 * @param panel
+				 * @returns {boolean}
+				 */
 				beforerender: function (panel) {
 					/*Jika tidak memiliki Adjustment ID maka render tidak bisa dilakukan*/
 					if (!panel.getAdjid()) {
@@ -89,9 +95,15 @@ Ext.define('App.controller.cpradjustment', {
 				render: function (panel) {
 				}
 			},
-			/*Pengajuan Pemesanan barang dan Ajukan ke atasan*/
+			/**
+			 * Pengajuan Pemesanan barang dan Ajukan ke atasan
+			 * */
 			'apppradjustmentvpradjustmentedit >toolbar [action=save]': {
-				/*Save Record Penyesuaian Pembelian */
+				/**
+				 * Simpan Record Penyesuaian Pembelian
+				 * @param btn
+				 * @returns {boolean}
+				 */
 				click: function (btn) {
 					log('Adjustmen dan akan diajukan ke Atasan', btn.text);
 					/*Checking apakah ada Status yang masih belum diproses*/
@@ -163,6 +175,9 @@ Ext.define('App.controller.cpradjustment', {
 							});
 							var setitemapproved = setitems.slice(0, -1);
 
+							if (!setitemapproved) {
+								setitemapproved = 'movestatus';
+							}
 							var params = {
 								adjpr: adjpr,
 								adjnumber: adjnumber,
@@ -202,6 +217,11 @@ Ext.define('App.controller.cpradjustment', {
 				}
 			},
 			'apppradjustmentvpradjustmentedit > #listitempr': {
+				/**
+				 * Proses Simpan List item PR
+				 * @param editor
+				 * @param object
+				 */
 				edit: function (editor, object) {
 					var grid = object.grid;
 					var store = grid.getStore();
@@ -210,15 +230,23 @@ Ext.define('App.controller.cpradjustment', {
 				selectionchange: me.on_selection_grid
 			},
 			'apppradjustmentvpradjustmentlists': {
+				/**
+				 * Render List Adjustment Produk
+				 * @param panel
+				 */
 				render: function (panel) {
 					panel.store.load();
 				}
 			},
 
 			'apppradjustmentvpradjustmentform [name=dp]': {
+				/**
+				 * Keyup Dp
+				 * @param dp
+				 * @param ev
+				 * @param opts
+				 */
 				keyup: function (dp, ev, opts) {
-//				(total-value dp)
-//				subtotalafterdp
 					var fieldset = dp.up('#priceandqty'),
 						total = fieldset.down('displayfield[name=subtotal]'),
 						dftotalafterdp = fieldset.down('displayfield[name=subtotalafterdp]'),
@@ -229,6 +257,12 @@ Ext.define('App.controller.cpradjustment', {
 				}
 			},
 			'apppradjustmentvpradjustmentform [name=price]': {
+				/**
+				 * Keyup Price
+				 * @param eprice
+				 * @param ev
+				 * @param eOpts
+				 */
 				keyup: function (eprice, ev, eOpts) {
 					var form = eprice.up('#priceandqty');
 					var qty = form.down('[name=qty]').getValue();
@@ -239,6 +273,12 @@ Ext.define('App.controller.cpradjustment', {
 				}
 			},
 			'apppradjustmentvpradjustmentform [name=qty]': {
+				/**
+				 * Keyup Qty
+				 * @param field
+				 * @param ev
+				 * @param eOpts
+				 */
 				keyup: function (field, ev, eOpts) {
 					var form = field.up('#priceandqty');
 					var price = form.down('[name=price]').getValue();
@@ -249,7 +289,11 @@ Ext.define('App.controller.cpradjustment', {
 				}
 			},
 			'apppradjustmentvpradjustmentform >toolbar [action=save]': {
-				/*Save Record Item*/
+				/**
+				 * Simpan Record Adjustment
+				 * @param btn
+				 * @returns {boolean}
+				 */
 				click: function (btn) {
 					var form = btn.up('form');
 					var values = form.getValues();
@@ -281,13 +325,6 @@ Ext.define('App.controller.cpradjustment', {
 						return false;
 					}
 					grid.getView().refresh();
-
-					var r = record;
-					var route = 'Route Is ' +
-
-						log(record);
-					log(values);
-
 					store.sync();
 
 				}
@@ -308,6 +345,11 @@ Ext.define('App.controller.cpradjustment', {
 		proxy.setExtraParam('adjid', me.getAdjid());
 		store.load();
 	},
+	/**
+	 * Saat Seleksi Grid
+	 * @param view
+	 * @param records
+	 */
 	on_selection_grid: function (view, records) {
 		if (records.length) {
 			var grid = view.view.ownerCt;
@@ -315,7 +357,7 @@ Ext.define('App.controller.cpradjustment', {
 		}
 	},
 	/**
-	 * Shows a specified record by binding it to
+	 * Shows a specified record
 	 */
 	load_record_to_form: function (grid, record) {
 		var me = this;
@@ -338,9 +380,58 @@ Ext.define('App.controller.cpradjustment', {
 		var fcstatus = form.down('#fcstatus');
 		me.setVisibiltyStatus(fcstatus, processed);
 		form.update();
+		me.setUpbeforeloadform(form, record);
+
 		form.getForm().loadRecord(record);
 	},
+	/**
+	 * Setup Data sebelum diload ke form
+	 * @param form
+	 * @param record
+	 */
+	setUpbeforeloadform: function (form, record) {
 
+		var valcurrency = form.getCurrencyval();
+		if (valcurrency) {
+			record.set('currname', valcurrency);
+		}
+		var taxname = form.getTaxname();
+		if (taxname) {
+			record.set('taxname', taxname);
+		}
+
+		var supname = form.getSupname();
+		if (supname) {
+			record.set('supname', supname);
+		}
+
+		var cpname = form.getCpname();
+		if (cpname) {
+			record.set('cpname', cpname);
+		}
+
+		var paymenttypename = form.getPaymenttypename();
+		if (paymenttypename) {
+			record.set('paymenttypename', paymenttypename);
+		}
+
+
+		var credit = form.getCredit();
+		if (credit) {
+			record.set('credit', credit);
+		}
+
+
+		var warehousename = form.getWarehousename();
+		if (warehousename) {
+			record.set('warehousename', warehousename);
+		}
+	},
+	/**
+	 * Set Visible Status
+	 * @param fcstatus
+	 * @param processed
+	 */
 	setVisibiltyStatus: function (fcstatus, processed) {
 		if (processed) {
 			fcstatus.down('#status1').setVisible(!processed);

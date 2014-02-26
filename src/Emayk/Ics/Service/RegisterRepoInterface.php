@@ -330,6 +330,7 @@ App::bindIf('Emayk\Ics\Repo\Transorders\TransordersInterface', function () {
 });
 
 
+
 /*==========  Register Interface Transorderapproval  ==========*/
 
 App::bindIf('Emayk\Ics\Repo\Transorderapproval\TransorderapprovalInterface', function () {
@@ -452,5 +453,32 @@ App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Approval\iApproval', function (
 	);
 });
 
+/*==========  Register Interface Pembelian  ==========*/
+
+App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Order\iOrder', function () {
+	return new Repo\Transaction\Purchase\Order\impEloquent( new Repo\Transaction\Purchase\Order\Eloquent() );
+});
+
+
+
+/*Setting Hpp*/
+App::bindIf('Emayk\Ics\Repo\Factory\Product\SalesPrice\iSalesPrice', function () {
+	return new Repo\Factory\Product\SalesPrice\impEloquent( new Repo\Factory\Product\SalesPrice\Eloquent() );
+});
+
+/*Setting Category Product*/
+App::bindIf('Emayk\Ics\Repo\Factory\Product\Category\iCategory', function () {
+	return new Repo\Factory\Product\Category\impEloquent( new Repo\Factory\Product\Category\Eloquent() );
+});
+
+/*Departement*/
+App::bindIf('Emayk\Ics\Repo\Factory\Departement\iDepartement', function () {
+	return new Repo\Factory\Departement\impEloquent( new Repo\Factory\Departement\Eloquent() );
+});
+
+/*Departement*/
+App::bindIf('Emayk\Ics\Repo\Factory\User\iUser', function () {
+	return new Repo\Factory\User\impEloquent( new Repo\Factory\User\Eloquent() );
+});
 
 

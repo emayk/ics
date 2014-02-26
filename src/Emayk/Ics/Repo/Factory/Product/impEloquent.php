@@ -1,22 +1,21 @@
 <?php
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-*
-**/
-
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ **/
 
 
 namespace Emayk\Ics\Repo\Factory\Product;
@@ -56,13 +55,15 @@ class impEloquent implements iProduct
 
 	/**
 	 * Mendapatkan List Product Berdasarkan Nama Produk yang diberikan
+	 *
 	 * @param $searchName
 	 * @param $limit
 	 * @param $start
 	 *
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function searchByName($searchName,$limit,$start){
+	public function searchByName($searchName, $limit, $start)
+	{
 
 		$products = $this->product->where('name', 'LIKE', "%$searchName%");
 		$total    = $products->count();
@@ -76,9 +77,11 @@ class impEloquent implements iProduct
 			'total'   => $total
 		]);
 	}
+
 	/**
 	 * Mendapatkan Semua Products
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function all()
@@ -87,10 +90,28 @@ class impEloquent implements iProduct
 		$page  = \Input::get('page');
 		$limit = \Input::get('limit', 1);
 		$start = \Input::get('start', 0);
+		if (Input::has('withhpp')) {
+			$hpptrue = Input::get('withhpp');
+			if ($hpptrue == 'true') {
+				/*Check Token*/
+				if (!Input::has('_token')) throw new \Exception( 'Problem with Token' );
+				$token    = Input::get('_token');
+//				$products = $this->product->with('detail');
+				$products = $this->product->with('price');
+				$total    = $products->count();
+				$products = $products->skip($start)
+					->take($limit)
+					->get()->toArray();
+
+				$product = [ 'success' => true, 'results' => $products, 'total'   => $total];
+				return Response::json($product);
+			}
+		}
+
 		/*Jika ada Input cari berdasarkan Nama */
 		if (Input::has('searchbyName')) {
-			$searchName     = Input::get('searchbyName');
-			return $this->searchByName($searchName,$limit,$start);
+			$searchName = Input::get('searchbyName');
+			return $this->searchByName($searchName, $limit, $start);
 		}
 		$product = $this->product;
 		$total   = $product->count();
@@ -196,10 +217,10 @@ class impEloquent implements iProduct
 				))->setCallback();
 		}
 		/*==========  Sesuaikan dengan Field di table  ==========*/
-		$userId                        = \Auth::user()->id;
-		$name                          = Input::get('name');
+		$userId                       = \Auth::user()->id;
+		$name                         = Input::get('name');
 		$this->product->name          = $name;
-		$catId                         = Input::get('cat_id', 1);
+		$catId                        = Input::get('cat_id', 1);
 		$this->product->cat_id        = $catId;
 		$this->product->contruction   = Input::get('contruction');
 		$this->product->nodesign      = Input::get('nodesign');
@@ -217,7 +238,7 @@ class impEloquent implements iProduct
 		$this->product->lastupdateby_id = $userId;
 		$this->product->created_at      = new \Datetime();
 		$this->product->updated_at      = new \Datetime();
-		$saved                           = $this->product->save() ? true : false;
+		$saved                          = $this->product->save() ? true : false;
 
 		if ($saved) {
 			Sysprodhistory::createlog(["Product {$name} berhasil dibuat "], $userId, $this->product->id);

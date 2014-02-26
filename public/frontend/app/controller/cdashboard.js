@@ -45,6 +45,14 @@ Ext.define('App.controller.cdashboard', {
 					'createlog': me.createLogToGrid
 				}
 			}
+		});
+
+		me.control({
+			'#approvalprbtn' : {
+				click : function(btn){
+					log(btn.text);
+				}
+			}
 		})
 
 	},

@@ -27,7 +27,16 @@ Ext.define('App.view.pradjustment.form', {
 	],
 	bodyPadding: 10,
 	config: {
-		productname: undefined
+		productname: undefined,
+		currencyval: undefined,
+		taxname: undefined,
+		supname: undefined,
+		delivery_at: undefined,
+		warehousename: undefined,
+		cpname: undefined,
+		currname: undefined,
+		paymenttypename: undefined,
+		credit: undefined
 	},
 	initComponent: function () {
 		var me = this;
@@ -68,10 +77,73 @@ Ext.define('App.view.pradjustment.form', {
 					itemId: 'priceandqty',
 					title: 'Harga dan Quantity',
 					collapsible: true,
-
 					items: [
-						{ xtype: 'cbcurrencies', fieldLabel: 'Mata Uang', name: 'currname', valueField: 'name', editable: false },
-						{ xtype: 'cbtypetax', fieldLabel: 'Jenis Pajak', name: 'taxname', valueField: 'name', editable: false },
+						{
+							xtype: 'fieldcontainer',
+							layout: { type: 'hbox', align: 'stretch'},
+							fieldLabel: '',
+							itemId: 'fccurrency',
+							anchor: '100%',
+							items: [
+								{ xtype: 'cbcurrencies', fieldLabel: 'Mata Uang', name: 'currname', valueField: 'name', editable: false, flex: .9 },
+								{ xtype: 'button', enableToggle: true, iconCls: 'key', margin: '0 0 0 5',
+									listeners: {
+										toggle: function (btn, pressed, opts) {
+											var cb = btn.up('#fccurrency').down('cbcurrencies');
+//											log(cbcurrency);
+											/*Jika value belum ada setdisable = false*/
+											/*Jika Belum ada record maka fire dari controller*/
+//											log(me.getRecord());
+											cb.setDisabled(pressed);
+											if (pressed) {
+												var val = cb.getValue();
+												/*check value sudah dipilih belum */
+												if (!val) {
+													/*Jika tidak ada value*/
+													cb.setDisabled(false);
+												} else {
+													/*Jika ada value*/
+													me.setCurrencyval(val);
+												}
+											}
+
+										}
+									}
+								}
+							]
+						},
+
+						{
+							xtype: 'fieldcontainer',
+							layout: { type: 'hbox', align: 'stretch'},
+							fieldLabel: '',
+							itemId: 'fccbtypetax',
+							anchor: '100%',
+							items: [
+								{ xtype: 'cbtypetax', fieldLabel: 'Jenis Pajak', name: 'taxname', valueField: 'name', editable: false, flex: .9  },
+								{ xtype: 'button', enableToggle: true, iconCls: 'key', margin: '0 0 0 5',
+									listeners: {
+										toggle: function (btn, pressed, opts) {
+											var cb = btn.up('#fccbtypetax').down('cbtypetax');
+											cb.setDisabled(pressed);
+											if (pressed) {
+												var val = cb.getValue();
+												/*check value sudah dipilih belum */
+												if (!val) {
+													/*Jika tidak ada value*/
+													cb.setDisabled(false);
+												} else {
+													/*Jika ada value*/
+													me.setTaxname(val);
+												}
+											}
+										}
+									}
+								}
+							]
+						},
+
+
 						{
 							xtype: 'fieldcontainer',
 							layout: { type: 'hbox', align: 'stretch'},
@@ -110,38 +182,128 @@ Ext.define('App.view.pradjustment.form', {
 							defaults: {
 								anchor: '100%'
 							},
+							itemId: 'fdsupplier',
 							items: [
-								{ xtype: 'cbSupplier', fieldLabel: 'Nama Pemasok', name: 'supname', valueField: 'name',
-									hiddenName: 'suppliername',
-									listeners: {
-										'select': {
-											fn: function (combo, records, index) {
-												var fieldset = combo.up('fieldset');
-												var cbContact = fieldset.down('cbContactperson');
-												var txtcredit = fieldset.down('[name=credit]');
-												var record = records[0];
-												txtcredit.setDisabled(true);
-												txtcredit.setValue(record.get('kredit'));
-												txtcredit.setDisabled(false);
-												cbContact.setDisabled(true);
-												cbContact.clearInvalid()
-												cbContact.clearValue();
-												var store = cbContact.getStore();
-												store.clearFilter(true);
-												store.removeAll();
-												var proxy = store.getProxy();
-												var val = combo.getValue();
-												proxy.setExtraParam('pname', val);
-												proxy.setExtraParam('ptype', 'supplier');
-												store.load();
-												cbContact.setDisabled(false);
+								{
+									xtype: 'fieldcontainer',
+									layout: { type: 'hbox', align: 'stretch'},
+									fieldLabel: '',
+									itemId: 'fccbSupplier',
+									anchor: '100%',
+									items: [
+										{ xtype: 'cbSupplier', fieldLabel: 'Nama Pemasok', name: 'supname', valueField: 'name', editable: false, flex: .9,
+											hiddenName: 'suppliername',
+											listeners: {
+												'select': {
+													fn: function (combo, records, index) {
+														var fieldset = combo.up('#fdsupplier');
+														var cbContact = fieldset.down('cbContactperson');
+														var txtcredit = fieldset.down('[name=credit]');
+														var record = records[0];
+														var valueterm = record.get('kredit');
+														if (valueterm) me.setCredit(valueterm);
+														txtcredit.setDisabled(true);
+														txtcredit.setValue(valueterm);
+														txtcredit.setDisabled(false);
+														cbContact.setDisabled(true);
+														cbContact.clearInvalid();
+														cbContact.clearValue();
+														var store = cbContact.getStore();
+														store.clearFilter(true);
+														store.removeAll();
+														var proxy = store.getProxy();
+														var val = combo.getValue();
+														proxy.setExtraParam('pname', val);
+														proxy.setExtraParam('ptype', 'supplier');
+														store.load();
+														cbContact.setDisabled(false);
+													}
+												}
+											}},
+										{ xtype: 'button', enableToggle: true, iconCls: 'key', margin: '0 0 0 5',
+											listeners: {
+												toggle: function (btn, pressed, opts) {
+													var cb = btn.up('#fccbSupplier').down('cbSupplier');
+													cb.setDisabled(pressed);
+													if (pressed) {
+														var val = cb.getValue();
+														/*check value sudah dipilih belum */
+														if (!val) {
+															/*Jika tidak ada value*/
+															cb.setDisabled(false);
+														} else {
+															/*Jika ada value*/
+															me.setSupname(val);
 
+														}
+													}
+												}
 											}
 										}
-									}},
-								{ xtype: 'cbContactperson', editable: false, fieldLabel: 'Nama Kontak', name: 'cpname', valueField: 'name' },
+									]
+								},
+
+								{
+									xtype: 'fieldcontainer',
+									layout: { type: 'hbox', align: 'stretch'},
+									fieldLabel: '',
+									itemId: 'fccbContactperson',
+									anchor: '100%',
+									items: [
+										{ xtype: 'cbContactperson', editable: false, fieldLabel: 'Nama Kontak', name: 'cpname', valueField: 'name', flex: .9  },
+										{ xtype: 'button', enableToggle: true, iconCls: 'key', margin: '0 0 0 5',
+											listeners: {
+												toggle: function (btn, pressed, opts) {
+													var cb = btn.up('#fccbContactperson').down('cbContactperson');
+													cb.setDisabled(pressed);
+													if (pressed) {
+														var val = cb.getValue();
+														/*check value sudah dipilih belum */
+														if (!val) {
+															/*Jika tidak ada value*/
+															cb.setDisabled(false);
+														} else {
+															/*Jika ada value*/
+															me.setCpname(val);
+														}
+													}
+												}
+											}
+										}
+									]
+								},
+
 								{ xtype: 'numberfield', fieldLabel: 'Jangka Waktu', name: 'credit', minValue: 0, hideTrigger: true },
-								{ xtype: 'cbTypePayment', fieldLabel: 'Jenis Pembayaran', name: 'paymenttypename', valueField: 'name' }
+								{
+									xtype: 'fieldcontainer',
+									layout: { type: 'hbox', align: 'stretch'},
+									fieldLabel: '',
+									itemId: 'fccbTypePayment',
+									anchor: '100%',
+									items: [
+//										{ xtype: 'cbContactperson', editable: false, fieldLabel: 'Nama Kontak', name: 'cpname', valueField: 'name' , flex: .8  },
+										{ xtype: 'cbTypePayment', fieldLabel: 'Jenis Pembayaran', name: 'paymenttypename', valueField: 'name', editable: false, flex: .9  },
+										{ xtype: 'button', enableToggle: true, iconCls: 'key', margin: '0 0 0 5',
+											listeners: {
+												toggle: function (btn, pressed, opts) {
+													var cb = btn.up('#fccbTypePayment').down('cbTypePayment');
+													cb.setDisabled(pressed);
+													if (pressed) {
+														var val = cb.getValue();
+														/*check value sudah dipilih belum */
+														if (!val) {
+															/*Jika tidak ada value*/
+															cb.setDisabled(false);
+														} else {
+															/*Jika ada value*/
+															me.setPaymenttypename(val);
+														}
+													}
+												}
+											}
+										}
+									]
+								}
 							]
 						},
 						{
@@ -154,8 +316,35 @@ Ext.define('App.view.pradjustment.form', {
 								{ xtype: 'datefield', fieldLabel: 'Tanggal', name: 'delivery_at',
 									format: 'd F Y', submitFormat: 'Y-m-d'
 								},
-								{ xtype: 'cbwarehouse', fieldLabel: 'Ke Gudang', name: 'warehousename',
-									valueField: 'name'
+
+								{
+									xtype: 'fieldcontainer',
+									layout: { type: 'hbox', align: 'stretch'},
+									fieldLabel: '',
+									itemId: 'fccbwarehouse',
+									anchor: '100%',
+									items: [
+										{ xtype: 'cbwarehouse', fieldLabel: 'Ke Gudang', name: 'warehousename', valueField: 'name', editable: false, editable: false, flex: .9 },
+										{ xtype: 'button', enableToggle: true, iconCls: 'key',  margin: '0 0 0 5',
+											listeners: {
+												toggle: function (btn, pressed, opts) {
+													var cb = btn.up('#fccbwarehouse').down('cbwarehouse');
+													cb.setDisabled(pressed);
+													if (pressed) {
+														var val = cb.getValue();
+														/*check value sudah dipilih belum */
+														if (!val) {
+															/*Jika tidak ada value*/
+															cb.setDisabled(false);
+														} else {
+															/*Jika ada value*/
+															me.setWarehousename(val);
+														}
+													}
+												}
+											}
+										}
+									]
 								}
 							]
 						}

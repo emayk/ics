@@ -607,10 +607,31 @@ class Model extends BaseModel
 		return new Order();
 	}
 
+	public function getQueueOrder(){
+		return new \Emayk\Ics\Repo\Transaction\Purchase\Order\Queue();
+	}
 	public function moveApprovalToOrder()
 	{
 		/*Jika Approval sudah diproses dan disetujui oleh Management*/
 		if ($this->status == 5) {
+			/**
+			 * dapatkan Item adjustment
+			 * dapatkan item approve
+			 *setup route order_queue berdasarkan adjustment item kolom route
+			 */
+			$queue = $this->getQueueOrder();
+			$itemApproval = new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
+//			$itemAdjustment = new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
+
+			/**
+			 * dapatkan id item yang sudah diproses
+			 */
+			$itemIdsApproval = $itemApproval->Agree()->lists('id');
+			/**
+			 * dapatkan id approv
+			 */
+
+
 			/*Tambahkan approval id ke table Order*/
 			/*Tambahkan approval item  ke table Order detail dengan approval id yang didapatkan */
 //			return \Input::all();

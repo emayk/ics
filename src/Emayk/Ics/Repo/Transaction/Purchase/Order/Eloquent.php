@@ -55,6 +55,28 @@ class Eloquent extends BaseModel
 		return new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Model();
 	}
 
+	public function oApprovalItem()
+	{
+		return new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
+	}
+
+	public function oAdjustmentItem()
+	{
+		return new \Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item();
+	}
+
+	public function oQueue(){
+		return new Queue();
+	}
+
+	public function getNewQueueMoveToOrder(){
+	$queue = $this->oQueue();
+		/**
+		 * Ambil Queue Yang belum diproses
+		 */
+
+	}
+
 	public function moveApprovalToOrder($approvalId)
 	{
 		/*Check record Approval status == 5 atau sudah diproses */
@@ -89,6 +111,12 @@ class Eloquent extends BaseModel
 		/* Pindahkan Item Approval ke Order Item*/
 	}
 
+
+	public function createRecordFromApproval( \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items $idApprovalItem)
+	{
+//		$itemapproval = $this->oApprovalItem();
+
+	}
 }
 
  
