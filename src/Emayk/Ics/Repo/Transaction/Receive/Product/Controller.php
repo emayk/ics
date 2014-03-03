@@ -17,10 +17,90 @@
 *
 **/
 
-namespace Emayk\Ics\Transaction\Receive\Product;
+namespace Emayk\Ics\Repo\Transaction\Receive\Product;
 
-class Controller {
+use Emayk\Ics\Controllers\BaseController;
 
+class Controller extends BaseController{
+	protected  $product;
+	function __construct(iProduct $Product)
+	{
+		$this->product = $Product;
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		return $this->product->all();
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		return $this->product->create();
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		return $this->product->store();
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		return $this->product->show($id);
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		return $this->product->edit($id);
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
+		return $this->product->update($id);
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		return $this->product->destroy($id);
+	}
 }
 
  

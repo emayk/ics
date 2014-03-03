@@ -41,13 +41,13 @@ class Item extends BaseModel
 	protected $guarded = array();
 	protected $appends = [];
 	protected $with = [
-		'contact',
-		'supplier',
-		'product',
-		'warehouse',
-		'currency',
-		'paymenttype',
-		'taxtype'
+//		'contact',
+//		'supplier',
+//		'product',
+//		'warehouse',
+//		'currency',
+//		'paymenttype',
+//		'taxtype'
 	];
 
 	public function getSupnameAttribute()

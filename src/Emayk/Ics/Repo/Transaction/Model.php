@@ -18,10 +18,10 @@
 **/
 
 
-namespace Emayk\Ics\Transaction;
-use Illuminate\Database\Eloquent\Model as l4model;
-class Model extends  l4model {
+namespace Emayk\Ics\Repo\Transaction;
 
-}
+use Emayk\Ics\Models\BaseModel;
+
+class Model extends  BaseModel {}
 
  

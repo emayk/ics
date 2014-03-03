@@ -269,6 +269,8 @@ Ext.define('App.controller.cpradjustment', {
 					var price = eprice.getValue();
 					var esubtotal = form.down('displayfield[name=subtotal]');
 					var subtotal = (parseFloat(price) * parseInt(qty));
+					var dp = form.down('[name=dp]');
+					if (dp) dp.setMaxValue(subtotal);
 					esubtotal.setValue(subtotal);
 				}
 			},
@@ -285,6 +287,8 @@ Ext.define('App.controller.cpradjustment', {
 					var qty = field.getValue();
 					var esubtotal = form.down('displayfield[name=subtotal]');
 					var subtotal = (parseFloat(price) * parseInt(qty));
+					var dp = form.down('[name=dp]');
+					if (dp) dp.setMaxValue(subtotal);
 					esubtotal.setValue(subtotal);
 				}
 			},
@@ -313,6 +317,8 @@ Ext.define('App.controller.cpradjustment', {
 						return false;
 					}
 
+					log(record);
+					log(values);
 					if (!form.isValid()) {
 						App.util.box.error('Silahkan Perbaiki Form Masukan');
 						return false;

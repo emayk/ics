@@ -7,6 +7,19 @@
  **/
 Route::group(array('prefix' => 'test'), function () {
 
+Route::group(array('prefix' => 'print'), function () {
+	Route::get('/', function () {
+		return 'Test Print';
+	});
+
+	Route::get('bpb/{id?}', function ($id=1) {
+		$bpb = new \Emayk\Ics\Repo\Transaction\Receive\Product\Model();
+		$record = $bpb->findOrFail($id);
+		return \View::make('ics::Print.Receive.Product',compact('record'));
+	});
+
+
+});
 
 	Route::get('newapproval1', function () {
 		$queue = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Queue();

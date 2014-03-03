@@ -202,4 +202,8 @@ class Eloquent extends BaseModel
 		return $q->whereName($name);
 	}
 
+	public function order()
+	{
+		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent','cp_id');
+	}
 }

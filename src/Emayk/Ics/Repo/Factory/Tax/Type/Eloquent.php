@@ -26,6 +26,12 @@ class Eloquent extends BaseModel{
 	protected $guarded = array();
 	protected $table = 'master_tax_type';
 	public static $rules = array();
+
+	public function orders()
+	{
+		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent','tax_id');
+	}
+
 }
 
  

@@ -18,7 +18,7 @@
 **/
 
 
-namespace Emayk\Ics\Transaction\Receive\Product;
+namespace Emayk\Ics\Repo\Transaction\Receive\Product;
 class impArray {
 
 }

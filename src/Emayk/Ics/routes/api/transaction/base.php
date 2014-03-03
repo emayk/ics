@@ -34,7 +34,14 @@ Route::group(['prefix' => 'transaction'], function () {
 		Route::post('adjustment/process', ['before' => 'csrf','uses'=>'Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Controller@processToAproval']);
 		Route::resource('adjustment', 'Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Controller');
 		Route::resource('approve', 'Emayk\Ics\Repo\Transaction\Purchase\Approval\Controller');
+//		Route::resource('order/item', '\Emayk\Ics\Repo\Transaction\Purchase\Order\Item\Controller');
 		Route::resource('order', '\Emayk\Ics\Repo\Transaction\Purchase\Order\Controller');
+	});
+	/**
+	 * Receive
+	 */
+	Route::group(['prefix' => 'receive'], function () {
+		Route::resource('good', '\Emayk\Ics\Repo\Transaction\Receive\Product\Controller');
 	});
 //
 });

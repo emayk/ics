@@ -18,8 +18,9 @@
 **/
 
 
-namespace Emayk\Ics\Transaction\Receive\Product;
-class iProduct {
+namespace Emayk\Ics\Repo\Transaction\Receive\Product;
+use \Emayk\Ics\Repo\Transaction\iTransaction;
+interface iProduct extends iTransaction{
 
 }
 

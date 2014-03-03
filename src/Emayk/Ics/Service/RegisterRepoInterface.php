@@ -78,7 +78,6 @@ App::bindIf('Emayk\Ics\Repo\Factory\Product\iProduct', function () {
 });
 
 
-
 /*==========  Register Interface Units  ==========*/
 
 App::bindIf('Emayk\Ics\Repo\Units\UnitsInterface', function () {
@@ -330,7 +329,6 @@ App::bindIf('Emayk\Ics\Repo\Transorders\TransordersInterface', function () {
 });
 
 
-
 /*==========  Register Interface Transorderapproval  ==========*/
 
 App::bindIf('Emayk\Ics\Repo\Transorderapproval\TransorderapprovalInterface', function () {
@@ -459,6 +457,10 @@ App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Order\iOrder', function () {
 	return new Repo\Transaction\Purchase\Order\impEloquent( new Repo\Transaction\Purchase\Order\Eloquent() );
 });
 
+/*Order Item*/
+App::bindIf('Emayk\Ics\Repo\Transaction\Purchase\Order\Item\iItem', function () {
+	return new Repo\Transaction\Purchase\Order\Item\impEloquent( new Repo\Transaction\Purchase\Order\Item\Eloquent() );
+});
 
 
 /*Setting Hpp*/
@@ -476,9 +478,20 @@ App::bindIf('Emayk\Ics\Repo\Factory\Departement\iDepartement', function () {
 	return new Repo\Factory\Departement\impEloquent( new Repo\Factory\Departement\Eloquent() );
 });
 
-/*Departement*/
+/*User*/
 App::bindIf('Emayk\Ics\Repo\Factory\User\iUser', function () {
 	return new Repo\Factory\User\impEloquent( new Repo\Factory\User\Eloquent() );
+});
+
+/*Terima Barang*/
+App::bindIf('Emayk\Ics\Repo\Transaction\Receive\Product\iProduct', function () {
+	return new Repo\Transaction\Receive\Product\impEloquent( new Repo\Transaction\Receive\Product\Model() );
+});
+
+
+/*System Print Document */
+App::bindIf('Emayk\Ics\Repo\Transaction\Prints\iPrints', function () {
+	return new Repo\Transaction\Prints\impEloquent( new Repo\Transaction\Prints\Eloquent() );
 });
 
 

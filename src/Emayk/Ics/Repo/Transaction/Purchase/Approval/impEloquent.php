@@ -84,7 +84,8 @@ class impEloquent implements iApproval
 		}
 
 		$total   = $approve->count();
-		$approve = $approve->skip($start)
+		$approve = $approve->
+			skip($start)
 			->take($limit)
 			->get()->toArray();
 
@@ -154,7 +155,14 @@ class impEloquent implements iApproval
 		$newO = true;
 		if ($newO) {
 			$itemApproval = $this->approval->getItems()->whereAprId($aprId)->where('status', '!=', 2);
-			$results      = $itemApproval->get()->toArray();
+			$results      = $itemApproval
+				->with('adjitem.contact',
+					'adjitem.supplier',
+					'adjitem.product',
+					'adjitem.warehouse',
+					'adjitem.currency',
+					'adjitem.paymenttype',
+					'adjitem.taxtype')->get()->toArray();
 		} else {
 			$itemApproval = $approval->item;
 			$results      = $itemApproval->toArray();
@@ -215,9 +223,12 @@ class impEloquent implements iApproval
 
 			if ($totalitems == $totalprocess) {
 				/*@todo : Proses Simpan Document dari Approval ke PO */
-
-				$approval->status = 5;
-				$approval->save();
+				/*Aproval ke Queue*/
+				$movedToQueue = $this->approval->moveApprovalToQueue();
+				if ($movedToQueue){
+					$approval->status = 5;
+					$approval->save();
+				}
 			};
 
 			return array_merge([

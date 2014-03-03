@@ -51,6 +51,7 @@ Ext.define('App.controller.caccountBank', {
 	],
 	init: function () {
 		var me = this;
+
 		me.control({
 			/*Panel*/
 //			"appaccountBankvaccountBank": {

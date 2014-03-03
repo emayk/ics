@@ -26,7 +26,7 @@
  *
  * Flow :
  * penerimaan barang ini akan mempengaruhi ke banyaknya stock
- * terima = stock++
+ * terima = stock++ setelah Print akan menambahkan Stock Product
  *
  *
  */
@@ -37,25 +37,31 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 	frame: true,
 	autoScroll: true,
 	layout: { type: 'fit', align: 'stretch'},
-	store: 'App.store.receiveProduct.sreceiveProductItem',
-	requires: [
-		'App.form.combobox.cbSupplier'
-	],
 	config: {
+		receiveid: undefined,
+		receivenumber: undefined,
 		ponumber: undefined,
-		tglpo: undefined,
-		supname: undefined,
-		warehouse: undefined,
-		poid: undefined
+		supplier: undefined,
+		warehouse: undefined
+	},
+	record: undefined,
+	getRecord: function () {
+		return this.record;
+	},
+	getMaxTerima: function () {
+		var record = this.getRecord();
+		return record.get('qtyelapse');
 	},
 	initComponent: function () {
 		var me = this;
+		var store = Ext.create('App.store.receiveProduct.sreceiveProductItem');
+		var storeprintItem = Ext.create('App.store.receiveProduct.sprintProductItem');
 		Ext.apply(me, {
 			buttons: [
 				{ text: 'Help', iconCls: 'help', action: 'help'},
 				'->',
-				{ text: 'Save & Close', iconCls: 'save', action: 'save'},
-				{ text: 'Cancel', iconCls: 'close', action: 'cancel'}
+				{ text: 'Simpan & Keluar ', iconCls: 'save', action: 'save'},
+				{ text: 'Keluar', iconCls: 'close', action: 'cancel'}
 			],
 			items: [
 				{
@@ -65,6 +71,9 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 						type: 'vbox', align: 'stretch'
 					},
 					items: [
+					/**
+					 * Form Surat Jalan
+					 * */
 						{
 							xtype: 'form',
 							autoScroll: true,
@@ -89,20 +98,21 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 											tooltip: 'Surat Jalan dari Supplier',
 											layout: { type: 'hbox', align: 'stretch'},
 											items: [
-												{ xtype: 'textfield', fieldLabel: '', name: 'sjno', flex: 0.5, readOnly: false },
+												{ xtype: 'textfield', fieldLabel: '', name: 'sjno', flex: 0.5, allowblank: false, minLengthText: 2 },
 												{
 													flex: .5,
 													xtype: 'datefield',
-													labelWidth: 150,
+													labelWidth: 150, allowblank: false,
 													fieldLabel: 'Tanggal Surat Jalan',
-													name: 'sjdate',
-													value: new Date(),
-													maxValue: new Date(), margin: '0 0 0 10'
+													name: 'sjtgl', format: 'd F Y',
+													margin: '0 0 0 10', submitFormat: 'Y-m-d'
 												}
 											]
 										},
 										{
-											/*Surat Jalan*/
+											/**
+											 * Supir, Plat Nomor
+											 * */
 											xtype: 'fieldcontainer',
 											labelWidth: 150,
 											fieldLabel: 'Nama Supir',
@@ -110,108 +120,146 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 											layout: { type: 'hbox', align: 'stretch'},
 											items: [
 												{ xtype: 'textfield', fieldLabel: '', name: 'drivername', flex: 0.5, readOnly: false },
-												{ xtype: 'textfield', fieldLabel: 'Nomor Kendaraan', name: 'platno', flex: 0.5, readOnly: false, margin: '0 0 0 10' }
+												{ xtype: 'textfield', fieldLabel: 'Nomor Kendaraan', name: 'vehiclenumber', flex: 0.5, readOnly: false, margin: '0 0 0 10' }
 											]
 										}
 									]
 								},
-								{ xtype: 'displayfield', fieldLabel: 'Nama Pemasok', name: 'supname', flex: .8, value: me.getSupname() },
 								{
 									/**
-									 * Menampilkan No Order Yang Masih Open
+									 * Menampilkan Informasi No PO
 									 */
 									xtype: 'fieldcontainer',
-									fieldLabel: 'Nomor PO',
-									tooltip: 'Nomor Order',
+									fieldLabel: '',
+									tooltip: 'Informasi Order',
 									layout: { type: 'hbox', align: 'stretch'},
 									items: [
-										{ xtype: 'textfield', fieldLabel: '', name: 'orderno', flex: 0.8, readOnly: true, value: me.getPonumber() },
-										{ xtype: 'hiddenfield', fieldLabel: '', name: 'orderid', flex: 0.8, readOnly: true, value: me.getPoid() }
+										{ xtype: 'displayfield', fieldLabel: 'Nama Pemasok', name: 'supplier', flex: .25, tooltip: 'Pemasok'},
+										{ xtype: 'displayfield', fieldLabel: 'Nama Contact', name: 'contact', flex: 0.25, readOnly: true, tooltip: 'Kontak', margin: '0 5 0 5'},
+										{ xtype: 'displayfield', fieldLabel: 'Nomor PO', name: 'ponumber', flex: 0.25, readOnly: true, tooltip: 'Nomor Order' }
 									]
 								},
-								{ xtype: 'datefield', fieldLabel: 'Terima Tanggal', labelWidth: 200, name: 'receivedate', value: new Date(), maxValue: new Date() },
-
+							/**
+							 * Tanggal Terima Barang
+							 */
+								{ xtype: 'datefield', fieldLabel: 'Terima Tanggal', labelWidth: 200, name: 'receivedate',
+									format: 'd F Y', allowBlank: false,
+									submitFormat: 'Y-m-d'
+								}
 							]
 						},
-						/*Grid daftar Barang Yang diterima*/
+					/**
+					 * Splitter
+					 * */
+						{
+							xtype: 'splitter'
+						},
+					/**
+					 * Tab daftar Barang Yang diterima
+					 * */
 						{
 							margin: '5 0 5 0',
-							xtype: 'container',
+							xtype: 'tabpanel',
 							layout: 'fit',
 							flex: 1,
 							emptyText: 'Empty Item',
 							items: [
+							/**
+							 * Grid Receive Item
+							 */
 								{
 									/**
 									 * Grid Receive List Product
 									 */
+									itemId: 'gridreceiveitem',
 									xtype: 'grid',
+									iconCls: 'grid',
 									title: 'Daftar Terima Barang dari PO [ ' + me.getPonumber() + ' ]',
 									flex: 1,
-									store: me.store,
+									store: store,
+									selType: 'rowmodel',
 									columns: [
 										{
-											xtype: 'rownumberer'
+											xtype: 'rownumberer', text: 'No'
 										},
-//										{ dataIndex: "id", text: "id", flex: 1},
-										{ dataIndex: "receiveid", text: "receiveid", flex: 1},
-										{ dataIndex: "product_id", text: "Product", flex: 1},
-										{ dataIndex: "qty", text: "Qty", flex: 1},
-//										{ dataIndex: "price", text: "Price", flex: 1},
-										{ dataIndex: "desc", text: "Description", flex: 1},
-//										{ dataIndex: "subtotal", text: "subtotal", flex: 1}
-//										{ dataIndex: "created_at", text: "created_at", flex: 1},
-//										{ dataIndex: "updated_at", text: "updated_at", flex: 1}
+										{ dataIndex: "productname", text: "Product", flex: 1
+//											renderer: function (v, m, r) {
+//												return r.get('product');
+//											}
+										},
+										{
+											text: 'Quantity',
+											columns: [
+												{ dataIndex: 'qtyorder', text: 'Pesan', xtype: 'numbercolumn' },
+												{
+													text: 'Terima',
+													columns: [
+														{ dataIndex: 'qtyreceived', text: 'Sdh', xtype: 'numbercolumn' },
+														{ dataIndex: 'qtyelapse', text: 'Belum', xtype: 'numbercolumn' },
+														{ dataIndex: "totalrollreceived", text: 'Roll', xtype: 'numbercolumn' }
+													]
+												},
+												{
+													text: "Jumlah Terima<br/>Saat Ini",
+													columns: [
+														{
+															dataIndex: "qty",
+															text: 'Qty(Yard)',
+															/*Jumlah Terima Harus Max Jumlah Sisa*/
+															minValue: 0,
+															editor: {
+																xtype: 'numberfield',
+																allowblank: false,
+																minValue: 0,
+																enableKeyEvents: true
+															}
+														},
+														{
+															dataIndex: "qtyroll",
+															text: 'Qty(Roll)',
+															/*Jumlah Terima Harus Max Jumlah Sisa*/
+															minValue: 0,
+															editor: {
+																xtype: 'numberfield',
+																allowblank: false,
+																minValue: 0,
+																enableKeyEvents: true
+															}
+														}
+													]
+												},
+											]
+										},
+										{ dataIndex: "desc", text: "Description", flex: 1,
+											editor: {
+												maxLengthText: 100,
+												allowblank: true,
+												xtype: 'textfield'
+											}}
+									],
+									plugins: [
+										Ext.create('Ext.grid.plugin.RowEditing', {
+											clicksToEdit: 1
+										})
 									],
 									dockedItems: [
 										{
-											xtype: 'toolbar',
-											dock: 'top',
-											items: [
-												{ text: 'Tambah Terima Barang', iconCls: 'add', action: 'additem'}
-//												{ text: 'Remove', iconCls: 'delete', action: 'removeitem'}
-//												'->',
-//												{ text: 'Help', iconCls: 'excel', action: 'helpitem'}
-											]
-										},
-										{
 											xtype: 'pagingtoolbar',
-											store: me.store,
+											store: store,
 											dock: 'bottom',
 											displayInfo: true
 										}
 									]
-								}
-							]
-						},
-//						{
-//							xtype: 'splitter'
-//						},
-						{
-							xtype: 'container',
-							flex: .3,
-							layout: { type: 'hbox', align: 'stretch'},
-							items: [
-								{
-									xtype: 'container',
-									flex: 0.5,
-									html: '<b>Note : (sample) </b>' +
-										'<ul>' +
-										'<li>Aturan 1 : </li>' +
-										'<li>Aturan 2 : </li>' +
-										'</ul>'
 								},
+							/**
+							 * Tab Print History
+							 */
 								{
-									xtype: 'container',
-									flex: 0.5,
-									layout: 'anchor',
-									defaults: {
-										anchor: '95%'
-									},
-									items: [
-										{ xtype: 'textfield', name: 'totalitem', readOnly: true, fieldLabel: 'Total Item'},
-										{ xtype: 'textfield', name: 'totalqty', readOnly: true, fieldLabel: 'Total Qty'}
-									]
+									/**
+									 * Grid Print History Item
+									 */
+									itemId: 'printHistoryItem',
+									xtype: 'appreceiveProductvreceiveProductprinthistory'
 								}
 							]
 						}
@@ -220,6 +268,40 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 			]
 		});
 		me.callParent(arguments);
+		me.setupGridReceiveItem();
+	},
+	setupGridReceiveItem: function () {
+		var me = this;
+		var grid = me.down('#gridreceiveitem');
+		if (grid) {
+			var store = grid.getStore();
+			if (store) {
+				var proxy = store.getProxy()
+				proxy.setExtraParam('receiveid', me.getReceiveid());
+				proxy.setExtraParam('receivenumber', me.getReceivenumber());
+				proxy.setExtraParam('cmd', 'getitems');
+				proxy.setExtraParam('option', 'wosale'); //tanpa harga
+			}
+			store.load();
+		}
+
+		var record = me.getRecord();
+		if (record) {
+			var form = me.down('#formreceive');
+			/*Load Record*/
+			if (form) {
+				form.getForm().loadRecord(record);
+			}
+			/*Value Qty dan Total Item terima*/
+			var contfooter = me.down('#contfooter');
+			if (contfooter) {
+				var totalItemToday = contfooter.down('[name=totalitem]'),
+					totalQtyToday = contfooter.down('[name=totalqty]');
+				totalItemToday.setValue(0);
+				totalQtyToday.setValue(0);
+			}
+		}
+
 	}
 
 });

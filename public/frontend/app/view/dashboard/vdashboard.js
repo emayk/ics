@@ -66,8 +66,34 @@ Ext.define('App.view.dashboard.vdashboard', {
 				{
 					margin: '0 5 0 5',
 					xtype: 'panel', flex: .3,
-//					html: 'Reserved',
-//					title: 'Untitled'
+					title: 'Tools',
+					itemId: 'dashtools',
+					layout: {type: 'vbox', align: 'stretch'},
+					default: {
+						margin: '5 5 5 5'
+					},
+					items: [
+
+						{ xtype: 'buttongroup',
+							default: {
+								margin: '5 5 5 5'
+							},
+							items: [
+								{
+									xtype: 'button', text: 'Generate'
+								},
+								{
+									xtype: 'button', text: 'Generate'
+								},
+								{
+									xtype: 'button', text: 'Generate'
+								}
+							]
+						},
+						{
+							xtype: 'button', text: 'Generate'
+						}
+					]
 				},
 				/*Kolom 3*/
 				{
@@ -94,14 +120,14 @@ Ext.define('App.view.dashboard.vdashboard', {
 								var panel = 'App.view.approvepr.vapprovepr';
 								var title = btn.text;
 
-								App.util.box.openNewtab(tab,title,panel,{
-									iconCls: 'grid',closable: true,title: title
+								App.util.box.openNewtab(tab, title, panel, {
+									iconCls: 'grid', closable: true, title: title
 								});
 
 
 							}
-						},
-//						{
+						}
+//						,{
 //							xtype: 'button', text: 'Produk'
 //						},
 //						{
@@ -138,9 +164,10 @@ Ext.define('App.view.dashboard.vdashboard', {
 							xtype: 'button', text: 'Buat PR',
 							action: 'createpr', iconCls: 'add'
 						},
-//						{
-//							xtype: 'button', text: 'Produk'
-//						}
+						{
+							xtype: 'button', text: 'Daftar PO',
+							iconCls: 'grid', action: 'openlistpo'
+						}
 					]
 				},
 				/*Kolom 2*/

@@ -13,3 +13,4 @@ composer.lock
 .DS_Store
 tspec.sh
 composer_.json
+*.puml

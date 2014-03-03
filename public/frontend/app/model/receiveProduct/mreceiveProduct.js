@@ -24,18 +24,36 @@ Ext.define('App.model.receiveProduct.mreceiveProduct', {
     extend: 'Ext.data.Model',
     fields: [
 	    "id",
-	    "totalitem",
-	    "totalprice",
+//	    "totalitem",
 	    "sjno",
-	    "ref",
-	    "supplier_id",
-	    "receivedate",
+	    { name: "sjtgl", type: "date",convert:function(v){
+		    var val= (v == "0000-00-00 00:00:00") ? new Date() : v;
+		    return val;
+	    }},
+	    "drivername",
+	    {name: "vehiclenumber", mapping: "platkendaraan"},
+	    { name: "receivenumber", mapping: "trxnumber"},
+	    {name: "receivedate",type: 'date',convert:function(v){
+		    var val= (v == "0000-00-00") ? new Date() : v;
+		    return val;
+	    }},
+	    /*PO*/
+	    { name: "poid", mapping: "order_id"},
+	    "ponumber",
 	    "created_at",
-	    "updated_at"
+	    "totalorderitem",
+	    "updated_at",
+	    /*Tanggal Buat PO*/
+	    { name : "podate", mapping: "podate.date",type: 'date'},
+	    "contact",
+	    "supplier",
+	    /*Nomor Terima Barang*/
+	    { name : "nobpb", mapping: "trxnumber"},
+	    "warehouse"
     ],
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/receiveproduct',
+		url: getApiUrl() +'/transaction/receive/good',
 		reader: {
 			type: 'json',
 			root: 'results',

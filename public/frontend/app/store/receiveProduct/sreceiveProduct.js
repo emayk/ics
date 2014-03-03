@@ -25,7 +25,7 @@ Ext.define('App.store.receiveProduct.sreceiveProduct',{
 	model : 'App.model.receiveProduct.mreceiveProduct',
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/receiveproduct',
+		url: getApiUrl() +'/transaction/receive/good',
 		reader: {
 			type: 'json',
 			root: 'results',

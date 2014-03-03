@@ -22,12 +22,19 @@ namespace Emayk\Ics\Repo\System\Log;
 
 
 use Emayk\Ics\Models\BaseModel;
+use Carbon;
 
 class Eloquent extends BaseModel
 {
 	protected $table = 'sys_log';
 	protected $guarded = array();
 	public static $rules = array();
+
+	public function scopeToday($q)
+	{
+		$date = date('Y-m-d');
+		return $q->where('created_at', "LIKE", "%$date%");
+	}
 }
 
  

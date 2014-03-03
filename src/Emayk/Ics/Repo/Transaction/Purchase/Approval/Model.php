@@ -607,9 +607,11 @@ class Model extends BaseModel
 		return new Order();
 	}
 
-	public function getQueueOrder(){
+	public function getQueueOrder()
+	{
 		return new \Emayk\Ics\Repo\Transaction\Purchase\Order\Queue();
 	}
+
 	public function moveApprovalToOrder()
 	{
 		/*Jika Approval sudah diproses dan disetujui oleh Management*/
@@ -619,7 +621,7 @@ class Model extends BaseModel
 			 * dapatkan item approve
 			 *setup route order_queue berdasarkan adjustment item kolom route
 			 */
-			$queue = $this->getQueueOrder();
+			$queue        = $this->getQueueOrder();
 			$itemApproval = new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
 //			$itemAdjustment = new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Items();
 
@@ -745,6 +747,46 @@ class Model extends BaseModel
 		$deliverydate;
 		return $o;
 	}
+
+	public function moveApprovalToQueue()
+	{
+		$moved = false;
+		/*Check apakah ada Approval item yang belum memiliki yang baru*/
+		$approvalItem = $this->getAprItem();
+		/*Check yang baru*/
+		$newQueueAdjustmentItemForMove = $approvalItem->QueueNew();
+		$queue                         = $this->oQueue();
+		foreach ($newQueueAdjustmentItemForMove->get() as $apritem) {
+//			public function createRecord($aprid, $apritem, $adjid, $adjitemId, $route, $status = 1)
+			$route    = $apritem->adjitem->route;
+			$newqueue = $queue->createRecord(
+				$apritem->apr_id,
+				$apritem->id,
+				$apritem->adj_id,
+				$apritem->adj_item,
+				$route
+			);
+
+			$apritem->queue_id = $newqueue->id;
+			$apritem->status   = 5;
+
+			$moved = $apritem->save();
+		}
+
+		return $moved;
+
+	}
+
+	public function getAprItem()
+	{
+		return new Items();
+	}
+
+	public function oQueue()
+	{
+		return new \Emayk\Ics\Repo\Transaction\Purchase\Order\Queue();
+	}
+
 }
 
  

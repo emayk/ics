@@ -22,5 +22,7 @@ Route::group(['prefix' => 'print'], function () {
 	Route::get('/', function () {
 		echo __LINE__ . ' Printing';
 	});
+
+	Route::resource('doc', '\Emayk\Ics\Repo\Transaction\Prints\Controller');
 });
  

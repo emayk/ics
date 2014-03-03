@@ -51,7 +51,8 @@ if (fromLocal()) {
 		'cprocespo', // Proses Pemesanan Barang
 		'cpradjustment', // proses pr adjustment oleh pembelian
 		'capprovepr', // persetujuan Pesan barang oleh management
-		'cprorder', // daftar PO
+		'cprorder', // daftar PO,
+		'creceiveProduct', // Terima Barang
 //
 //	/**
 //	 * Produk
@@ -175,6 +176,7 @@ Ext.application({
 		// 'App.util.MD5',
 		// 'App.view.vActionBtn',
 		'App.util.Alert',
+		'App.util.Vtypes',
 		'App.util.box',
 		'App.view.Viewport',
 		'Ext.container.Viewport',
@@ -247,6 +249,10 @@ Ext.application({
 	 */
 	launch: function () {
 		this.app_launch();
+		this.RegisterVtypes();
+	},
+	RegisterVtypes: function () {
+		Ext.create('App.util.Vtypes').init();
 	},
 	/*Collapse Menu dan Header*/
 	collapseMode: function () {

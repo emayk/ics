@@ -45,11 +45,18 @@ class Controller extends BaseController
 		$page  = \Input::get('page');
 		$limit = \Input::get('limit', 1);
 		$start = \Input::get('start', 0);
-		$log   = $this->log
+
+		if (Input::has('all')) {
+			return $this->getAll();
+		}
+		/**
+		 * Mendapatkan Log Hari ini
+		 */
+		$log   = $this->log->Today()
 			->orderBy('id', 'DESC');
 		$total = $log->count();
 
-		$log   = $log->skip($start)
+		$log = $log->skip($start)
 			->take($limit)
 			->get()->toArray();
 
@@ -60,13 +67,6 @@ class Controller extends BaseController
 		);
 
 		return Response::json($logs);
-
-
-//		$logs = $this->log->all();
-//		return Response::json([
-//			'success' => true, 'results' => $logs->toArray(),
-//			'total'   => $logs->count()
-//		]);
 	}
 
 	/**
@@ -78,11 +78,11 @@ class Controller extends BaseController
 	public function store()
 	{
 		if (Auth::guest()) throw new \Exception( 'Silahkan Login Terlebih dahulu' );
-		$msg = Input::get('msg');
-		$info = Input::get('info','no description');
+		$msg  = Input::get('msg');
+		$info = Input::get('info', 'no description');
 
 		$newlog = $this->log->create([
-			'message' => $msg,
+			'message'     => $msg,
 			'description' => $info
 		]);
 		return $newlog->toArray();
@@ -123,6 +123,11 @@ class Controller extends BaseController
 	public function destroy($id)
 	{
 		return $this->log->destroy($id);
+	}
+
+	protected function getAll()
+	{
+		return 'Get All Log';
 	}
 }
 

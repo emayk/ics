@@ -24,15 +24,38 @@ namespace Emayk\Ics\Repo\Factory\Product;
 
 use Emayk\Ics\Models\BaseModel;
 
+/**
+ * Class Eloquent
+ *
+ * @package Emayk\Ics\Repo\Factory\Product
+ */
 class Eloquent extends BaseModel{
+	/**
+	 * @var array
+	 */
 	protected $guarded = [];
+	/**
+	 * @var string
+	 */
 	protected $table = 'master_products';
+	/**
+	 * @var array
+	 */
 	public static $rules = [];
+	/**
+	 * @var array
+	 */
 	protected $appends = ['totalstocks', 'catname', 'typename', 'widthname', 'weightname','totallength','totalroll'];
+	/**
+	 * @var array
+	 */
 	protected $hidden = ['parent_id', 'parent_type'];
 //	protected $with = ['category','type','unitweight','unitheight'];
 
 
+	/**
+	 * @return int
+	 */
 	public function getTotallengthAttribute()
 	{
 		/*@todo: relasikan dengan totalroll yang ada di kartu stock*/
@@ -41,6 +64,9 @@ class Eloquent extends BaseModel{
 		return $this->attributes[ 'totallength' ] = $count;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getTotalrollAttribute()
 	{
 		/*@todo: relasikan dengan totalroll yang ada di kartu stock*/
@@ -49,6 +75,9 @@ class Eloquent extends BaseModel{
 		return $this->attributes[ 'totalroll' ] =$count;
 	}
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function orderItem()
 	{
 		return $this->hasMany('\Emayk\Ics\Repo\Transorderdetails\Transorderdetails','product_id');
@@ -74,23 +103,35 @@ class Eloquent extends BaseModel{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Product\Category\Eloquent', 'cat_id');
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getCatnameAttribute()
 	{
 		return $this->attributes[ 'catname' ] = $this->category()->pluck('name');
 //		return $this->attributes[ 'catname' ] = $this->category->name;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getWidthnameAttribute()
 	{
 //		return $this->attributes[ 'widthname' ] = $this->unitwidth->name;//->pluck('name');
 		return $this->attributes[ 'widthname' ] = $this->unitwidth()->pluck('name');
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getWeightnameAttribute()
 	{
 		return $this->attributes[ 'weightname' ] = $this->unitweight()->pluck('name');
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTypenameAttribute()
 	{
 		return $this->attributes[ 'typename' ] = $this->type()->pluck('name');
@@ -192,11 +233,13 @@ class Eloquent extends BaseModel{
 	public function suppliers()
 	{
 		return $this->belongsToMany('\Emayk\Ics\Repo\Suppliers\Suppliers', 'master_product_suppliers', 'master_product_id', 'master_supplier_id');
-//				return $this->belongsToMany('\Emayk\Ics\Repo\Suppliers\Suppliers', 'master_product_suppliers', 'master_product_id', 'master_supplier_id');
 	}
 
 
-
+	/**
+	 * Mendapatkan Relasi Statistik
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
 	public function stats()
 	{
 		return $this->hasMany('\Emayk\Ics\Repo\Statsproduct\Statsproduct', 'product_id');
@@ -222,6 +265,9 @@ class Eloquent extends BaseModel{
 		return $this->hasOne('Emayk\Ics\Repo\Statsproduct\Statsproduct', 'product_id');
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getTotalstocksAttribute()
 	{
 		return $this->attributes[ "totalstocks" ] = $this->stocks()->pluck('total');
@@ -254,16 +300,29 @@ class Eloquent extends BaseModel{
 //    }
 
 
+	/**
+	 * @return AbstractGenerate
+	 */
 	protected static function  getFake()
 	{
 		return new AbstractGenerate();
 	}
 
+	/**
+	 * @param array $record
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model|static
+	 */
 	protected static function  createRecord(array $record)
 	{
 		return static::create($record);
 	}
 
+	/**
+	 * @param int $count
+	 *
+	 * @return string
+	 */
 	public static function generateSampleProducts($count = 10)
 	{
 //		Type
@@ -352,4 +411,30 @@ class Eloquent extends BaseModel{
 
 		return s($productIds, $supplierProductId, $imagesIds, $detailIds);
 	}
+
+	/**
+	 * Mendapatkan Model Category Product
+	 * @return Category\Eloquent
+	 */
+	public function getCategory(){
+		return new Category\Eloquent();
+	}
+
+	/**
+	 * Mendapatkan Model Detail Product
+	 * @return Detail\Eloquent
+	 */
+	public function getDetail(){
+		return new Detail\Eloquent();
+	}
+
+	/**
+	 * Mendapatkan SalesPrice Object
+	 * @return SalesPrice\Eloquent
+	 */
+	public function getSalesPrice(){
+		return new SalesPrice\Eloquent();
+	}
+
+
 }

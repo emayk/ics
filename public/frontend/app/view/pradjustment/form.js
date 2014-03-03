@@ -94,13 +94,13 @@ Ext.define('App.view.pradjustment.form', {
 											/*Jika value belum ada setdisable = false*/
 											/*Jika Belum ada record maka fire dari controller*/
 //											log(me.getRecord());
-											cb.setDisabled(pressed);
+											cb.setReadOnly(pressed);
 											if (pressed) {
 												var val = cb.getValue();
 												/*check value sudah dipilih belum */
 												if (!val) {
 													/*Jika tidak ada value*/
-													cb.setDisabled(false);
+													cb.setReadOnly(false);
 												} else {
 													/*Jika ada value*/
 													me.setCurrencyval(val);
@@ -125,13 +125,13 @@ Ext.define('App.view.pradjustment.form', {
 									listeners: {
 										toggle: function (btn, pressed, opts) {
 											var cb = btn.up('#fccbtypetax').down('cbtypetax');
-											cb.setDisabled(pressed);
+											cb.setReadOnly(pressed);
 											if (pressed) {
 												var val = cb.getValue();
 												/*check value sudah dipilih belum */
 												if (!val) {
 													/*Jika tidak ada value*/
-													cb.setDisabled(false);
+													cb.setReadOnly(false);
 												} else {
 													/*Jika ada value*/
 													me.setTaxname(val);
@@ -205,6 +205,7 @@ Ext.define('App.view.pradjustment.form', {
 														txtcredit.setDisabled(true);
 														txtcredit.setValue(valueterm);
 														txtcredit.setDisabled(false);
+
 														cbContact.setDisabled(true);
 														cbContact.clearInvalid();
 														cbContact.clearValue();
@@ -213,6 +214,7 @@ Ext.define('App.view.pradjustment.form', {
 														store.removeAll();
 														var proxy = store.getProxy();
 														var val = combo.getValue();
+														if (val) me.setSupname(val);
 														proxy.setExtraParam('pname', val);
 														proxy.setExtraParam('ptype', 'supplier');
 														store.load();
@@ -224,13 +226,13 @@ Ext.define('App.view.pradjustment.form', {
 											listeners: {
 												toggle: function (btn, pressed, opts) {
 													var cb = btn.up('#fccbSupplier').down('cbSupplier');
-													cb.setDisabled(pressed);
+													cb.setReadOnly(pressed);
 													if (pressed) {
 														var val = cb.getValue();
 														/*check value sudah dipilih belum */
 														if (!val) {
 															/*Jika tidak ada value*/
-															cb.setDisabled(false);
+															cb.setReadOnly(false);
 														} else {
 															/*Jika ada value*/
 															me.setSupname(val);
@@ -255,13 +257,13 @@ Ext.define('App.view.pradjustment.form', {
 											listeners: {
 												toggle: function (btn, pressed, opts) {
 													var cb = btn.up('#fccbContactperson').down('cbContactperson');
-													cb.setDisabled(pressed);
+													cb.setReadOnly(pressed);
 													if (pressed) {
 														var val = cb.getValue();
 														/*check value sudah dipilih belum */
 														if (!val) {
 															/*Jika tidak ada value*/
-															cb.setDisabled(false);
+															cb.setReadOnly(false);
 														} else {
 															/*Jika ada value*/
 															me.setCpname(val);
@@ -287,13 +289,13 @@ Ext.define('App.view.pradjustment.form', {
 											listeners: {
 												toggle: function (btn, pressed, opts) {
 													var cb = btn.up('#fccbTypePayment').down('cbTypePayment');
-													cb.setDisabled(pressed);
+													cb.setReadOnly(pressed);
 													if (pressed) {
 														var val = cb.getValue();
 														/*check value sudah dipilih belum */
 														if (!val) {
 															/*Jika tidak ada value*/
-															cb.setDisabled(false);
+															cb.setReadOnly(false);
 														} else {
 															/*Jika ada value*/
 															me.setPaymenttypename(val);
@@ -329,13 +331,13 @@ Ext.define('App.view.pradjustment.form', {
 											listeners: {
 												toggle: function (btn, pressed, opts) {
 													var cb = btn.up('#fccbwarehouse').down('cbwarehouse');
-													cb.setDisabled(pressed);
+													cb.setReadOnly(pressed);
 													if (pressed) {
 														var val = cb.getValue();
 														/*check value sudah dipilih belum */
 														if (!val) {
 															/*Jika tidak ada value*/
-															cb.setDisabled(false);
+															cb.setReadOnly(false);
 														} else {
 															/*Jika ada value*/
 															me.setWarehousename(val);

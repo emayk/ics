@@ -29,7 +29,8 @@ Ext.define('App.view.procespo.gridItems', {
 		preview: false,
 		trxId: undefined,
 		trxNumber: undefined,
-		store: Ext.create('App.store.procespo.items')
+		store: 'App.store.procespo.items'
+//		store: Ext.create('App.store.procespo.items')
 	},
 	layout: 'fit',
 	/*Generate Kolom Qty*/

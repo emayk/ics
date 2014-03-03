@@ -86,6 +86,7 @@ class Items extends BaseModel
 	{
 		return $q->whereStatus(1);
 	}
+
 	public function scopeAgree($q)
 	{
 		return $q->whereStatus(2);
@@ -104,7 +105,7 @@ class Items extends BaseModel
 
 	public function scopeNewAndPending($q)
 	{
-		return $q->New()->orWhere(function($q){
+		return $q->New()->orWhere(function ($q) {
 			return $q->whereStatus(4);
 		});
 	}
@@ -112,8 +113,19 @@ class Items extends BaseModel
 
 	public function scopeProcessed($q)
 	{
-		return $q->where('status','=',5);
+		return $q->where('status', '=', 5);
 	}
 
+	/**
+	 * Mendapatkan Queue New yang berstatus Approved.
+	 *
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
+	public function scopeQueueNew($q)
+	{
+		return $q->whereQueueStatus(1)->Agree();
+	}
 }
 

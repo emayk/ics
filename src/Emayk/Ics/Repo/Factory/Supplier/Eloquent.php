@@ -164,5 +164,12 @@ class Eloquent extends BaseModel
 		return $this->kredit;
 	}
 
+	public function orders()
+	{
+		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent','supplier_id');
+	}
+
+
+
 }
  

@@ -23,16 +23,40 @@ Ext.define('App.model.receiveProduct.mreceiveProductItem', {
 		"id",
 		"receiveid",
 		"product_id",
+		{ name: "product",mapping: "product.name"},
+
+		"productname",
+
+		"sjno",
+		"sjdate",
+		"drivername",
+		"receivedate",
+		"platnomor",
+
 		"qty",
 		"price",
 		"desc",
-		"subtotal",
+		"status",
+		/*Total Sisa*/
+		"qtyelapse",
+		/*Total Sudah Terima*/
+		"qtyreceived",
+		"qtyroll",
+		"rollreceived",
+		"totalrollreceived",
+		{
+			/**
+			 * Jumlah Product yang harus diterima
+			 * qtv harus kurang atau sama dengan qtyorder
+			 * */
+			name : 'qtyorder',type: "int"
+		},
 		"created_at",
 		"updated_at"
 	],
 	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/receiveproductitem',
+		url: getApiUrl() +'/transaction/receive/good',
 		reader: {
 			type: 'json',
 			root: 'results',

@@ -72,7 +72,13 @@ class impItemEloquent implements iItem
 		if (!is_numeric($adjid)) throw new \Exception( 'Adj Id bukan angka' );
 
 
-		$items   = $this->item->getFindByAdjId($adjid);
+		$items   = $this->item->getFindByAdjId($adjid)->with('contact',
+			'supplier',
+			'product',
+			'warehouse',
+			'currency',
+			'paymenttype',
+			'taxtype');
 		$count   = $items->count();
 		$results = $items->get()->toArray();
 		return Response::json([

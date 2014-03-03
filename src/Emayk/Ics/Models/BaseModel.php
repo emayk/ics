@@ -132,6 +132,7 @@ class BaseModel extends Model
 
 	/**
 	 * Membuat Uuid Simple dari Transaksi Number
+	 *
 	 * @param $trxnumber
 	 *
 	 * @return string
@@ -141,7 +142,51 @@ class BaseModel extends Model
 		return uniqid(str_replace('-', '_', $trxnumber));
 	}
 
-	public function getPrefix(){
+	public function getPrefix()
+	{
 		return new \Emayk\Ics\Repo\Factory\Prefix\Eloquent();
+	}
+
+	public function getPpnId()
+	{
+		/*ganti dengan PPN id di table master_tax*/
+		return 1;
+	}
+
+	/**
+	 * Mendapatkan Factory Model
+	 *
+	 * @return \Emayk\Ics\Repo\Factory\Eloquent
+	 */
+	public function getFactory()
+	{
+		return new \Emayk\Ics\Repo\Factory\Eloquent();
+	}
+
+	/**
+	 * Mendapatkan Record yang dibuat hari ini
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
+	public function scopeCreateToday($q)
+	{
+		$date = date('Y-m-d');
+		return $q->where('created_at', "LIKE", "%$date%");
+	}
+
+
+	public function oUser(){
+		$user =  new \Emayk\Ics\Repo\Factory\User\Eloquent();
+		return $user->findOrFail($this->getUid());
+	}
+
+	public function getUsername()
+	{
+		return $this->oUser()->username;
+	}
+	public function getUserFullname(){
+		$fullname = $this->oUser()->fullname;
+		return (is_null($fullname)) ? $this->getUsername() : $fullname;
 	}
 }

@@ -25,6 +25,8 @@ use Emayk\Ics\Models\BaseModel;
 class Eloquent extends BaseModel
 {
 	protected $table = 'master_prefix_doc';
+	protected $ppn = 'PPN-';
+	protected $nonppn = 'NonPPN-';
 
 	public  function getPO()
 	{
@@ -35,6 +37,26 @@ class Eloquent extends BaseModel
 	public function getPR()
 	{
 		return 'PR-';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPpn()
+	{
+		return $this->ppn;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNonppn()
+	{
+		return $this->nonppn;
+	}
+
+	public function receivegood(){
+		return 'RG-';
 	}
 
 }

@@ -26,21 +26,32 @@ class Eloquent extends BaseModel
 {
 	protected $guarded = array();
 	protected $table = 'trans_order_details';
-	protected $prefix = [
-		'ppn'    => 'PpnPO-',
-		'nonppn' => 'NonPPN-PO-'
-	];
 	public static $rules = array();
+	public $hidden = ['getproduct'];
+	public $appends = ['productname'];
+
+	public function getProductnameAttribute()
+	{
+		return $this->attributes[ 'productname' ] = $this->getproduct->name;
+	}
 
 	public function order()
 	{
 		return $this->belongsTo('Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent', 'order_id');
 	}
 
+	public function scopeOfOrder($q, $id)
+	{
+		return $q->where('order_id', $id);
+	}
 
 	public function product()
 	{
-		return $this->belongsTo('', 'product_id');
+		return $this->belongsTo('Emayk\Ics\Repo\Factory\Product\Eloquent', 'product_id');
+	}
+	public function getproduct()
+	{
+		return $this->belongsTo('Emayk\Ics\Repo\Factory\Product\Eloquent', 'product_id');
 	}
 
 	public function approvalitem()

@@ -42,6 +42,11 @@ class Eloquent extends BaseModel
 	protected $table = 'master_payment_type';
 	public static $rules = array();
 
+
+	public function orders(){
+		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent','paymenttype_id');
+	}
+
 }
 
  

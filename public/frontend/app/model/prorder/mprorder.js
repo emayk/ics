@@ -20,6 +20,50 @@
  *
  **/
 Ext.define('App.model.prorder.mprorder', {
-    extend: 'Ext.data.Model',
-    fields: [ 'id', 'name' ]
+	extend: 'Ext.data.Model',
+	fields: [ 'id',
+		"approve_id",
+		"cntprint",
+		"cp_id",
+		{ name: 'contact', mapping: 'contact.name' },
+		"createby_id",
+		"created_at",
+		"credit",
+		"curr_id",
+		{ name: "currsymbol", mapping: 'currency.shortname'},
+		{ name : "currency" , mapping: 'currency.name'},
+		{ name : "delivery_at" , type: 'date'},
+		"lastupdateby_id",
+		"marktext",
+		"paymenttype_id",
+		{ name: "payment", mapping: 'payment.name'},
+		{ name: "printed", convert: function (v) { return (v > 0); } },
+		"rate",
+		"status",
+		"supplier_id",
+		{ name: 'supplier', mapping: 'supplier.name' },
+		"tax_id",
+		{ name: 'tax', mapping: 'tax.name' },
+		"totaldp",
+		"totalitem",
+		"trxnumber",
+		"type_id",
+		//1  = pembelian
+		{ name: 'type', mapping: 'type.name' },
+		"updated_at",
+		"uuid",
+		"warehouse_id",
+		{ name: 'warehouse', mapping: 'warehouse.name'},
+		{ name: 'ponumber', mapping: 'trxnumber'},
+		'totalpayment'
+	],
+	proxy: {
+		type: 'rest',
+		url: getApiUrl() + '/transaction/purchase/order',
+		reader: {
+			type: 'json',
+			root: 'results',
+			totalProperty: 'total'
+		}
+	}
 });

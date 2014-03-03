@@ -25,7 +25,7 @@ namespace Emayk\Ics\Repo\Factory\User\access;
 use Emayk\Ics\Models\BaseModel;
 
 class Eloquent extends BaseModel{
-protected $table = '';
+
 }
 
  

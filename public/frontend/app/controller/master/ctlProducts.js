@@ -56,7 +56,7 @@ Ext.define('App.controller.master.ctlProducts', {
 		'App.model.warehouse.category',
 		'App.model.warehouse.warehouse',
 		'App.model.product.updater',
-		'App.model.product.history',
+		'App.model.product.history'
 
 
 	],

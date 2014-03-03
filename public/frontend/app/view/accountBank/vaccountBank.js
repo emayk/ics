@@ -19,37 +19,45 @@
  *
  *
  **/
+
+/**
+ * Uml
+ * @startuml
+ * Ext.panel.Panel <|- App.view.accountBank.vaccountBank : Extends
+ * App.view.accountBank.vaccountBank: initComponent();
+ * @end
+ */
 Ext.define('App.view.accountBank.vaccountBank', {
-    extend: 'Ext.panel.Panel',
-    alias: 'widget.appaccountBankvaccountBank',
-    title: 'Account Bank',
-    requires: [
-        'App.view.accountBank.Lists',
-        'App.view.accountBank.form'
-    ],
-    bodyPadding: 2,
+	extend: 'Ext.panel.Panel',
+	alias: 'widget.appaccountBankvaccountBank',
+	title: 'Account Bank',
+	requires: [
+		'App.view.accountBank.Lists',
+		'App.view.accountBank.form'
+	],
+	bodyPadding: 2,
 	autoScroll: true,
-    layout: { type: 'hbox', align: 'stretch'},
-    storeAccount: null,
-    setStore: function (store) {
-        this.storeAccount = store;
-    },
-    initComponent: function () {
-        Ext.apply(this, {
-            items: [
-                {
-                    xtype: 'appaccountBankvaccountBankList',
-                    flex: .6,
-                    emptyText: 'Empty Account Bank',
-                    storeAccount: this.storeAccount
-                },
-                {
-                    xtype: 'appaccountBankform',
-                    flex: .4,
-                    itemId: 'formAccountBank'
-                }
-            ]
-        });
-        this.callParent(arguments);
-    }
+	layout: { type: 'hbox', align: 'stretch'},
+	storeAccount: null,
+	setStore: function (store) {
+		this.storeAccount = store;
+	},
+	initComponent: function () {
+		Ext.apply(this, {
+			items: [
+				{
+					xtype: 'appaccountBankvaccountBankList',
+					flex: .6,
+					emptyText: 'Empty Account Bank',
+					storeAccount: this.storeAccount
+				},
+				{
+					xtype: 'appaccountBankform',
+					flex: .4,
+					itemId: 'formAccountBank'
+				}
+			]
+		});
+		this.callParent(arguments);
+	}
 });

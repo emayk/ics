@@ -67,6 +67,10 @@ class Eloquent extends BaseModel
 		return $this->belongsTo('Emayk\Ics\Repo\Locations\Locations', 'country_id');
 	}
 
+	public function orders()
+	{
+		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent','curr_id');
+	}
 
 	/**
 	 * @param bool $resultIds

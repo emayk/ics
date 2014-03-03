@@ -194,7 +194,133 @@ Ext.define('App.util.box', {
 				]
 
 			}
-		]
+		],
+		print: function (htmlElement, printPreview, closeAutomaticallyAfterPrint) {
+			/*test*/
+			var me = this;
+			if (printPreview) {
+				me.createWindowPrintPreview(htmlElement);
+			} else {
+				var win = window.open('', 'Print Panel');
+				var outerHtml = htmlElement.outerHTML;
+				if (!outerHtml) {
+					outerHtml = htmlElement;
+				}
 
+				win.document.open();
+				win.document.write(outerHtml);
+				win.document.close();
+
+				win.print();
+				if (closeAutomaticallyAfterPrint) {
+					if (Ext.isIE) {
+						window.close();
+					} else {
+						win.close();
+					}
+				}
+			}
+		},
+		/**
+		 * Setelah Request Print Document,
+		 * Panel dari tab yang diberikan
+		 * akan diremove.
+		 * @param tab
+		 * @param key
+		 * @param id
+		 * @param number
+		 * @param preview
+		 */
+		printDocumentAndRemoveTabFromPanel: function (tab, key, id, number, preview) {
+
+		},
+		/**
+		 * Request Print Document
+		 * @param key
+		 * @param id
+		 * @param number
+		 * @param fnSuccess
+		 * @param fnFailure
+		 */
+		printDocument: function (key, id, number, preview) {
+			var me = this;
+			Ext.Ajax.request({
+				method: 'POST',
+				params: {
+					trxid: id,
+					trxnumber: number,
+					trxkey: key,
+					preview: preview,
+					_token: gettoken(),
+					uid: user_login_id()
+				},
+				url: getApiUrl() + '/print/doc',
+				success: function (res, opts) {
+					var html = res.responseText;
+					if (preview) {
+						me.createWindowPrintPreview(html, key, id, number);
+					} else {
+						me.print(html, false, true);
+						me.msgSuccessPrintDocument();
+					}
+				},
+				failure: function (res, opts) {
+					me.msgFailurePrintDocument();
+				}
+			});
+		},
+
+		msgSuccessPrintDocument: function () {
+			this.info('Print Document Berhasil dilakukan');
+		},
+		msgFailurePrintDocument: function () {
+			this.error('Print Document Gagal dilakukan');
+		},
+		/**
+		 * Buat Window Print Preview
+		 * @param html
+		 */
+		createWindowPrintPreview: function (html, key, id, number) {
+			var me = this;
+			var win;
+			if (!win) {
+				win = Ext.create('Ext.window.Window', {
+					layout: { type: 'vbox', align: 'stretch'},
+					width: me.maxWidthWindow() - 100,
+					height: me.maxHeightwindow() - 100,
+					items: [
+						{
+							autoScroll: true,
+							xtype: 'panel',
+							id: 'panelpreview',
+							flex: .5,
+							html: html
+						}
+					],
+					dockedItems: [
+						{xtype: 'toolbar',
+							dock: 'bottom',
+							items: [
+								'->',
+								{ text: 'Print', iconCls: 'print',
+									handler: function (btn) {
+										var preview = false;
+										me.printDocument(key, id, number, preview);
+										btn.up('window').close();
+									}},
+								{
+									text: 'Keluar', iconCls: 'close',
+									handler: function (btn) {
+										btn.up('window').close();
+									}
+								}
+							]}
+					]
+
+				});
+				win.show();
+			}
+		}
+		/*End Statics*/
 	}
 });

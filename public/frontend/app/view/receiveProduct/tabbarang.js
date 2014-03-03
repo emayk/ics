@@ -27,22 +27,10 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 	requires: [
 		'App.view.receiveProduct.vreceiveProduct'
 	],
-	config: {
-		storeproductreceive: Ext.create('Ext.data.Store', {
-			fields: ['id', 'ponumber', { type: 'date', name: 'tglpo'}, 'supname', { name : 'tglkirim', type: 'date',dateFormat: 'd/m/Y' }, 'warehouse'],
-			data: [
-				{ id: 1, ponumber: 'PO-1234', supname: 'Supplier Name1234', tglpo: '12/12/2014', tglkirim: '22/12/2014', warehouse: 'KOPO'},
-				{ id: 2, ponumber: 'PO-1235', supname: 'Supplier Name1235', tglpo: '12/12/2014', tglkirim: '12/12/2014', warehouse: 'Kebon Jati'},
-				{ id: 3, ponumber: 'PO-1236', supname: 'Supplier Name1236', tglpo: '12/12/2014', tglkirim: '23/12/2014', warehouse: 'KOPO'},
-				{ id: 4, ponumber: 'PO-1237', supname: 'Supplier Name1237', tglpo: '12/12/2014', tglkirim: '24/12/2014', warehouse: 'Bandung'},
-				{ id: 5, ponumber: 'PO-1238', supname: 'Supplier Name1238', tglpo: '12/12/2014', tglkirim: '25/12/2014', warehouse: 'Jakarta'}
-			]
-		})
-	},
+	store: 'App.store.receiveProduct.sreceiveProduct',
 	padding: 10,
 	frame: true,
 	title: 'Terima Barang',
-
 	layout: { type: 'fit', align: 'stretch'},
 	initComponent: function () {
 		var me = this;
@@ -55,6 +43,9 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 					title: 'Daftar Penerimaan Barang ',
 					iconCls: 'tab',
 					items: [
+					/**
+					 * Form Pencarian Penerimaan Barang
+					 */
 						{
 							margin: '5 0 5 0',
 							iconCls: 'form',
@@ -76,7 +67,7 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 												fields: ['id', 'name', 'value'],
 												data: [
 													{ id: 1, name: 'Nama Pemasok', value: 'supname' },
-													{ id: 2, name: 'No PO', value: 'ponumber' },
+													{ id: 2, name: 'No PO', value: 'ponumber' }
 												]
 											}),
 											fieldLabel: 'Cari Berdasarkan',
@@ -108,46 +99,73 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 								}
 							]
 						},
-						/*Grid BPB */
+					/**
+					 * Grid List Penerimaan Barang
+					 * Yang Belum diCetak
+					 */
 						{
 							flex: .9,
 							xtype: 'grid',
 							iconCls: 'grid',
+							itemId: 'gridreceivegood',
 							title: 'Daftar Bukti Penerimaan Barang',
-							store: me.getStoreproductreceive(),
+							store: me.store,
+							defaults: {
+								flex: 1
+							},
 							columns: [
 								{
 									xtype: 'rownumberer'
 								},
 								{
-									text: 'Nomor PO',
-									dataIndex: 'ponumber',
-									flex: 2
+									text: 'Purchase Order',
+									columns: [
+										{
+											text: 'Nomor PO',
+											dataIndex: 'ponumber',
+											flex: 1
+										},
+										{
+											text: 'Tanggal<br/>Buat',
+											dataIndex: 'podate',
+											xtype: 'datecolumn', format: 'd F Y'
+										}
+									]
+								},
+//								{
+//									text: 'Tanggal',
+//									columns:[
+//										{
+//											text: 'Terima',
+//											dataIndex: 'receivedate',
+//											xtype: 'datecolumn',format: 'd F Y'
+////											renderer: function (v) {
+////												return Ext.Date.format(v, 'd F Y');
+////											}
+//										},
+//									]
+//								},
+								{
+									text: 'Pemasok',
+									columns: [
+										{
+											text: 'Nama',
+											dataIndex: 'supplier'
+
+										},
+										{
+											text: 'Kontak',
+											dataIndex: 'contact'
+										}
+									]
 								},
 								{
-									text: 'Tanggal',
-									dataIndex: 'tglpo',
-									flex: 1,
-									renderer: function (v) {
-										return Ext.Date.format(v, 'd F Y');
-									}
+									text: 'Jumlah <br/>Barang',
+									dataIndex: 'totalorderitem'
 								},
 								{
-									text: 'Tanggal Kirim',
-									dataIndex: 'tglkirim',
-									flex: 1,
-									renderer: function (v) {
-										return Ext.Date.format(v, 'd F Y');
-									}
-								},
-								{
-									text: 'Nama Supplier',
-									dataIndex: 'supname',
-									flex: 2
-								},{
 									text: 'Gudang',
-									dataIndex: 'warehouse',
-									flex: 1
+									dataIndex: 'warehouse'
 								},
 								{
 									header: 'Proses',
@@ -166,11 +184,13 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 														iconCls: 'form',
 														title: title,
 														closable: true,
+														receivenumber: rec.get('receivenumber'),
+														receiveid: rec.get('id'),
 														ponumber: rec.get('ponumber'),
-														tglpo: rec.get('tglpo'),
-														supname: rec.get('supname'),
+														tglpo: rec.get('podate'),
+														supname: rec.get('supplier'),
 														warehouse: rec.get('warehouse'),
-														poid: rec.get('id')
+														record: rec
 													};
 												App.util.box.openNewtab(tab, title, 'App.view.receiveProduct.vreceiveProduct', config);
 											}
@@ -182,25 +202,25 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 								{
 									xtype: 'pagingtoolbar',
 									dock: 'bottom',
-									store: me.getStoreproductreceive()
+									store: me.store
 								}
 							]
 						}
 					]
-				},
-				{
-					/*Cetak Bukti Terima Barang */
-					title: 'Cetak Bukti',
-					iconCls: 'print',
-					xtype: 'container',
-					items: [
-						{
-							xtype: 'panel',
-							bodyPadding: 10,
-							html: 'Cetak Bukti Terima Barang'
-						}
-					]
 				}
+//				{
+//					/*Cetak Bukti Terima Barang */
+//					title: 'Cetak Bukti',
+//					iconCls: 'print',
+//					xtype: 'container',
+//					items: [
+//						{
+//							xtype: 'panel',
+//							bodyPadding: 10,
+//							html: 'Cetak Bukti Terima Barang'
+//						}
+//					]
+//				}
 //				{
 //					/*Daftar Terima Barang*/
 //					title: 'Form Terima Barang[simulasi]',
@@ -216,5 +236,6 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 			]
 		});
 		me.callParent(arguments);
+		me.down('#gridreceivegood').getStore().load();
 	}
 });

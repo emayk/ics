@@ -21,8 +21,14 @@
 namespace Emayk\Ics\Repo\Transaction\Purchase\Order;
 
 
+use Carbon\Carbon;
 use Emayk\Ics\Models\BaseModel;
 
+/**
+ * @property mixed adjustmentitem
+ * @property mixed apritem_id
+ * @property mixed apr_id
+ */
 class Queue extends BaseModel
 {
 	protected $table = 'trans_order_queue';
@@ -79,6 +85,11 @@ class Queue extends BaseModel
 		return $this->getNewQueueFromApprovalItem()->lists('id');
 	}
 
+	public function oAdjustmentItem()
+	{
+		return new \Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item();
+	}
+
 	public function createQueue($setStatus = true)
 	{
 
@@ -123,16 +134,58 @@ class Queue extends BaseModel
 		return $q->whereStatus(1);
 	}
 
+	public function getNew()
+	{
+		return $this->New();
+	}
+
+	/**
+	 * Jumlah Queue Baru
+	 *
+	 * @return mixed
+	 */
+	public function countNew()
+	{
+		return ( $this->getNew()->count() );
+	}
+
+	/**
+	 * Apakah ada Queue Baru ?
+	 *
+	 * @return bool
+	 */
+	public function hasNew()
+	{
+		return ( $this->countNew() > 0 );
+	}
+
+	/**
+	 * Semua Yang sudah diproses
+	 *
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
 	public function scopeProcessed($q)
 	{
 		return $q->whereStatus(5);
 	}
 
+	/**
+	 * Object Eloquent Order
+	 *
+	 * @return Eloquent
+	 */
 	public function oOrder()
 	{
 		return new Eloquent();
 	}
 
+	/**
+	 * Object Order Item
+	 *
+	 * @return Item\Eloquent
+	 */
 	public function oOrderItem()
 	{
 		return new Item\Eloquent();
@@ -155,27 +208,150 @@ class Queue extends BaseModel
 		}
 	}
 
+	public function oApproval()
+	{
+		return new \Emayk\Ics\Repo\Transaction\Purchase\Approval\Model();
+	}
+
+	/**
+	 * Pindahkan Queue ke Order
+	 *
+	 * @return array
+	 */
 	public function moveToOrder()
 	{
-		$unprocessedQueue = $this->New();
+		$unprocessedQueue = $this->whereStatus(1);
+		/*Hanya akan dijalankan jika ada Queue Baru*/
+		$countNewQueue = $unprocessedQueue->count();
+		if ($countNewQueue > 0) {
+
+			$newOrder     = $this->oOrder();
+			$newOrderItem = $this->oOrderItem();
+			$orders       = [];
+			$newQueue     = $this->getNew();
+			$routeUnique  = array_unique($unprocessedQueue->lists('route'));
+			$queueIds     = [];
+			foreach ($routeUnique as $route) {
+				$totaldp      = 0;
+				$totalpayment = 0;
+				$countOrder   = 0;
+				foreach ($newQueue->get() as $q) {
+					/*Jadikan Satu Yang Routenya Sama*/
+					if ($q->route == $route) {
+						$queueIds [ ] = $q->id;
+						$item         = $q->adjustmentitem;
+						$ppnId        = $this->getPpnId();
+						$taxid        = $item->tax_id;
+						$prefixOrder  = ( $ppnId == $taxid )
+							? $this->getPrefix()->getPpn()
+							: $this->getPrefix()->getNonppn();
+						$prefixOrder  = $prefixOrder . $item->route;
+						$totaldp      = $totaldp + $item->dp;
+						$totalpayment = $totalpayment + $item->subtotal;
+
+						$order = [
+							'type_id'         => 1,
+							'trxnumber'       => $prefixOrder,
+							'supplier_id'     => $item->supplier_id,
+							'cp_id'           => $item->cp_id,
+							'tax_id'          => $taxid,
+							'curr_id'         => $item->curr_id,
+							'paymenttype_id'  => $item->paymenttype_id,
+							'warehouse_id'    => $item->warehouse_id,
+							'delivery_at'     => $item->delivery_at,
+							'approve_id'      => $q->apr_id,
+							'credit'          => $item->credit,
+							'rate'            => $item->rate,
+							'uuid'            => $this->createUuid($item->trxnumber),
+							'status'          => 1,
+							'printed'         => 0,
+							'cntprint'        => 0,
+							'totaldp'         => $totaldp,
+							'createby_id'     => $this->getUid(),
+							'lastupdateby_id' => $this->getUid(),
+							'marktext'        => $item->route,
+							'totalpayment' => $totalpayment
+						];
+
+						$orderitem[ ] = [
+							'product_id'      => $item->product_id,
+							'qty'             => $item->qty,
+							'price'           => $item->price,
+							'apritem_id'      => $q->apritem_id,
+							'uuid'            => $this->createUuid($item->trxnumber),
+							'createby_id'     => $this->getUid(),
+							'lastupdateby_id' => $this->getUid(),
+							'dp'              => $item->dp,
+							'subtotal'        => $item->subtotal,
+						];
+
+						$countOrder++;
+					}
+
+				}
+				$orders[ ] = [
+					'order' => $order,
+					'items' => $orderitem
+				];
+			}
+
+			$createRecord = true;
+			if ($createRecord) {
+
+				foreach ($orders as $k => $o) {
+					$new_order = $newOrder->create($o[ 'order' ]);
+					foreach ($o[ 'items' ] as $item) {
+						$item           = array_merge($item, ['order_id' => $new_order->id]);
+						$new_order_item = $newOrderItem->create($item);
+
+					}
+				}
+
+				/*Jika Sudah Created Item Set Status untuk Approval dan Queue menjadi 5*/
+				if (count($queueIds) > 0) {
+					foreach ($queueIds as $id) {
+						$queue        = $this->find($id);
+						$approvalitem = $queue->approvalitem;
+						\Log::info($approvalitem->queue_id);
+						if ($approvalitem->queue_status == 1) {
+							$approvalitem->queue_status = 5;
+							$approvalitem->save();
+						};
+						$queue->status = 5; // queue diset status sudah diproses supaya tidak diproses lagi.
+						$queue->save();
+					}
+				}
+
+			}
+
+		}
+	}
+
+
+	/**
+	 * Pindahkan Queue ke Order
+	 *
+	 * @return array
+	 */
+	public function moveToOrderOld()
+	{
+		$unprocessedQueue = $this->getNew();
+		/*Hanya akan dijalankan jika ada Queue Baru*/
 		if ($unprocessedQueue->count() > 0) {
 			$newOrder     = $this->oOrder();
 			$newOrderItem = $this->oOrderItem();
 			$cnt          = 0;
 			$orders       = [];
 
-			return $unprocessedQueue->get();//->toArray();
 			foreach ($unprocessedQueue->get() as $queue) {
 				$cnt++;
-				/**
-				 * Ambil Object Approval Item  Id
-				 */
-
 				/*check route adjustment*/
-				$route                   = $queue->route; //$queue->adjustmentitem->route;
+				$route = $queue->route; //$queue->adjustmentitem->route;
+				/*cari adjustment Item */
 				$adjustmentItemWithRoute = $queue->adjustmentitem->whereRoute($route); //->count();
 
-				$totaldp   = 0;
+				$totaldp = 0;
+				/*total adjustment item*/
 				$countItem = $adjustmentItemWithRoute->count();
 				$cntItem   = 0;
 
@@ -186,68 +362,31 @@ class Queue extends BaseModel
 					$cntItem++;
 					$totaldp       = $totaldp + $item->dp;
 					$orderitem [ ] = [
-						'product_id'      => $item->product_id,
-						'qty'             => $item->qty,
-						'price'           => $item->price,
-						'apritem_id'      => $queue->apritem_id,
-//						'order_id' => 0, //diset setelah object create
+						'product_id'      => $item->product_id, 'qty' => $item->qty,
+						'price'           => $item->price, 'apritem_id' => $queue->apritem_id,
+						/*'order_id' => 0, //diset setelah object create*/
 						'uuid'            => $this->createUuid($item->trxnumber),
 						'createby_id'     => $this->getUid(),
-						'lastupdateby_id' => $this->getUid(),
-						'dp'              => $item->dp,
-						'subtotal'        => $item->subtotal,
-
+						'lastupdateby_id' => $this->getUid(), 'dp' => $item->dp,
+						'subtotal'        => $item->subtotal
 					];
 
 					/*Create Order*/
 					$order = [
-						'type_id'         => 1,
-						'supplier_id'     => $item->supplier_id,
-						'cp_id'           => $item->cp_id,
-						'tax_id'          => $item->tax_id,
-						'curr_id'         => $item->curr_id,
-						'paymenttype_id'  => $item->paymenttype_id,
-						'warehouse_id'    => $item->warehouse_id,
-						'delivery_at'     => $item->delivery_at,
-						'approve_id'      => $queue->apr_id,
-						'credit'          => $item->credit,
-						'rate'            => $item->rate,
-						'uuid'            => $this->createUuid($item->trxnumber),
-						'status'          => 1,
-						'printed'         => 0,
-						'cntprint'        => 1,
-						'totaldp'         => $totaldp,
-						'createby_id'     => $this->getUid(),
-						'lastupdateby_id' => $this->getUid(),
-						'marktext'        => $item->route
+						'type_id'         => 1, 'supplier_id' => $item->supplier_id,
+						'cp_id'           => $item->cp_id, 'tax_id' => $item->tax_id,
+						'curr_id'         => $item->curr_id, 'paymenttype_id' => $item->paymenttype_id,
+						'warehouse_id'    => $item->warehouse_id, 'delivery_at' => $item->delivery_at,
+						'approve_id'      => $queue->apr_id, 'credit' => $item->credit,
+						'rate'            => $item->rate, 'uuid' => $this->createUuid($item->trxnumber),
+						'status'          => 1, 'printed' => 0, 'cntprint' => 1,
+						'totaldp'         => $totaldp, 'createby_id' => $this->getUid(),
+						'lastupdateby_id' => $this->getUid(), 'marktext' => $item->route
 					];
 				}
 
-				$orders[ ] = ['items' => $orderitem, 'order' => $order];
-//				$orders[]['order'] = $order;
-				/*Apakah item Approval sudah di approve*/
-
-//				\Log::info('order',[$order]);
-//				\Log::info('orderitem',[$orderitem]);
-
-//				$recordOrder = $newOrder->create($order);
-//				$id = rand(0, 100);
-//				$newOrderId = $recordOrder->id;
-//
-//				foreach ($orderitem as $o) {
-//					$newitem = array_merge($o, array('order_id' => $id));
-//				}
-
-//				foreach ($orderitem as $o) {
-//					$newitem = array_merge($o, array('order_id' => $newOrderId));
-//					$newOrderItem->create($newitem);
-//				}
-
+//				$orders[ ] = ['items' => $orderitem, 'order' => $order];
 			}
-
-
-			return $orders;
-//			return $newitem;
 		}
 	}
 
@@ -256,6 +395,51 @@ class Queue extends BaseModel
 	{
 		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Item', 'route');
 	}
+
+	public function setProcessed()
+	{
+		return $this->attributes[ 'status' ] = 5;
+	}
+
+	/**
+	 * Mendapatkan Unique Array
+	 *
+	 * @param array $routes
+	 *
+	 * @return array
+	 */
+	public function getUniqueRoute(array $routes)
+	{
+		return array_unique($routes);
+	}
+
+	/**
+	 * Membuat Record Queue
+	 *
+	 * @param     $aprid
+	 * @param     $apritem
+	 * @param     $adjid
+	 * @param     $adjitemId
+	 * @param     $route
+	 * @param int $status
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model|static
+	 */
+	public function createRecord($aprid, $apritem, $adjid, $adjitemId, $route, $status = 1)
+	{
+		$now = Carbon::create();
+		return $this->create([
+			"apr_id"     => $aprid,
+			"apritem_id" => $apritem,
+			"adj_id"     => $adjid,
+			"adjitem_id" => $adjitemId,
+			"status"     => $status,
+			"route"      => $route,
+			"created_at" => $now,
+			"updated_at" => $now
+		]);
+	}
+
 }
 
  

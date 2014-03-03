@@ -24,14 +24,13 @@ Ext.define('App.store.prorder.sprorder',{
 	extend : 'Ext.data.Store',
 	model : 'App.model.prorder.mprorder',
 
-/*	proxy: {
+	proxy: {
 		type: 'rest',
-		url: getApiUrl() +'/prorder',
+		url: getApiUrl() +'/transaction/purchase/order',
 		reader: {
 			type: 'json',
 			root: 'results',
 			totalProperty: 'total'
-		},
-	},*/
-
+		}
+	}
 })
