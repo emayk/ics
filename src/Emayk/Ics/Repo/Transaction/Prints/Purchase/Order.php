@@ -53,7 +53,8 @@ class Order extends Prints
 		 * Jika sudah pernah di print ,
 		 * kasih template yang berbeda
 		 */
-		$fileview = ( !$printed ) ? 'Purchase.Order' : 'Purchase.Order-copy';
+//		$fileview = ( !$printed ) ? 'Purchase.Order' : 'Purchase.Order-copy';
+		$fileview = 'Purchase.Order';
 
 		if ($preview == "false") {
 			/*Original*/

@@ -20,7 +20,7 @@
 
 </style>
 
-{{--Halaman Duplikasi--}}
+{{--Halaman Original--}}
 {{--record == order --}}
 
 <div class="noprint">
@@ -124,8 +124,10 @@
 									?>
 									@foreach ($record->item as $item)
 									<?php
-									$totalsisa = $totalsisa + ( $item->subtotal - $item->dp );
-									$totalsubtotal = $totalsubtotal + $item->subtotal; ?>
+									$totalsubtotal = $totalsubtotal + $item->subtotal;
+									$sisa = ( $item->subtotal - $item->dp );
+									$totalsisa = $totalsisa + $sisa;
+									?>
 									<tr>
 										<td> {{ $cnt }}</td>
 										<td> {{ $item->product->name }}</td>
@@ -133,7 +135,7 @@
 										<td> {{ $item->formatNumberIndonesia($item->price) }}</td>
 										<td> {{ $item->formatNumberIndonesia($item->subtotal) }}</td>
 										<td> {{ $item->formatNumberIndonesia($item->dp) }}</td>
-										<td> {{ $item->formatNumberIndonesia( $totalsisa ) }}</td>
+										<td> {{ $item->formatNumberIndonesia( $sisa ) }}</td>
 									</tr>
 									<?php $cnt++; ?>
 									@endforeach
@@ -144,12 +146,16 @@
 											<td colspan="4">
 												Total
 											</td>
-											<td>
-												{{ $record->formatNumberIndonesia($record->totaldp)}}
-											</td>
+
 											<td>
 												{{ $record->formatNumberIndonesia($totalsubtotal)}}
 											</td>
+
+
+											<td>
+												{{ $record->formatNumberIndonesia($record->totaldp)}}
+											</td>
+
 											<td>
 												{{ $record->formatNumberIndonesia($totalsisa) }}
 											</td>

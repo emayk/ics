@@ -22,10 +22,17 @@ Route::group(array('prefix' => 'print'), function () {
 	});
 
 
-	Route::get('bpb/{id?}', function ($id=1) {
-		$bpb = new \Emayk\Ics\Repo\Transaction\Receive\Product\Model();
-		$record = $bpb->findOrFail($id);
-		return \View::make('ics::Print.Receive.Product',compact('record'));
+//	Route::get('bpb/{id?}', function ($id=1) {
+	Route::get('bpb/{id?}', function ($id=6) {
+		$id = 6;
+		$number = "RG-PPN-21481211620140302";
+		$order = new \Emayk\Ics\Repo\Transaction\Prints\Receive\Product();
+		$o = $order->prints($id,$number,false);
+		return $o;
+
+//		$bpb = new \Emayk\Ics\Repo\Transaction\Receive\Product\Model();
+//		$record = $bpb->findOrFail($id);
+//		return \View::make('ics::Print.Receive.Product',compact('record'));
 	});
 
 
