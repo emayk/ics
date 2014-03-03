@@ -12,6 +12,16 @@ Route::group(array('prefix' => 'print'), function () {
 		return 'Test Print';
 	});
 
+	Route::get('order', function () {
+		$id = 22;
+		$number = "PPN-21421212420140226";
+		$order = new \Emayk\Ics\Repo\Transaction\Prints\Purchase\Order();
+		$o = $order->prints($id,$number,false);
+		return $o;
+//		return 'Test Print';
+	});
+
+
 	Route::get('bpb/{id?}', function ($id=1) {
 		$bpb = new \Emayk\Ics\Repo\Transaction\Receive\Product\Model();
 		$record = $bpb->findOrFail($id);

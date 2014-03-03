@@ -207,6 +207,13 @@ Ext.define('App.util.box', {
 					outerHtml = htmlElement;
 				}
 
+				var windoc = win.document;
+				if (!windoc){
+					me.error('Sepertinya Document terkena Block Pop-Up Browser yang digunakan' +
+						'<br/>Silahkan Allow Website ini');
+					return false;
+				}
+
 				win.document.open();
 				win.document.write(outerHtml);
 				win.document.close();

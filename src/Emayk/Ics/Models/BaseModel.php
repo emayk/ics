@@ -165,6 +165,7 @@ class BaseModel extends Model
 
 	/**
 	 * Mendapatkan Record yang dibuat hari ini
+	 *
 	 * @param $q
 	 *
 	 * @return mixed
@@ -176,8 +177,9 @@ class BaseModel extends Model
 	}
 
 
-	public function oUser(){
-		$user =  new \Emayk\Ics\Repo\Factory\User\Eloquent();
+	public function oUser()
+	{
+		$user = new \Emayk\Ics\Repo\Factory\User\Eloquent();
 		return $user->findOrFail($this->getUid());
 	}
 
@@ -185,8 +187,15 @@ class BaseModel extends Model
 	{
 		return $this->oUser()->username;
 	}
-	public function getUserFullname(){
+
+	public function getUserFullname()
+	{
 		$fullname = $this->oUser()->fullname;
-		return (is_null($fullname)) ? $this->getUsername() : $fullname;
+		return ( is_null($fullname) ) ? $this->getUsername() : $fullname;
+	}
+
+	public function formatNumberIndonesia($v,$count_decimal = 0)
+	{
+		return number_format($v, $count_decimal, ',', '.');
 	}
 }

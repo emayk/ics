@@ -41,6 +41,10 @@ if (fromLocal()) {
 		'cprocespo', // Proses Pemesanan Barang
 		'cpradjustment', // proses pr adjustment oleh pembelian
 		'capprovepr', // persetujuan Pesan barang
+		'cprorder', // daftar PO,
+		'creceiveProduct', // Terima Barang
+
+
 
 		'ccatprod',
 		'ctypeproduct',

@@ -95,12 +95,15 @@ class impItemEloquent implements iItem
 	 *
 	 * Proses Simpan
 	 *
+	 *
 	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
 	{
-
+		/**
+		 * Tidak ada proses simpan pada fungsi ini.
+		 */
 		if (!$this->hasAccess()) {
 			return Response::json(
 				array(
@@ -109,28 +112,11 @@ class impItemEloquent implements iItem
 					'results' => null
 				))->setCallback();
 		}
-
 		return Input::all();
-//		if (Input::get('cmd')) {
-//			/*Proses Pindah dari trans_tr ke trans_app_item*/
-//			/*Jika cmd == getitems*/
-//
-//			$cmd = Input::get('cmd');
-//			if ($cmd == 'getitems') {
-//				if (!Input::has('prid')) throw new \Exception( 'Butuh PR id' );
-//				if (!Input::has('prnumber')) throw new \Exception( 'Butuh PR Number' );
-//				$prid     = Input::get('prid');
-//				$prnumber = Input::get('prnumber');
-//				/*Check PR apakah sudah ada ? */
-//				$record = $this->item->createNewApproveRecordFromPr($prid, $prnumber);
-//				if (is_array($record)) $record = $record[ 0 ];
-//				return Response::json(['success' => true, 'results' => $record]);
-//			}
-//		}
 	}
 
 	/**
-	 * Menghapus Taxtype
+	 * Menghapus
 	 *
 	 * @param $id
 	 *
@@ -167,8 +153,6 @@ class impItemEloquent implements iItem
 	 */
 	public function update($id)
 	{
-
-
 		If (!Input::has('adjid')) {
 			throw new \Exception( 'Butuh Parameter Adjustment ' );
 		}
