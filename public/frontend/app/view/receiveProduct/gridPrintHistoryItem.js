@@ -87,7 +87,9 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 							tooltip: 'Print Item',
 							handler: function (grid, rowIndex, colIndex) {
 								var rec = grid.getStore().getAt(rowIndex);
-								log(rec);
+//								log(rec);
+								/*@todo: next commit harus sudah diimplementasikan */
+								App.util.box.error('Akan segera di implementasikan di commit berikutnya');
 							}
 						}
 					]

@@ -73,26 +73,29 @@ Ext.define('App.view.dashboard.vdashboard', {
 						margin: '5 5 5 5'
 					},
 					items: [
-
-						{ xtype: 'buttongroup',
-							default: {
-								margin: '5 5 5 5'
-							},
-							items: [
-								{
-									xtype: 'button', text: 'Generate'
-								},
-								{
-									xtype: 'button', text: 'Generate'
-								},
-								{
-									xtype: 'button', text: 'Generate'
-								}
-							]
-						},
 						{
-							xtype: 'button', text: 'Generate'
+							xtype: 'panel', html: 'Empty'
 						}
+
+//						{ xtype: 'buttongroup',
+//							default: {
+//								margin: '5 5 5 5'
+//							},
+//							items: [
+//								{
+//									xtype: 'button', text: 'Generate'
+//								},
+//								{
+//									xtype: 'button', text: 'Generate'
+//								},
+//								{
+//									xtype: 'button', text: 'Generate'
+//								}
+//							]
+//						},
+//						{
+//							xtype: 'button', text: 'Generate'
+//						}
 					]
 				},
 				/*Kolom 3*/
@@ -148,27 +151,62 @@ Ext.define('App.view.dashboard.vdashboard', {
 				{
 					xtype: 'panel', flex: .3,
 					title: 'Aksi Pengguna',
+					layout: { type: 'vbox', align: 'stretch'},
 					bodyPadding: 10,
 					defaults: {
 						margin: '5 5 5 5'
 					},
 					items: [
 						{
-							xtype: 'button', flex: .3,
-//					        margin: '0 5 0 5',
-							text: 'Daftar Pengajuan',
-							iconCls: 'grid',
-							action: 'listepr'
+							xtype: 'fieldset',
+							title: 'Semua Pengguna',
+							layout: { type: 'hbox', align: 'stretch'},
+							items: [
+								{
+									xtype: 'button', flex: .3,
+									text: 'Daftar Pengajuan',
+									iconCls: 'grid',
+									action: 'listepr'
+								},
+								{
+									xtype: 'button', text: 'Buat PR',
+									action: 'createpr', iconCls: 'add'
+								},
+								{
+									xtype: 'button', text: 'Daftar PO',
+									iconCls: 'grid', action: 'openlistpo'
+								}
+							]
 						},
 						{
-							xtype: 'button', text: 'Buat PR',
-							action: 'createpr', iconCls: 'add'
-						},
-						{
-							xtype: 'button', text: 'Daftar PO',
-							iconCls: 'grid', action: 'openlistpo'
+							xtype: 'fieldset',
+							title: 'Bagian Gudang',
+							margin: '5 5 5 5',
+							bodyPadding: 5,
+							items: [
+								{ xtype: 'buttongroup',
+									items: [
+										{ iconCls: 'grid',
+											text: 'Terima Barang', handler: function (btn) {
+											/**
+											 * Tampilkan Panel Terima Barang
+											 */
+											var panel = 'App.view.receiveProduct.tabbarang';
+											var title = "Terima Barang";
+											var tab = btn.up('tabpanel');
+											App.util.box.openNewtab(tab, title, panel, {
+												closable: true,
+												iconCls: 'grid'
+											});
+										}}
+
+									]
+								}
+							]
+
 						}
 					]
+
 				},
 				/*Kolom 2*/
 				{
@@ -257,4 +295,5 @@ Ext.define('App.view.dashboard.vdashboard', {
 			]
 		}
 	]
-});
+})
+;
