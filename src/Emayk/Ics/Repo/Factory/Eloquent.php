@@ -46,6 +46,9 @@ class Eloquent
 		return new Product\Eloquent();
 	}
 
+	public function note(){
+		return new Note\Eloquent();
+	}
 }
 
  

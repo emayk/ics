@@ -171,10 +171,6 @@ Ext.define('App.view.dashboard.vdashboard', {
 								{
 									xtype: 'button', text: 'Buat PR',
 									action: 'createpr', iconCls: 'add'
-								},
-								{
-									xtype: 'button', text: 'Daftar PO',
-									iconCls: 'grid', action: 'openlistpo'
 								}
 							]
 						},
@@ -223,13 +219,17 @@ Ext.define('App.view.dashboard.vdashboard', {
 							defaults: {
 								margin: '5 5 5 5'
 							},
-							layout: { type: 'hbox', align: 'stretch'},
+							layout: { type: 'vbox', align: 'stretch'},
 							items: [
 								{
 									xtype: 'button', flex: .3,
 									text: 'Penyesuaian <br/>Pengajuan',
 									action: 'listadjustmentpr'
 								},
+								{
+									xtype: 'button', text: 'Daftar PO',
+									iconCls: 'grid', action: 'openlistpo'
+								}
 //								{
 //									xtype: 'button', flex: .3,
 //									text: 'Proses Pengajuan 3',

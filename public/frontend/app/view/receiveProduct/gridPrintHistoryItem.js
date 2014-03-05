@@ -23,9 +23,8 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 	alias: 'widget.appreceiveProductvreceiveProductprinthistory',
 	store: 'App.store.receiveProduct.sprintProductItem',
 	/*Diperlukan*/
-	receiveid: 6,
-	receivenumber: "RG-PPN-21481211620140302",
-
+	receiveid: undefined,
+	receivenumber: undefined,
 	initComponent: function () {
 		var me = this;
 		Ext.applyIf(me, {
@@ -36,13 +35,9 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 				{ftype: 'grouping',
 					collapsible: false,
 					showSummaryRow: false,
-//				groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
 					groupHeaderTpl: '{columnName}: {name} ({rows.length} buah)',
 					hideGroupedHeader: true
 				}
-//				{
-//					ftype: 'summary'
-//				}
 			],
 			columns: [
 				{xtype: 'rownumberer', text: 'No'},
@@ -53,9 +48,9 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 						{
 							text: 'Total',
 							columns: [
-								{ text: 'Order', dataIndex: 'qtyorder'},
-								{ text: 'Yard', dataIndex: 'totalqtyreceived' },
-								{ text: 'Roll', dataIndex: 'totalrollreceived' }
+								{ text: 'Order', dataIndex: 'qtyorder',xtype: 'numbercolumn'},
+								{ text: 'Yard', dataIndex: 'totalqtyreceived' ,xtype: 'numbercolumn'},
+								{ text: 'Roll', dataIndex: 'totalrollreceived' ,xtype: 'numbercolumn'}
 							]
 						},
 						{
@@ -63,14 +58,14 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 							columns: [
 								{ text: 'Yard',
 									dataIndex: 'qtyelapse'
-								}
+								,xtype: 'numbercolumn'}
 							]
 						},
 						{
 							text: 'Sudah Terima',
 							columns: [
-								{ text: 'Yard', dataIndex: 'qtyreceived' },
-								{ text: 'Roll', dataIndex: 'rollreceived' }
+								{ text: 'Yard', dataIndex: 'qtyreceived',xtype: 'numbercolumn'},
+								{ text: 'Roll', dataIndex: 'rollreceived' ,xtype: 'numbercolumn'}
 							]
 						}
 					]},
@@ -85,11 +80,12 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 						{
 							iconCls: 'print',
 							tooltip: 'Print Item',
-							handler: function (grid, rowIndex, colIndex) {
-								var rec = grid.getStore().getAt(rowIndex);
-//								log(rec);
-								/*@todo: next commit harus sudah diimplementasikan */
-								App.util.box.error('Akan segera di implementasikan di commit berikutnya');
+							handler: function (gridview, rowIndex, colIndex, item, e, record, row) {
+								var grid = gridview.up('grid');
+								grid.fireEvent('printItemHistory', grid, record)
+							},
+							isDisabled: function (view, rowIndex, colIndex, item, record) {
+								return (!record.get('canprint'));
 							}
 						}
 					]
@@ -110,14 +106,23 @@ Ext.define('App.view.receiveProduct.gridPrintHistoryItem', {
 		var me = this, receiveid = me.receiveid,
 			receivenumber = me.receivenumber,
 			store = me.getStore();
-		if (store) {
-			var proxy = store.getProxy();
-			if (proxy) {
-				proxy.setExtraParam('cmd', 'listprintreceiveitemtoday');
-				proxy.setExtraParam('receiveid', receiveid);
-				proxy.setExtraParam('receivenumber', receivenumber);
-				store.load();
+
+		if (receiveid) {
+			if (receivenumber) {
+				if (store) {
+					var proxy = store.getProxy();
+					if (proxy) {
+						proxy.setExtraParam('cmd', 'listprintreceiveitemtoday');
+						proxy.setExtraParam('receiveid', receiveid);
+						proxy.setExtraParam('receivenumber', receivenumber);
+						store.load();
+					}
+				}
+			} else {
+				Ext.Error.raise('Number not found');
 			}
+		} else {
+			Ext.Error.raise('Id not found');
 		}
 
 	}

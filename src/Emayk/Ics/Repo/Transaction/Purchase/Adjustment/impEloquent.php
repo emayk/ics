@@ -52,9 +52,9 @@ class impEloquent implements iAdjustment
 		$success = true;
 		/*List Item Id yang akan diajukan*/
 		$setitemapproved = Input::get('setitemapproved');
-		$adjustmentId  = Input::get('adjpr');
-		$adjustmentTrx = Input::get('adjnumber');
-		$adjustment    = $this->adjustment->findOrFail($adjustmentId);
+		$adjustmentId    = Input::get('adjpr');
+		$adjustmentTrx   = Input::get('adjnumber');
+		$adjustment      = $this->adjustment->findOrFail($adjustmentId);
 
 //		if ($setitemapproved == 'movestatus') {
 //			$adjustment->status = 5;
@@ -68,7 +68,7 @@ class impEloquent implements iAdjustment
 //			return Response::json($response);
 //		}
 
-		$items         = ( strpos($setitemapproved, ',') ) ? explode(",", $setitemapproved) : [$setitemapproved];
+		$items = ( strpos($setitemapproved, ',') ) ? explode(",", $setitemapproved) : [$setitemapproved];
 		if ($adjustment->status != 1) {
 			// nilai 1 == belum diproses;
 			/**
@@ -129,18 +129,19 @@ class impEloquent implements iAdjustment
 			if (!is_numeric($adjid)) throw new \Exception( 'Adj Id bukan angka' );
 			$adj          = $this->find($adjid);
 			$countAdjItem = $adj->items->count();
+
 			return Response::json([
 				'success' => true,
 				'total'   => $countAdjItem,
 				'results' => $adj->items->toArray()
 			]);
 		}
-		if ($this->adjustment->hasNewPr()) {
-			$approve = $this->adjustment->getAllnew();
-		} else {
-			$approve = $this->adjustment
-				->orderBy('id', 'DESC');
-		}
+//		if ($this->adjustment->hasNewPr()) {
+//			$approve = $this->adjustment->getAllnew();
+//		} else {
+		$approve = $this->adjustment
+			->orderBy('id', 'DESC');
+//		}
 		$total   = $approve->count();
 		$approve = $approve->skip($start)
 			->take($limit)
@@ -184,8 +185,10 @@ class impEloquent implements iAdjustment
 			if ($cmd == 'getitems') {
 				if (!Input::has('prid')) throw new \Exception( 'Butuh PR id' );
 				if (!Input::has('prnumber')) throw new \Exception( 'Butuh PR Number' );
+
 				$prid     = Input::get('prid');
 				$prnumber = Input::get('prnumber');
+
 				/*Check PR apakah sudah ada ? */
 				$record = $this->adjustment->createNewApproveRecordFromPr($prid, $prnumber);
 				if (is_array($record)) $record = $record[ 0 ];

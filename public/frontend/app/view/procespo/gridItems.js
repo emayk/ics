@@ -29,9 +29,9 @@ Ext.define('App.view.procespo.gridItems', {
 		preview: false,
 		trxId: undefined,
 		trxNumber: undefined,
-		store: 'App.store.procespo.items'
 //		store: Ext.create('App.store.procespo.items')
 	},
+	store: 'App.store.procespo.items',
 	layout: 'fit',
 	/*Generate Kolom Qty*/
 	columnQty: function () {
@@ -59,15 +59,15 @@ Ext.define('App.view.procespo.gridItems', {
 		}
 		return columnQty
 	},
-	getFullTitle: function () {
-		var me = this, title = me.getTitle() + '(' + me.getTrxId() + '/' + me.getTrxNumber() + ')';
-		return title;
-	},
-	generateStore: function () {
-		var me = this, store = Ext.create('App.store.procespo.items');
-		store.getProxy().setExtraParam('tmptrxid', me.getTrxId());
-		return store;
-	},
+//	getFullTitle: function () {
+//		var me = this, title = me.getTitle() + '(' + me.getTrxId() + '/' + me.getTrxNumber() + ')';
+//		return title;
+//	},
+//	generateStore: function () {
+//		var me = this, store = Ext.create('App.store.procespo.items');
+//		store.getProxy().setExtraParam('tmptrxid', me.getTrxId());
+//		return store;
+//	},
 	initComponent: function () {
 		var me = this, columnQty = me.columnQty();
 //		var store = me.generateStore();
@@ -100,7 +100,7 @@ Ext.define('App.view.procespo.gridItems', {
 			columnLines: true,
 			plugins: [
 				Ext.create('Ext.grid.plugin.RowEditing', {
-					clicksToEdit: !1,
+					clicksToEdit: 1,
 					clicksToMoveEditor: 1
 				})
 			],
@@ -108,7 +108,7 @@ Ext.define('App.view.procespo.gridItems', {
 				{
 					xtype: 'pagingtoolbar',
 //					store: store,
-					store: me.getStore(),
+					store: me.store,
 					dock: 'bottom',
 					displayInfo: me.getInfo()
 				},
@@ -127,7 +127,7 @@ Ext.define('App.view.procespo.gridItems', {
 		var store = me.getStore();
 		if (store) {
 			var proxy = store.getProxy();
-			if (proxy){
+			if (proxy) {
 				proxy.setExtraParam('tmptrxid', me.getTrxId());
 			}
 			me.getStore().load();

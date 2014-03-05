@@ -18,6 +18,7 @@
 
 Ext.define('App.store.procespo.items', {
 	extend: "Ext.data.Store",
+//	autoSync:true,
 	model: 'App.model.procespo.items',
 	proxy: {
 		type: 'rest',

@@ -59,11 +59,25 @@ class Prints extends BaseLogic
 	public function getObjectByKey($key)
 	{
 		switch ($key) {
+			/**
+			 * Cetak Resume Bukti Penerimaan barang
+			 *
+			 */
 			case 'bpb' :
 				$o = $this->getProductReceive();
 				break;
+			/**
+			 * Cetak PO
+			 */
 			case 'po' :
 				$o = $this->getPurchaseOrder();
+				break;
+			/**
+			 * Cetak Item History
+			 * Barang yang diterima
+			 */
+			case 'bpbitemhistory' :
+				$o = new Receive\ItemHistory();
 				break;
 			default:
 				$o = $this;
@@ -117,8 +131,8 @@ class Prints extends BaseLogic
 	/**
 	 * Print Document
 	 *
-	 * @param      $id      ID receive
-	 * @param      $number  Nomor Transaksi
+	 * @param      $id      int receive
+	 * @param      $number  String Transaksi
 	 * @param bool $preview Mode Preview
 	 *
 	 * @return \Illuminate\View\View

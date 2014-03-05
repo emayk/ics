@@ -15,11 +15,28 @@
  *
  * @author Emay Komarudin
  *
- * Model Structure Eloquent
- *
  **/
-namespace Emayk\Ics\Repo\Stockproducts;
 
-use Emayk\Ics\Repo\Factory\Product\Stock\Eloquent as StockEloquent;
-class Stockproducts extends StockEloquent{
+
+namespace Emayk\Ics\Repo\Factory\Note;
+
+
+use Emayk\Ics\Models\BaseModel;
+
+class Eloquent extends BaseModel
+{
+	protected $table = 'master_notes';
+	public $timestamps = false;
+
+	public function getNote($docname)
+	{
+		$notes = $this->whereDocname($docname);
+		return ($notes->count()>0) ? $notes->first()->note : '';
+
+	}
+
+
+
 }
+
+ 

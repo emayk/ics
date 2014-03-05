@@ -88,46 +88,29 @@ Ext.define('App.view.prorder.view', {
 		var me = btn.up('appprordervprorderview');
 		me.requestPrint();
 	},
+	/**
+	 * Request Print Documtn
+	 */
 	requestPrint: function () {
 		var panel = this;
 		var id = panel.getPoid();
 		var number = panel.getPonumber();
-
-
 		App.util.box.printDocument('po', id, number, true);
 		var tab = panel.up('tabpanel');
 		tab.remove(panel);
-//		Ext.Ajax.request({
-//			url: getApiUrl() + '/transaction/purchase/order',
-//			params: {
-//				cmd: 'print',
-//				orderid: id,
-//				ordernumber: number,
-//				uid: uid
-//			},
-//			success: function (res, opts) {
-//				log('Success Request, Lakukan Print');
-//				log(res);
-//				var response = res.responseText;
-//
-//				var html = response.html;
-//				if (!html) {
-//					html = response;
-//				}
-//				log(html);
-//				App.util.box.print(html, true, true);
-//			},
-//			failure: function (res, opts) {
-//				App.util.box.error('Tidak Bisa Print, Ada Kesalahan');
-//				return false;
-//			}
-//		})
 	},
+	/**
+	 * Tutup Panel
+	 * @param btn
+	 */
 	closePanel: function (btn) {
 		var me = this;
 		var panel = btn.up('appprordervprorderview');
 		panel.close();
 	},
+	/**
+	 * Setup Order Item
+	 */
 	setupGridOrderItem: function () {
 		var me = this;
 		var id = me.getPoid();

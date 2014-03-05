@@ -45,7 +45,10 @@ class Model extends BaseModel
 	 * @var array
 	 */
 	public $appends = [
-		'qtyelapse', "totalrollreceived", "productname","totalreceiveditem"
+		'qtyelapse',
+		"totalrollreceived",
+		"productname",
+		"totalreceiveditem"
 
 	];
 	/**
@@ -84,7 +87,6 @@ class Model extends BaseModel
 	 * @param      $qtyorder
 	 *
 	 * @param      $trxnumber
-	 * @param      $sj_id
 	 * @param bool $created
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model|static
@@ -93,13 +95,11 @@ class Model extends BaseModel
 	                             $productId,
 	                             $qtyorder,
 	                             $trxnumber,
-	                             $sj_id, // Surat Jalan
 	                             $created = true)
 	{
 		$record = [
 			"receiveid"    => $receiveId,
 			"product_id"   => $productId,
-//			"sj_id"      => $sj_id,
 			/*Qty Yang diterima*/
 			/**
 			 * Akan selalu direset 0
@@ -108,12 +108,11 @@ class Model extends BaseModel
 			"qtyroll"      => 0,
 			"qtyreceived"  => 0,
 			"rollreceived" => 0,
+			"cntreceive" => 0,
 			'qtyorder'     => $qtyorder,
 			"desc"         => '',
 			"status"       => 1, //belum diproses
 			"trxnumber"    => $trxnumber
-//			"created_at",
-//			"updated_at",
 		];
 		return ( $created ) ? $this->create($record) : $record;
 	}
@@ -180,6 +179,9 @@ class Model extends BaseModel
 	public function history(){
 		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Receive\Product\History','item_id');
 	}
+
+
+
 }
 
  

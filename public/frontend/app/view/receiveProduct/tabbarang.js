@@ -132,19 +132,6 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 										}
 									]
 								},
-//								{
-//									text: 'Tanggal',
-//									columns:[
-//										{
-//											text: 'Terima',
-//											dataIndex: 'receivedate',
-//											xtype: 'datecolumn',format: 'd F Y'
-////											renderer: function (v) {
-////												return Ext.Date.format(v, 'd F Y');
-////											}
-//										},
-//									]
-//								},
 								{
 									text: 'Pemasok',
 									columns: [
@@ -190,7 +177,9 @@ Ext.define('App.view.receiveProduct.tabbarang', {
 														tglpo: rec.get('podate'),
 														supname: rec.get('supplier'),
 														warehouse: rec.get('warehouse'),
-														record: rec
+														record: rec,
+														store: Ext.create('App.store.receiveProduct.sreceiveProductItem'),
+														storePrintItem: Ext.create('App.store.receiveProduct.sprintProductItem')
 													};
 												App.util.box.openNewtab(tab, title, 'App.view.receiveProduct.vreceiveProduct', config);
 											}

@@ -20,6 +20,15 @@
  *
  **/
 
+
+/**
+ * @startuml
+ * title Terima Barang
+ *
+ * store --> Model
+ * Model --> View
+ * @enduml
+ */
 Ext.define('App.model.receiveProduct.mreceiveProduct', {
     extend: 'Ext.data.Model',
     fields: [

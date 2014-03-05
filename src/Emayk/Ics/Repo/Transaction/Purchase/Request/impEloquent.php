@@ -79,18 +79,20 @@ class impEloquent implements iRequest
 	protected function generateTmpDocTrxPr()
 	{
 		$doc = new Tmp\Doc();
-		$out = $doc->create(['trxnumber' => $this->prefixpr.'_tmp_-'.time() ]);
+		$out = $doc->create(['trxnumber' => $this->prefixpr . '_tmp_-' . time()]);
 		return Response::json([
 			'success' => true,
 			'results' => $out->toArray(),
-			'taken' => time()
+			'taken'   => time()
 		]);
 
 	}
+
 	/**
 	 *
 	 * Proses Simpan Users
 	 *
+	 * @throws \Exception
 	 * @return mixed
 	 */
 	public function store()
@@ -106,40 +108,70 @@ class impEloquent implements iRequest
 
 		/*Generate Trx Tmp*/
 
-		if (Input::has('gdoc')){
+		if (Input::has('gdoc')) {
 			return $this->generateTmpDocTrxPr();
 		}
 		if (!Input::has('tmptrxid')) {
 			throw new \Exception( 'Butuh Transaction Id' );
 		}
-		/*trxid = tmptrxid dari Doc*/
-		$tmptrxid = Input::get('tmptrxid');
-		$tmptrx   = new Tmp\Doc();
-		$docTemp  = $tmptrx->findOrFail($tmptrxid);
-		/*1 = belum diproses, 2 = approve, 3 = denied, 4 = ditunda*/
-		$pr       = $this->pr->create(['trxnumber' => 'PR-' . time(),'status' => 1]);
-		$tmpitem  = new Tmp\Item();
-		$newitems = [];
-		foreach ($docTemp->tmpitems as $item) {
-			/*Lakukan Pemindahan */
-			$newitems[] = $pr->Items()->create(
-				[
-					'product_id' => $item->product_id,
-					'qty'        => $item->qty,
-					'prid'       => $pr->id,
-					/*1 = belum diproses, 2 = approve, 3 = denied, 4 = ditunda*/
-					'status'     => 1
-				]
-			);
 
-		}
-		$docTemp->tmpitems()->delete();
+		if (Input::has('cmd')) {
+			$cmd = Input::get('cmd');
+			if ($cmd == 'save') {
+				if (Input::has('options')) {
+					$options = Input::get('options');
+					if ($options !== 'movetoadj') throw new \Exception('Unknown Options');
+
+					/*Pemindahan Tmp ke Adjustment*/
+					$tmptrxid = Input::get('tmptrxid');
+					$tmptrx   = new Tmp\Doc();
+					$docTemp  = $tmptrx->findOrFail($tmptrxid);
+					/*1 = belum diproses, 2 = approve, 3 = denied, 4 = ditunda*/
+					$pr = $this->pr->create(
+						[
+							'trxnumber' => 'PR-' . time(),
+							'status'    => 1
+						]
+					);
+
+					$adjustment    = new \Emayk\Ics\Repo\Transaction\Purchase\Adjustment\Eloquent();
+					$recAdjustment = $adjustment->createRecord($pr->id, $pr->trxnumber);
+
+					$tmpitem  = new Tmp\Item();
+					$newitems = [];
+					foreach ($docTemp->tmpitems as $item) {
+						/*Lakukan Pemindahan */
+						$newitems[ ] = $pr->Items()->create(
+							[
+								'product_id' => $item->product_id,
+								'qty'        => $item->qty,
+								'prid'       => $pr->id,
+								/*1 = belum diproses, 2 = approve, 3 = denied, 4 = ditunda*/
+								'status'     => 1
+							]
+						);
+
+						$adjustmentItem = $recAdjustment->getItem()
+							->createNewRecord($item->product_id,
+								$item->qty, $recAdjustment->id,
+								$recAdjustment->trxnumber,
+								$pr->id, $userId = 1
+							);
+					}
+					$docTemp->tmpitems()->delete();
 //		$docTemp->delete();
 
-		return Response::json(array(
-			'success' => true,
-			'results' => $pr->toArray()
-		));
+					return Response::json(array(
+						'success' => true,
+						'results' => $pr->toArray()
+					));
+				} else {
+					/*Setup tambah biasa */
+				}
+			}
+		}
+		/*trxid = tmptrxid dari Doc*/
+
 	}
 
 	/**

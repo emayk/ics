@@ -15,11 +15,30 @@
  *
  * @author Emay Komarudin
  *
- * Model Structure Eloquent
- *
  **/
-namespace Emayk\Ics\Repo\Stockproducts;
 
-use Emayk\Ics\Repo\Factory\Product\Stock\Eloquent as StockEloquent;
-class Stockproducts extends StockEloquent{
+
+namespace Emayk\Ics\Repo\Factory\Note;
+
+
+use Emayk\Ics\Controllers\BaseLogic;
+
+class Controller extends BaseLogic
+{
+	protected $note;
+
+	function __construct()
+	{
+		$this->note = new Eloquent();
+	}
+
+	public function index()
+	{
+		$note = $this->note->getNote('bpb');
+		return $note;
+	}
+
+
 }
+
+ 

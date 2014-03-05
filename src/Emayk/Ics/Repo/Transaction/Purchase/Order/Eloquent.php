@@ -49,8 +49,15 @@ class Eloquent extends BaseModel
 	 */
 	public static $rules = array();
 
+	/**
+	 * @var array
+	 */
 	public $appends = ['totalitem'];
 
+	/**
+	 * Set Total Item
+	 * @return mixed
+	 */
 	public function getTotalitemAttribute()
 	{
 		return $this->attributes[ 'totalitem' ] = $this->item()->count();
@@ -62,8 +69,6 @@ class Eloquent extends BaseModel
 	 */
 	public function setTrxnumberAttribute($value)
 	{
-		/*@todo : Contoh Logging*/
-//		\DB::table('sys_log')->insert(['message' => 'Ada Yang Rubah TrxNumber Order dengan value '.$value]);
 		return $this->attributes[ 'trxnumber' ] = str_replace('_', '', $value);
 	}
 
@@ -77,35 +82,68 @@ class Eloquent extends BaseModel
 		return $this->hasMany('\Emayk\Ics\Repo\Transaction\Purchase\Order\Item\Eloquent', 'order_id');
 	}
 
+	/**
+	 * Gudang
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function warehouse()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Warehouse\Eloquent', 'warehouse_id');
 	}
 
+	/**
+	 * Tipe Pembayaran
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function payment()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Payment\Type\Eloquent', 'paymenttype_id');
 	}
 
+	/**
+	 * Kontak / Sales
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function contact()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Contact\Eloquent', 'cp_id');
 	}
 
 
+	/**
+	 * Mata Uang
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function currency()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Currency\Eloquent', 'curr_id');
 	}
 
+	/**
+	 * Pemasok
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function supplier()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Supplier\Eloquent', 'supplier_id');
 	}
 
+	/**
+	 * Pajak
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function tax()
 	{
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Tax\Type\Eloquent', 'tax_id');
+	}
+
+	/**
+	 * Relasi ke Pembayaran
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function pembayaran()
+	{
+		return $this->hasOne('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent', 'order_id');
 	}
 
 
@@ -213,7 +251,7 @@ class Eloquent extends BaseModel
 	 * Pemindahan data dari Order ke
 	 * daftar Terima barang
 	 */
-	public function  moveOrderToReceiveGood()
+	public function  moveOrderToReceiveGood($order)
 	{
 		/**
 		 * Menentukan Record, Apakah akan dibuat Record atau Tidak
@@ -223,22 +261,39 @@ class Eloquent extends BaseModel
 		 * Cari PO yang sudah diprint dan Jumlah Cetak minimal 1x
 		 * dan Masih berstatus Baru
 		 */
-		$orders         = $this->PrintedOrder()
-			->CntPrintedOrder()
-			->New();
-		$newReceive     = $this->oReceiveProduct();
-		$newReceiveItem = $newReceive->oItem();
-		foreach ($orders->get() as $order) {
-			$moveOrder        = $this->findOrFail($order->id);
+
+		/**
+		 * Syarat :
+		 * Status == 1
+		 * printed > 0
+		 * cntprinted > 0;
+		 */
+//		$orders = $this->PrintedOrder()
+//			->CntPrintedOrder()
+//			->New();
+//
+//		\Log::info('Orders,229', [$orders]);
+		/*Jika Status Order masih Baru*/
+		if ($order->status == 1) {
+
+//		}
+			$newReceive     = $this->oReceiveProduct();
+			$newReceiveItem = $newReceive->oItem();
+//		\Log::info('orders', [$orders->get()]);
+//		foreach ($orders->get() as $order) {
+//			$moveOrder        = $this->findOrFail($order->id);
+			$moveOrder        = $order;
 			$Receivetrxnumber = $this->getPrefix()->receivegood() .
 				$order->trxnumber;
-			$receive          = $newReceive->createRecord(
+
+			$receive   = $newReceive->createRecord(
 				$order->id,
 				$order->item()->count(),
 				$Receivetrxnumber,
 				$isCreateRecord
 			);
-			$items            = $order->item;
+			$items     = $order->item;
+			$itemSaved = false;
 			foreach ($items as $item) {
 				$receiveItem = $newReceiveItem->createRecord(
 					$receive->id,
@@ -253,14 +308,18 @@ class Eloquent extends BaseModel
 				 */
 				$item->status = 5;
 				$item->save();
+				$itemSaved = true;
 			}
 			/**
 			 * Setup Status Order Menjadi Sudah Diproses
 			 */
-			$moveOrder->status = 5;
-			$moveOrder->save();
+			if ($itemSaved) {
+				$moveOrder->status = 5;
+				$moveOrder->save();
+			}
 
 		}
+
 	}
 
 	/**
@@ -273,6 +332,11 @@ class Eloquent extends BaseModel
 		return new \Emayk\Ics\Repo\Transaction\Receive\Product\Model();
 	}
 
+	/**
+	 * @param $q
+	 *
+	 * @return mixed
+	 */
 	public function scopePrintedOrder($q)
 	{
 		return $q->where('printed', '>', 0);

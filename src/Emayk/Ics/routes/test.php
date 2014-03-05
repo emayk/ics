@@ -7,9 +7,46 @@
  **/
 Route::group(array('prefix' => 'test'), function () {
 
+Route::group(array('prefix' => 'db'), function () {
+	Route::get("addstock",function(){
+		$oProducts = new \Emayk\Ics\Repo\Factory\Product\Eloquent();//::lists('id');
+		$productIds = $oProducts->lists('id');
+		$product = $oProducts->findOrFail(1);
+		$product->load('stock');
+		$trxnumber_simulasi = 'TRX'.time();
+		if (is_null($product->stock))
+		{
+//			Buat Stock
+			$stock = new \Emayk\Ics\Repo\Factory\Product\Stock\Eloquent();
+			$stock->add($product,0,0,1);
+		}
+
+		return $oProducts->findOrFail(1);
+	});
+
+	Route::get('/', function () {
+		return 'Test Print';
+	});
+
+});
 Route::group(array('prefix' => 'print'), function () {
 	Route::get('/', function () {
 		return 'Test Print';
+	});
+
+	Route::get('sent_order_to_receive', function () {
+		$order = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent();
+		/*Update Database dengan record yang ditentukan*/
+
+//		$record->increment('cntprint');
+//		$record->save();
+		return $order->moveOrderToReceiveGood();
+	});
+
+	Route::get('/itembpb', function () {
+		$itemHistoryO = new \Emayk\Ics\Repo\Transaction\Prints\Receive\ItemHistory();
+		return $itemHistoryO->prints(1,'dsadsadsa',true);
+
 	});
 
 	Route::get('order', function () {

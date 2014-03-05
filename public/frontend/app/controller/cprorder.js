@@ -55,45 +55,12 @@ Ext.define('App.controller.cprorder', {
 					me.openViewPO(grid, record);
 				}
 			},
-			'appprordervprorderview': {
-//				render: function (panel) {
-//					var fid = panel.down('appprordervprorderviewform [name=ponumber]');
-//					var fnumber = panel.down('appprordervprorderviewform [name=id]');
-//					log(fid);
-//					log(fnumber);
-////					var id = panel.poid,
-////						number = panel.ponumber;
-////					poidfield.setValue(id);
-////					ponumberfield.setValue(number);
-////					log(poidfield);
-////					log(ponumberfield);
-////					log('Panel',panel);
-//				}
-			},
+			/**
+			 * Grid Preview Order
+			 */
 			'appprordervprorderview > appprordervprorderviewgrid': {
 				render: function (grid) {
 					var panel = grid.up('appprordervprorderview');
-					log('Main Panel dari grid', panel);
-					if (panel) {
-//						var poidfield = panel.down('appprordervprorderviewform [name=ponumber]');
-//						var ponumberfield = panel.down('appprordervprorderviewform [name=id]');
-////						var poidfield = mp.down('[name=poidpanel]');
-////						var ponumberfield = mp.down('[name=ponumberpanel]');
-//						log(poidfield);
-//						log(ponumberfield);
-//
-////						var store = grid.getStore();
-//						var id = poidfield.getValue();
-//						log(id);
-//						var number = ponumberfield.getValue();
-//						log(number);
-//						store.clearFilter();
-//						store.getProxy().setExtraParam('orderid', id);
-//						store.getProxy().setExtraParam('ordernumber', number);
-//						store.load();
-					} else {
-						log('Main Panel tidak ada');
-					}
 				}
 			}
 		});
@@ -114,7 +81,12 @@ Ext.define('App.controller.cprorder', {
 			};
 		App.util.box.openNewtab(tab, title, 'App.view.prorder.vprorder', config);
 	},
-
+	/**
+	 * Setup Store Order Item
+	 * @param id
+	 * @param number
+	 * @returns {sitem|*}
+	 */
 	setupStoreOrderItem: function (id, number) {
 		var store = Ext.create('App.store.prorder.sitem');
 		store.clearFilter();
@@ -123,7 +95,12 @@ Ext.define('App.controller.cprorder', {
 		store.load();
 		return store;
 	},
-
+	/**
+	 * Tampilkan PO
+	 * @param grid
+	 * @param record
+	 * @returns {boolean}
+	 */
 	openViewPO: function (grid, record) {
 		log('Results....');
 		belumImplement();
@@ -147,20 +124,12 @@ Ext.define('App.controller.cprorder', {
 		});
 
 		if (!newtab) {
-//			var store = Ext.create('App.store.prorder.sitem');
-//			var listgrid = Ext.create('App.view.prorder.griditem', {
-//				ponumber: ponumber,
-//				poid: poid,
-//				store: store
-//			});
-//			var formpanel = Ext.create('App.view.prorder.formview');
 			var panel = Ext.create('App.view.prorder.view', {
-//			var panel = Ext.create('App.view.prorder.griditem', {
 				title: title,
 				closable: true,
 				ponumber: ponumber,
 				poid: poid,
-				storegrid: me.setupStoreOrderItem(poid,ponumber),
+				storegrid: me.setupStoreOrderItem(poid, ponumber),
 				record: record
 			});
 
@@ -168,21 +137,9 @@ Ext.define('App.controller.cprorder', {
 			if (form) {
 				form.getForm().loadRecord(record);
 			}
-//			var store = Ext.create('App.store.prorder.sitem');
-//			var grid2 = panel.down('appprordervprorderviewgrid');
-//			grid2.getProxy().setExtraParam('orderid', poid);
-//			grid2.getProxy().setExtraParam('ordernumber', ponumber);
-//			log(grid2.getStore().getProxy().extraParams);
-//			var pg = grid.getPlugin('pgPoGrid' + panel.getId());//.moveFirst();
-//			log(pg);
-
-//			grid.reconfigure(store);
 			newtab = tab.add(panel);
 		}
-
 		tab.setActiveTab(newtab);
-
-//		App.util.box.openNewtab(tab, title, view, config);
 	}
 });
 

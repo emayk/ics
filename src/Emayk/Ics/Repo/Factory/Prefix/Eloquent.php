@@ -59,6 +59,21 @@ class Eloquent extends BaseModel
 		return 'RG-';
 	}
 
+	public function stockcardhistory()
+	{
+		/**
+		 * Stock History
+		 */
+		return $this->stockcard().'-History-';
+	}
+
+	public function stockcard()
+	{
+		/**
+		 * Stock
+		 */
+		return 'StockPrd-';
+	}
 }
 
  

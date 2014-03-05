@@ -1,22 +1,21 @@
 <?php
 /**
-* Copyright (C) 2013  Emay Komarudin
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-* @author Emay Komarudin
-*
-**/
-
+ * Copyright (C) 2013  Emay Komarudin
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Emay Komarudin
+ *
+ **/
 
 
 namespace Emayk\Ics\Repo\Factory\Product;
@@ -29,7 +28,8 @@ use Emayk\Ics\Models\BaseModel;
  *
  * @package Emayk\Ics\Repo\Factory\Product
  */
-class Eloquent extends BaseModel{
+class Eloquent extends BaseModel
+{
 	/**
 	 * @var array
 	 */
@@ -45,11 +45,12 @@ class Eloquent extends BaseModel{
 	/**
 	 * @var array
 	 */
-	protected $appends = ['totalstocks', 'catname', 'typename', 'widthname', 'weightname','totallength','totalroll'];
+	protected $appends = ['totalstocks', 'catname', 'typename', 'widthname', 'weightname', 'totallength', 'totalroll'];
 	/**
 	 * @var array
 	 */
 	protected $hidden = ['parent_id', 'parent_type'];
+
 //	protected $with = ['category','type','unitweight','unitheight'];
 
 
@@ -58,9 +59,8 @@ class Eloquent extends BaseModel{
 	 */
 	public function getTotallengthAttribute()
 	{
-		/*@todo: relasikan dengan totalroll yang ada di kartu stock*/
-		$totallength = $this->stocks()->pluck('totallength');
-		$count = (is_null($totallength) ) ? 0 :  $totallength ;
+		if (is_null($this->stock)) $this->addEmptyStock();
+		$count = ( is_null($this->stock) ) ? 0 : $this->stock->totalqty;
 		return $this->attributes[ 'totallength' ] = $count;
 	}
 
@@ -69,22 +69,23 @@ class Eloquent extends BaseModel{
 	 */
 	public function getTotalrollAttribute()
 	{
-		/*@todo: relasikan dengan totalroll yang ada di kartu stock*/
-		$totalroll = $this->stocks()->pluck('totalroll');
-		$count = (is_null($totalroll) ) ? 0 :  $totalroll ;
-		return $this->attributes[ 'totalroll' ] =$count;
+		if (is_null($this->stock)) $this->addEmptyStock();
+		$count = ( is_null($this->stock) ) ? 0 : $this->stock->totalroll;
+		return $this->attributes[ 'totalroll' ] = $count;
 	}
+
 
 	/**
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function orderItem()
 	{
-		return $this->hasMany('\Emayk\Ics\Repo\Transorderdetails\Transorderdetails','product_id');
+		return $this->hasMany('\Emayk\Ics\Repo\Transorderdetails\Transorderdetails', 'product_id');
 	}
 
 	/**
 	 * Barang - barang yang sudah dijual
+	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function sale()
@@ -99,7 +100,6 @@ class Eloquent extends BaseModel{
 	 */
 	public function category()
 	{
-
 		return $this->belongsTo('\Emayk\Ics\Repo\Factory\Product\Category\Eloquent', 'cat_id');
 	}
 
@@ -204,6 +204,7 @@ class Eloquent extends BaseModel{
 
 	/**
 	 * Mendapatkan Sales Price
+	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
 	 */
 	public function price()
@@ -218,9 +219,10 @@ class Eloquent extends BaseModel{
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public function stocks()
+	public function stock()
 	{
-		return $this->hasMany('Emayk\Ics\Repo\Stockproducts\Stockproducts', 'product_id');
+//		return $this->hasMany('\Emayk\Ics\Repo\Factory\Product\Stock\Eloquent', 'product_id');
+		return $this->hasOne('\Emayk\Ics\Repo\Factory\Product\Stock\Eloquent', 'product_id');
 	}
 
 
@@ -238,6 +240,7 @@ class Eloquent extends BaseModel{
 
 	/**
 	 * Mendapatkan Relasi Statistik
+	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function stats()
@@ -270,7 +273,10 @@ class Eloquent extends BaseModel{
 	 */
 	public function getTotalstocksAttribute()
 	{
-		return $this->attributes[ "totalstocks" ] = $this->stocks()->pluck('total');
+		if (is_null($this->stock)) $this->addEmptyStock();
+
+		$count = ( is_null($this->stock) ) ? 0 : $this->stock->totalqty;
+		return $this->attributes[ "totalstocks" ] = $count;
 	}
 
 //
@@ -393,7 +399,7 @@ class Eloquent extends BaseModel{
 		foreach ($stockIds as $stockId) {
 
 			for ($history = 0; $history < 9; $history++) {
-				//		Buat Stock Detail/History
+				//		Buat Stock Detail/History277
 				if (( $history % 2 == 0 ) || ( $history == 0 )) {
 					$typeHistory = 'in';
 				} else {
@@ -414,27 +420,42 @@ class Eloquent extends BaseModel{
 
 	/**
 	 * Mendapatkan Model Category Product
+	 *
 	 * @return Category\Eloquent
 	 */
-	public function getCategory(){
+	public function getCategory()
+	{
 		return new Category\Eloquent();
 	}
 
 	/**
 	 * Mendapatkan Model Detail Product
+	 *
 	 * @return Detail\Eloquent
 	 */
-	public function getDetail(){
+	public function getDetail()
+	{
 		return new Detail\Eloquent();
 	}
 
 	/**
 	 * Mendapatkan SalesPrice Object
+	 *
 	 * @return SalesPrice\Eloquent
 	 */
-	public function getSalesPrice(){
+	public function getSalesPrice()
+	{
 		return new SalesPrice\Eloquent();
 	}
 
 
+	protected function addEmptyStock()
+	{
+		if (is_null($this->stock)) {
+			$oStock  = new \Emayk\Ics\Repo\Factory\Product\Stock\Eloquent(); //
+			$product = $this;
+			$stock   = $oStock->add($product, 0, 0, $this->getUid());
+			return $stock;
+		}
+	}
 }

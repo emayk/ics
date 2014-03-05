@@ -20,6 +20,19 @@
  *
  **/
 
+/**
+ * @startuml
+ * title Controller Terima Barang
+ * Ext.app.Controller <|-- App.controller.creceiveProduct
+ * App.controller.creceiveProduct : view[]
+ * App.controller.creceiveProduct : model[]
+ * App.controller.creceiveProduct : store []
+ * App.controller.creceiveProduct : init()
+ * App.controller.creceiveProduct : listen()
+ * App.controller.creceiveProduct : control()
+ *
+ * @enduml
+ */
 Ext.define('App.controller.creceiveProduct', {
 	extend: 'Ext.app.Controller',
 	views: [
@@ -43,6 +56,26 @@ Ext.define('App.controller.creceiveProduct', {
 	],
 	init: function () {
 		var me = this;
+
+		me.listen({
+			/**
+			 * Listen Komponent
+			 */
+			component: {
+				appreceiveProductvreceiveProductprinthistory: {
+					/**
+					 * Print Document History Item
+					 * @param grid
+					 * @param record
+					 */
+					printItemHistory: function (grid, record) {
+						if (record) {
+							App.util.box.printDocument('bpbitemhistory', record.get('id'), 'CETAK-PRINT-ITEM-HISTORY', true);
+						}
+					}
+				}
+			}
+		});
 		me.control({
 			'appreceiveProductvreceiveProduct grid#gridreceiveitem': {
 				/*viewready: function (grid) {
@@ -54,7 +87,6 @@ Ext.define('App.controller.creceiveProduct', {
 				 * @param o
 				 */
 				edit: function (editor, o) {
-//					log(o);
 					var me = this;
 					var store = o.store;
 					var grid = o.grid;

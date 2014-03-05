@@ -43,27 +43,34 @@ class Order extends Prints
 	 */
 	public function prints($id, $number, $preview = true)
 	{
-		$record = $this->getOrder()->findOrFail($id);
+		$order= $this->getOrder();
+		$record  = $order->findOrFail($id);
 		/**
 		 * Jika Bukan Preview
 		 * Update Status Printed
 		 */
-		$printed = ( $record->printed == 1 );
 		/**
 		 * Jika sudah pernah di print ,
 		 * kasih template yang berbeda
 		 */
-//		$fileview = ( !$printed ) ? 'Purchase.Order' : 'Purchase.Order-copy';
 		$fileview = 'Purchase.Order';
 
 		if ($preview == "false") {
 			/*Original*/
-
+			/**
+			 * Pindahkan Record Order Ke Waiting List Terima Barang
+			 */
+//			$order = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent();
+//			$order   = $this->getOrder();
+			$printed = ( $record->printed == 1 );
 			/*Update Database dengan record yang ditentukan*/
-//			if ($record->printed !== 1) $record->printed = 1;
 			if (!$printed) $record->printed = 1;
 			$record->increment('cntprint');
 			$record->save();
+			/**
+			 * Kirim Order ke Terima Barang
+			 */
+			$order->moveOrderToReceiveGood($record);
 		}
 		return $this->generateView($fileview, compact('record'));
 	}

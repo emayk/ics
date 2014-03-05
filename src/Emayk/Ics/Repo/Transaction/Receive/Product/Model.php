@@ -114,19 +114,20 @@ class Model extends BaseModel
 	 * Membuat Record Receive Good
 	 *
 	 * @param      $orderId
-	 * @param      $totalitem
+	 * @param      $totalorderitem
 	 * @param      $trxnumber
 	 * @param bool $created true untuk membuat record ke db
 	 *
+	 * @internal param $totalitem
 	 * @return array|\Illuminate\Database\Eloquent\Model|static
 	 */
 	public function createRecord($orderId,
-	                             $totalitem,
+	                             $totalorderitem,
 	                             $trxnumber, $created = true
 	)
 	{
 		$record = [
-			"totalorderitem"    => $totalitem,
+			"totalorderitem"    => $totalorderitem,
 			"totalreceiveditem" => 0,
 			"totalrollreceived" => 0,
 			"trxnumber"         => $trxnumber,

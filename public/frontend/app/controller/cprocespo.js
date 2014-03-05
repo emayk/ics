@@ -48,10 +48,6 @@ Ext.define('App.controller.cprocespo', {
 	init: function () {
 		var me = this;
 		me.control({
-			/*Panel Process PO*/
-			'appprocespovprocespo': {
-
-			},
 			'appprocespovprocespo #pageselectedproduct [action=next]': {
 				/**
 				 * Pengajuan Pembelian Barang dilakukan
@@ -60,8 +56,6 @@ Ext.define('App.controller.cprocespo', {
 				click: function (btn) {
 					var me = this;
 					var panel = btn.up('appprocespovprocespo');
-
-
 					/*Check Apakah Grid Item ada record dengan Qty 0*/
 //					var gridItems = me.getGridItems();
 					var gridItems = panel.down('appprocespovgridItems');
@@ -93,7 +87,7 @@ Ext.define('App.controller.cprocespo', {
 						return false;
 					}
 
-
+//					storeItems.sync();
 					/**
 					 * Lakukan Proses Pemindahan dari Tmp ke Pengajuan PR
 					 */
@@ -101,26 +95,31 @@ Ext.define('App.controller.cprocespo', {
 					var idtmp = panel.getTrxId();
 					var number = panel.getTrxNumber();
 					Ext.Ajax.request({
-						url: getApiUrl() + '/transaction/pr',
+//						url: getApiUrl() + '/transaction/pr',
+						url: getApiUrl() + '/transaction/purchase/request',
 						params: {
 							tmptrxid: idtmp,
 							tmpnumber: number,
-							cmd: 'save'
+							cmd: 'save',
+							options: 'movetoadj'
 						},
 						method: 'POST',
 						success: function (response, opts) {
 							var msg = Ext.JSON.decode(response.responseText, true);
-							var results = msg.results;
-							var trxnumber = results.trxnumber;
-							var trxmsg = (trxnumber) ? 'dengan No Pengajuan ' + trxnumber : '';
-							App.util.box.info('Terima Kasih,<br/>' +
-								'Pengajuan Pembelian Barang Sudah dilakukan ' + trxmsg
-							);
-							btn.enable();
-							var tab = panel.up('tabpanel');
-							if (tab) {
-								tab.remove(panel);
+							if (msg) {
+								var results = msg.results;
+								var trxnumber = results.trxnumber;
+								var trxmsg = (trxnumber) ? 'dengan No Pengajuan ' + trxnumber : '';
+								App.util.box.info('Terima Kasih,<br/>' +
+									'Pengajuan Pembelian Barang Sudah dilakukan ' + trxmsg
+								);
+								btn.enable();
+								var tab = panel.up('tabpanel');
+								if (tab) {
+									tab.remove(panel);
+								}
 							}
+
 						},
 						failure: function (response, opts) {
 							btn.enable();
@@ -158,9 +157,6 @@ Ext.define('App.controller.cprocespo', {
 			 * Produk List (Grid)
 			 */
 
-			'appprocespovProductList': {
-
-			},
 
 			/**
 			 * Mencari Produk berdasarkan Nama Yang diberikan
@@ -206,6 +202,8 @@ Ext.define('App.controller.cprocespo', {
 					var alreadyExist = [];
 					var alreadyMsg = '';
 					var failedAdded = false;
+					var models = [];
+					var recsAdded = [];
 					Ext.each(selections, function (rec, index, value) {
 						var alreadyAdded = storeitems.findRecord("prodname", rec.get('name'));
 						if (alreadyAdded) {
@@ -213,20 +211,21 @@ Ext.define('App.controller.cprocespo', {
 							alreadyExist.push(rec.get('name'));
 							failedAdded = true;
 						} else {
-							var modelItems = Ext.create('App.model.procespo.items', {
+							var record = {
 								prodname: rec.get('name'),
 								prodid: rec.get('id'),
 								qty: 0,
 								trxid: panel.getTrxId()
-							});
-							storeitems.add(modelItems);
+							};
+							var model = Ext.create('App.model.procespo.items', record);
+							storeitems.add(model);
 						}
 					});
 
+
+					grid.getView().refresh();
 					storeitems.sync();
-
 					if (failedAdded) {
-
 						var msg = (alreadyExist.length > 5)
 							? ' sebanyak ' + alreadyExist.length + ' record'
 							: alreadyMsg;
@@ -234,12 +233,14 @@ Ext.define('App.controller.cprocespo', {
 						App.util.box.error('Sudah ditambahkan sebelumnya<br/>' + msg);
 						return false;
 					}
-					log('reload');
+
+
+//					log('reload');
 //					storeitems.reload();
 //
 //					gridItem.getView().refresh();
 //					log('load');
-					storeitems.load();
+
 				}
 			},
 

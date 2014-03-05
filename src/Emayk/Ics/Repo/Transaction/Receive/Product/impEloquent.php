@@ -31,6 +31,21 @@ use Input;
 class impEloquent extends BaseLogic implements iProduct
 {
 	/**
+	 * @startuml
+	 * title Terima Barang Implementasi Eloquent
+	 *
+	 * 'object Emayk.Ics.Repo.Transaction.Receive.Product.impEloquent
+	 *
+	 * Emayk.Ics.Controllers.BaseLogic
+	 * namespace Emayk.Ics.Repo.Transaction.Receive.Product
+	 * .BaseLogic o--impEloquent
+	 * impEloquent: #receive
+	 * impEloquent: +index()
+	 * impEloquent: +show()
+	 * end namespace
+	 * @enduml
+	 */
+	/**
 	 * @var Model
 	 */
 	protected $receive;
@@ -262,12 +277,20 @@ class impEloquent extends BaseLogic implements iProduct
 						$inpSuratJalanDrivername, $inpSuratJalanPlatnomor
 					);
 
-					\Log::info('Surat Jalan Object', $suratJalan->toArray());
+					$history                  = $oitem->getHistory();
+					$cntReceiveItem           = $history->getCountReceiveItemHistory($itemId);
+					$historytotalreceiveditem = $rcv->totalreceiveditem;
+					$historytotalrollreceived = $rcv->totalrollreceived;
 
-					$oitem->getHistory()->createHistory(
-						$inpQty, $updateBy, $itemId, $product_id,
+
+					$history->createRecord(
+						$inpQty, $updateBy,
+						$itemId, $product_id,
 						$inpQtyRoll, $suratJalan->id,
-						$inpTglTerima, $message
+						$inpTglTerima, $cntReceiveItem,
+						$historytotalreceiveditem, $historytotalrollreceived,
+						$message
+
 					);
 
 					$ofitem = $oitem->findOrFail($id);
@@ -488,60 +511,30 @@ class impEloquent extends BaseLogic implements iProduct
 
 		if ($receive->$trxnumber !== $receiveNumber) $this->setException('Transaksi Number tidak sama');
 
-		/*Cara 2 diambil dari Object History*/
-		$history     = $this->receive->oHistory();
-		$itemHistory = $history->CreateToday();
-		$total       = $itemHistory->count();
-		$itemHistory = $itemHistory->take($start)->limit($limit)->get();
-		$histories   = [];
-		foreach ($itemHistory as $historyitem) {
-			$historyitemReceiveId = $historyitem->item->receiveid;
-			/*Jika History Item dengan relasi item ke receive id adalah sama */
-			if ($historyitemReceiveId == $receiveId) {
-				$z = $historyitem->load('suratjalan');;
-				$histories[ ] = $z->toArray();
-			}
-		}
-
-		return Response::json([
-			'success' => true,
-			'total'   => $total,
-			'results' => $histories
-		]);
-	}
-
-	protected function getPrintItemHistoryVersi2($start, $limit, $page = 0)
-	{
-		$receiveId     = $this->getParams('receiveid', 'Butuh ID terima');
-		$receiveNumber = $this->getParams('receivenumber', 'Parameter Receive Number diperlukan');
-		$today         = date('Y-m-d');
-		$receive       = $this->receive->findOrFail($receiveId);
-		$trxnumber     = $receive->getColumnTrx();
-		if ($receive->$trxnumber !== $receiveNumber) $this->setException('Transaksi Number tidak sama');
-		/*Cara 1 , diambil dari Receive */
-		$items = $receive->item;
-
 		$histories = [];
-		$total     = 0;
-		foreach ($items as $item) {
-
+		$total         = 0;
+		$receiveToday  = date('Y-m-d');
+		foreach ($receive->item as $item) {
+			/*Item History*/
 			$itemHistory = $item->history;
-			foreach ($itemHistory as $k) {
-				if ($k->receivedate == $today) {
-					/*Jika sama Maka Load relasi*/
-					$history      = $k->with('product', 'suratjalan');
-					$history      = $history->skip($start)->take($limit);
-					$histories[ ] = $history->get()->toArray();
-					$total++;
-				}
+			$total       = $item->history->count();
+			foreach ($itemHistory as $history) {
+				if ($history->receivedate == $receiveToday)
+					$history->load('suratjalan', 'item');
+				$histories[ ] = $history->toArray();
 			}
 		}
+
+		$total = count($histories);
 		return Response::json([
 			'success' => true,
 			'total'   => $total,
 			'results' => $histories
 		]);
+
 	}
+
+
 }
 
  

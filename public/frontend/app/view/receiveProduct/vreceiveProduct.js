@@ -38,12 +38,14 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 	autoScroll: true,
 	layout: { type: 'fit', align: 'stretch'},
 	config: {
-		receiveid: undefined,
-		receivenumber: undefined,
 		ponumber: undefined,
 		supplier: undefined,
 		warehouse: undefined
 	},
+	receiveid: undefined,
+	receivenumber: undefined,
+	store: undefined,
+	storePrintItem: undefined,
 	record: undefined,
 	getRecord: function () {
 		return this.record;
@@ -54,8 +56,8 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 	},
 	initComponent: function () {
 		var me = this;
-		var store = Ext.create('App.store.receiveProduct.sreceiveProductItem');
-		var storeprintItem = Ext.create('App.store.receiveProduct.sprintProductItem');
+//		var store = Ext.create('App.store.receiveProduct.sreceiveProductItem');
+//		var storeprintItem = Ext.create('App.store.receiveProduct.sprintProductItem');
 		Ext.apply(me, {
 			buttons: [
 				{ text: 'Help', iconCls: 'help', action: 'help'},
@@ -176,7 +178,7 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 									iconCls: 'grid',
 									title: 'Daftar Terima Barang dari PO [ ' + me.getPonumber() + ' ]',
 									flex: 1,
-									store: store,
+									store: me.store,
 									selType: 'rowmodel',
 									columns: [
 										{
@@ -245,7 +247,7 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 									dockedItems: [
 										{
 											xtype: 'pagingtoolbar',
-											store: store,
+											store: me.store,
 											dock: 'bottom',
 											displayInfo: true
 										}
@@ -259,7 +261,10 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 									 * Grid Print History Item
 									 */
 									itemId: 'printHistoryItem',
-									xtype: 'appreceiveProductvreceiveProductprinthistory'
+									xtype: 'appreceiveProductvreceiveProductprinthistory',
+									store: me.storePrintItem,
+									receiveid: me.receiveid,
+									receivenumber: me.receivenumber
 								}
 							]
 						}
@@ -277,8 +282,8 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 			var store = grid.getStore();
 			if (store) {
 				var proxy = store.getProxy()
-				proxy.setExtraParam('receiveid', me.getReceiveid());
-				proxy.setExtraParam('receivenumber', me.getReceivenumber());
+				proxy.setExtraParam('receiveid', me.receiveid);
+				proxy.setExtraParam('receivenumber', me.receivenumber);
 				proxy.setExtraParam('cmd', 'getitems');
 				proxy.setExtraParam('option', 'wosale'); //tanpa harga
 			}
@@ -286,6 +291,7 @@ Ext.define('App.view.receiveProduct.vreceiveProduct', {
 		}
 
 		var record = me.getRecord();
+		log(record);
 		if (record) {
 			var form = me.down('#formreceive');
 			/*Load Record*/

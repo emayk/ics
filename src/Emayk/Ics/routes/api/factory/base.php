@@ -34,3 +34,4 @@ require __DIR__ . '/supplier/rest.php';
 require __DIR__ . '/unit/rest.php';
 require __DIR__ . '/warehouse/rest.php';
 require __DIR__ . '/user/rest.php';
+require __DIR__ . '/notes.php';

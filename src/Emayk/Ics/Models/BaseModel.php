@@ -198,4 +198,8 @@ class BaseModel extends Model
 	{
 		return number_format($v, $count_decimal, ',', '.');
 	}
+
+	public function getNote(){
+		return new \Emayk\Ics\Repo\Factory\Note\Eloquent();
+	}
 }

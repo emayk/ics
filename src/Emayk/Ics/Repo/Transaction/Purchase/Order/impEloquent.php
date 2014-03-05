@@ -168,6 +168,13 @@ class impEloquent implements iOrder
 	 */
 	public function store()
 	{
+		/**
+		 * Tidak ada Proses Simpan dari request http
+		 *
+		 *
+		 */
+		throw new \Exception('No Process Implementation here');
+
 		if (Input::has('cmd')) {
 			$cmd = Input::get('cmd');
 			if ($cmd == 'print') {
@@ -186,7 +193,7 @@ class impEloquent implements iOrder
 				/*Lakukan Query Db dengan Idnumber*/
 				/*Cocokan dengan ID number*/
 				/*Jika sesuai set status cntprint+1 dan printed=1*/
-				$order->increment('cntprint'); // = $cntIncr++;
+				$order->increment('cntprint');
 				$order->save();
 				/**
 				 * Jika sudah di Print maka lakukan Pemindahan data
@@ -197,7 +204,6 @@ class impEloquent implements iOrder
 				return $this->sampleHtml($id, $number);
 			}
 		}
-		// TODO: Implement store() method.
 	}
 
 	protected function sampleHtml($id, $number)

@@ -42,8 +42,9 @@ Ext.define('App.model.receiveProduct.mreceiveProductItem', {
 		/*Total Sudah Terima*/
 		"qtyreceived",
 		"qtyroll",
+
 		"rollreceived",
-		"totalrollreceived",
+		{ name : "totalrollreceived",mapping: "rollreceived"},
 		{
 			/**
 			 * Jumlah Product yang harus diterima

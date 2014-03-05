@@ -15,11 +15,24 @@
  *
  * @author Emay Komarudin
  *
- * Model Structure Eloquent
- *
  **/
-namespace Emayk\Ics\Repo\Stockproducts;
 
-use Emayk\Ics\Repo\Factory\Product\Stock\Eloquent as StockEloquent;
-class Stockproducts extends StockEloquent{
+
+namespace Emayk\Ics\Repo\Transaction\Payment\Purchase;
+
+
+use Emayk\Ics\Models\BaseModel;
+
+class Eloquent extends BaseModel
+{
+	protected $table = 'payment_purchase';
+	protected $guarded = [];
+
+	public function order()
+	{
+		return $this->belongsTo('\Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent','order_id');
+	}
+
 }
+
+ 

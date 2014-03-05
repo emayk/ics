@@ -31,16 +31,18 @@ Ext.define('App.model.receiveProduct.mprintProductItem', {
 		/*Total Sisa*/
 		{ name : "qtyelapse", mapping: 'item.qtyelapse'},
 		/*Qty yang diterima*/
-		{ name : "qtyreceived", mapping: 'item.qtyreceived'},
+		{ name : "qtyreceived", mapping: 'qty'},
 		/*Roll yang diterima*/
-		{ name : "rollreceived", mapping: 'item.rollreceived'},
+		{ name : "rollreceived", mapping: 'qtyroll'},
 		/*Total Roll Yang diterima*/
-		{ name : "totalrollreceived", mapping: 'item.totalrollreceived'},
+		{ name : "totalrollreceived", mapping: 'qtyrollreceived'},
+//		{ name : "totalrollreceived", mapping: 'item.totalrollreceived'},
 		/*Total Qty Yang diterima*/
-		{ name : "totalqtyreceived", mapping: 'item.totalreceiveditem'},
+//		{ name : "totalqtyreceived", mapping: 'item.totalreceiveditem'},
+		{ name : "totalqtyreceived", mapping: 'qtyreceived'},
 		/*Total Pesan*/
 		{ name : 'qtyorder',type: "int",mapping:'item.qtyorder' },
-
+		{ name: 'canprint', type: "boolean" }
 	],
 	proxy: {
 		type: 'rest',
