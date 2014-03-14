@@ -21,6 +21,10 @@ namespace Emayk\Ics\Repo\Transaction\Receive\Product;
 
 use Emayk\Ics\Models\BaseModel;
 
+/**
+ * @property-read \Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent order
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Emayk\Ics\Repo\Transaction\Receive\Product\Item\Model[] $item
+ */
 class Model extends BaseModel
 {
 	protected $guarded = array();
@@ -85,9 +89,14 @@ class Model extends BaseModel
 		return $this->order->supplier->name;
 	}
 
+
 	public function getPodateAttribute()
 	{
-		return $this->order->created_at;
+		/**
+		 * @var $order \Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent
+		 */
+		$order = $this->order;
+		return $order->created_at;
 	}
 
 	/**

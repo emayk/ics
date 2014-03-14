@@ -24,7 +24,7 @@ Ext.define('App.controller.caccountBank', {
 	extend: 'Ext.app.Controller',
 	views: [
 		'App.view.accountBank.vaccountBank',
-		'App.view.accountBank.winForm',
+		'App.view.accountBank.vWinform',
 		'App.view.accountBank.form',
 		'App.view.accountBank.Lists'
 	],
@@ -53,28 +53,6 @@ Ext.define('App.controller.caccountBank', {
 		var me = this;
 
 		me.control({
-			/*Panel*/
-//			"appaccountBankvaccountBank": {
-//
-//			},
-			/*Grid*/
-//            'appaccountBankvaccountBank #gridlist': {
-//                itemclick: me.showInfo
-//            },
-			/*Form*/
-//			'appaccountBankvaccountBank #formaccount': {
-//
-//			},
-//			'appaccountBankvaccountBank #formaccount': {
-//
-//			},
-//			'appaccountBankvaccountBank #formaccount #add': {
-//				click: me.saveRecord
-//			},
-//			'appaccountBankvaccountBank #formaccount #remove': {
-//				click: me.removeRecord
-//			},
-
 			/**
 			 * Grid
 			 */
@@ -174,7 +152,7 @@ Ext.define('App.controller.caccountBank', {
 		}
 
 		if (!win) {
-			win = Ext.create('App.view.accountBank.WinForm',{
+			win = Ext.create('App.view.accountBank.vWinform',{
 				title: 'Tambah Record Rekening Bank',
 				modal : true
 			});

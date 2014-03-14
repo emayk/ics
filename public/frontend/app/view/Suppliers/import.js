@@ -1,27 +1,13 @@
 /**
- * Copyright (C) 2013  Emay Komarudin
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * @author Emay Komarudin
- *
- **/
+ * Created by emayk on 3/10/14.
+ */
 
-Ext.define('App.view.products.import', {
+Ext.define('App.view.Suppliers.import', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.productimport',
+    alias: 'widget.suppliersimport',
     bodyPadding: 10,
     frame: true,
-    storeImport: Ext.create('App.store.product.listImportPrd'),
+    storeImport: Ext.create('App.store.Suppliers.simport'),
     initComponent: function () {
         var me = this;
         Ext.apply(me, {
@@ -36,7 +22,7 @@ Ext.define('App.view.products.import', {
                     items: [
                         {
                             xtype: 'filefield',
-                            name: 'product',
+                            name: 'supplier',
                             fieldLabel: 'File Excel',
                             labelWidth: 100,
                             msgTarget: 'side',
@@ -47,7 +33,7 @@ Ext.define('App.view.products.import', {
                             listeners: {
                                 afterrender: function (cmp) {
                                     cmp.fileInputEl.set({
-                                        accept: 'xls' // or w/e type
+                                        accept: 'xls'
                                     });
                                 }
                             }
@@ -58,12 +44,12 @@ Ext.define('App.view.products.import', {
                             text: 'Unggah',
                             handler: function (btn) {
                                 var form = btn.up('form').getForm();
-                                var grid = btn.up('productimport').down('grid');
+                                var grid = btn.up('panel').down('grid');
                                 var store = grid.getStore();
                                 if (store) {
                                     var proxy = store.getProxy();
                                 }
-                                var fname = btn.up('form').down('[name=product]');
+                                var fname = btn.up('form').down('[name=supplier]');
                                 var rawValue = fname.getRawValue();
                                 var indexofPeriod = rawValue.lastIndexOf("."),
                                     uploadedExtension = rawValue.substr(indexofPeriod + 1, rawValue.length - indexofPeriod);
@@ -83,7 +69,7 @@ Ext.define('App.view.products.import', {
 
                                 if (form.isValid()) {
                                     form.submit({
-                                        url: getApiUrl() + '/products',
+                                        url: getApiUrl() + '/suppliers',
                                         waitMsg: 'Unggah file...',
                                         params: {
                                             upload: true,
@@ -128,12 +114,11 @@ Ext.define('App.view.products.import', {
                 },
                 {
                     flex: .75,
-                    title: 'Product Yang berhasil diimport',
+                    title: 'Supplier Yang berhasil diimport',
                     xtype: 'grid',
                     margin: '10 0 0 0',
                     autoScroll: true,
-                    itemId: 'gridimportlistproduct',
-//					store: 'App.store.product.Product',
+                    itemId: 'gridimportlist',
                     store: me.storeImport,
                     defaults: { flex: 1 },
                     viewConfig: {
@@ -154,26 +139,7 @@ Ext.define('App.view.products.import', {
                             renderer: function (v, m, r) {
                                 return (v == 1) ? 'Berhasil' : "Tidak Berhasil"
                             }
-                        },
-                        {
-                            text: 'Total Stok',
-                            columns: [
-                                { /*CL 7 */ text: 'Panjang', dataIndex: 'totallength' },
-                                { /*CL 7 */ text: 'Roll', dataIndex: 'totalroll' }
-                            ]
-                        },
-                        { text: translations.field.design, dataIndex: 'nodesign', filter: true},
-//                        { text: translations.field.contruction, dataIndex: 'contruction', filter: true},
-                        { text: translations.field.category.default, dataIndex: 'catname', filter: true},
-                        { text: translations.field.type.default, dataIndex: 'typename', filter: true},
-                        { text: translations.field.width, dataIndex: 'width' },
-                        { text: translations.field.weight, dataIndex: 'weight' },
-                        { text: 'Satuan', dataIndex: 'unitname', flex: 1},
-                        { text: "Nomor Import", dataIndex: 'importId', flex: 1 },
-
-//                        {
-//                            text: 'Keterangan', flex: 2, dataIndex: 'information'
-//                        }
+                        }
                     ],
                     dockedItems: [
                         { xtype: 'pagingtoolbar', store: me.storeImport,

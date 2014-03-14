@@ -26,6 +26,7 @@ Ext.define('App.controller.cSuppliers', {
 		'App.view.Suppliers.vSuppliers',
 		'App.view.Suppliers.Lists',
 		'App.view.Suppliers.Edit',
+		'App.view.Suppliers.import',
 
 		'App.form.combobox.cbCountries',
 		'App.form.combobox.cbProvinces',
@@ -54,6 +55,7 @@ Ext.define('App.controller.cSuppliers', {
 	],
 	stores: [
 		'App.store.Suppliers.sSuppliers',
+        'App.store.Suppliers.simport',
 		'App.store.combo.cbCountries',
 		'App.store.combo.cbProvinces',
 		'App.store.combo.cbCities',
@@ -272,7 +274,7 @@ Ext.define('App.controller.cSuppliers', {
 		});
 		/*@todo: setup store phone dan account bank */
 	},
-	tabcontactpersonRender: function(tab){
+	tabcontactpersonRender: function (tab) {
 //		var record = tab.up('form').getForm().getRecord();
 //		if (!record){
 //			App.util.box.error('Silahkan Simpan Pemasok Terlebih dahulu');
@@ -338,15 +340,20 @@ Ext.define('App.controller.cSuppliers', {
 	},
 	addTypeSupplier: function (btn) {
 		/*Tampilkan WinForm Type Supplier*/
-		/*Create model */
-		var win = Ext.create('App.view.typesupbuy.wintype', {
-			title: 'Add Type Supplier',
-			modal: true
-		});
-		win.show();
+		var win;
+		if (!win) {
+			win = Ext.create('App.view.typesupbuy.wintype', {
+				title: 'Add Type Supplier',
+				modal: true
+			});
+			win.show();
+		}
 
 	},
-
+	/**
+	 * Tambah Legalitas
+	 * @param btn
+	 */
 	addLegalitas: function (btn) {
 		/*Tampilkan WinForm Legalitas*/
 		var win = Ext.create('App.view.master.legalitas.Edit', {
@@ -370,21 +377,25 @@ Ext.define('App.controller.cSuppliers', {
 			store = me.getGrid().getStore();
 		if (!record) {
 			isnew = true;
-			var record = Ext.create('App.model.Suppliers.mSuppliers');
-			record.set(values);
-		}else{
+			record = Ext.create('App.model.Suppliers.mSuppliers');
+		} else {
 			isnew = false;
 		}
 
-		var errors = record.validate();
-		if (!errors.isValid()) {
-			var errornamemsg = errors.getByField('name');
-			log(errornamemsg);
-			var msg = 'Ada Error Pada Form Silahkan Coba lagi , <br/>' + errornamemsg.message
-			App.util.box.error(msg);
+		record.set(values);
+//		var errors = record.validate();
+//		if (!errors.isValid()) {
+//			var errornamemsg = errors.getByField('name');
+//			log(errornamemsg);
+//			var msg = 'Ada Error Pada Form Silahkan Coba lagi , <br/>' + errornamemsg.message
+//			App.util.box.error(msg);
+//			return false;
+//		}
+
+		if (!form.isValid()) {
+			App.util.box.error('Silahkan Perbaiki Inputan anda');
 			return false;
 		}
-
 		record.save({
 			success: function (rec, ops) {
 				var idSupplier = rec.get('id');
@@ -409,8 +420,8 @@ Ext.define('App.controller.cSuppliers', {
 									/*Tampilkan Tab Nomor Telp*/
 									tabs.setActiveTab(gridphone);
 								}
-								me.setupProxyGridAndLoadStore(gridaccountbank,idSupplier);
-								me.setupProxyGridAndLoadStore(gridphone,idSupplier);
+								me.setupProxyGridAndLoadStore(gridaccountbank, idSupplier);
+								me.setupProxyGridAndLoadStore(gridphone, idSupplier);
 							});
 
 						}
@@ -424,7 +435,7 @@ Ext.define('App.controller.cSuppliers', {
 
 
 	},
-	setupProxyGridAndLoadStore: function(grid,idSupplier){
+	setupProxyGridAndLoadStore: function (grid, idSupplier) {
 		var store = grid.getStore(),
 			proxy = store.getProxy();
 		proxy.setExtraParam('parent_id', idSupplier);
@@ -458,25 +469,10 @@ Ext.define('App.controller.cSuppliers', {
 			});
 		tabinfo.down('#formsupplier').getForm().loadRecord(record);
 
-//		var storeAccountBank = Ext.create('App.store.accountBank.saccountBank');
-//		tabinfo.down('#accountbank').setStore(storeAccountBank);
-
 		var storeGridPhone = tabinfo.down('appphonesgrid#gridphone').getStore();
 		storeGridPhone.getProxy().setExtraParam('parent_id', id);
 		storeGridPhone.getProxy().setExtraParam('parenttype', 'supplier');
 		storeGridPhone.load();
-
-//		var gridAccount = tabinfo.down('#gridaccountbank');
-//		var pgAccount = tabinfo.down('#pgAccountBank');
-
-
-//        gridAccount.reconfigure(storeAccountBank);
-//        pgAccount.bindStore(storeAccountBank);
-//        storeAccountBank.getProxy().setExtraParam('type','supplier');
-//        storeAccountBank.getProxy().setExtraParam('typeid',id);
-//        storeAccountBank.load();
-
-//		me.setupAccountBank(id, storeAccountBank, gridAccount, pgAccount);
 
 		me.currentRecordSupplier = id;
 		me.openNewTab(title, tabinfo);
@@ -485,8 +481,9 @@ Ext.define('App.controller.cSuppliers', {
 	/**
 	 * Saat Render
 	 */
-	onRenderGridBuyer: function () {
-		this.getGrid().getStore().load();
+	onRenderGridBuyer: function (grid) {
+//		this.getGrid().
+		grid.getStore().load();
 	},
 	/**
 	 * Add Buyer

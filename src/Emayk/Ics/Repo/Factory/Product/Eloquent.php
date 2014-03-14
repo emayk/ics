@@ -45,7 +45,14 @@ class Eloquent extends BaseModel
 	/**
 	 * @var array
 	 */
-	protected $appends = ['totalstocks', 'catname', 'typename', 'widthname', 'weightname', 'totallength', 'totalroll'];
+	protected $appends = [
+		'totalstocks',
+//		'color',
+//		'grade',
+//		'unit',
+		'catname', 'typename', 'widthname', 'weightname',
+		'totallength', 'totalroll'
+	];
 	/**
 	 * @var array
 	 */
@@ -91,6 +98,21 @@ class Eloquent extends BaseModel
 	public function sale()
 	{
 		return $this->hasMany('\Emayk\Ics\Repo\Saleproduct\Saleproduct', 'product_id');
+	}
+
+	/**
+	 * Mendapatkan Hpp
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
+	public function hpp()
+	{
+		return $this->hasOne('\Emayk\Ics\Repo\Factory\Product\Hpp\Eloquent', 'product_id');
+	}
+
+	public function getHpp()
+	{
+		return new \Emayk\Ics\Repo\Factory\Product\Hpp\Eloquent();
 	}
 
 	/**
@@ -225,6 +247,10 @@ class Eloquent extends BaseModel
 		return $this->hasOne('\Emayk\Ics\Repo\Factory\Product\Stock\Eloquent', 'product_id');
 	}
 
+	public function oStock()
+	{
+		return new  \Emayk\Ics\Repo\Factory\Product\Stock\Eloquent();
+	}
 
 	/**
 	 *
@@ -457,5 +483,10 @@ class Eloquent extends BaseModel
 			$stock   = $oStock->add($product, 0, 0, $this->getUid());
 			return $stock;
 		}
+	}
+
+	public function getModelImport()
+	{
+		return new Import\Model();
 	}
 }

@@ -47,14 +47,14 @@ Ext.define('App.view.products.panelinfo', {
 					prodName: me.getProdName(),
 					new: me.getNew()
 				},
-				{
-					xtype: 'formproductdetail',
-					itemId: 'formdetail',
-					title: 'Detail ' + ( (me.getProdName() == null) ? ' ' : me.getProdName() ),
-					record: me.getRecord(),
-					prodId: me.getProdId(),
-					prodName: me.getProdName()
-				}
+//				{
+//					xtype: 'formproductdetail',
+//					itemId: 'formdetail',
+//					title: 'Detail ' + ( (me.getProdName() == null) ? ' ' : me.getProdName() ),
+//					record: me.getRecord(),
+//					prodId: me.getProdId(),
+//					prodName: me.getProdName()
+//				}
 			]
 		} else {
 			var items = [
@@ -65,14 +65,14 @@ Ext.define('App.view.products.panelinfo', {
 					prodId: me.getProdId(),
 					prodName: me.getProdName()
 				},
-				{
-					xtype: 'formproductdetail',
-					itemId: 'formdetail',
-					title: 'Detail ' + me.getProdName(),
-					record: me.getRecord(),
-					prodId: me.getProdId(),
-					prodName: me.getProdName()
-				},
+//				{
+//					xtype: 'formproductdetail',
+//					itemId: 'formdetail',
+//					title: 'Detail ' + me.getProdName(),
+//					record: me.getRecord(),
+//					prodId: me.getProdId(),
+//					prodName: me.getProdName()
+//				},
 				{
 					xtype: 'productgridstocks',
 					itemId: 'panelGridStock',

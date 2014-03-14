@@ -9,6 +9,7 @@ Ext.define('App.form.combobox.cbGradeKain', {
 //    queryMode: 'local',
     pageSize : 10,
     queryMode: 'remote',
+	editable: false,
     fieldLabel : 'Choose Grade', allowBlank: false ,
     // anchor : '-10',
     displayField : 'name', valueField: 'id',

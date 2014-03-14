@@ -18,48 +18,33 @@
  **/
 
 
-namespace Emayk\Ics\Repo\Factory\Product\SalesPrice;
+namespace Emayk\Ics\Queue\Import;
 
-class Eloquent extends \Emayk\Ics\Repo\Factory\Product\Hpp\Eloquent
+use Log;
+
+class Product
 {
-	protected $hidden = [
-		"color_id",
-		"createby_id",
-		"created_at",
-		"currsp_id",
-		"currspm_id",
-		"grade_id",
-//		"id",
-		"lastupdateby_id",
-		"product_id",
-		"unit_id",
-		"updated_at",
-		"uuid",
-		'parent_id',
-		'parent_type',
-		'salesprice',
-		'salespricemin'
-	];
+//sentToQueue
 
-	protected $appends = ['min', 'value'];
 
-	public function getMinAttribute()
+	public function fire($job, $data)
 	{
-		return $this->attributes[ 'min' ] = $this->pricemin;
+//		array('importId' => $importId, 'fileExcel' => $fileExcel)
+		Log::info('Import Product dengan Parameter', [$data]);
+		$importId  = $data[ 'importId' ];
+		$fileExcel = $data[ 'fileExcel' ];
+		$model     = $this->getModelImport();
+		$model->setFileExcel($fileExcel);
+		$model->setImportId($importId);
+		$model->setTruncate(true);
+		$model->getArrayFileExcel();
+		$job->delete();
 	}
 
-	public function getValueAttribute()
+	protected function getModelImport()
 	{
-		return $this->attributes[ 'value' ] = $this->price;
+		return new \Emayk\Ics\Repo\Factory\Product\Import\Model();
 	}
-
-	public function oProduct()
-	{
-		return new Product();
-	}
-
-
-
 }
 
  

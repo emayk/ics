@@ -18,48 +18,24 @@
  **/
 
 
-namespace Emayk\Ics\Repo\Factory\Product\SalesPrice;
+namespace Emayk\Ics\Import;
 
-class Eloquent extends \Emayk\Ics\Repo\Factory\Product\Hpp\Eloquent
+use Emayk\Ics\Controllers\BaseController;
+
+class Controller extends BaseController
 {
-	protected $hidden = [
-		"color_id",
-		"createby_id",
-		"created_at",
-		"currsp_id",
-		"currspm_id",
-		"grade_id",
-//		"id",
-		"lastupdateby_id",
-		"product_id",
-		"unit_id",
-		"updated_at",
-		"uuid",
-		'parent_id',
-		'parent_type',
-		'salesprice',
-		'salespricemin'
-	];
+	protected $path;
 
-	protected $appends = ['min', 'value'];
-
-	public function getMinAttribute()
+	function __construct($path = '')
 	{
-		return $this->attributes[ 'min' ] = $this->pricemin;
+		$this->path = $this->getPathStorage($path);
+		Parent::__construct();
 	}
 
-	public function getValueAttribute()
+	protected function getPathStorage($path = 'tmp')
 	{
-		return $this->attributes[ 'value' ] = $this->price;
+		return storage_path($path);
 	}
-
-	public function oProduct()
-	{
-		return new Product();
-	}
-
-
-
 }
 
  

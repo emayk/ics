@@ -7,73 +7,152 @@
  **/
 Route::group(array('prefix' => 'test'), function () {
 
-Route::group(array('prefix' => 'db'), function () {
-	Route::get("addstock",function(){
-		$oProducts = new \Emayk\Ics\Repo\Factory\Product\Eloquent();//::lists('id');
-		$productIds = $oProducts->lists('id');
-		$product = $oProducts->findOrFail(1);
-		$product->load('stock');
-		$trxnumber_simulasi = 'TRX'.time();
-		if (is_null($product->stock))
-		{
+	Route::group(array('prefix' => 'import'), function () {
+		Route::get("product", function () {
+
+			$page     = \Input::get('page');
+			$limit    = \Input::get('limit', 1);
+			$start    = \Input::get('start', 0);
+			$products = new \Emayk\Ics\Repo\Factory\Import\Product();
+//			$products = $this->product->with('price');
+			$total    = $products->count();
+			$products = $products->skip($start)
+				->take($limit)
+				->get()->toArray();
+
+			$product = ['success' => true, 'results' => $products, 'total' => $total];
+			return Response::json($product);
+
+			$path = storage_path('tmp');
+			$file = $path . '/08_03_14/sample_data_produk.xlsx';
+
+			$records = $product->all();
+			return Response::json([
+				'success' => true,
+				"total"   => $product->count(),
+				'results' => $records->toArray()
+			]);
+			$ar = $product->getArrayFileExcel($file);
+			return d($ar);
+			return count($ar) - 10;
+
+
+			$arr = Excel::load($file)->toArray();
+			/*Check Kolom*/
+			$columns = array(
+				null,
+				'Kode Internal', 'Kategori Produk',
+				'Nama Barang', 'Jenis Produk', 'No Design/ Corak Kain',
+				'Lebar Kain', 'Konstruksi Kain', 'Berat kain', 'Satuan'
+			);
+
+			$badColumn = false;
+			$data      = [];
+			foreach ($arr[ 9 ] as $no => $kolom) {
+				$header        = strtolower($kolom);
+				$headerCompare = trim(strtolower($columns[ $no ]));
+				if ($header !== $headerCompare) $badColumn = true;
+				$data[ ] = [$header, $no, $headerCompare];
+			}
+
+			if ($badColumn) throw new \Exception( 'Header Tidak Cocok ' );
+
+//			return [$badColumn,$data];
+			return d($arr);
+		});
+
+	});
+	Route::group(array('prefix' => 'db'), function () {
+
+		Route::get("addhpp", function () {
+			$oproducts = new \Emayk\Ics\Repo\Factory\Product\Eloquent();
+			$listIds   = $oproducts->lists('id');
+
+			foreach ($listIds as $id) {
+				$product = $oproducts->findOrFail($id);
+				$hpp     = $product->hpp;
+				if (is_null($product->hpp)) {
+					\Log::info('im execute');
+					$hpp = $product->getHpp()->create([
+						'pricemin' => 0, 'price' => 0, 'product_id' => $product->id
+					]);
+				};
+//			else {
+//
+//					\Log::info('im execute Else', $hpp->toArray());
+//					$hpp->pricemin = rand(100, 200);
+//					$hpp->price    = rand(200, 500);
+//					$hpp->save();
+//					\Log::info('Setelah disave adalah', $hpp->toArray());
+//				}
+			}
+			return 'Done';
+		});
+		Route::get("addstock", function () {
+			$oProducts  = new \Emayk\Ics\Repo\Factory\Product\Eloquent(); //::lists('id');
+			$productIds = $oProducts->lists('id');
+			$product    = $oProducts->findOrFail(1);
+			$product->load('stock');
+			$trxnumber_simulasi = 'TRX' . time();
+			if (is_null($product->stock)) {
 //			Buat Stock
-			$stock = new \Emayk\Ics\Repo\Factory\Product\Stock\Eloquent();
-			$stock->add($product,0,0,1);
-		}
+				$stock = new \Emayk\Ics\Repo\Factory\Product\Stock\Eloquent();
+				$stock->add($product, 0, 0, 1);
+			}
 
-		return $oProducts->findOrFail(1);
+			return $oProducts->findOrFail(1);
+		});
+
+		Route::get('/', function () {
+			return 'Test Print';
+		});
+
 	});
+	Route::group(array('prefix' => 'print'), function () {
+		Route::get('/', function () {
+			return 'Test Print';
+		});
 
-	Route::get('/', function () {
-		return 'Test Print';
-	});
-
-});
-Route::group(array('prefix' => 'print'), function () {
-	Route::get('/', function () {
-		return 'Test Print';
-	});
-
-	Route::get('sent_order_to_receive', function () {
-		$order = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent();
-		/*Update Database dengan record yang ditentukan*/
+		Route::get('sent_order_to_receive', function () {
+			$order = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Eloquent();
+			/*Update Database dengan record yang ditentukan*/
 
 //		$record->increment('cntprint');
 //		$record->save();
-		return $order->moveOrderToReceiveGood();
-	});
+			return $order->moveOrderToReceiveGood();
+		});
 
-	Route::get('/itembpb', function () {
-		$itemHistoryO = new \Emayk\Ics\Repo\Transaction\Prints\Receive\ItemHistory();
-		return $itemHistoryO->prints(1,'dsadsadsa',true);
+		Route::get('/itembpb', function () {
+			$itemHistoryO = new \Emayk\Ics\Repo\Transaction\Prints\Receive\ItemHistory();
+			return $itemHistoryO->prints(1, 'dsadsadsa', true);
 
-	});
+		});
 
-	Route::get('order', function () {
-		$id = 22;
-		$number = "PPN-21421212420140226";
-		$order = new \Emayk\Ics\Repo\Transaction\Prints\Purchase\Order();
-		$o = $order->prints($id,$number,false);
-		return $o;
+		Route::get('order', function () {
+			$id     = 22;
+			$number = "PPN-21421212420140226";
+			$order  = new \Emayk\Ics\Repo\Transaction\Prints\Purchase\Order();
+			$o      = $order->prints($id, $number, false);
+			return $o;
 //		return 'Test Print';
-	});
+		});
 
 
 //	Route::get('bpb/{id?}', function ($id=1) {
-	Route::get('bpb/{id?}', function ($id=6) {
-		$id = 6;
-		$number = "RG-PPN-21481211620140302";
-		$order = new \Emayk\Ics\Repo\Transaction\Prints\Receive\Product();
-		$o = $order->prints($id,$number,false);
-		return $o;
+		Route::get('bpb/{id?}', function ($id = 6) {
+			$id     = 6;
+			$number = "RG-PPN-21481211620140302";
+			$order  = new \Emayk\Ics\Repo\Transaction\Prints\Receive\Product();
+			$o      = $order->prints($id, $number, false);
+			return $o;
 
 //		$bpb = new \Emayk\Ics\Repo\Transaction\Receive\Product\Model();
 //		$record = $bpb->findOrFail($id);
 //		return \View::make('ics::Print.Receive.Product',compact('record'));
+		});
+
+
 	});
-
-
-});
 
 	Route::get('newapproval1', function () {
 		$queue = new \Emayk\Ics\Repo\Transaction\Purchase\Order\Queue();

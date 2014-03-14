@@ -20,6 +20,7 @@
 
 namespace Emayk\Ics\Repo\Factory\Product;
 
+use Emayk\Ics\Controllers\BaseLogic;
 use \Exception;
 use Carbon\Carbon;
 use Emayk\Ics\Repo\Sysprodhistory\Sysprodhistory;
@@ -30,7 +31,7 @@ use \DB;
 use \Event;
 use \Cache;
 
-class impEloquent implements iProduct
+class impEloquent extends BaseLogic implements iProduct
 {
 	protected $product;
 
@@ -95,7 +96,7 @@ class impEloquent implements iProduct
 			if ($hpptrue == 'true') {
 				/*Check Token*/
 				if (!Input::has('_token')) throw new \Exception( 'Problem with Token' );
-				$token    = Input::get('_token');
+				$token = Input::get('_token');
 //				$products = $this->product->with('detail');
 				$products = $this->product->with('price');
 				$total    = $products->count();
@@ -103,9 +104,14 @@ class impEloquent implements iProduct
 					->take($limit)
 					->get()->toArray();
 
-				$product = [ 'success' => true, 'results' => $products, 'total'   => $total];
+				$product = ['success' => true, 'results' => $products, 'total' => $total];
 				return Response::json($product);
 			}
+		}
+
+
+		if (Input::has('listImport')) {
+			return $this->listProductImported($start, $limit, $page);
 		}
 
 		/*Jika ada Input cari berdasarkan Nama */
@@ -216,29 +222,48 @@ class impEloquent implements iProduct
 					'results' => null
 				))->setCallback();
 		}
-		/*==========  Sesuaikan dengan Field di table  ==========*/
-		$userId                       = \Auth::user()->id;
-		$name                         = Input::get('name');
-		$this->product->name          = $name;
-		$catId                        = Input::get('cat_id', 1);
-		$this->product->cat_id        = $catId;
-		$this->product->contruction   = Input::get('contruction');
-		$this->product->nodesign      = Input::get('nodesign');
-		$this->product->type_id       = Input::get('type_id');
-		$this->product->weight        = Input::get('weight');
-		$this->product->parent_id     = $catId;
-		$this->product->parent_type   = '\Emayk\Ics\Repo\Productcategory\Productcategory';
-		$this->product->unitweight_id = Input::get('unitweight_id');
-		$this->product->width         = Input::get('width');
-		$this->product->unitwidth_id  = Input::get('unitwidth_id');
-		$this->product->codeinternal  = uniqid('Prd_');
 
-		$this->product->uuid            = uniqid('Prd_');
-		$this->product->createby_id     = $userId;
-		$this->product->lastupdateby_id = $userId;
-		$this->product->created_at      = new \Datetime();
-		$this->product->updated_at      = new \Datetime();
-		$saved                          = $this->product->save() ? true : false;
+		if (Input::has('upload')) {
+			return $this->processUploadProduct();
+		};
+
+		if (Input::has('sethpp')) {
+			return $this->updateHpp();
+		}
+
+		/*==========  Sesuaikan dengan Field di table  ==========*/
+		$product                = $this->product;
+		$userId                 = \Auth::user()->id;
+		$name                   = Input::get('name');
+		$product->name          = $name;
+		$catId                  = Input::get('cat_id', 1);
+		$product->cat_id        = $catId;
+		$product->contruction   = Input::get('contruction');
+		$product->nodesign      = Input::get('nodesign');
+		$product->type_id       = Input::get('type_id');
+		$product->weight        = Input::get('weight');
+		$product->parent_id     = $catId;
+		$product->parent_type   = '\Emayk\Ics\Repo\Productcategory\Productcategory';
+		$product->unitweight_id = Input::get('unitweight_id');
+		$product->width         = Input::get('width');
+		$product->unitwidth_id  = Input::get('unitwidth_id');
+		$product->codeinternal  = uniqid('Prd_');
+
+		$product->uuid            = uniqid('Prd_');
+		$product->createby_id     = $userId;
+		$product->lastupdateby_id = $userId;
+		$product->created_at      = new \Datetime();
+		$product->updated_at      = new \Datetime();
+		$saved                    = $this->product->save() ? true : false;
+
+		/**
+		 * Buat Stock
+		 */
+		$product->oStock()->add($product, 0, 0, $userId);
+		/**
+		 * Buat Hpp
+		 */
+		$product->getHpp()->add($product, 0, 0);
 
 		if ($saved) {
 			Sysprodhistory::createlog(["Product {$name} berhasil dibuat "], $userId, $this->product->id);
@@ -308,6 +333,13 @@ class impEloquent implements iProduct
 		$db->lastupdateby_id = $uid;
 		$db->updated_at      = new Carbon();
 		$db->uuid            = uniqid('Update_');
+
+		$detail = $db->detail;
+		if (Input::has('unit_id')) $detail->unit_id = Input::get('unit_id');
+		if (Input::has('color_id')) $detail->color_id = Input::get('color_id');
+		if (Input::has('grade_id')) $detail->grade_id = Input::get('grade_id');
+		$detail->save();
+
 		return ( $db->save() )
 			? \Icsoutput::msgSuccess($db->toArray())
 			: \Icsoutput::msgError(array('reason' => 'Cannot Update'));
@@ -346,13 +378,13 @@ class impEloquent implements iProduct
 	public function show($id)
 	{
 		$record = $this->product->whereId($id);
-
+//		$record = $this->product->findOrFail($id);
 		return ( $record->count() ) ?
 			Response::json(
 				[
 					'success' => true, 'error' => false,
 					'results' => $record
-							->with('type', 'detail', 'stocks')
+							->with('type', 'detail', 'stock')
 							->get()->toArray()
 				]
 			)
@@ -388,7 +420,99 @@ class impEloquent implements iProduct
 		return $this->delete($id);
 	}
 
+	protected function setHpp()
+	{
+		$sethpp   = $this->getParams('sethpp', 'Need Parameter to Set Hpp');
+		$prodId   = $this->getParams('product_id', 'Need Product Id');
+		$price    = $this->getParams('price', 'Need Price ');
+		$pricemin = $this->getParams('pricemin', 'Need Price Min Value');
 
+		$product = $this->product->findOrFail($prodId);
+		/**
+		 * Jika Hpp Belum ada maka
+		 * lakukan Tambah Record Hpp
+		 */
+		$hpp = $product->hpp;
+		if (is_null($product->hpp)) {
+			$hpp = $product->getHpp()->add($product, $price, $pricemin);
+		} else {
+			$hpp->pricemin = $price;
+			$hpp->price    = $pricemin;
+			$hpp->save();
+		}
+		return Response::json([
+			'success' => true,
+			'results' => $hpp
+		]);
+	}
+
+	protected function listProductImported($start, $limit, $page)
+	{
+		$importId = $this->getParams('importid', 'Tidak Mendapatkan Import ID yang akan diload');
+		$products = $this->product->getModelImport();
+
+		$products = $products->whereImportid($importId);
+		$total    = $products->count();
+		$products = $products->skip($start)
+			->take($limit)
+			->get()->toArray();
+
+		$product = ['success' => true, 'results' => $products, 'total' => $total];
+		return Response::json($product);
+
+	}
+
+	protected function processUploadProduct()
+	{
+		$upload = $this->inputGet('upload');
+		/*Token*/
+		$token = $this->inputGet('_token');
+		/*User Id yang upload*/
+		$uid = $this->inputGet('uid');
+
+		/*Dapatkan File*/
+		if (!Input::hasFile('product')) {
+			$response = [
+				'success' => false,
+				'error'   => true,
+				'reason'  => 'Tidak ada file yang diupload'
+			];
+		} else {
+			$file  = Input::file('product');
+			$path  = storage_path('tmp') . '/' . date('d_m_Y');
+			$fname = $uid.'_'.$file->getClientOriginalName();
+			$file->move($path, $fname);
+			/*
+			 * Import Id  dapatkan dari Model Import
+			 * Set semua import Id ke
+			*/
+			$importId = uniqid('Upload' . time() . $uid);
+			$modelImport = $this->product->getModelImport();
+			$modelImport->setImportId($importId);
+			$fullname = $path . '/' . $fname;
+			$modelImport->setFileExcel($fullname);
+			$modelImport->sentToQueue($importId, $fullname);
+//			$modelImport->getArrayFileExcel();
+			$response = [
+				'success'     => true,
+				'results'     => '',
+				'file'        => $fname,
+//				'importId' => 'Test_531b5521cef951',
+				'importId'    => $importId,
+				'modelImport' => [
+					'id'            => $modelImport->getImportId(),
+					'fullnameExcel' => $modelImport->getImportId(),
+					'fullname'      => $fullname
+				],
+				'msg'         => 'File Berhasil diupload, silahkan tunggu beberapa saat<br/>Grid akan segera diload',
+				'params'      => [
+					'listImport' => $importId,
+					'token'      => $token
+				]
+			];
+		}
+		return Response::json($response);
+	}
 }
 
  

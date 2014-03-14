@@ -45,12 +45,12 @@ class History extends BaseModel
 	 */
 	public $appends = [
 		'nomorsuratjalan', 'canprint',
-//		'totalqtyorder'
+		'totalqtyorder'
 	];
 
 	public function gettotalqtyorderAttribute()
 	{
-//		return $this->attributes[ 'totalqtyorder' ] = $this->item->productname;
+		return $this->attributes[ 'totalqtyorder' ] = $this->item->productname;
 	}
 
 
@@ -240,7 +240,6 @@ class History extends BaseModel
 		return ( $this->printed == 0 );
 	}
 
-
 	/**
 	 * Menambahkan Count Print
 	 */
@@ -278,7 +277,6 @@ class History extends BaseModel
 	{
 		$cntItemId = ( $this->getCountReceivedItem($itemId) + 1 );
 		return $cntItemId;
-//		$this->cntreceive = $cntItemId;
 	}
 
 	/**

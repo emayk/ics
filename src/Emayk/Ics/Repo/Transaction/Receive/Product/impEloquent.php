@@ -31,21 +31,6 @@ use Input;
 class impEloquent extends BaseLogic implements iProduct
 {
 	/**
-	 * @startuml
-	 * title Terima Barang Implementasi Eloquent
-	 *
-	 * 'object Emayk.Ics.Repo.Transaction.Receive.Product.impEloquent
-	 *
-	 * Emayk.Ics.Controllers.BaseLogic
-	 * namespace Emayk.Ics.Repo.Transaction.Receive.Product
-	 * .BaseLogic o--impEloquent
-	 * impEloquent: #receive
-	 * impEloquent: +index()
-	 * impEloquent: +show()
-	 * end namespace
-	 * @enduml
-	 */
-	/**
 	 * @var Model
 	 */
 	protected $receive;
@@ -60,7 +45,7 @@ class impEloquent extends BaseLogic implements iProduct
 
 	/**
 	 *
-	 * Mendapatkan Record Transorderapproval berdasarkan ID yang diberikan
+	 * Mendapatkan Record  berdasarkan ID yang diberikan
 	 *
 	 * @param  int $id ID Record
 	 *
@@ -380,7 +365,7 @@ class impEloquent extends BaseLogic implements iProduct
 			/**/
 			if (Input::has('option')) {
 				$option = Input::get('option');
-				/*Jika Option tanpa harga*/
+				/*Jika Option maka berikan data tanpa harga*/
 				if ($option == 'wosale') {
 					/*@todo : kasih data tanpa harga*/
 				} else {
@@ -508,16 +493,22 @@ class impEloquent extends BaseLogic implements iProduct
 
 		$receive   = $this->receive->findOrFail($receiveId);
 		$trxnumber = $receive->getColumnTrx();
-
 		if ($receive->$trxnumber !== $receiveNumber) $this->setException('Transaksi Number tidak sama');
 
-		$histories = [];
-		$total         = 0;
-		$receiveToday  = date('Y-m-d');
+		$histories    = [];
+		$total        = 0;
+		$receiveToday = date('Y-m-d');
 		foreach ($receive->item as $item) {
-			/*Item History*/
+			/**
+			 * @var $item \Emayk\Ics\Repo\Transaction\Receive\Product\Item\Model Item Receive Model
+			 */
+
+			/**
+			 * @var $itemHistory \Emayk\Ics\Repo\Transaction\Receive\Product\History Item Receive Model
+			 */
 			$itemHistory = $item->history;
-			$total       = $item->history->count();
+
+			$total       = $itemHistory->count();
 			foreach ($itemHistory as $history) {
 				if ($history->receivedate == $receiveToday)
 					$history->load('suratjalan', 'item');

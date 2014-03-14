@@ -20,7 +20,10 @@
 
 namespace Emayk\Ics\Models;
 
-use \Auth;
+use Auth;
+use Emayk\Ics\Repo\Factory\Prefix\Eloquent as ModelPrefix;
+use Log;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -137,14 +140,15 @@ class BaseModel extends Model
 	 *
 	 * @return string
 	 */
-	public function createUuid($trxnumber)
+	public function createUuid($trxnumber = null)
 	{
+		if (is_null($trxnumber)) $trxnumber = time();
 		return uniqid(str_replace('-', '_', $trxnumber));
 	}
 
 	public function getPrefix()
 	{
-		return new \Emayk\Ics\Repo\Factory\Prefix\Eloquent();
+		return new ModelPrefix();
 	}
 
 	public function getPpnId()
@@ -194,12 +198,19 @@ class BaseModel extends Model
 		return ( is_null($fullname) ) ? $this->getUsername() : $fullname;
 	}
 
-	public function formatNumberIndonesia($v,$count_decimal = 0)
+	public function formatNumberIndonesia($v, $count_decimal = 0)
 	{
 		return number_format($v, $count_decimal, ',', '.');
 	}
 
-	public function getNote(){
+	public function getNote()
+	{
 		return new \Emayk\Ics\Repo\Factory\Note\Eloquent();
+	}
+
+	public function log($v, $message = 'Logger')
+	{
+		$params = ( !is_array($v) ) ? [$v] : $v;
+		Log::info($message, $params);
 	}
 }

@@ -1,4 +1,3 @@
-<?php
 /**
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -17,49 +16,21 @@
  *
  **/
 
-
-namespace Emayk\Ics\Repo\Factory\Product\SalesPrice;
-
-class Eloquent extends \Emayk\Ics\Repo\Factory\Product\Hpp\Eloquent
-{
-	protected $hidden = [
-		"color_id",
-		"createby_id",
-		"created_at",
-		"currsp_id",
-		"currspm_id",
-		"grade_id",
-//		"id",
-		"lastupdateby_id",
-		"product_id",
-		"unit_id",
-		"updated_at",
-		"uuid",
-		'parent_id',
-		'parent_type',
-		'salesprice',
-		'salespricemin'
-	];
-
-	protected $appends = ['min', 'value'];
-
-	public function getMinAttribute()
-	{
-		return $this->attributes[ 'min' ] = $this->pricemin;
+Ext.define('App.view.accountBank.vWinform', {
+	extend: 'Ext.window.Window',
+	alias: 'widget.appaccountBankWinForm',
+	requires:[
+		'App.view.accountBank.form'
+	],
+	layout: { type: 'fit', align: 'stretch'},
+	initComponent: function(){
+		var me = this;
+		Ext.apply(me,{
+			items:[
+				{ xtype: 'appaccountBankform' }
+			]
+		});
+		me.callParent(arguments);
 	}
 
-	public function getValueAttribute()
-	{
-		return $this->attributes[ 'value' ] = $this->price;
-	}
-
-	public function oProduct()
-	{
-		return new Product();
-	}
-
-
-
-}
-
- 
+});

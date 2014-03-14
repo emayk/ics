@@ -7,6 +7,7 @@
 Ext.define('App.form.combobox.cbUnitWeight', {
 	alias : 'widget.cbUnitWeight', extend: 'Ext.form.ComboBox',
     queryMode: 'remote',
+	editable: false,
     fieldLabel : 'Choose Unit Weight', allowBlank: false ,
     displayField : 'name', valueField: 'id',
     // triggerAction: 'all',

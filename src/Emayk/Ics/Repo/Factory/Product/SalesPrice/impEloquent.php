@@ -27,10 +27,12 @@ use Input;
 class impEloquent implements iSalesPrice
 {
 	protected $price;
+	protected $product;
 
 	function __construct(SalesEloquent $SalesPriceModel)
 	{
-		$this->price = $SalesPriceModel;
+		$this->price   = $SalesPriceModel;
+		$this->product = new \Emayk\Ics\Repo\Factory\Product\Eloquent();
 	}
 
 	/**
@@ -40,6 +42,7 @@ class impEloquent implements iSalesPrice
 	 */
 	public function all()
 	{
+
 		$page  = \Input::get('page');
 		$limit = \Input::get('limit', 1);
 		$start = \Input::get('start', 0);
@@ -120,10 +123,10 @@ class impEloquent implements iSalesPrice
 		$pricemin = Input::get('pricemin');
 		if (intval($pricemin) > intval($price)) return Response::json(['success' => false, 'reason' => 'Nilai harga Minimal tidak boleh lebih besar dari Harga']);
 
-		$setPrice                = $this->price->findOrFail($id);
-		$setPrice->salesprice    = $price;
-		$setPrice->salespricemin = $pricemin;
-		$saved                   = $setPrice->save();
+		$setPrice           = $this->price->findOrFail($id);
+		$setPrice->price    = $price;
+		$setPrice->pricemin = $pricemin;
+		$saved              = $setPrice->save();
 		return ( $saved ) ? Response::json(array_merge($setPrice->toArray(), [
 			'success' => true,
 			'reason'  => 'Updated Price berhasil dilakukan'

@@ -1,3 +1,4 @@
+<?php
 /**
  * Copyright (C) 2013  Emay Komarudin
  * This program is free software: you can redistribute it and/or modify
@@ -17,27 +18,13 @@
  **/
 
 
+namespace Emayk\Ics\Repo\Factory\Product\Import;
 
-Ext.define('App.view.accountBank.winForm', {
-	extend: 'Ext.window.Window',
-	alias: 'widget.appaccountBankWinForm',
-//	frame: true,
-	requires:[
-		'App.view.accountBank.form'
-	],
-	layout: { type: 'fit', align: 'stretch'},
-	initComponent: function(){
-		var me = this;
-		Ext.apply(me,{
-			items:[
-				{ xtype: 'appaccountBankform' }
-			]
-		});
-		me.callParent(arguments);
-	}
+use \Maatwebsite\Excel\Excel as BaseExcel;
 
-});
+class Excel extends BaseExcel
+{
 
-//
-//appSuppliersvSuppliersEdit #accountbank appaccountBankvaccountBankList
-//appSuppliersvSuppliersEdit #accountbank appaccountBankform
+}
+
+ 

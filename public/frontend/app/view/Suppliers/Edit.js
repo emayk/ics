@@ -358,6 +358,7 @@ Ext.define('App.view.Suppliers.Edit', {
 									xtype: 'checkbox',
 									flex: 1,
 									name: 'status_id',
+									inputValue: '1',
 									labelAlign: 'left',
 									labelWidth: 200,
 									fieldLabel: translations.setup_as_active
@@ -386,21 +387,21 @@ Ext.define('App.view.Suppliers.Edit', {
 						}
 					]
 				},
-				{
-					xtype: 'container',
-					title: translations.history,
-					html: 'History Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
-				},
-				{
-					xtype: 'container',
-					title: translations.chart,
-					html: 'Statistik Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
-				},
-				{
-					xtype: 'container',
-					title: translations.product,
-					html: 'Product - Product Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
-				}
+//				{
+//					xtype: 'container',
+//					title: translations.history,
+//					html: 'History Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
+//				},
+//				{
+//					xtype: 'container',
+//					title: translations.chart,
+//					html: 'Statistik Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
+//				},
+//				{
+//					xtype: 'container',
+//					title: translations.product,
+//					html: 'Product - Product Supplier berada di tab ini <br/><h1>Belum Di implementasi</h1>'
+//				}
 			]
 		});
 		me.callParent(arguments);

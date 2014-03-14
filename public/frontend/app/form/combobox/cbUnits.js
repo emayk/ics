@@ -8,6 +8,7 @@ Ext.define('App.form.combobox.cbUnits', {
 	alias : 'widget.cbunits', extend: 'Ext.form.ComboBox', queryMode: 'local',
     queryMode: 'remote',
     pageSize: 10,
+	editable: false,
     fieldLabel : 'Choose Unit', allowBlank: false ,
     // anchor : '-10',
     displayField : 'name', valueField: 'id',

@@ -22,7 +22,8 @@ Ext.define('App.view.devmainpanel', {
 	activeTab: 1,
 	plain: true,
 	items: [
-		{ xtype: 'appdashboardvdashboard', title: 'Development', iconCls: 'home', closable: false},
+		{ xtype: 'appdashboardvdashboard', title: 'Dashboard Development', iconCls: 'home', closable: false},
+		{ xtype: 'productimport', title: 'Import Produk', iconCls: 'product', closable: false},
 //		{ xtype: 'appreceiveProductvreceiveProductprinthistory', title: '[Dev] Print History Item', iconCls: 'home', closable: false},
 //		{ xtype: 'appreceiveProductvtabbarang', title: 'Daftar Terima Barang', iconCls: 'home', closable: false},
 //		{ xtype: 'appprordervprorder', title: 'Daftar PO', iconCls: 'home', closable: false},

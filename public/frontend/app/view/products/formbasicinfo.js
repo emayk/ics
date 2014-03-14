@@ -60,12 +60,12 @@ Ext.define('App.view.products.formbasicinfo', {
 						{ xtype: 'hiddenfield', fieldLabel: 'id', name: 'id', anchor: '95%', readOnly: true, value: this.prodId },
 						{ xtype: 'textfield', fieldLabel: 'Nama', name: 'name', anchor: '95%' },
 						{ xtype: 'cbcatproduct', fieldLabel: 'Kategori', name: 'cat_id', anchor: '95%' },
-						{ xtype: 'textfield', fieldLabel: 'Corak', name: 'contruction', anchor: '95%' },
+						{ xtype: 'textfield', fieldLabel: 'Kode', name: 'codeinternal', anchor: '95%' },
 						{ xtype: 'textfield', fieldLabel: 'Nomor Design', name: 'nodesign', anchor: '95%' },
 						{ xtype: 'cbTypeProduct', fieldLabel: 'Tipe Produk', name: 'type_id', anchor: '95%' },
 						{ xtype: 'fieldcontainer', fieldLabel: 'Berat', layout: 'hbox', anchor: '95%',
 							items: [
-								{ xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3 , margin: '0 5 0 0'},
+								{ xtype: 'numberfield', fieldLabel: '', name: 'weight', flex: .3, margin: '0 5 0 0'},
 								{ xtype: 'cbUnitWeight', fieldLabel: '', name: 'unitweight_id', flex: .7}
 							]
 						},
@@ -75,80 +75,61 @@ Ext.define('App.view.products.formbasicinfo', {
 								{ xtype: 'numberfield', fieldLabel: '', name: 'width', flex: .3, margin: '0 5 0 0'},
 								{ xtype: 'cbUnitWidth', fieldLabel: '', name: 'unitwidth_id', flex: .7 }
 							]
-						}
+						},
+						{ xtype: "cbcolor", fieldLabel: "Color", name: "color_id", anchor: '95%'},
+						{ xtype: "cbunits", fieldLabel: "Unit", name: "unit_id", anchor: '95%'},
+						{ xtype: "cbgradekain", fieldLabel: "Grade", name: "grade_id", anchor: '95%'}
 					]
 				}
+//				{
+//					xtype: 'fieldset',
+//					itemId : 'fieldsetdetail',
+//					title : 'Detail Product ' + ( (me.getProdName() == null) ? ' ' : me.getProdName() ),
+//					defaults:{
+//						anchor : '95%'
+//					},
+//					items: [
+////						{ xtype: "displayfield", fieldLabel: "Name", name: "prodname", value: this.getProdName()},
+////						{ xtype: "hiddenfield", fieldLabel: "id", name: "id", hidden: true},
+////						{ xtype: "hiddenfield", fieldLabel: "product_id", name: "product_id", value: this.getProdId()},
+//
+//						{ xtype: "cbcolor", fieldLabel: "Color", name: "color_id"},
+//						{ xtype: "cbunits", fieldLabel: "Unit", name: "unit_id"},
+//						{ xtype: "cbgradekain", fieldLabel: "Grade", name: "grade_id"},
+////						{
+////							xtype:'fieldcontainer',
+////							fieldLabel:'Sales Price',
+////							hiddenField: true,
+////							layout: 'hbox', anchor: '95%',
+////							items : [
+////								{ xtype: "numberfield", fieldLabel: "", name: "salesprice", flex: .3 },
+////								{ xtype : 'splitter' },
+////								{ xtype: "cbcurrsp", fieldLabel: "", name: "currsp_id", flex: .6 }
+////							]
+////						},
+//
+////						{
+////							xtype:'fieldcontainer',
+////							fieldLabel:'Sales Price Min ',
+////							layout: 'hbox', anchor: '95%',
+////							items : [
+////								{ xtype: "numberfield", fieldLabel: "", name: "salespricemin", flex: .3 },
+////								{ xtype : 'splitter' },
+////								{ xtype: "cbcurrspm", fieldLabel: "", name: "currspm_id", flex: .6 }
+////							]
+////						},
+////						{ xtype: "textfield", fieldLabel: "parent_id", name: "parent_id", value: this.getProdId(),hidden:true },
+////						{ xtype: "textfield", fieldLabel: "parent_type", name: "parent_type", value: 'product',hidden:true }
+//					]
+//				}
 			]
 		});
 		this.callParent(arguments);
-
 	},
 
 	buttons: [
-		{
-			text: 'Help', iconCls: 'help', itemId: 'help', action: 'help'
-		},
-		'->',
-		{
-			text: 'Save', iconCls: 'save', itemId: 'save', action: 'save'
-		},
-		{
-			text: 'Close', iconCls: 'close', itemId: 'close', action: 'close'
-		}
+		{ text: 'Help', iconCls: 'help', itemId: 'help', action: 'help' }, '->',
+		{ text: 'Save', iconCls: 'save', itemId: 'save', action: 'save' },
+		{ text: 'Close', iconCls: 'close', itemId: 'close', action: 'close' }
 	]
 });
-
-//
-//
-//        {
-//            xtype: 'container',
-//            flex: .4,
-//            layout: { type: 'vbox', align: 'stretch'},
-//            items: [
-//                {
-//                    xtype: 'fieldset',
-//                    title: 'Picture',
-//                    autoScroll: true,
-//                    flex: .4,
-//                    bodyPadding: 2,
-////                                    margins: '0 0 0 10',
-//                    items: [
-//                        {
-//                            maxHeight: 256,
-//                            maxWidth: 256,
-//                            xtype: 'image',
-//                            itemId: 'imageProduct',
-////                                            resizable: true,
-//                            shrinkWrap: true,
-//                            src: getIcsPath() + '/frontend/images/uploads_Icon_256x256.png'
-//                        }
-//                    ]
-//                },
-//                {
-//                    flex: 0.6,
-//                    xtype: 'container',
-//                    title: 'Detail Info',
-//                    bodyPadding: 2,
-//                    items: [
-//                        {
-//                            flex: 0.6,
-//                            xtype: 'fieldset',
-//                            title: 'Detail Info',
-//                            bodyPadding: 2,
-//                            items: [
-//                                { xtype: 'textfield', name: 'det_color', fieldLabel: 'Color Unit', anchor: '95%'},
-//                                { xtype: 'textfield', name: 'det_color1', fieldLabel: 'Color Unit', anchor: '95%'},
-//                                { xtype: 'textfield', name: 'det_color2', fieldLabel: 'Color Unit', anchor: '95%'}
-//                            ]}
-//                    ],
-//                    dockedItems: [
-//                        { xtype: 'toolbar', items: [
-//                            { text: 'Save', itemId: 'saveDetail', iconCls: 'save'}
-//                        ]}
-//                    ]
-//                }
-//            ]
-//        }
-//
-//    ]
-//},

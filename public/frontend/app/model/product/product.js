@@ -36,7 +36,11 @@ Ext.define('App.model.product.product', {
 		'weightname',
 		/*CL 8*/
 		{ name: 'totallength', defaultValue: 0},
-		{name: 'totalroll', defaultValue: 0}
+		{name: 'totalroll', defaultValue: 0},
+		/*Detail*/
+		'color_id',
+		'unit_id',
+		'grade_id'
 	],
 	associations: [
 		{

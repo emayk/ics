@@ -32,7 +32,7 @@ class Eloquent extends BaseModel{
 	/**
 	 * @var string
 	 */
-	protected $table = 'master_category_product';
+	protected $table = 'master_product_category';
 	protected $hidden = array('parent_type');
 	/**
 	 * @var array

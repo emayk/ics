@@ -28,6 +28,11 @@ use Emayk\Ics\Models\BaseModel;
 /**
  * Class Eloquent
  *
+ * @property string trxnumber
+ * @property string created_at
+ * @property-read \Emayk\Ics\Repo\Factory\Warehouse\Eloquent  warehouse
+ * @property-read \Emayk\Ics\Repo\Factory\Contact\Eloquent  contact
+ * @property-read \Emayk\Ics\Repo\Factory\Supplier\Eloquent  supplier
  * @package Emayk\Ics\Repo\Transaction\Purchase\Order
  */
 class Eloquent extends BaseModel
@@ -391,6 +396,12 @@ class Eloquent extends BaseModel
 		return $q->where('cntprint', '>', $count);
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getNo(){
+		return $this->trxnumber;
+	}
 }
 
  

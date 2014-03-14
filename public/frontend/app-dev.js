@@ -86,7 +86,7 @@ if (fromLocal()) {
 //		/*Diperlukan oleh buyer dan supplier*/
 ////		'ccontactperson',
 ////		'cBuyers',
-////		'cSuppliers',
+//		'cSuppliers',
 //
 //		/*Standing Intruction*/
 //		/*Masih devel*/
